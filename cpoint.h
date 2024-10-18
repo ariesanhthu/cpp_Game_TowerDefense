@@ -5,9 +5,9 @@ class cpoint {
         const static int MAP_SIZE = 10;// Map matrix size
         const static int LEFT = 3;// Left–coordinates of the map screen
         const static int TOP = 1;// Top-coordinates of map screen
-        private:
+    private:
         int x, y, c;
-        public:
+    public:
         cpoint() { x = y = c = 0; }
         cpoint(int tx, int ty, int tc) { x = tx;y = ty;c = tc; }
         int getX() { return x; }
