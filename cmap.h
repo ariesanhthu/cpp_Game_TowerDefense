@@ -2,18 +2,20 @@
 #include "ctool.h"
 #include "cenemy.h"
 #include "ctower.h"
+#include <vector>
 
 class cmap {
-    cenemy _ce;
-    ctower _ctw;
-    // Map matrix _m
-    cpoint _m[cpoint::MAP_SIZE][cpoint::MAP_SIZE];
+    private:
+        //const int w = 300,h = 170;
+        vector<vector<int>> map;
+        vector<cpoint> tPlaces;
+        vector<cpoint> ePath;
+        int mapCode;
     public:
         cmap();
-        //-1 là tường, 0 là trống, 1 là Tower
-        void resetMapData();
-        void makeMapData();
+        void readMap(int);
         void drawMap();
-        cenemy& getEnemy() { return _ce; }
-        ctower& getTower() { return _ctw; }
+        vector<cpoint> getTPlaces() { return tPlaces;}
+        vector<cpoint> getEPath() { return ePath;}
+        int getMapCode() { return mapCode;}
 };

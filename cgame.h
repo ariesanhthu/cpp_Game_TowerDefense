@@ -1,8 +1,13 @@
 #pragma once
+#include "cplayer.h"
 #include "cmap.h"
+#include <fstream>
 class cgame {
     private:
-        cmap _map;
+        cplayer player;
+        cmap map;
+        vector<ctower> listTower;
+        vector<cenemy> listEnemy;
         bool _ISEXIT1, _ISEXIT2;
         
     public:
@@ -11,6 +16,8 @@ class cgame {
         void setIsExist1(bool b) { _ISEXIT1 = b; }
         bool getIsExist2() { return _ISEXIT2; }
         void setIsExist2(bool b) { _ISEXIT2 = b; }
-        cmap& getMap() { return _map; }
+        cmap& getMap() { return map; }
         void startGame();
+        bool readFile(string);
+        bool saveGame(string);
 };
