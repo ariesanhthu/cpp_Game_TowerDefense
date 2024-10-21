@@ -1,11 +1,26 @@
 // TowerDefense.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
+#pragma region MY_HEADERS
+#include "Logger.h"
+#include "ConsoleWindow.h"
 
-#include <iostream>
-
+#include "ScreenSplash.h"
+//#include "Screen_Menu.h"
+#pragma endregion
 int main()
 {
-    std::cout << "Hello World!\n";
+	CreateConsoleWindow(
+		"hihi",						// Title of window
+		kConsoleWindowWidth,				// Width of window
+		kConsoleWindowHeight, 				// Height of window
+		false,	// Fullscreen
+		false,								// Console window resizable
+		true, 								// Console window centered
+		false,								// Show cursor or not
+		false								// Show scrollbar or not
+	);
+    //std::cout << "Hello World!\n";
+	splashScreen::Show();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
