@@ -1,4 +1,7 @@
 #pragma once
+#include "ctool.h"
+#include <vector>
+
 class cpoint {
     private:
         int x,y,c;

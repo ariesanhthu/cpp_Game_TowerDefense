@@ -18,5 +18,61 @@
     <ClCompile Include="TowerDefense.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cbullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cenemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cgame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ctool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ctower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainPrg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cbullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cenemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cgame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cplayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ctool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ctower.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -7,8 +7,8 @@ class cplayer{
         char name[10];
         int point;
     public:
-        cplayer(){};
         cplayer(char s[], int p){ strcpy(name, s); point = p;}
+        cplayer(): cplayer("guest",0) {};
 
         char* getName() { return name;}
         int getPoint() { return point;}
