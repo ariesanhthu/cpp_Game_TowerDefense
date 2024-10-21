@@ -1,5 +1,6 @@
 #pragma once
 #include "cpoint.h"
+
 class cenemy {
     private:
         int health;
