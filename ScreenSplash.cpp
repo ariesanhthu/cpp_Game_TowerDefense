@@ -195,11 +195,11 @@ void splashScreen::DrawSplashLogo(const std::vector<std::wstring>& logo)
 
 	int x = (consoleBufferWidth - _splash_data->splashLogoWidth) / 2 + 1;
 	int y = (consoleBufferHeight - _splash_data->splashLogoHeight) / 2 + 1;
-	for (int i = 0; i < _splash_data->splashLogoHeight / 2 + 1; i++)
+	
+	for (int i = 0; i < _splash_data->splashLogoHeight; i++)
 	{
 		GotoXY(x, y + i);
 		WriteConsoleW(hConsoleOut, logo[i].c_str(), logo[i].size(), NULL, NULL);
-
 		GotoXY(x, y + _splash_data->splashLogoHeight - i);
 		WriteConsoleW(hConsoleOut, logo[_splash_data->splashLogoHeight - i - 1].c_str(), logo[_splash_data->splashLogoHeight - i - 1].size(), NULL, NULL);
 	}
