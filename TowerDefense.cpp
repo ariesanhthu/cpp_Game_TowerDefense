@@ -7,13 +7,17 @@
 #include "ScreenSplash.h"
 //#include "Screen_Menu.h"
 #pragma endregion
+
+using namespace std;
+
+
 int main()
 {
 	CreateConsoleWindow(
-		"hihi",						// Title of window
+		"hihi",								// Title of window
 		kConsoleWindowWidth,				// Width of window
 		kConsoleWindowHeight, 				// Height of window
-		false,	// Fullscreen
+		false,								// Fullscreen
 		false,								// Console window resizable
 		true, 								// Console window centered
 		false,								// Show cursor or not

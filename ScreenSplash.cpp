@@ -34,7 +34,7 @@ void splashScreen::Show()
 
 	// Load splash logo from file
 	LoadSplashLogoFromMemory(_splash_data->kSplashLogoAnsiPath, _splash_data->splashLogo);
-	// LoadSplashLogoFromResource(IDR_ANSI_ESCAPE_CODE1, _splash_data->splashLogo);
+	 //LoadSplashLogoFromResource(IDR_ANSI_ESCAPE_CODE1, _splash_data->splashLogo);
 
 	// Draw splash logo
 	DrawSplashLogo(_splash_data->splashLogo);

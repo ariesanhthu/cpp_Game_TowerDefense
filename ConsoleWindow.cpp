@@ -360,8 +360,8 @@ void CreateConsoleWindow(
 			SetConsoleBufferSize(hConsoleOut, bufferSize.x, consoleSize.y);
 
 			// Send F11 key to maximize the console window
-			keybd_event(VK_F11, 0, 0, 0);
-			keybd_event(VK_F11, 0, KEYEVENTF_KEYUP, 0);
+			keybd_event(VK_F11, 0, 0, 0); 
+			keybd_event(VK_F11, 0, KEYEVENTF_KEYUP, 0); 
 
 			//timer::PreciseSleep(0.1); // Wait for the console window to maximize
 
