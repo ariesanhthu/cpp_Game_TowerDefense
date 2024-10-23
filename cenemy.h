@@ -5,14 +5,14 @@ class cenemy {
     private:
         int health;
         int speed;
-        cpoint curr;
+        cpoint currentPosition;
         vector<cpoint> path;
-        int idx;
+        int index;
     public:
         cenemy();
-        cpoint getCurr();
-        int getSpeed();
-        int getIdex();
-        void setIdex();
+        cpoint getCurr() {return currentPosition;}
+        int getSpeed() { return speed;}
+        int getIdex() { return index;}
+        void setIdex(int idx) { index = idx;}
         void draw();
 };

@@ -4,8 +4,7 @@ cgame::cgame() {
     _ISEXIT1 = _ISEXIT2 = false;
 }
 void cgame::startGame() {
-    // system("cls");
-    map.drawMap();
+    map = getMap();
 }
 
 bool cgame::readFile(string filename){

@@ -12,6 +12,12 @@ class cpoint {
             y = nY;
             c = nC;
         };
+        bool operator==(const cpoint &a){
+            return x == a.x && y == a.y;
+        }
+        int distance(const cpoint &a){
+            return sqrt((x-a.x)*(x-a.x) +(y-a.y)*(y-a.y));
+        }
         int getX(){return x;}
         int getY(){return y;}
         int getC(){return c;}

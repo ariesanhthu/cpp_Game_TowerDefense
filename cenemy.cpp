@@ -3,3 +3,7 @@
 cenemy::cenemy() {
   
 }
+
+void cenemy::draw(){
+
+}

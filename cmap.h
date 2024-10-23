@@ -9,13 +9,13 @@ class cmap {
         //const int w = 300,h = 170;
         vector<vector<int>> map;
         vector<cpoint> tPlaces;
-        vector<cpoint> ePath;
+        vector<vector<cpoint>> ePath;
         int mapCode;
     public:
         cmap();
         void readMap(int);
         void drawMap();
         vector<cpoint> getTPlaces() { return tPlaces;}
-        vector<cpoint> getEPath() { return ePath;}
+        vector<cpoint> getEPath(int i) { return ePath[i];}
         int getMapCode() { return mapCode;}
 };

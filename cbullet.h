@@ -3,14 +3,22 @@
 
 class cbullet {
     private:
-        cpoint curr;
+        cpoint currentPosition;
         int speed;
         int dame;
-
+        cpoint path[2];
     public:
-        cbullet();
-        cpoint getCurr() { return curr; }
+        cbullet(){
+            speed = 6;
+            dame = 1;
+        };
+        void setCurr(const cpoint &p) { currentPosition = p; }
+        cpoint getCurr() { return currentPosition; }
         int getDame() { return dame;}
-        cpoint calPath();
+        int getSpeed() { return speed;}
+        void calPath(const cpoint &e);
+        bool isHit(){
+            return currentPosition == path[1];
+        }
         void draw();
 };
