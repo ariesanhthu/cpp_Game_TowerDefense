@@ -1,5 +1,6 @@
 #pragma once
 #include "ctool.h"
+#include <cmath>
 #include <vector>
 
 class cpoint {

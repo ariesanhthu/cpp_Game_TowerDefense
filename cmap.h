@@ -12,7 +12,7 @@ class cmap {
         vector<vector<cpoint>> ePath;
         int mapCode;
     public:
-        cmap();
+        cmap(){};
         void readMap(int);
         void drawMap();
         vector<cpoint> getTPlaces() { return tPlaces;}

@@ -22,14 +22,16 @@ int main() {
 void ThreadFunc2(cgame& cg) {
     vector<cpoint> tPlaces = cg.getMap().getTPlaces();
     ctower tw(tPlaces[0]);
-    cbullet& bullet = tw.getBullet().get;
+    cbullet& bullet = tw.getBullet();
     int speed = bullet.getSpeed();
     cenemy e = cg.getEnemy()[0];
+    bullet.calPath(e.getCurr());
     while (!cg.getIsExist1()) {
         tw.draw();
-        if(!isBullet){
+        if(bullet.isHit()){
             bullet.setCurr(tw.getLocation());
         }else{
+
         }
     }
     cg.setIsExist2(true);

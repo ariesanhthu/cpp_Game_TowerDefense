@@ -14,5 +14,5 @@ class ctool {
         static mutex mtx;
         static void ShowConsoleCursor(bool);
         static void GotoXY(int, int);
-        static void Draw(char*, int, cpoint[], cpoint&);
+        // static void Draw(char*, int, cpoint[], cpoint&);
 };

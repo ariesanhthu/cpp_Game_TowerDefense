@@ -29,5 +29,15 @@ int main(){
     outFile.write((char*) &b, sizeof(cpoint));
     outFile.write((char*) &c, sizeof(cpoint));
     outFile.write((char*) &d, sizeof(cpoint));
+    outFile.close();
+
+    // ifstream inf("testSetUpMap1.cat", ios::binary);
+    cmap map;
+    map.readMap(0);
+    vector<cpoint> tPlaces = map.getTPlaces();
+    vector<cpoint> ePath = map.getEPath(0);
+    for(int i = 0; i < tPlaces.size(); i++){
+        cout << tPlaces[i].getX() << " " << tPlaces[i].getY() << endl;
+    }
     return 0;
 }
