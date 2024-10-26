@@ -149,6 +149,9 @@
     <ClInclude Include="ctower.h" />
     <ClInclude Include="utility.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="testSetUpMap1.cat" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

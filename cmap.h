@@ -10,12 +10,18 @@ class cmap {
         vector<vector<int>> map;
         vector<cpoint> tPlaces;
         vector<vector<cpoint>> ePath;
-        int mapCode;
+       /* vector<vector<int>> directionX;
+        vector<vector<int>> directionY;*/
+        int nEnemy;
+        int mapCode = 0;
     public:
-        cmap(){};
+        //cmap();
         void readMap(int);
         void drawMap();
         vector<cpoint> getTPlaces() { return tPlaces;}
         vector<cpoint> getEPath(int i) { return ePath[i];}
+        /*vector<int> getDirectionX(int i) { return directionX[i];}
+        vector<int> getDirectionY(int i) { return directionY[i];}*/
         int getMapCode() { return mapCode;}
+        int getEnemy() { return nEnemy;}
 };

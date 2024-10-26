@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int main(){
+int genSetUpFile(){
     ofstream outFile("testSetUpMap1.cat", ios::binary);
     //tPlace setup
     int i = 1;
@@ -20,9 +20,9 @@ int main(){
     //ePath setup
     int n = 4;
     cpoint a{1,1,0};
-    cpoint b{10,1,0};
-    cpoint c{10,10,0};
-    cpoint d{15,10,0};
+    cpoint b{30,1,0};
+    cpoint c{30,30,0};
+    cpoint d{50,30,0};
 
     outFile.write((char*) &n, sizeof(int));
     outFile.write((char*) &a, sizeof(cpoint));
@@ -32,12 +32,12 @@ int main(){
     outFile.close();
 
     // ifstream inf("testSetUpMap1.cat", ios::binary);
-    cmap map;
-    map.readMap(0);
-    vector<cpoint> tPlaces = map.getTPlaces();
-    vector<cpoint> ePath = map.getEPath(0);
-    for(int i = 0; i < tPlaces.size(); i++){
-        cout << tPlaces[i].getX() << " " << tPlaces[i].getY() << endl;
-    }
+    // cmap map;
+    // map.readMap(0);
+    // vector<cpoint> tPlaces = map.getTPlaces();
+    // vector<cpoint> ePath = map.getEPath(0);
+    // for(int i = 0; i < tPlaces.size(); i++){
+    //     cout << tPlaces[i].getX() << " " << tPlaces[i].getY() << endl;
+    // }
     return 0;
 }
