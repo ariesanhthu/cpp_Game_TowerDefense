@@ -7,9 +7,10 @@ class cplayer{
         char name[10];
         int point;
     public:
-        cplayer(char s[], int p){ strcpy_s(name, s); point = p;}
-        cplayer(): cplayer((char*)"guest",0) {};
-
+        cplayer(const char s[] = "Unknown", int p = 0) {
+            strcpy_s(name, s);
+            point = p;
+        }
         char* getName() { return name;}
         int getPoint() { return point;}
         void setPoint(int p) { point = p;}
