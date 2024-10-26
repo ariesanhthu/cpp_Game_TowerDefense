@@ -67,3 +67,5 @@ void ThreadFunc1(cgame& cg) {
     }
     cg.setIsExist1(true);
 }
+
+//test
