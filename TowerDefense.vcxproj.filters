@@ -83,4 +83,18 @@
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="SetupMap\map1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="SetupMap\map2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="SetupMap\map3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="SetupMap\map4.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

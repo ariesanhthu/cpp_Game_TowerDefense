@@ -69,3 +69,14 @@ void ThreadFunc1(cgame& cg) {
 }
 
 //test
+
+int loadMap(int numMap) {
+    cgame game;
+    cmap map = game.getMap();
+    map.readMap(numMap);
+    //place tower
+
+    //get Enemy
+
+    //join tower threat
+}

@@ -15,5 +15,8 @@ class cplayer{
         int getPoint() { return point;}
         void setPoint(int p) { point = p;}
         void addPoint(int a) { point += a;}
+        void setName(char s[]) {
+            strcpy_s(name, s);
+        }
 };
 

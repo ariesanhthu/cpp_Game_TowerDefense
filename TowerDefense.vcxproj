@@ -153,6 +153,12 @@
   <ItemGroup>
     <None Include="testSetUpMap1.cat" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="SetupMap\map1.txt" />
+    <Text Include="SetupMap\map2.txt" />
+    <Text Include="SetupMap\map3.txt" />
+    <Text Include="SetupMap\map4.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
