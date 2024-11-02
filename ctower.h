@@ -9,11 +9,12 @@ class ctower {
         ctower() : ctower({ 0,0,0 }) {};
         ctower(const cpoint &lo) { 
             location = lo;
-            speed = 4;
-            range = 20;
+            speed = 1;
+            range = 40;
         }
         cpoint getLocation() { return location;}
         int getSpeed() { return speed;}
+        int getRange() { return range;}
         void setLocation(cpoint nLocation){ location = nLocation;}
         void draw();
         cbullet& getBullet() {
@@ -21,5 +22,5 @@ class ctower {
             return cb;
         };
 
-        void fire(cenemy);
+        /*void fire(cenemy&);*/
 };

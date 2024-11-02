@@ -77,11 +77,9 @@
     <ClInclude Include="utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="testSetUpMap1.cat">
-      <Filter>Resource Files</Filter>
-    </None>
+    <ClInclude Include="genSetUP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="SetupMap\map1.txt">

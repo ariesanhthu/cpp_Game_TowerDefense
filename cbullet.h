@@ -18,8 +18,5 @@ class cbullet {
         int getDame() { return dame;}
         int getSpeed() { return speed;}
         void calPath(cpoint& e);
-        /*bool isHit(){
-            return ;
-        }*/
         void draw(char);
 };

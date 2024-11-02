@@ -10,27 +10,38 @@ void cmap::readMap(int i){
 
     if(i < 0 || i > 4) return;
     mapCode = i;
-    string filename = "SetUpMap" + to_string(i) + ".cat";
+    string filename = "SetupMap/SetUpMap" + to_string(i) + ".catfam";
     ifstream inFile(filename, ios::binary);
-
     //read tPlace
+    if (!inFile) {
+        cout << "ReadFile Faile";
+        exit(1);
+    }
     int nTPlace;
     inFile.read((char*) &nTPlace, sizeof(int));
-    tPlaces.resize(nTPlace);
-
-    for(int i = 0; i < nTPlace; i++)
-        inFile.read((char*) &tPlaces[i], sizeof(cpoint));
-
+    //tPlaces.resize(nTPlace);
+    for (int i = 0; i < nTPlace; i++) {
+        cpoint p;
+        inFile.read((char*) &p, sizeof(cpoint));
+        tPlaces.push_back(p);
+    }
     //read ePath
-    int nConer;
-    inFile.read((char*) &nConer, sizeof(int));
-    ePath.resize(1);
-    ePath[0].resize(nConer);
-    for(int i = 0; i < nConer; i++)
-        inFile.read((char*) &ePath[0][i], sizeof(cpoint));
+    int nRoad,nConer;
+    inFile.read((char*) &nRoad, sizeof(int));
+    ePath.resize(nRoad);
+    for(int i = 0; i < nRoad; i++){
+        inFile.read((char*)&nConer, sizeof(int));
+        for (int j = 0; j < nConer; j++){
+            cpoint p;
+            inFile.read((char*)&p, sizeof(cpoint));
+            ePath[i].push_back (p);
+        }
+    }
+
 
     //read enemy
-
-    /*inFile.read((char*) &nEnemy, sizeof(int));*/
-
+    inFile.read((char*)&nEnemy[0], sizeof(int));
+    inFile.read((char*)&nEnemy[1], sizeof(int));
+    inFile.read((char*)&nEnemy[2], sizeof(int));
+    inFile.read((char*)&nEnemy[3], sizeof(int));
 }

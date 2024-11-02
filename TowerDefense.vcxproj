@@ -148,10 +148,8 @@
     <ClInclude Include="cpoint.h" />
     <ClInclude Include="ctool.h" />
     <ClInclude Include="ctower.h" />
+    <ClInclude Include="genSetUP.h" />
     <ClInclude Include="utility.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="testSetUpMap1.cat" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SetupMap\map1.txt" />

@@ -1,11 +1,13 @@
 #include "cenemy.h"
 
 cenemy::cenemy() {
-    health = 1;
+    health = 3;
     speed = 4;
+    path.clear();
 }
 
 void cenemy::calPath(vector<cpoint> ePath) {
+
     vector<int> directionX;
     vector<int> directionY;
     currentPosition = ePath[0];
@@ -15,7 +17,7 @@ void cenemy::calPath(vector<cpoint> ePath) {
             directionX.push_back(1);
             directionY.push_back(0);
         }
-        else if (ePath[i].getX() < ePath[i + 1].getX()) 
+        else if (ePath[i].getX() > ePath[i + 1].getX()) 
         {
             directionX.push_back(-1);
             directionY.push_back(0);
@@ -31,6 +33,7 @@ void cenemy::calPath(vector<cpoint> ePath) {
             directionX.push_back(0);
         }
     }
+
     int currX = currentPosition.getX();
     int currY = currentPosition.getY();
     for (int i = 1; i < ePath.size(); i++)
@@ -40,8 +43,8 @@ void cenemy::calPath(vector<cpoint> ePath) {
             currX += directionX[i-1];
             currY += directionY[i-1];
         }
-
     }
+    
 }
 
 void cenemy::draw(){
@@ -50,7 +53,7 @@ void cenemy::draw(){
     cout << " ";
     currentPosition = path[++index];
     ctool::GotoXY((int)currentPosition.getX(), (int)currentPosition.getY());
-    cout << "e";
+    cout << health;
 
     ctool::mtx.unlock();
 }

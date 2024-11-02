@@ -7,10 +7,10 @@ void cbullet::calPath(cpoint& e){
     cpoint derection = e - currentPosition;
     cpoint normalizedDirection = derection.normalized();
     currentPosition = currentPosition + normalizedDirection;
-    ctool::mtx.lock();
+    /*ctool::mtx.lock();
     ctool::GotoXY(21, 21);
     cout << e.getX() << " " << e.getY();
-    ctool::mtx.unlock();
+    ctool::mtx.unlock();*/
 }
 
 void cbullet::draw(char c){
