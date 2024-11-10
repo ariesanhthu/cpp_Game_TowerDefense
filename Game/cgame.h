@@ -17,8 +17,6 @@ class cgame {
         bool getIsExist2() { return _ISEXIT2; }
         void setIsExist2(bool b) { _ISEXIT2 = b; }
         cmap& getMap() { return map; }
-        vector<ctower>& getTower() {return listTower;}
-        vector<cenemy>& getEnemy() {return listEnemy;}
         void startGame();
         bool readFile(string);
         bool saveGame(string);

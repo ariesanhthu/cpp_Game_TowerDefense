@@ -4,12 +4,8 @@ cgame::cgame() {
     _ISEXIT1 = _ISEXIT2 = false;
 }
 void cgame::startGame() {
-    //int nEnemy = map.getEnemy();
-    int nEnemy = 1;
-    for (int i = 0; i < nEnemy; i++) {
-        cenemy e;
-        listEnemy.push_back(e);
-    }
+    // system("cls");
+    map.drawMap();
 }
 
 bool cgame::readFile(string filename){
@@ -57,7 +53,7 @@ bool cgame::saveGame(string playerName){
     //save listTower
     //size of list: sizeof(int) = 4 = n
     //list: sizeof(ctower) * n
-    size_t size = listTower.size();
+    int size = listTower.size();
     outFile.write((char*) &size, sizeof(int));
     for(ctower tower: listTower){
         outFile.write((char*) &tower, sizeof(ctower));

@@ -18,40 +18,84 @@
     <ClCompile Include="TowerDefense.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScreenSplash.cpp">
+<<<<<<< Updated upstream
+    <ClCompile Include="cbullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConsoleWindow.cpp">
+    <ClCompile Include="cenemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Logger.cpp">
+    <ClCompile Include="cgame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utils.cpp">
+    <ClCompile Include="cmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ExternalData.cpp">
+    <ClCompile Include="cpoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ctool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ctower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainPrg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="genSetUP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ScreenSplash.h">
+    <ClInclude Include="cbullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ColorReferences.h">
+    <ClInclude Include="cenemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ExternalData.h">
+    <ClInclude Include="cgame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConsoleWindow.h">
+    <ClInclude Include="cmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Logger.h">
+    <ClInclude Include="cplayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utils.h">
+    <ClInclude Include="cpoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ctool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ctower.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="genSetUP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+=======
+>>>>>>> Stashed changes
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="SetupMap\map1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="SetupMap\map2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="SetupMap\map3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="SetupMap\map4.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
