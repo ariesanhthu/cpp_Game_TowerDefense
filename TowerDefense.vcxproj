@@ -136,7 +136,6 @@
     <ClCompile Include="ctower.cpp" />
     <ClCompile Include="genSetUP.cpp" />
     <ClCompile Include="MainPrg.cpp" />
-    <ClCompile Include="TowerDefense.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <ItemGroup>

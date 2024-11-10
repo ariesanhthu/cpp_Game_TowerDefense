@@ -18,6 +18,7 @@
     <ClCompile Include="TowerDefense.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="cbullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,6 +81,8 @@
     <ClInclude Include="genSetUP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+=======
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <Text Include="SetupMap\map1.txt">
