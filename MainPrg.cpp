@@ -1,8 +1,4 @@
-#include "cgame.h"
-#include "genSetUP.h"
-#include <thread>
-#include <chrono>
-
+#include "PrecompiledHeader.h"
 using namespace std;
 
 void ThreadFunc2(cgame&);
@@ -23,7 +19,7 @@ void ThreadFunc1(cgame&);
 //    t2.join();
 //
 //}
-
+//
 //void ThreadFunc2(cgame& cg) {
 //    vector<cpoint> tPlaces = cg.getMap().getTPlaces();
 //    //ctower tw(tPlaces[0]);

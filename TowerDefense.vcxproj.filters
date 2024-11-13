@@ -1,101 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="Entities\cbullet.cpp" />
+    <ClCompile Include="Entities\cenemy.cpp" />
+    <ClCompile Include="Game\cgame.cpp" />
+    <ClCompile Include="Entities\cmap.cpp" />
+    <ClCompile Include="Entities\cpoint.cpp" />
+    <ClCompile Include="Game\ctool.cpp" />
+    <ClCompile Include="Entities\ctower.cpp" />
+    <ClCompile Include="genSetUP.cpp" />
+    <ClCompile Include="MainPrg.cpp" />
+    <ClCompile Include="Utils\utility.cpp" />
+    <ClCompile Include="TowerDefense.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TowerDefense.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< Updated upstream
-    <ClCompile Include="cbullet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cenemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cgame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cpoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ctool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ctower.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainPrg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="genSetUP.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="Entities\cbullet.h" />
+    <ClInclude Include="Entities\cenemy.h" />
+    <ClInclude Include="Game\cgame.h" />
+    <ClInclude Include="Entities\cmap.h" />
+    <ClInclude Include="Entities\cplayer.h" />
+    <ClInclude Include="Entities\cpoint.h" />
+    <ClInclude Include="Game\ctool.h" />
+    <ClInclude Include="Entities\ctower.h" />
+    <ClInclude Include="genSetUP.h" />
+    <ClInclude Include="PrecompiledHeader.h" />
+    <ClInclude Include="Utils\utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cbullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cenemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cgame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cplayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cpoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ctool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ctower.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="genSetUP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-=======
->>>>>>> Stashed changes
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="SetupMap\map1.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="SetupMap\map2.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="SetupMap\map3.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="SetupMap\map4.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
+    <Text Include="SetupMap\map1.txt" />
+    <Text Include="SetupMap\map2.txt" />
+    <Text Include="SetupMap\map3.txt" />
+    <Text Include="SetupMap\map4.txt" />
   </ItemGroup>
 </Project>
