@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Entities\cbullet.cpp" />
     <ClCompile Include="Entities\cenemy.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="Game\cgame.cpp" />
     <ClCompile Include="Entities\cmap.cpp" />
     <ClCompile Include="Entities\cpoint.cpp" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
     <ClInclude Include="Entities\cenemy.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="Game\cgame.h" />
     <ClInclude Include="Entities\cmap.h" />
     <ClInclude Include="Entities\cplayer.h" />
@@ -154,9 +156,11 @@
     <ClInclude Include="Entities\ctower.h" />
     <ClInclude Include="genSetUP.h" />
     <ClInclude Include="PrecompiledHeader.h" />
+    <ClInclude Include="TowerDefense.h" />
     <ClInclude Include="Utils\utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="nhap.txt" />
     <Text Include="SetupMap\map1.txt" />
     <Text Include="SetupMap\map2.txt" />
     <Text Include="SetupMap\map3.txt" />
