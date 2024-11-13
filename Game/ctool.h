@@ -2,7 +2,10 @@
 #include "cpoint.h"
 #include <windows.h>
 #include <iostream>
+#include <fstream>
 #include <mutex>
+#include <cmath>
+#include <string>
 
 using namespace std;
 
@@ -12,5 +15,5 @@ class ctool {
         static mutex mtx;
         static void ShowConsoleCursor(bool);
         static void GotoXY(int, int);
-        static void Draw(char*, int, cpoint[], cpoint&);
+        // static void Draw(char*, int, cpoint[], cpoint&);
 };

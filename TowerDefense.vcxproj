@@ -76,9 +76,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -90,9 +91,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -104,9 +106,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -118,16 +121,46 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Entities\cbullet.cpp" />
+    <ClCompile Include="Entities\cenemy.cpp" />
+    <ClCompile Include="Game\cgame.cpp" />
+    <ClCompile Include="Entities\cmap.cpp" />
+    <ClCompile Include="Entities\cpoint.cpp" />
+    <ClCompile Include="Game\ctool.cpp" />
+    <ClCompile Include="Entities\ctower.cpp" />
+    <ClCompile Include="genSetUP.cpp" />
+    <ClCompile Include="MainPrg.cpp" />
     <ClCompile Include="TowerDefense.cpp" />
+    <ClCompile Include="Utils\utility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entities\cbullet.h" />
+    <ClInclude Include="Entities\cenemy.h" />
+    <ClInclude Include="Game\cgame.h" />
+    <ClInclude Include="Entities\cmap.h" />
+    <ClInclude Include="Entities\cplayer.h" />
+    <ClInclude Include="Entities\cpoint.h" />
+    <ClInclude Include="Game\ctool.h" />
+    <ClInclude Include="Entities\ctower.h" />
+    <ClInclude Include="genSetUP.h" />
+    <ClInclude Include="PrecompiledHeader.h" />
+    <ClInclude Include="Utils\utility.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="SetupMap\map1.txt" />
+    <Text Include="SetupMap\map2.txt" />
+    <Text Include="SetupMap\map3.txt" />
+    <Text Include="SetupMap\map4.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

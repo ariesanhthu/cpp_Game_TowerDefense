@@ -15,10 +15,10 @@ void ctool::GotoXY(int x, int y) {
     crd.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), crd);
 }
-void ctool::Draw(char* str, int i, cpoint p[], cpoint& _p) {
-    mtx.lock();
-    _p = p[i];
-    ctool::GotoXY(_p.getX(), _p.getY());
-    cout << str;
-    mtx.unlock();
-}
+// void ctool::Draw(char* str, int i, cpoint p[], cpoint& _p) {
+//     mtx.lock();
+//     _p = p[i];
+//     ctool::GotoXY(_p.getX(), _p.getY());
+//     cout << str;
+//     mtx.unlock();
+// }
