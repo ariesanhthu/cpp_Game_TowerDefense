@@ -13,6 +13,8 @@
     <ClCompile Include="Utils\utility.cpp" />
     <ClCompile Include="TowerDefense.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="Graphics\renderer.cpp" />
+    <ClCompile Include="Input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
@@ -28,6 +30,8 @@
     <ClInclude Include="Utils\utility.h" />
     <ClInclude Include="TowerDefense.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="Graphics\renderer.h" />
+    <ClInclude Include="Input.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SetupMap\map1.txt" />
