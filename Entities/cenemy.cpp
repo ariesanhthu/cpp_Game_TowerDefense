@@ -51,7 +51,7 @@ void cenemy::draw(){
     ctool::mtx.lock();
     ctool::GotoXY((int)currentPosition.getX(), (int)currentPosition.getY());
     cout << " ";
-    currentPosition = path[++index];
+    currentPosition = path[++index];// update position
     ctool::GotoXY((int)currentPosition.getX(), (int)currentPosition.getY());
     cout << health;
 

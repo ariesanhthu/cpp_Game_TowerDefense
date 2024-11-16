@@ -13,7 +13,7 @@ private:
    
 public:
     cplayer(string nName = "Unknown", int p = 0) {
-        strcpy(name, nName.c_str());
+        strcpy_s(name, nName.c_str());
         // name = nName;
         point = p;
     }
