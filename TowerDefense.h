@@ -12,4 +12,8 @@ This file includes all of the defination of the game application
 #include <windows.h>
 #include "game.h"
 
+#include "renderer.h"
+
+#include "input.h"
+
 #define app_entry_point INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, INT nCmdShow)

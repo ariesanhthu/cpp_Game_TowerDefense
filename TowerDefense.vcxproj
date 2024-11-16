@@ -141,7 +141,9 @@
     <ClCompile Include="Game\ctool.cpp" />
     <ClCompile Include="Entities\ctower.cpp" />
     <ClCompile Include="genSetUP.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="MainPrg.cpp" />
+    <ClCompile Include="Graphics\renderer.cpp" />
     <ClCompile Include="TowerDefense.cpp" />
     <ClCompile Include="Utils\utility.cpp" />
   </ItemGroup>
@@ -156,7 +158,9 @@
     <ClInclude Include="Game\ctool.h" />
     <ClInclude Include="Entities\ctower.h" />
     <ClInclude Include="genSetUP.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="PrecompiledHeader.h" />
+    <ClInclude Include="Graphics\renderer.h" />
     <ClInclude Include="TowerDefense.h" />
     <ClInclude Include="Utils\utility.h" />
   </ItemGroup>
