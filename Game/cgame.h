@@ -16,6 +16,8 @@ class cgame {
         void setIsExist1(bool b) { _ISEXIT1 = b; }
         bool getIsExist2() { return _ISEXIT2; }
         void setIsExist2(bool b) { _ISEXIT2 = b; }
+        void setPlayer(cplayer& nPlayer) { player = nPlayer; }
+        void addPoint(int n) { player.addPoint(n); }
         cmap& getMap() { return map; }
         vector<ctower>& getTower() {return listTower;}
         vector<cenemy>& getEnemy() {return listEnemy;}

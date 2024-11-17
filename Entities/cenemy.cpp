@@ -57,3 +57,30 @@ void cenemy::draw(){
 
     ctool::mtx.unlock();
 }
+
+
+void cenemy::writeFile(ofstream& outFile) {
+    outFile.write((char*) &health, sizeof(int));
+    outFile.write((char*) &speed, sizeof(int));
+    outFile.write((char*) &currentPosition, sizeof(cpoint));
+    outFile.write((char*) &index, sizeof(int));
+
+    int size = path.size();
+    outFile.write((char*) &size, sizeof(int));
+    for (int i = 0; i < size; i++) {
+        outFile.write((char*) &path[i], sizeof(cpoint));
+    }
+}
+void cenemy::readFile(ifstream& inFile) {
+    inFile.read((char*)&health, sizeof(int));
+    inFile.read((char*)&speed, sizeof(int));
+    inFile.read((char*)&currentPosition, sizeof(cpoint));
+    inFile.read((char*)&index, sizeof(int));
+
+    int size;
+    inFile.read((char*)&size, sizeof(int));
+    path.resize(size);
+    for (int i = 0; i < size; i++) {
+        inFile.read((char*)&path[i], sizeof(cpoint));
+    }
+}

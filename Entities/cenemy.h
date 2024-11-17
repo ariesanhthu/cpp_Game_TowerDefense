@@ -21,4 +21,7 @@ class cenemy {
         }
         void hit() { health--; }
         void draw();
+
+        void writeFile(ofstream&);
+        void readFile(ifstream&);
 };
