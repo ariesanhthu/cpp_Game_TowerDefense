@@ -15,6 +15,10 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Graphics\renderer.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Graphics\Graphic.cpp" />
+    <ClCompile Include="Menu\Menu.cpp" />
+    <ClCompile Include="constant.cpp" />
+    <ClCompile Include="Menu\Button.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
@@ -32,6 +36,10 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="Graphics\renderer.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Graphics\Graphic.h" />
+    <ClInclude Include="Menu\Menu.h" />
+    <ClInclude Include="constant.h" />
+    <ClInclude Include="Menu\Button.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SetupMap\map1.txt" />

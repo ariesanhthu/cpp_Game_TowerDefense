@@ -131,6 +131,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Menu\Button.cpp" />
+    <ClCompile Include="constant.cpp" />
     <ClCompile Include="Entities\cbullet.cpp" />
     <ClCompile Include="Entities\cenemy.cpp" />
     <ClCompile Include="game.cpp" />
@@ -140,13 +142,17 @@
     <ClCompile Include="Game\ctool.cpp" />
     <ClCompile Include="Entities\ctower.cpp" />
     <ClCompile Include="genSetUP.cpp" />
+    <ClCompile Include="Graphics\Graphic.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="MainPrg.cpp" />
     <ClCompile Include="Graphics\renderer.cpp" />
+    <ClCompile Include="Menu\Menu.cpp" />
     <ClCompile Include="TowerDefense.cpp" />
     <ClCompile Include="Utils\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Menu\Button.h" />
+    <ClInclude Include="constant.h" />
     <ClInclude Include="Entities\cbullet.h" />
     <ClInclude Include="Entities\cenemy.h" />
     <ClInclude Include="game.h" />
@@ -157,7 +163,9 @@
     <ClInclude Include="Game\ctool.h" />
     <ClInclude Include="Entities\ctower.h" />
     <ClInclude Include="genSetUP.h" />
+    <ClInclude Include="Graphics\Graphic.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Menu\Menu.h" />
     <ClInclude Include="PrecompiledHeader.h" />
     <ClInclude Include="Graphics\renderer.h" />
     <ClInclude Include="TowerDefense.h" />

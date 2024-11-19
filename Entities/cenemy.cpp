@@ -44,11 +44,11 @@ void cenemy::calPath(vector<cpoint> ePath) {
             currY += directionY[i-1];
         }
     }
-    
 }
 
 void cenemy::draw(){
     ctool::mtx.lock();
+
     ctool::GotoXY((int)currentPosition.getX(), (int)currentPosition.getY());
     cout << " ";
     currentPosition = path[++index];
