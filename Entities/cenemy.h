@@ -24,4 +24,7 @@ class cenemy {
         void update();
 
         void draw();
+
+        void writeFile(ofstream&);
+        void readFile(ifstream&);
 };

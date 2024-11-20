@@ -13,13 +13,12 @@ void cgame::startGame() {
 }
 
 bool cgame::readFile(string filename){
-    ifstream inFile(filename, ios::binary);
-    if( !inFile.is_open()) return false;
+    ifstream inFile(filename + ".twdef", ios::binary);
+    if (!inFile.is_open()) return false;
 
     int mapCode;
     inFile.read((char*) &mapCode, sizeof(int));
     map.readMap(mapCode);
-
     int size;
     ctower tower;
     inFile.read((char*) &size, sizeof(int));
@@ -35,7 +34,8 @@ bool cgame::readFile(string filename){
     listEnemys.clear();
     listEnemys.resize(size);
     for(int i = 0; i < size; i++){
-        inFile.read((char*) &enemy, sizeof(cenemy));
+        /*inFile.read((char*) &enemy, sizeof(cenemy));*/
+        enemy.readFile(inFile);
         listEnemys[i] = enemy;
     }
     
@@ -69,7 +69,8 @@ bool cgame::saveGame(string playerName){
     size = listEnemys.size();
     outFile.write((char*) &size, sizeof(int));
     for(cenemy Enemy: listEnemys){
-        outFile.write((char*) &Enemy, sizeof(cenemy));
+        Enemy.writeFile(outFile);
+        //outFile.write((char*) &Enemy, sizeof(cenemy));
     }
 
     outFile.write((char*) &player, sizeof(cplayer));

@@ -110,6 +110,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -133,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="Menu\Button.cpp" />
     <ClCompile Include="constant.cpp" />
+    <ClCompile Include="Entities\cplayer.cpp" />
     <ClCompile Include="Entities\cbullet.cpp" />
     <ClCompile Include="Entities\cenemy.cpp" />
     <ClCompile Include="game.cpp" />
