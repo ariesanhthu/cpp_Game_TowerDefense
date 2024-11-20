@@ -141,29 +141,37 @@ using namespace std;
 
 void manageAllEnemy(cgame& game) {
 	vector<cenemy>& eList = game.getEnemy();
+	int numberOfE = 0;
+	time_point nextAdd = chrono::system_clock::now();
 
 	while (!game.getIsExist1()) {
 
 		time_point start = chrono::system_clock::now();
+		
+		int countMoved = 0;
 
 		for (cenemy& enemy : eList) {
-			if (enemy.getHealth() < 0) continue;
+
+			if (enemy.getHealth() < 0 || countMoved++ > numberOfE || chrono::system_clock::now() < nextAdd) continue;
 
 			enemy.update();
 
 			if (enemy.isEnd()) game.setIsExist1(true);
 		}
 
+		if (countMoved > numberOfE) {
+			numberOfE++;
+			nextAdd += chrono::milliseconds(1000);
+		}
+
 		time_point end = chrono::system_clock::now();
-
 		chrono::microseconds timer = micro_cast(end - start);
-
 		if (timer < micro(TIME_PER_TICK))
 		this_thread::sleep_for(micro(TIME_PER_TICK) - timer); //sleep until next tick start
 	}
 }
 
-void mangeTowerAndBullet(cgame& game) {
+void manageTowerAndBullet(cgame& game) {
 	vector<ctower> tList = game.getTower();
 	vector<cbullet> bList = game.getBullet();
 	vector<cenemy>& eList = game.getEnemy();
@@ -207,3 +215,36 @@ void mangeTowerAndBullet(cgame& game) {
 	}
 }
 
+int game(int numMap) {
+    ctool::ShowConsoleCursor(0);
+    cgame game;
+    cmap &map = game.getMap();
+
+    //game.startGame();
+    map.readMap(numMap);
+    //place tower
+    
+    //get Enemy
+    int NumOfPath = map.getNumOfPath();
+    vector<cenemy>& eList = game.getEnemy();
+    int nEnemy[4], AllEnemy = 0;
+    for (int i = 0; i < NumOfPath; i++) {
+        nEnemy[i] = map.getEnemy(i);
+        AllEnemy += nEnemy[i];
+    }
+    for (int i = 0; i < AllEnemy; i++) {
+        eList.push_back(cenemy());
+        eList[i].calPath(map.getEPath(i%NumOfPath));
+    }
+
+	thread thread1(manageAllEnemy, ref(game));
+	thread thread2(manageTowerAndBullet, ref(game));
+
+	thread1.join();
+	thread2.join();
+    return 0;
+}
+
+int main() {
+	game(1);
+}
