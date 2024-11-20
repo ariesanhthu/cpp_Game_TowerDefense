@@ -44,6 +44,8 @@ namespace towerdefense {
             Game::getInstance().loadResources();
             break;
 
+        //case WN_TIMER:
+
         case WM_PAINT: {
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hwnd, &ps);

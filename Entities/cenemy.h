@@ -19,6 +19,9 @@ class cenemy {
         bool isEnd() {
             return index == path.size() - 1;
         }
-        void hit() { health--; }
+        void hit(int dame) { health-= dame; }
+
+        void update();
+
         void draw();
 };

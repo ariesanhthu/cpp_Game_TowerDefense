@@ -6,8 +6,9 @@ class cgame {
     private:
         cplayer player;
         cmap map;
-        vector<ctower> listTower;
-        vector<cenemy> listEnemy;
+        vector<ctower> listTowers;
+        vector<cenemy> listEnemys;
+        vector<cbullet> listBullets;
         bool _ISEXIT1, _ISEXIT2;
         
     public:
@@ -17,8 +18,9 @@ class cgame {
         bool getIsExist2() { return _ISEXIT2; }
         void setIsExist2(bool b) { _ISEXIT2 = b; }
         cmap& getMap() { return map; }
-        vector<ctower>& getTower() {return listTower;}
-        vector<cenemy>& getEnemy() {return listEnemy;}
+        vector<ctower>& getTower() {return listTowers;}
+        vector<cenemy>& getEnemy() {return listEnemys;}
+        vector<cbullet>& getBullet() {return listBullets;}
         void startGame();
         bool readFile(string);
         bool saveGame(string);

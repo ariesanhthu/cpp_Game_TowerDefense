@@ -46,6 +46,10 @@ void cenemy::calPath(vector<cpoint> ePath) {
     }
 }
 
+void cenemy::update() {
+    currentPosition = path[++index];
+}
+
 void cenemy::draw(){
     ctool::mtx.lock();
 

@@ -63,6 +63,17 @@ extern const  wchar_t* BMP_ENTER_BUTTON;
 
 
 // GAME SCREEN
+//MANAGE GAME LOGIC
+extern bool PAUSE;
+extern unsigned int GAME_TICK;
+extern unsigned int TIME_PER_TICK;
+extern unsigned int FPS;
+extern unsigned int TIME_PER_FPS;
+
+#define micro(x) chrono::microseconds(x)
+#define micro_cast(x) chrono::duration_cast<chrono::microseconds> (x)
+#define time_point chrono::system_clock::time_point
+
 // MAP1 
 
 // MAP2 

@@ -8,7 +8,7 @@ class cpoint {
         int x,y,c;
     public:
         cpoint(){x = 0; y = 0; c = 0;}
-        cpoint(int nX, int nY, int nC) {
+        cpoint(int nX, int nY, int nC = 0) {
             x = nX;
             y = nY;
             c = nC;

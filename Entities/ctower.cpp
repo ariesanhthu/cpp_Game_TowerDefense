@@ -1,12 +1,16 @@
 #include "ctower.h"
 
+bool ctower::canShoot() {
+    time_point now = chrono::system_clock::now();
+    if (micro(1000000 / rate) > micro_cast(now - lastShoot))
+        return true;
+    return false;
+}
 
-//void ctower::fire(cenemy& e) {
-//    cpoint eCurr = e.getCurr();
-//    if (location.distance(eCurr) < range) {
-//
-//    }
-//}
+cbullet ctower::shoot(cenemy* target) {
+    lastShoot = chrono::system_clock::now();
+    return cbullet(location, target);
+};
 
 void ctower::draw(){
     ctool::mtx.lock();
