@@ -1,6 +1,6 @@
 #pragma once
 #include "cplayer.h"
-#include "Entities/cmap.h"
+#include "cmap.h"
 #include <fstream>
 class cgame {
     private:
