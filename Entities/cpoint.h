@@ -15,8 +15,8 @@ class cpoint {
         };
         bool operator==(const cpoint& a);
         int distance(const cpoint& a);
-        int getX(){return x;}
-        int getY(){return y;}
+        int& getX(){return x;}
+        int& getY(){return y;}
         int getC(){return c;}
 
         cpoint operator+(const cpoint&);

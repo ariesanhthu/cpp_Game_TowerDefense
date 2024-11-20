@@ -18,9 +18,11 @@ cbullet::cbullet(cpoint pos, cenemy* nTarget) : cbullet() {
 
 void cbullet::update(){
     cpoint e = target->getCurr();
+    
     cpoint derection = e - currentPosition;
-    cpoint normalizedDirection = derection.normalized() * speed;
-    currentPosition = currentPosition + normalizedDirection;
+    cpoint normalizedDirection = derection.normalized();
+    this->currentPosition = this->currentPosition + normalizedDirection * speed;
+    //cout << e.getX() << " " << e.getY() << " ";
 }
 
 cenemy* cbullet::checkCollision() {

@@ -2,8 +2,10 @@
 
 bool ctower::canShoot() {
     time_point now = chrono::system_clock::now();
-    if (micro(1000000 / rate) > micro_cast(now - lastShoot))
+    if (micro(1000000 / rate) > micro_cast(now - lastShoot)) {
+        lastShoot = now;
         return true;
+    }
     return false;
 }
 

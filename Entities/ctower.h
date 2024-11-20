@@ -1,5 +1,4 @@
 #pragma once
-#include "PrecompiledHeader.h"
 #include "cbullet.h"
 #include "constant.h"
 
@@ -11,7 +10,7 @@ class ctower {
         ctower() : ctower({ 0,0,0 }) {};
         ctower(const cpoint &lo) { 
             location = lo;
-            range = 40;
+            range = 50;
             rate = 3;
             lastShoot = chrono::system_clock::now();
         }

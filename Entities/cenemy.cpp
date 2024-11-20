@@ -47,7 +47,7 @@ void cenemy::calPath(vector<cpoint> ePath) {
 }
 
 void cenemy::update() {
-    currentPosition = path[++index];
+    currentPosition = path[index++];
 }
 
 void cenemy::draw(){
@@ -55,7 +55,7 @@ void cenemy::draw(){
 
     ctool::GotoXY((int)currentPosition.getX(), (int)currentPosition.getY());
     cout << " ";
-    currentPosition = path[++index];// update position
+    currentPosition = path[index++];// update position
     ctool::GotoXY((int)currentPosition.getX(), (int)currentPosition.getY());
     cout << health;
 

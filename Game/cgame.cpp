@@ -3,14 +3,21 @@
 cgame::cgame() {
     _ISEXIT1 = _ISEXIT2 = false;
 }
-void cgame::startGame() {
-    //int nEnemy = map.getEnemy();
-    int nEnemy = 1;
-    for (int i = 0; i < nEnemy; i++) {
-        cenemy e;
-        listEnemys.push_back(e);
+
+cgame::~cgame() {
+    for (cenemy* e : listEnemys) {
+        delete e;
+        e = NULL;
     }
 }
+//void cgame::startGame() {
+//    //int nEnemy = map.getEnemy();
+//    int nEnemy = 1;
+//    for (int i = 0; i < nEnemy; i++) {
+//        cenemy e;
+//        listEnemys.push_back(e);
+//    }
+//}
 
 bool cgame::readFile(string filename){
     ifstream inFile(filename + ".twdef", ios::binary);
@@ -36,7 +43,8 @@ bool cgame::readFile(string filename){
     for(int i = 0; i < size; i++){
         /*inFile.read((char*) &enemy, sizeof(cenemy));*/
         enemy.readFile(inFile);
-        listEnemys[i] = enemy;
+        cenemy* e = new cenemy(enemy);
+        listEnemys[i] = e;
     }
     
     inFile.read((char*) &player, sizeof(cplayer));
@@ -68,8 +76,9 @@ bool cgame::saveGame(string playerName){
     //list: sizeof(cenermy) * n
     size = listEnemys.size();
     outFile.write((char*) &size, sizeof(int));
-    for(cenemy Enemy: listEnemys){
-        Enemy.writeFile(outFile);
+    for(cenemy* Enemy: listEnemys){
+        Enemy->writeFile(outFile);
+
         //outFile.write((char*) &Enemy, sizeof(cenemy));
     }
 
