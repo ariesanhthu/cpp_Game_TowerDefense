@@ -1,28 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="Entities\cplayer.cpp" />
     <ClCompile Include="Entities\cbullet.cpp" />
     <ClCompile Include="Entities\cenemy.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="Game\cgame.cpp" />
     <ClCompile Include="Entities\cmap.cpp" />
     <ClCompile Include="Entities\cpoint.cpp" />
     <ClCompile Include="Game\ctool.cpp" />
     <ClCompile Include="Entities\ctower.cpp" />
     <ClCompile Include="genSetUP.cpp" />
-    <ClCompile Include="MainPrg.cpp" />
-    <ClCompile Include="Utils\utility.cpp" />
-    <ClCompile Include="TowerDefense.cpp" />
-    <ClCompile Include="game.cpp" />
-<<<<<<< HEAD
-    <ClCompile Include="Entities\cplayer.cpp" />
-=======
-    <ClCompile Include="Graphics\renderer.cpp" />
     <ClCompile Include="Input.cpp" />
->>>>>>> f5307907c29349d3fe9fbf166aa3a246c2fcba44
+    <ClCompile Include="MainPrg.cpp" />
+    <ClCompile Include="Graphics\renderer.cpp" />
+    <ClCompile Include="TowerDefense.cpp" />
+    <ClCompile Include="Utils\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
     <ClInclude Include="Entities\cenemy.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="Game\cgame.h" />
     <ClInclude Include="Entities\cmap.h" />
     <ClInclude Include="Entities\cplayer.h" />
@@ -30,18 +28,17 @@
     <ClInclude Include="Game\ctool.h" />
     <ClInclude Include="Entities\ctower.h" />
     <ClInclude Include="genSetUP.h" />
-    <ClInclude Include="PrecompiledHeader.h" />
-    <ClInclude Include="Utils\utility.h" />
-    <ClInclude Include="TowerDefense.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="Graphics\renderer.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="PrecompiledHeader.h" />
+    <ClInclude Include="Graphics\renderer.h" />
+    <ClInclude Include="TowerDefense.h" />
+    <ClInclude Include="Utils\utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="nhap.txt" />
     <Text Include="SetupMap\map1.txt" />
     <Text Include="SetupMap\map2.txt" />
     <Text Include="SetupMap\map3.txt" />
     <Text Include="SetupMap\map4.txt" />
-    <Text Include="nhap.txt" />
   </ItemGroup>
 </Project>
