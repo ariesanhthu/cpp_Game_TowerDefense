@@ -144,6 +144,8 @@
     <ClCompile Include="MainPrg.cpp" />
     <ClCompile Include="Graphics\renderer.cpp" />
     <ClCompile Include="TowerDefense.cpp" />
+    <ClCompile Include="UIElement.cpp" />
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="Utils\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +163,8 @@
     <ClInclude Include="PrecompiledHeader.h" />
     <ClInclude Include="Graphics\renderer.h" />
     <ClInclude Include="TowerDefense.h" />
+    <ClInclude Include="UIElement.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="Utils\utility.h" />
   </ItemGroup>
   <ItemGroup>

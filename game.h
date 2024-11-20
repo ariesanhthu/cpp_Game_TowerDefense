@@ -20,6 +20,7 @@ namespace towerdefense
 		std::wstring windowTitle;
 		int windowWidth, windowHeight;
 		std::function<void(float delta)> update;
+	
 	public:
 		Game();
 		Game(const Game&) = delete;
@@ -47,6 +48,7 @@ namespace towerdefense
 		inline static std::wstring getWindowTitle() { return getInstance().windowTitle; }
 		inline static int getWindowWidth() { return getInstance().windowWidth; }
 		inline static int getWindowHeight() { return getInstance().windowHeight; }
+	
 	private:
 		void startWindow();
 	};

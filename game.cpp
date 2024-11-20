@@ -118,6 +118,7 @@ namespace towerdefense
 			QueryPerformanceCounter(&last_counter);
 			while (running)
 			{
+				// calculating delta time
 				LARGE_INTEGER current_counter;
 				QueryPerformanceCounter(&current_counter);
 				int64_t counter_elapsed = current_counter.QuadPart - last_counter.QuadPart;
@@ -133,6 +134,7 @@ namespace towerdefense
 					TranslateMessage(&message);
 					DispatchMessage(&message);		// Send message to the WindowProc (WindowCallback)
 				}
+
 				
 				// update & render
 				Renderer::clear();
