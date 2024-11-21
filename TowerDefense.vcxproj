@@ -134,6 +134,8 @@
     <ClCompile Include="Entities\cbullet.cpp" />
     <ClCompile Include="Entities\cenemy.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="Graphics\Graphic.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="Game\cgame.cpp" />
     <ClCompile Include="Entities\cmap.cpp" />
     <ClCompile Include="Entities\cpoint.cpp" />
@@ -144,14 +146,19 @@
     <ClCompile Include="MainPrg.cpp" />
     <ClCompile Include="Graphics\renderer.cpp" />
     <ClCompile Include="TowerDefense.cpp" />
-    <ClCompile Include="UIElement.cpp" />
-    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="Game\UIElement.cpp" />
+    <ClCompile Include="Game\UIManager.cpp" />
     <ClCompile Include="Utils\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
     <ClInclude Include="Entities\cenemy.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="Game\InputManager.h" />
+    <ClInclude Include="Game\ThreadManager.h" />
+    <ClInclude Include="Graphics\Graphic.h" />
+    <ClInclude Include="Game\ScreenManager.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="Game\cgame.h" />
     <ClInclude Include="Entities\cmap.h" />
     <ClInclude Include="Entities\cplayer.h" />
@@ -163,8 +170,8 @@
     <ClInclude Include="PrecompiledHeader.h" />
     <ClInclude Include="Graphics\renderer.h" />
     <ClInclude Include="TowerDefense.h" />
-    <ClInclude Include="UIElement.h" />
-    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="Game\UIElement.h" />
+    <ClInclude Include="Game\UIManager.h" />
     <ClInclude Include="Utils\utility.h" />
   </ItemGroup>
   <ItemGroup>

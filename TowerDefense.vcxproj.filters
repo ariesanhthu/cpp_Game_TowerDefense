@@ -15,6 +15,10 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Graphics\renderer.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Game\UIElement.cpp" />
+    <ClCompile Include="Game\UIManager.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="Graphics\Graphic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
@@ -32,6 +36,13 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="Graphics\renderer.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Game\UIElement.h" />
+    <ClInclude Include="Game\UIManager.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="Graphics\Graphic.h" />
+    <ClInclude Include="Game\ScreenManager.h" />
+    <ClInclude Include="Game\ThreadManager.h" />
+    <ClInclude Include="Game\InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SetupMap\map1.txt" />

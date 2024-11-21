@@ -1,9 +1,11 @@
-#include "game.h"
+﻿#include "game.h"
 #include "renderer.h"
 #include "input.h"
 
 namespace towerdefense
 {
+	
+
 	Game::Game()
 	{
 		// init window properties to default values
@@ -127,26 +129,18 @@ namespace towerdefense
 
 				// process windows messages
 				MSG message;
-				while (PeekMessage(&message, 0, 0, 0, PM_REMOVE))
+				if (PeekMessage(&message, 0, 0, 0, PM_REMOVE))
 				{
 					if (message.message == WM_QUIT)
 						running = false;
 					TranslateMessage(&message);
 					DispatchMessage(&message);		// Send message to the WindowProc (WindowCallback)
 				}
-
-				
-				// update & render
-				Renderer::clear();
-
-
-				getInstance().update(delta);
-
-				HDC deviceContext = GetDC(windowHandle);
-				int width, height;
-				Renderer::getWindowDimensions(&width, &height);
-				Renderer::copyBufferToWindow(deviceContext, width, height);
-				ReleaseDC(windowHandle, deviceContext);
+				else
+				{
+					//
+					
+				}
 			}
 		}
 		else
