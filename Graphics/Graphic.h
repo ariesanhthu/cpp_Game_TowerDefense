@@ -16,6 +16,7 @@ public:
 
     void InitGdiPlus();
     HBITMAP LoadBitmapImage(const wchar_t* filename, double factor);
-    void DrawBitmap(HBITMAP hBitmap, POINT start, HDC hdc) const;
+    static void DrawBitmap(HBITMAP hBitmap, POINT start, HDC hdc);
+    //void DrawBitmap(HBITMAP hBitmap, POINT start, HDC hdc) const;
     void ReleaseBitmap(HBITMAP& hBitmap) const;
 };

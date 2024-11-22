@@ -3,15 +3,17 @@
 #include <string>
 #include <functional>
 #include "State.h"
+#include <ScreenManager.h>
 
 namespace towerdefense
 {
 
 	class Game
 	{
-
 	private:
 		std::unique_ptr<GameState> currentState;
+		std::unique_ptr<Screen> currentScreen;
+		Graphic graphic;
 
 	public:
 		void setState(std::unique_ptr<GameState> newState) {
@@ -35,8 +37,8 @@ namespace towerdefense
 		HWND windowHandle = 0;
 		bool running = false;
 		std::wstring windowTitle;
-		int windowWidth, windowHeight;
 		//std::function<void(float delta)> update;
+		int windowWidth, windowHeight;
 	
 	public:
 		Game();
@@ -66,6 +68,7 @@ namespace towerdefense
 		inline static int getWindowWidth() { return getInstance().windowWidth; }
 		inline static int getWindowHeight() { return getInstance().windowHeight; }
 
+		void loadInitialScreen();
 
 	private:
 		void startWindow();

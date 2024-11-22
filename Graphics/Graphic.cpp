@@ -44,7 +44,7 @@ HBITMAP Graphic::LoadBitmapImage(const wchar_t* filename, double factor) {
     return hBitmap;
 }
 
-void Graphic::DrawBitmap(HBITMAP hBitmap, POINT start, HDC hdc) const {
+void Graphic::DrawBitmap(HBITMAP hBitmap, POINT start, HDC hdc) {
     if (!hBitmap || !hdc) {
         MessageBoxW(nullptr, L"Invalid Bitmap or HDC!", L"Error", MB_OK);
         return;
