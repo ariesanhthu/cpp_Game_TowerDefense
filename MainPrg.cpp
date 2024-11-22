@@ -59,13 +59,14 @@ void manageTowerAndBullet(cgame& game, vector<cenemy*>& eList) {
 						cbullet nBullet = tower.shoot(enemy);
 
 						bList.push_back(nBullet);
-				
+
+						break;
 					}
 				}
 			}
 		}
 
-		cout << "+++++++++++++++++++++++++++++++++" << endl;
+		//cout << "+++++++++++++++++++++++++++++++++" << endl;
 		int i = 0;
 		for (cbullet& bullet: bList) {
 
