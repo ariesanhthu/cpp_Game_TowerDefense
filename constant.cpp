@@ -65,7 +65,7 @@
 // GAME SCREEN
 //MANAGE GAME LOGIC
  bool PAUSE = false;
- unsigned int GAME_TICK = 64;
+ unsigned int GAME_TICK = 32;
  unsigned int TIME_PER_TICK = (1000000 / GAME_TICK); // microsecond
  unsigned int FPS = 30;
  unsigned int TIME_PER_FPS = (1000000 / FPS); // microsecond

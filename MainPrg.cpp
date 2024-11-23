@@ -6,31 +6,53 @@ mutex gameMutex;
 
 void manageAllEnemy(cgame& game, vector<cenemy*>& eList) {
 	//vector<cenemy*>& eList = game.getEnemy();
-	int eListSize = eList.size();
-	int numberOfE = 1;
+	int eListSize = 0;
+	int numberOfE = 0;
 	int remainE = 0;
+	int updatedE = 0;
+	int enemyOfEachPhase = (eList.size() - game.getMap().getMapCode()) / 2; // number of e each phase
+	int phase = 0;
 	const int enemySpawnInterval = 1;
 	time_point lastSpawn = chrono::system_clock::now();
 
-	cout << eList[0]->getIdex();
 	while (!game.getIsExist1()) {
 
 		time_point start = chrono::system_clock::now();
 
-		if (micro_cast(start - lastSpawn) > micro(1000000 * enemySpawnInterval) && numberOfE < eListSize) {
+		// phase control
+		if (remainE == 0) {
+			if (phase < 2) {
+				eListSize += enemyOfEachPhase;
+			}
+			else if (phase < 3){
+				eListSize += game.getMap().getMapCode();
+			}
+			else {
+				game.setIsExist1(true);
+				break;
+			}
+			phase++;
+		}
+		
+		//dellay spawn
+		if (micro_cast(start - lastSpawn) > micro(1000000 * enemySpawnInterval) && numberOfE < eListSize ) {
 			numberOfE++;
 			lastSpawn = chrono::system_clock::now();
 		}
+
+		// update all available enemy
 		remainE = 0;
+		updatedE = 0;
 		for (cenemy* e : eList) {
-			if (remainE > numberOfE) break;
+			if (updatedE > numberOfE) break;
+			updatedE++;
 			if (e->getHealth() < 0) continue;
 
-			//e->draw();
-			e->update();
+			e->draw();
+			//e->update();
 
 			remainE++;
-			if (e->isEnd() || !remainE) game.setIsExist1(true);
+			if (e->isEnd()) game.setIsExist1(true);
 		}
 
 
@@ -51,6 +73,7 @@ void manageTowerAndBullet(cgame& game, vector<cenemy*>& eList) {
 		
 		time_point start = chrono::system_clock::now();
 
+		// update all available tower
 		for (ctower& tower : tList) {
 			if (tower.canShoot()) {
 				for (cenemy* enemy : eList) {
@@ -66,21 +89,23 @@ void manageTowerAndBullet(cgame& game, vector<cenemy*>& eList) {
 			}
 		}
 
-		//cout << "+++++++++++++++++++++++++++++++++" << endl;
-		int i = 0;
-		for (cbullet& bullet: bList) {
+		//update all available bullet
+		if (!bList.empty())
+		for (cbullet& bullet: bList){
+		//for(vector<cbullet>::iterator it = bList.begin(); it != bList.end();){
+			//cbullet& bullet = *it;
 
+			bullet.update();
+			
 			cenemy* e = bullet.checkCollision();
 			if (e == NULL) {
-				bullet.update();
-
-				//cout << bullet.getCurr().getX() << " " << bullet.getCurr().getY() << " " << bullet.getTarget()->getHealth() << endl;
-				i++;
+				//++it;
 			}
 			else {
 				e->hit(bullet.getDame());
-				bList.erase(bList.begin() + i);
+				/*it = bList.erase(it);*/
 			}
+			//++it;
 		}
 
 		time_point end = chrono::system_clock::now();
@@ -98,7 +123,8 @@ void setUpEnemy(cgame& game) {
 	int NumOfPath = map.getNumOfPath();
 	vector<cenemy*>& eList = game.getEnemy();
 	int nEnemy[4], AllEnemy = 0;
-	for (int i = 0; i < NumOfPath; i++) {
+	//for (int i = 0; i < NumOfPath; i++) {
+	for (int i = 0; i < 4; i++) {
 		nEnemy[i] = map.getEnemy(i);
 		AllEnemy += nEnemy[i];
 	}
@@ -106,6 +132,12 @@ void setUpEnemy(cgame& game) {
 		eList.push_back(new cenemy());
 		eList[i]->calPath(map.getEPath(i % NumOfPath));
 	}
+
+	//add boss
+	/*for (int i = 0; i < game.getMap().getMapCode(); i++) {
+		eList.push_back(new cenemy());
+		eList[i]->calPath(map.getEPath(i % NumOfPath));
+	}*/
 }
 
 void NewGame(int n, cplayer& player) {
@@ -118,21 +150,24 @@ void NewGame(int n, cplayer& player) {
 	setUpEnemy(game);
 	
 	game.getTower().push_back(map.getTPlaces()[1]);
+	game.getTower().push_back(map.getTPlaces()[3]);
 
 	vector<cenemy*>& eList = game.getEnemy();
 
 	//game.setIsExist1(true);
+
 	thread t1(manageAllEnemy, ref(game), ref(eList));
 	thread t2(manageTowerAndBullet, ref(game), ref(eList));
 
 	//Main Loop for rendering
 	while (!game.getIsExist1()) {
-		/*for (auto x : game.getBullet())
-			x.draw('*');
-		for (auto x : game.getTower())
-			x.draw();*/
+		/*for (cbullet x : game.getBullet())
+			x.draw('*');*/
+		for (ctower x : game.getTower())
+			x.draw();
 		this_thread::sleep_for(micro(TIME_PER_FPS));
 	}
+
 	t1.join();
 	t2.join();
 
@@ -140,6 +175,6 @@ void NewGame(int n, cplayer& player) {
 
 int main() {
 	cplayer p;
-	NewGame(1,p);
+	NewGame(4,p);
 	return 0;
 }

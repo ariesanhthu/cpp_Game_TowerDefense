@@ -3,7 +3,7 @@
 #include "cenemy.h"
 
 class cbullet {
-    private:
+    protected:
         cpoint currentPosition;
         int speed;
         int dame;
@@ -21,7 +21,7 @@ class cbullet {
         int getDame() { return dame;}
         int getSpeed() { return speed;}
 
-        void update();
+        virtual void update();
 
         cenemy* checkCollision();
 

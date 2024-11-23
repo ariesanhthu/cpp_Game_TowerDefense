@@ -2,7 +2,7 @@
 #include "cpoint.h"
 
 class cenemy {
-    private:
+    protected:
         int health;
         int speed;
         cpoint currentPosition;
@@ -21,10 +21,10 @@ class cenemy {
         }
         void hit(int dame) { health -= dame; }
 
-        void update();
+        virtual void update();
 
         void draw();
 
-        void writeFile(ofstream&);
-        void readFile(ifstream&);
+        virtual void writeFile(ofstream&);
+        virtual void readFile(ifstream&);
 };
