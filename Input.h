@@ -62,10 +62,8 @@
 #define DC_BACKSPACE	50
 #define DC_TILDE		51
 
-namespace towerdefense
-{
-	class Input
-	{
+namespace towerdefense {
+	class Input {
 		friend LRESULT CALLBACK WindowCallback(
 			HWND windowHandle,
 			UINT message,
@@ -75,13 +73,11 @@ namespace towerdefense
 	
 	public:
 	
-		struct KeyState
-		{
+		struct KeyState {
 			bool wasDown, isDown;
 		};
 
-		struct KeyboardInputMap
-		{
+		struct KeyboardInputMap {
 			KeyState keys[DC_MAX_KEYS];
 		};
 	

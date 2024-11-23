@@ -1,212 +1,180 @@
 #include "PrecompiledHeader.h"
+#include "constant.h"
 using namespace std;
 
-void ThreadFunc2(cgame&);
-void ThreadFunc1(cgame&);
+mutex gameMutex;
 
-//int main() {
-//    cout << "Press any key to start demo: ";
-//    cin.get();
-//    ctool::ShowConsoleCursor(false);
-//    // genSetUpFile();
-//    cgame game;
-//    game.getMap().readMap(0);
-//    game.startGame();
-//    cout << "game";
-//    thread t1(ThreadFunc1, std::ref(game));
-//    thread t2(ThreadFunc2, std::ref(game));
-//    t1.join();
-//    t2.join();
-//
-//}
-//
-//void ThreadFunc2(cgame& cg) {
-//    vector<cpoint> tPlaces = cg.getMap().getTPlaces();
-//    //ctower tw(tPlaces[0]);
-//    ctower tw({ 0,15,0 });
-//    cbullet& bullet = tw.getBullet();
-//    int speed = bullet.getSpeed();
-//    cenemy& e = cg.getEnemy()[0];
-//    
-//   /* bullet.calPath(eCurr);*/
-//    int i = 0;
-//    cout << "threat 2";
-//    while (!cg.getIsExist1()) {
-//        cpoint eCurr = e.getCurr();
-//        tw.draw();
-//        if(bullet.getCurr().distance(e.getCurr()) < 2){
-//            cout << "hit";
-//            cg.setIsExist1(true);
-//            break;
-//        }else{
-//
-//            bullet.draw(' ');
-//            bullet.calPath(e.getCurr());
-//            bullet.draw('*');
-//            i++;
-//        }
-//        Sleep(1000 / bullet.getSpeed());
-//    }
-//    cg.setIsExist2(true);
-//}
-//
-//void ThreadFunc1(cgame& cg) {
-//    vector<cpoint> ePath = cg.getMap().getEPath(0);
-//   /* vector<cpoint> directionX = cg.getMap().getEPath(0);
-//    vector<cpoint> directionX = cg.getMap().getEPath(0);*/
-//    int i = 0;
-//    cenemy& e = cg.getEnemy()[0];
-//    e.calPath(ePath);
-//
-//    while (!cg.getIsExist1()) {
-//        if (e.isEnd()) break;
-//        e.draw();
-//        Sleep(1000 / e.getSpeed());
-//    }
-//    cg.setIsExist1(true);
-//}
+void manageAllEnemy(cgame& game, vector<cenemy*>& eList) {
+	//vector<cenemy*>& eList = game.getEnemy();
+	int eListSize = 0;
+	int numberOfE = 0;
+	int remainE = 0;
+	int updatedE = 0;
+	int enemyOfEachPhase = (eList.size() - game.getMap().getMapCode()) / 2; // number of e each phase
+	int phase = 0;
+	const int enemySpawnInterval = 1;
+	time_point lastSpawn = chrono::system_clock::now();
 
-//Game logic
-int game(int);
-int placeTower(cgame&);
-void enemyThread(cgame&, cenemy&);
-void towerThread(cgame&, ctower);
-void bulletThread(cbullet&, cenemy&);
-void checkAvaibleEnemy(cgame&);
+	while (!game.getIsExist1()) {
 
-int game(int numMap) {
-    ctool::ShowConsoleCursor(0);
-    cgame game;
-    cmap &map = game.getMap();
+		time_point start = chrono::system_clock::now();
 
-    //game.startGame();
-    map.readMap(numMap);
-    //place tower
-    placeTower(game);
-    //get Enemy
-    int NumOfPath = map.getNumOfPath();
-    vector<cenemy>& eList = game.getEnemy();
-    int nEnemy[4], AllEnemy = 0;
-    for (int i = 0; i < NumOfPath; i++) {
-        nEnemy[i] = map.getEnemy(i);
-        AllEnemy += nEnemy[i];
-    }
-    for (int i = 0; i < AllEnemy; i++) {
-        eList.push_back(cenemy());
-        eList[i].calPath(map.getEPath(i%NumOfPath));
-    }
+		// phase control
+		if (remainE == 0) {
+			if (phase < 2) {
+				eListSize += enemyOfEachPhase;
+			}
+			else if (phase < 3){
+				eListSize += game.getMap().getMapCode();
+			}
+			else {
+				game.setIsExist1(true);
+				break;
+			}
+			phase++;
+		}
+		
+		//dellay spawn
+		if (micro_cast(start - lastSpawn) > micro(1000000 * enemySpawnInterval) && numberOfE < eListSize ) {
+			numberOfE++;
+			lastSpawn = chrono::system_clock::now();
+		}
 
-    //start thread
-    vector<ctower>& towerList = game.getTower();
-    //vector<thread> towerThreadList;
-    vector<thread> threads;
-    for (int i = 0; i < towerList.size(); i++) {
-        //towerThreadList.push_back(thread(towerThread, ref(game), towerList[i]));
-        threads.push_back(thread(towerThread, ref(game), towerList[i]));
-        
-    }
-    //vector<thread> enemyThreadList;
-    for (int i = 0; i < eList.size(); i++) {
-        //enemyThreadList.push_back(thread(enemyThread, ref(game), ref(eList[i])));
-        threads.push_back(thread(enemyThread, ref(game), ref(eList[i])));
-        this_thread::sleep_for(chrono::milliseconds(1000*2));
-    }
-    threads.push_back(thread(checkAvaibleEnemy, ref(game)));
-    //join thread
-    for (thread& t : threads) {
-        if (t.joinable())
-            t.join();
-    }
+		// update all available enemy
+		remainE = 0;
+		updatedE = 0;
+		for (cenemy* e : eList) {
+			if (updatedE > numberOfE) break;
+			updatedE++;
+			if (e->getHealth() < 0) continue;
 
-    /*for(int i = 0; i < towerThreadList.size(); i++){
-        if(towerThreadList[i].joinable())
-            towerThreadList[i].join();
-    }*/
-    
-    /*for (int i = 0; i < enemyThreadList.size(); i++) {
-        if (enemyThreadList[i].joinable())
-            enemyThreadList[i].join();
-        Sleep(1000 / 2);
-    }*/
-    return 0;
+			e->draw();
+			//e->update();
+
+			remainE++;
+			if (e->isEnd()) game.setIsExist1(true);
+		}
+
+
+		time_point end = chrono::system_clock::now();
+		chrono::microseconds timer = micro_cast(end - start);
+
+		if (timer < micro(TIME_PER_TICK))
+			this_thread::sleep_for(micro(TIME_PER_TICK) - timer); //sleep until next tick start
+	}
 }
 
-int placeTower(cgame &game){
-    vector<ctower>& towerList = game.getTower();
-    vector<cpoint> tPlaces = game.getMap().getTPlaces();
-    for (cpoint t : tPlaces) {
-        towerList.push_back(t);
-    }
-    return 0;
+void manageTowerAndBullet(cgame& game, vector<cenemy*>& eList) {
+	vector<ctower>& tList = game.getTower();
+	vector<cbullet>& bList = game.getBullet();
+	//vector<cenemy*>& eList = game.getEnemy();
+
+	while (!game.getIsExist1()) {
+		
+		time_point start = chrono::system_clock::now();
+
+		// update all available tower
+		for (ctower& tower : tList) {
+			if (tower.canShoot()) {
+				for (cenemy* enemy : eList) {
+
+					if (tower.getLocation().distance(enemy->getCurr()) < tower.getRange() && enemy->getHealth() > 0) {
+						cbullet nBullet = tower.shoot(enemy);
+
+						bList.push_back(nBullet);
+
+						break;
+					}
+				}
+			}
+		}
+
+		//update all available bullet
+		if (!bList.empty())
+		for (cbullet& bullet: bList){
+		//for(vector<cbullet>::iterator it = bList.begin(); it != bList.end();){
+			//cbullet& bullet = *it;
+
+			bullet.update();
+			
+			cenemy* e = bullet.checkCollision();
+			if (e == NULL) {
+				//++it;
+			}
+			else {
+				e->hit(bullet.getDame());
+				/*it = bList.erase(it);*/
+			}
+			//++it;
+		}
+
+		time_point end = chrono::system_clock::now();
+
+		chrono::microseconds timer = micro_cast(end - start);
+
+		if (timer < micro(TIME_PER_TICK))
+			this_thread::sleep_for(micro(TIME_PER_TICK) - timer); //sleep until next tick start
+	}
 }
 
-void towerThread(cgame& game,ctower tower){
-    /*ctool::mtx.lock();
-    cout << this_thread::get_id() << endl;
-    cout << tower.getLocation().getX() << endl;
-    ctool::mtx.unlock();*/
-    tower.draw();
-    vector<cenemy>& eList = game.getEnemy();
-    while (!game.getIsExist1()) {
-        for (int i = 0; i < eList.size(); i++) {
-            if (tower.getLocation().distance(eList[i].getCurr()) < tower.getRange() && eList[i].getHealth() > 0) {
-                cbullet& bullet = tower.getBullet();
-                bulletThread(bullet, eList[i]);
-                this_thread::sleep_for(chrono::milliseconds(500 * tower.getSpeed()));
-                break;
-            }
-        }
-    }
+
+void setUpEnemy(cgame& game) {
+	cmap map = game.getMap();
+	int NumOfPath = map.getNumOfPath();
+	vector<cenemy*>& eList = game.getEnemy();
+	int nEnemy[4], AllEnemy = 0;
+	//for (int i = 0; i < NumOfPath; i++) {
+	for (int i = 0; i < 4; i++) {
+		nEnemy[i] = map.getEnemy(i);
+		AllEnemy += nEnemy[i];
+	}
+	for (int i = 0; i < AllEnemy; i++) {
+		eList.push_back(new cenemy());
+		eList[i]->calPath(map.getEPath(i % NumOfPath));
+	}
+
+	//add boss
+	/*for (int i = 0; i < game.getMap().getMapCode(); i++) {
+		eList.push_back(new cenemy());
+		eList[i]->calPath(map.getEPath(i % NumOfPath));
+	}*/
 }
 
-void bulletThread(cbullet& bullet, cenemy& enemy) {
-    int bullbetSpeed = bullet.getSpeed();
-    while (bullet.getCurr().distance(enemy.getCurr()) > 2) {
-        bullet.draw(' ');
-        bullet.calPath(enemy.getCurr());
-        bullet.draw('*');
-        Sleep(200 / bullbetSpeed); 
-    }
-    enemy.hit();
-    bullet.draw(' ');
-    enemy.draw();
-}
+void NewGame(int n, cplayer& player) {
+	cgame game;
+	game.setPlayer(player);
 
-void enemyThread(cgame& game, cenemy& enemy) {
+	cmap& map = game.getMap();
 
-    int enemySpeed = enemy.getSpeed();
-    while (!game.getIsExist1()) {
-        if (enemy.isEnd()) {
-            game.setIsExist1(true);
-            break;
-        }
-        if (enemy.getHealth() <= 0) break;
-        enemy.draw();
-        this_thread::sleep_for(chrono::milliseconds(500 / enemy.getSpeed()));
-    }
-    //game.setIsExist1(true);
-}
+	map.readMap(n);;
+	setUpEnemy(game);
+	
+	game.getTower().push_back(map.getTPlaces()[1]);
+	game.getTower().push_back(map.getTPlaces()[3]);
 
-void checkAvaibleEnemy(cgame& game) {
-    vector<cenemy>& eList = game.getEnemy();
-    while (!game.getIsExist1()) {
-        ctool::mtx.lock();
-        int count = 0;
-        for (cenemy& e : eList) {
-            if (e.getHealth() > 0) {
-                count++;
-            }
-        }
-        if (count == 0) break;
-        ctool::mtx.unlock();
-    }
-    game.setIsExist1(true);
+	vector<cenemy*>& eList = game.getEnemy();
+
+	//game.setIsExist1(true);
+
+	thread t1(manageAllEnemy, ref(game), ref(eList));
+	thread t2(manageTowerAndBullet, ref(game), ref(eList));
+
+	//Main Loop for rendering
+	while (!game.getIsExist1()) {
+		/*for (cbullet x : game.getBullet())
+			x.draw('*');*/
+		for (ctower x : game.getTower())
+			x.draw();
+		this_thread::sleep_for(micro(TIME_PER_FPS));
+	}
+
+	t1.join();
+	t2.join();
+
 }
 
 int main() {
-    //genSetUpFile();
-
-    game(1); // man choi 1
-    //game(2); // man choi 2
-    return 0;
+	cplayer p;
+	NewGame(4,p);
+	return 0;
 }

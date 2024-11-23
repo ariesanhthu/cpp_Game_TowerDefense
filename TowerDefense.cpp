@@ -14,8 +14,6 @@ using namespace std;
 app_entry_point
 {
 	towerdefense::Game::start();
-	// game destroy code
-
 	return 0;
 }
 

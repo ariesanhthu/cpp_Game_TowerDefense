@@ -2,7 +2,7 @@
 #include "cpoint.h"
 
 class cenemy {
-    private:
+    protected:
         int health;
         int speed;
         cpoint currentPosition;
@@ -19,6 +19,12 @@ class cenemy {
         bool isEnd() {
             return index == path.size() - 1;
         }
-        void hit() { health--; }
+        void hit(int dame) { health -= dame; }
+
+        virtual void update();
+
         void draw();
+
+        virtual void writeFile(ofstream&);
+        virtual void readFile(ifstream&);
 };

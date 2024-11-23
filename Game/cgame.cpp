@@ -3,40 +3,48 @@
 cgame::cgame() {
     _ISEXIT1 = _ISEXIT2 = false;
 }
-void cgame::startGame() {
-    //int nEnemy = map.getEnemy();
-    int nEnemy = 1;
-    for (int i = 0; i < nEnemy; i++) {
-        cenemy e;
-        listEnemy.push_back(e);
+
+cgame::~cgame() {
+    for (cenemy* e : listEnemys) {
+        delete e;
+        e = NULL;
     }
 }
+//void cgame::startGame() {
+//    //int nEnemy = map.getEnemy();
+//    int nEnemy = 1;
+//    for (int i = 0; i < nEnemy; i++) {
+//        cenemy e;
+//        listEnemys.push_back(e);
+//    }
+//}
 
 bool cgame::readFile(string filename){
-    ifstream inFile(filename, ios::binary);
-    if( !inFile.is_open()) return false;
+    ifstream inFile(filename + ".twdef", ios::binary);
+    if (!inFile.is_open()) return false;
 
     int mapCode;
     inFile.read((char*) &mapCode, sizeof(int));
     map.readMap(mapCode);
-
     int size;
     ctower tower;
     inFile.read((char*) &size, sizeof(int));
-    listTower.clear();
-    listTower.resize(size);
+    listTowers.clear();
+    listTowers.resize(size);
     for(int i = 0; i < size; i++){
         inFile.read((char*) &tower, sizeof(ctower));
-        listTower[i] = tower;
+        listTowers[i] = tower;
     }
 
     cenemy enemy;
     inFile.read((char*) &size, sizeof(int));
-    listEnemy.clear();
-    listEnemy.resize(size);
+    listEnemys.clear();
+    listEnemys.resize(size);
     for(int i = 0; i < size; i++){
-        inFile.read((char*) &enemy, sizeof(cenemy));
-        listEnemy[i] = enemy;
+        /*inFile.read((char*) &enemy, sizeof(cenemy));*/
+        enemy.readFile(inFile);
+        cenemy* e = new cenemy(enemy);
+        listEnemys[i] = e;
     }
     
     inFile.read((char*) &player, sizeof(cplayer));
@@ -57,19 +65,21 @@ bool cgame::saveGame(string playerName){
     //save listTower
     //size of list: sizeof(int) = 4 = n
     //list: sizeof(ctower) * n
-    size_t size = listTower.size();
+    size_t size = listTowers.size();
     outFile.write((char*) &size, sizeof(int));
-    for(ctower tower: listTower){
+    for(ctower tower: listTowers){
         outFile.write((char*) &tower, sizeof(ctower));
     }
 
     //save listEnermy
     //size of list: sizeof(int) = 4 = n
     //list: sizeof(cenermy) * n
-    size = listEnemy.size();
+    size = listEnemys.size();
     outFile.write((char*) &size, sizeof(int));
-    for(cenemy Enemy: listEnemy){
-        outFile.write((char*) &Enemy, sizeof(cenemy));
+    for(cenemy* Enemy: listEnemys){
+        Enemy->writeFile(outFile);
+
+        //outFile.write((char*) &Enemy, sizeof(cenemy));
     }
 
     outFile.write((char*) &player, sizeof(cplayer));

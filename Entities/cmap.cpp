@@ -27,7 +27,7 @@ void cmap::readMap(int i){
     }
     //read ePath
     int nRoad,nConer;
-    inFile.read((char*) &nRoad, sizeof(int));
+    inFile.read((char*)&nRoad, sizeof(int));
     ePath.resize(nRoad);
     for(int i = 0; i < nRoad; i++){
         inFile.read((char*)&nConer, sizeof(int));
@@ -37,7 +37,6 @@ void cmap::readMap(int i){
             ePath[i].push_back (p);
         }
     }
-
 
     //read enemy
     inFile.read((char*)&nEnemy[0], sizeof(int));

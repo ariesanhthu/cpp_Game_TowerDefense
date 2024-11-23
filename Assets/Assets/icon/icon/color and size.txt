@@ -1,0 +1,13 @@
+color: [196, 154, 108]
+
+size: 
+- play: 9x13
+- setting: 13x13
+- exit: 13x17
+- leaderboard: 11x14
+- sound_on: 15x14
+- sound_off: 16x16
+- right, left, up, down: 11x11
+- select: 14x10
+- unselect: 10x10
+- pause: 8x12
