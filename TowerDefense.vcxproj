@@ -132,6 +132,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Entities\Bullet\BulletFactory.cpp" />
+    <ClCompile Include="Entities\Enemy\EnemyFactory.cpp" />
+    <ClCompile Include="Entities\Bullet\BulletBase.cpp" />
+    <ClCompile Include="Entities\Bullet\BulletModel.cpp" />
+    <ClCompile Include="Entities\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Entities\Enemy\EnemyModel.cpp" />
     <ClCompile Include="Menu\Button.cpp" />
     <ClCompile Include="constant.cpp" />
     <ClCompile Include="Entities\cplayer.cpp" />
@@ -151,12 +157,21 @@
     <ClCompile Include="MainPrg.cpp" />
     <ClCompile Include="Graphics\renderer.cpp" />
     <ClCompile Include="Menu\Menu.cpp" />
+    <ClCompile Include="Entities\Tower\TowerBase.cpp" />
     <ClCompile Include="TowerDefense.cpp" />
     <ClCompile Include="Game\UIElement.cpp" />
     <ClCompile Include="Game\UIManager.cpp" />
+    <ClCompile Include="Entities\Tower\TowerModel.cpp" />
+    <ClCompile Include="Entities\Tower\TowerFactory.cpp" />
     <ClCompile Include="Utils\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Entities\Bullet\BulletFactory.h" />
+    <ClInclude Include="Entities\Enemy\EnemyFactory.h" />
+    <ClInclude Include="Entities\Bullet\BulletBase.h" />
+    <ClInclude Include="Entities\Bullet\BulletModel.h" />
+    <ClInclude Include="Entities\Enemy\EnemyBase.h" />
+    <ClInclude Include="Entities\Enemy\EnemyModel.h" />
     <ClInclude Include="Menu\Button.h" />
     <ClInclude Include="constant.h" />
     <ClInclude Include="Entities\cbullet.h" />
@@ -178,9 +193,12 @@
     <ClInclude Include="Menu\Menu.h" />
     <ClInclude Include="PrecompiledHeader.h" />
     <ClInclude Include="Graphics\renderer.h" />
+    <ClInclude Include="Entities\Tower\TowerBase.h" />
     <ClInclude Include="TowerDefense.h" />
     <ClInclude Include="Game\UIElement.h" />
     <ClInclude Include="Game\UIManager.h" />
+    <ClInclude Include="Entities\Tower\TowerModel.h" />
+    <ClInclude Include="Entities\Tower\TowerFactory.h" />
     <ClInclude Include="Utils\utility.h" />
   </ItemGroup>
   <ItemGroup>
