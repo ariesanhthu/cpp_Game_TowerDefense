@@ -14,10 +14,11 @@ protected:
 
 public:
 	TowerModel();
+	TowerModel(const TowerModel& other);
 	TowerModel(int range, int rate, BulletModel* nBulletModel);
 
-	void setRange();
-	void setRate();
+	void setRange(int nRange);
+	void setRate(int nRate);
 	void setBulletModel(BulletModel* nBulletModel);
 
 	int getRange();

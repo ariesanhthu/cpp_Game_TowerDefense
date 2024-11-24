@@ -18,12 +18,13 @@ protected:
 	int health;
 
 public:
-	EnemyBase();
-	EnemyBase(EnemyModel* nModel, cpoint pos, int nHealth);
 	//EnemyBase();
+	EnemyBase(EnemyModel* nModel, cpoint pos);
+	EnemyBase(EnemyModel* nModel, cpoint pos, int nHealth);
+	EnemyBase(const EnemyBase& other);
 	
-	void setCurrentPosition(const cpoint& p) { currentPosition = p; }
-	void setHealth(const int hp) { health = hp; }
+	void setCurrentPosition(const cpoint& p);
+	void setHealth(int hp);
 
 	// get model attribute
 	int getSpeed();

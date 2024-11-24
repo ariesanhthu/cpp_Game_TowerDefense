@@ -6,6 +6,8 @@
 
 #include "cpoint.h"
 #include "TowerModel.h"
+#include "Bullet/BulletBase.h"
+#include "Enemy/EnemyBase.h"
 
 #define MILI_SEC std::chrono::milliseconds
 #define MILI_SEC_CAST std::chrono::duration_cast<std::chrono::milliseconds>
@@ -17,14 +19,21 @@ protected:
 	TowerModel* model;
 
 	cpoint currentPosition;
-	MILI_SEC lastShoot;
+	TIME_POINT lastShoot;
 
 public:
-	TowerBase();
+	//TowerBase();
+	TowerBase(const TowerBase& other);
 	TowerBase(TowerModel* nModel, cpoint pos);
 
 	void setCurrentPosition(const cpoint& pos);
 	cpoint getCurrentPosition();
+
+	bool canShoot();
+	bool canShoot(EnemyBase* target);
+
+	virtual BulletBase shoot(EnemyBase* target);
+
 };
 
 

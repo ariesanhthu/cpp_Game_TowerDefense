@@ -17,19 +17,20 @@ protected:
     EnemyBase* target;
 
 public:
-    BulletBase();
+    //BulletBase();
+    BulletBase(const BulletBase& other);
     BulletBase(BulletModel* nModel,cpoint pos, EnemyBase* nTarget);
 
     void setCurr(const cpoint& p) { currentPosition = p; }
     void setTarget(EnemyBase* nTarget) { target = nTarget; }
 
     // get model attribute
-    int getDame() { return model->getDame(); }
-    int getSpeed() { return model->getDame(); }
+    int getDame();
+    int getSpeed();
 
     // get private attribute
-    cpoint getCurr() { return currentPosition; }
-    EnemyBase* getTarget() { return target; }
+    cpoint getCurr();
+    EnemyBase* getTarget();
 
     // check collision
     EnemyBase* checkCollision();
