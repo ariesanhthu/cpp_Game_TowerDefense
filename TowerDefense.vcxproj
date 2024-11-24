@@ -133,10 +133,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Entities\Bullet\BulletFactory.cpp" />
+    <ClCompile Include="Entities\Bullet\BulletManager.cpp" />
+    <ClCompile Include="Entities\Enemy\EnemyClass\Small.cpp" />
     <ClCompile Include="Entities\Enemy\EnemyFactory.cpp" />
     <ClCompile Include="Entities\Bullet\BulletBase.cpp" />
     <ClCompile Include="Entities\Bullet\BulletModel.cpp" />
     <ClCompile Include="Entities\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="Entities\Enemy\EnemyManager.cpp" />
     <ClCompile Include="Entities\Enemy\EnemyModel.cpp" />
     <ClCompile Include="Menu\Button.cpp" />
     <ClCompile Include="constant.cpp" />
@@ -163,15 +166,20 @@
     <ClCompile Include="Game\UIManager.cpp" />
     <ClCompile Include="Entities\Tower\TowerModel.cpp" />
     <ClCompile Include="Entities\Tower\TowerFactory.cpp" />
+    <ClCompile Include="Entities\Tower\TowerManager.cpp" />
     <ClCompile Include="Utils\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Bullet\BulletFactory.h" />
+    <ClInclude Include="Entities\Bullet\BulletManager.h" />
+    <ClInclude Include="Entities\Enemy\EnemyClass\Small.h" />
     <ClInclude Include="Entities\Enemy\EnemyFactory.h" />
     <ClInclude Include="Entities\Bullet\BulletBase.h" />
     <ClInclude Include="Entities\Bullet\BulletModel.h" />
     <ClInclude Include="Entities\Enemy\EnemyBase.h" />
+    <ClInclude Include="Entities\Enemy\EnemyManager.h" />
     <ClInclude Include="Entities\Enemy\EnemyModel.h" />
+    <ClInclude Include="Entities\Tower\TowerManager.h" />
     <ClInclude Include="Menu\Button.h" />
     <ClInclude Include="constant.h" />
     <ClInclude Include="Entities\cbullet.h" />

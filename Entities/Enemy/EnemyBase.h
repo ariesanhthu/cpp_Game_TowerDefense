@@ -16,11 +16,13 @@ protected:
 	// private attribute
 	cpoint currentPosition;
 	int health;
+	int path;
+	int index = 0;
 
 public:
 	//EnemyBase();
-	EnemyBase(EnemyModel* nModel, cpoint pos);
-	EnemyBase(EnemyModel* nModel, cpoint pos, int nHealth);
+	EnemyBase(EnemyModel* nModel, int path);
+	EnemyBase(EnemyModel* nModel, int path, int nHealth);
 	EnemyBase(const EnemyBase& other);
 	
 	void setCurrentPosition(const cpoint& p);

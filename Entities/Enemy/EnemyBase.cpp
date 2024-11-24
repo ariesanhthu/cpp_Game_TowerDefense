@@ -4,18 +4,19 @@ EnemyBase::EnemyBase(const EnemyBase& other) {
 	model = other.model;
 	currentPosition = other.currentPosition;
 	health = other.health;
+	path = other.path;
 }
 
-EnemyBase::EnemyBase(EnemyModel* nModel, cpoint pos) {
+EnemyBase::EnemyBase(EnemyModel* nModel, int nPath) {
 	model = nModel;
-	currentPosition = pos;
 	health = model->getDefaultHealth();
+	path = nPath;
 }
 
-EnemyBase::EnemyBase(EnemyModel* nModel, cpoint pos, int nHealth) {
+EnemyBase::EnemyBase(EnemyModel* nModel, int nPath, int nHealth) {
 	model = nModel;
-	currentPosition = pos;
 	health = nHealth;
+	path = nPath;
 }
 //EnemyBase();
 

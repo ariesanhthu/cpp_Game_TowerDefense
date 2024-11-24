@@ -34,6 +34,10 @@
     <ClCompile Include="Entities\Tower\TowerFactory.cpp" />
     <ClCompile Include="Entities\Enemy\EnemyFactory.cpp" />
     <ClCompile Include="Entities\Bullet\BulletFactory.cpp" />
+    <ClCompile Include="Entities\Enemy\EnemyManager.cpp" />
+    <ClCompile Include="Entities\Bullet\BulletManager.cpp" />
+    <ClCompile Include="Entities\Tower\TowerManager.cpp" />
+    <ClCompile Include="Entities\Enemy\EnemyClass\Small.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
@@ -71,6 +75,10 @@
     <ClInclude Include="Entities\Tower\TowerFactory.h" />
     <ClInclude Include="Entities\Enemy\EnemyFactory.h" />
     <ClInclude Include="Entities\Bullet\BulletFactory.h" />
+    <ClInclude Include="Entities\Enemy\EnemyManager.h" />
+    <ClInclude Include="Entities\Bullet\BulletManager.h" />
+    <ClInclude Include="Entities\Tower\TowerManager.h" />
+    <ClInclude Include="Entities\Enemy\EnemyClass\Small.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="nhap.txt" />
