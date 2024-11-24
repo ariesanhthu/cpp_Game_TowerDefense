@@ -1,6 +1,6 @@
 #include "cbullet.h"
 cbullet::cbullet() {
-    speed = 6;
+    speed = 2;
     dame = 1;
 } 
 
@@ -26,8 +26,11 @@ void cbullet::update(){
 }
 
 cenemy* cbullet::checkCollision() {
-    if (currentPosition.distance(target->getCurr()) < speed)
-        return target;
+    if (currentPosition.distance(target->getCurr()) < speed) {
+        cenemy* re = target;
+        target = NULL;
+        return re;
+    }
     return NULL;
 }
 

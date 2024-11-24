@@ -46,7 +46,7 @@ void manageAllEnemy(cgame& game, vector<cenemy*>& eList) {
 		for (cenemy* e : eList) {
 			if (updatedE > numberOfE) break;
 			updatedE++;
-			if (e->getHealth() < 0) continue;
+			if (e->getHealth() <= 0) continue;
 
 			e->draw();
 			//e->update();
@@ -68,7 +68,7 @@ void manageTowerAndBullet(cgame& game, vector<cenemy*>& eList) {
 	vector<ctower>& tList = game.getTower();
 	vector<cbullet>& bList = game.getBullet();
 	//vector<cenemy*>& eList = game.getEnemy();
-
+	int can_shoot = 3;
 	while (!game.getIsExist1()) {
 		
 		time_point start = chrono::system_clock::now();
@@ -83,6 +83,7 @@ void manageTowerAndBullet(cgame& game, vector<cenemy*>& eList) {
 
 						bList.push_back(nBullet);
 
+				can_shoot--;
 						break;
 					}
 				}
@@ -91,20 +92,21 @@ void manageTowerAndBullet(cgame& game, vector<cenemy*>& eList) {
 
 		//update all available bullet
 		if (!bList.empty())
-		for (cbullet& bullet: bList){
-		//for(vector<cbullet>::iterator it = bList.begin(); it != bList.end();){
-			//cbullet& bullet = *it;
+		/*for (cbullet& bullet: bList){*/
+		for(vector<cbullet>::iterator it = bList.begin(); it != bList.end();){
+			cbullet& bullet = *it;
 
 			bullet.update();
 			
 			cenemy* e = bullet.checkCollision();
 			if (e == NULL) {
-				//++it;
+				++it;
 			}
 			else {
 				e->hit(bullet.getDame());
-				/*it = bList.erase(it);*/
+				it = bList.erase(it);
 			}
+			e = NULL;
 			//++it;
 		}
 
@@ -175,6 +177,6 @@ void NewGame(int n, cplayer& player) {
 
 int main() {
 	cplayer p;
-	NewGame(4,p);
+	NewGame(2,p);
 	return 0;
 }

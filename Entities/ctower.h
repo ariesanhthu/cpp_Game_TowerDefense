@@ -11,8 +11,8 @@ class ctower {
         ctower() : ctower({ 0,0,0 }) {};
         ctower(const cpoint &lo) { 
             location = lo;
-            range = 50;
-            rate = 1;
+            range = 30;
+            rate = 3;
             lastShoot = chrono::system_clock::now();
         }
         cpoint getLocation() { return location;}
