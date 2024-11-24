@@ -11,18 +11,18 @@ class EnemyFactory
 {
 public:
     static unique_ptr<EnemyBase> createEnemy(const int type) {
-        //if (type == SMALL) {
-            //return make_unique<Zombie>();
-        //}
-        //else if (type == BIG) {
-            //return make_unique<Vampire>();
-        //}
-        //else if (type == BOSS) {
-            //return make_unique<Ghost>();
-        //}
-        //else {
-            //throw invalid_argument("Unknown bullet type");
-        //}
+        if (type == 1) {
+            return make_unique<EnemyBase>();
+        }
+        else if (type == 2) {
+            return make_unique<EnemyBase>();
+        }
+        else if (type == 3) {
+            return make_unique<EnemyBase>();
+        }
+        else {
+            throw invalid_argument("Unknown bullet type");
+        }
     }
 };
 

@@ -20,13 +20,13 @@ class BulletFactory
 public:
     static unique_ptr<BulletBase> createEnemy(const int type) {
         if (type == SMALL) {
-            //return make_unique<Zombie>();
+            return make_unique<BulletBase>();
         }
         else if (type == BIG) {
-            //return make_unique<Vampire>();
+            return make_unique<BulletBase>();
         }
         else if (type == BOSS) {
-            //return make_unique<Ghost>();
+            return make_unique<BulletBase>();
         }
         else {
             throw invalid_argument("Unknown bullet type");
