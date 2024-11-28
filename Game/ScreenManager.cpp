@@ -3,6 +3,8 @@
 #include "Graphic.h"
 #include <vector>
 
+
+
 using namespace std;
 namespace towerdefense
 {
@@ -43,12 +45,13 @@ namespace towerdefense
         float scaleB = 3;                                   // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
 
         // Tải hình nền với tỉ lệ mới
-        background = graphic.LoadBitmapImage(L"Assets/map4.bmp", scale);
+
+        background = graphic.LoadBitmapImage(L"Assets/background/map4.bmp", scale);
 
         // default button
-        button = graphic.LoadBitmapImage(L"Assets/button_up.bmp", scaleB);
-        button_down = graphic.LoadBitmapImage(L"Assets/button_down.bmp", scaleB);
-        button_hover = graphic.LoadBitmapImage(L"Assets/select.bmp", scaleB);
+        button = graphic.LoadBitmapImage(L"Assets/button/button_up.bmp", scaleB);
+        button_down = graphic.LoadBitmapImage(L"Assets/button/button_down.bmp", scaleB);
+        button_hover = graphic.LoadBitmapImage(L"Assets/button/select.bmp", scaleB);
 
         // Cập nhật vị trí nút bấm theo tỉ lệ
         /*for (auto& pos : buttonPositions) {
@@ -62,19 +65,19 @@ namespace towerdefense
         GetCursorPos(&cursorPos);
         ScreenToClient(GetActiveWindow(), &cursorPos);
 
-        //for (size_t i = 0; i < buttonPositions.size(); ++i) {
-        //    RECT buttonRect = {
-        //        buttonPositions[i].x,
-        //        buttonPositions[i].y,
-        //        buttonPositions[i].x + buttonSize.x * 3, // Button width
-        //        buttonPositions[i].y + buttonSize.y * 3  // Button height
-        //    };
+        for (size_t i = 0; i < buttonPositions.size(); ++i) {
+            RECT buttonRect = {
+                buttonPositions[i].x,
+                buttonPositions[i].y,
+                buttonPositions[i].x + buttonSize.x * 3, // Button width
+                buttonPositions[i].y + buttonSize.y * 3  // Button height
+            };
 
-        //    if (PtInRect(&buttonRect, cursorPos)) {
-        //        hover = static_cast<int>(i); 
-        //        break; 
-        //    }
-        //}
+            if (PtInRect(&buttonRect, cursorPos)) {
+                hover = static_cast<int>(i); 
+                break; 
+            }
+        }
 
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
             for (size_t i = 0; i < buttonPositions.size(); ++i) {
@@ -132,11 +135,11 @@ namespace towerdefense
                 Graphic::DrawBitmap(button_down, buttonPos, hdc);
                 index = -1;
             }
-            /*if (i == hover) {
+            if (i == hover) {
                 buttonPos.y += 8;
                 Graphic::DrawBitmap(button_hover, buttonPos, hdc);
                 hover = -1;
-            }*/
+            }
             else {
                 Graphic::DrawBitmap(button, buttonPos, hdc); // Vẽ nút với tỉ lệ đã cập nhật
             }
