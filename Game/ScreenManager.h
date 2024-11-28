@@ -24,12 +24,20 @@ namespace towerdefense
         HBITMAP button = nullptr;                // Danh sách các nút bấm
         HBITMAP button_down = nullptr;
         HBITMAP button_hover = nullptr;
+        HBITMAP board = nullptr;
 
         vector<POINT> buttonPositions;           // Vị trí các nút bấm
 
+        // Thiết lập 3 vị trí để popup board
+        POINT initpoint, currentpoint, endpoint; 
+        bool isPopup = false;
+        bool isPopdown = false;
+
         static int index;
         static int hover;
+        static int menu; 
         POINT buttonSize = { 26, 29 };
+        POINT sizeBoard = { 693, 447 };
 
     public:
         MainScreen();

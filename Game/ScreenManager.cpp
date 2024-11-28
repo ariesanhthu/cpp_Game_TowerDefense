@@ -3,7 +3,7 @@
 #include "Graphic.h"
 #include <vector>
 
-
+#include <fstream>
 
 using namespace std;
 namespace towerdefense
@@ -18,6 +18,10 @@ namespace towerdefense
             {1280 / 10 * 7, 720 * 7 / 10},   // Settings button
             {1280 / 10 * 9, 720 * 7 / 10}    // Exit button
         };
+
+        initpoint = { 182, 700 };
+        currentpoint = initpoint;
+        endpoint = { 182, 42 };
     }
 
     // Destructor
@@ -28,7 +32,7 @@ namespace towerdefense
         Graphic::ReleaseBitmap(button);
         Graphic::ReleaseBitmap(button_down);
         Graphic::ReleaseBitmap(button_hover);
-
+        Graphic::ReleaseBitmap(board);
 
         /*DeleteObject(background);
         DeleteObject(button)*/;
@@ -36,6 +40,7 @@ namespace towerdefense
 
     int MainScreen::index = -1;
     int MainScreen::hover = -1;
+    int MainScreen::menu = 0;
 
     void MainScreen::loadContent(Graphic& graphic, int width, int height) {
         // Tính toán tỉ lệ dựa trên kích thước màn hình
@@ -51,7 +56,10 @@ namespace towerdefense
         // default button
         button = graphic.LoadBitmapImage(L"Assets/button/button_up.bmp", scaleB);
         button_down = graphic.LoadBitmapImage(L"Assets/button/button_down.bmp", scaleB);
-        button_hover = graphic.LoadBitmapImage(L"Assets/button/select.bmp", scaleB);
+        button_hover = graphic.LoadBitmapImage(L"Assets/button/selectBox.bmp", scaleB);
+        
+        //board
+        board = graphic.LoadBitmapImage(L"Assets/board/board.bmp", scaleB);
 
         // Cập nhật vị trí nút bấm theo tỉ lệ
         /*for (auto& pos : buttonPositions) {
@@ -80,70 +88,106 @@ namespace towerdefense
         }
 
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
-            for (size_t i = 0; i < buttonPositions.size(); ++i) {
-                RECT buttonRect = {
-                    buttonPositions[i].x,
-                    buttonPositions[i].y,
-                    buttonPositions[i].x + buttonSize.x * 3, // Button width
-                    buttonPositions[i].y + buttonSize.y * 3 // Button height
-                };
+            if (menu == 0) {
+                for (size_t i = 0; i < buttonPositions.size(); ++i) {
+                    RECT buttonRect = {
+                        buttonPositions[i].x,
+                        buttonPositions[i].y,
+                        buttonPositions[i].x + buttonSize.x * 3, // Button width
+                        buttonPositions[i].y + buttonSize.y * 3 // Button height
+                    };
 
-                if (PtInRect(&buttonRect, cursorPos)) {
-                    // Button click detected
-                    hover = i;
-                    switch (i) {
-                    case 0: // Play button
-                        index = 0;
-                        break;
-                    case 1: // Pause button
-                        index = 1;
-                        break;
-                    case 2: // Trophy button
-                        index = 2;
-                        break;
-                    case 3: // Settings button
-                        index = 3;
-                        break;
-                    case 4: // Exit button
-                        index = 4;
-                        PostQuitMessage(0); // Exit the program
-                        break;
+                    if (PtInRect(&buttonRect, cursorPos)) {
+                        // Button click detected
+                        switch (i) {
+                        case 0: // Play button
+                            index = 0;
+                            menu = 1;
+                            isPopup = true;
+                            break;
+                        case 1: // Pause button
+                            index = 1;
+                            break;
+                        case 2: // Trophy button
+                            index = 2;
+                            break;
+                        case 3: // Settings button
+                            index = 3;
+                            break;
+                        case 4: // Exit button
+                            index = 4;
+                            PostQuitMessage(0); // Exit the program
+                            break;
+                        }
                     }
                 }
             }
+            else if (menu == 1) {
+                RECT boardRect = {
+                    endpoint.x,
+                    endpoint.y,
+                    endpoint.x + sizeBoard.x, // boardsize width
+                    endpoint.y + sizeBoard.y // boardsize height
+                };
+                if (!PtInRect(&boardRect, cursorPos)) {
+                    //isPopdown = true;
+                    isPopup = false;
+                    menu = 0;
+                }
+            }
         }
-
-
     }
 
 
     // Update logic (nếu có animation hoặc logic khác)
     void MainScreen::update(float delta) {
         // Cập nhật trạng thái màn hình (nếu cần)
-        
+
+        // Cập nhật vị trí bảng
+        if (isPopup) {
+            if (currentpoint.y > endpoint.y) {
+                //currentpoint.y -= static_cast<int>(200 * delta); // 200 pixels per second
+                currentpoint.y -= 20;
+                if (currentpoint.y < endpoint.y) {
+                    currentpoint.y = endpoint.y; // Snap to the endpoint to prevent overshooting
+                }
+            }
+        } 
     }
 
     void MainScreen::render(HDC hdc) {
         // Vẽ hình nền với kích thước đã thay đổi
-        Graphic::DrawBitmap(background, { 0, 0 }, hdc);
 
-        // Vẽ các nút bấm theo tỉ lệ
-        for (size_t i = 0; i < buttonPositions.size(); ++i) {
-            POINT buttonPos = buttonPositions[i];
-            if (i == index) {
-                buttonPos.y += 8;
-                Graphic::DrawBitmap(button_down, buttonPos, hdc);
-                index = -1;
-            }
-            if (i == hover) {
-                buttonPos.y += 8;
-                Graphic::DrawBitmap(button_hover, buttonPos, hdc);
-                hover = -1;
-            }
-            else {
-                Graphic::DrawBitmap(button, buttonPos, hdc); // Vẽ nút với tỉ lệ đã cập nhật
+        Graphic::DrawBitmap(background, { 0, 0 }, hdc);
+        if (menu == 0) {
+            // Vẽ các nút bấm theo tỉ lệ
+            for (size_t i = 0; i < buttonPositions.size(); ++i) {
+                POINT buttonPos = buttonPositions[i];
+                if (i == index) {
+                    buttonPos.y += 8;
+                    Graphic::DrawBitmap(button_down, buttonPos, hdc);
+                    index = -1;
+                }
+                else {
+                    if (i == hover) {
+                        POINT buttonPosHover = buttonPositions[i];
+                        buttonPosHover.y -= 21;
+                        buttonPosHover.x -= 18;
+                        Graphic::DrawBitmap(button_hover, buttonPosHover, hdc);
+                        hover = -1;
+                    }
+                    Graphic::DrawBitmap(button, buttonPos, hdc); // Vẽ nút với tỉ lệ đã cập nhật
+                }
             }
         }
-    }
+        else if (menu == 1) {
+            //Graphic::DrawBitmap(background, { 0, 0 }, hdc);
+            for (size_t i = 0; i < buttonPositions.size(); ++i) {
+                POINT buttonPos = buttonPositions[i];
+                Graphic::DrawBitmap(button, buttonPos, hdc); // Vẽ nút với tỉ lệ đã cập nhật
+            }
 
+            Graphic::DrawBitmap(board, currentpoint, hdc);
+        }
+    }
 }
