@@ -12,6 +12,13 @@
     <ClCompile Include="MainPrg.cpp" />
     <ClCompile Include="Utils\utility.cpp" />
     <ClCompile Include="TowerDefense.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="Graphics\renderer.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Game\UIElement.cpp" />
+    <ClCompile Include="Game\UIManager.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="Graphics\Graphic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
@@ -25,11 +32,23 @@
     <ClInclude Include="genSetUP.h" />
     <ClInclude Include="PrecompiledHeader.h" />
     <ClInclude Include="Utils\utility.h" />
+    <ClInclude Include="TowerDefense.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="Graphics\renderer.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Game\UIElement.h" />
+    <ClInclude Include="Game\UIManager.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="Graphics\Graphic.h" />
+    <ClInclude Include="Game\ScreenManager.h" />
+    <ClInclude Include="Game\ThreadManager.h" />
+    <ClInclude Include="Game\InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SetupMap\map1.txt" />
     <Text Include="SetupMap\map2.txt" />
     <Text Include="SetupMap\map3.txt" />
     <Text Include="SetupMap\map4.txt" />
+    <Text Include="nhap.txt" />
   </ItemGroup>
 </Project>
