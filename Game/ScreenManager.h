@@ -13,8 +13,7 @@ namespace towerdefense
         //virtual ~Screen() = 0;
         virtual void loadContent(Graphic& graphic, int width, int height) = 0;
         virtual void handleInput() = 0;
-        //virtual void update(float delta) = 0;
-        virtual void update(float delta, HDC hdc) = 0;
+        virtual void update(float delta) = 0;
         virtual void render(HDC hdc) = 0;
         //virtual void resizeContent(int windowWidth, int windowHeight);
     };
@@ -24,9 +23,12 @@ namespace towerdefense
         HBITMAP background = nullptr;             // Hình nền
         HBITMAP button = nullptr;                // Danh sách các nút bấm
         HBITMAP button_down = nullptr;
+        HBITMAP button_hover = nullptr;
+
         vector<POINT> buttonPositions;           // Vị trí các nút bấm
 
         static int index;
+        static int hover;
         POINT buttonSize = { 26, 29 };
 
     public:
@@ -35,8 +37,7 @@ namespace towerdefense
 
         void loadContent(Graphic& graphic, int width, int height) override;
         void handleInput() override; 
-        //void update(float delta) override;
-        void update(float delta, HDC hdc) override;
+        void update(float delta) override;
         void render(HDC hdc) override;
         //void resizeContent(int windowWidth, int windowHeight) override;
     };

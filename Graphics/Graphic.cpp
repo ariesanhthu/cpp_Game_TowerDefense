@@ -25,6 +25,7 @@ HBITMAP Graphic::LoadBitmapImage(const wchar_t* filename, double factor) {
     int scaledHeight = originalHeight * factor;
 
     Bitmap scaledBitmap(scaledWidth, scaledHeight, PixelFormat32bppARGB);
+
     for (int y = 0; y < originalHeight; y++) {
         for (int x = 0; x < originalWidth; x++) {
             Color pixelColor;

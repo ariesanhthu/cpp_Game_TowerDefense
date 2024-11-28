@@ -163,8 +163,10 @@ namespace towerdefense
                     currentScreen->handleInput();
 
                     HDC hdc = GetDC(windowHandle); // Lấy ngữ cảnh thiết bị để vẽ
-                    currentScreen->update(delta, hdc); // Cập nhật logic của màn hình
+
+                    currentScreen->update(delta); // Cập nhật logic của màn hình
                     currentScreen->render(hdc);   // Vẽ màn hình
+
                     ReleaseDC(windowHandle, hdc); // Giải phóng ngữ cảnh thiết bị
                     
                   // inputHadle
