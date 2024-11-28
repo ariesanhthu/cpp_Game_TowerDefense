@@ -3,7 +3,7 @@
 #include "Graphic.h"
 #include <vector>
 
-#include <fstream>
+//#include <fstream>
 
 using namespace std;
 namespace towerdefense
@@ -22,6 +22,14 @@ namespace towerdefense
         initpoint = { 182, 700 };
         currentpoint = initpoint;
         endpoint = { 182, 42 };
+
+        optionPositions = {
+            currentpoint,
+            currentpoint,
+            currentpoint,
+            currentpoint
+        };
+
     }
 
     // Destructor
@@ -33,6 +41,11 @@ namespace towerdefense
         Graphic::ReleaseBitmap(button_down);
         Graphic::ReleaseBitmap(button_hover);
         Graphic::ReleaseBitmap(board);
+        Graphic::ReleaseBitmap(map1opt);
+        Graphic::ReleaseBitmap(map2opt);
+        Graphic::ReleaseBitmap(map3opt);
+        Graphic::ReleaseBitmap(map4opt);
+        Graphic::ReleaseBitmap(opt_hover);
 
         /*DeleteObject(background);
         DeleteObject(button)*/;
@@ -61,6 +74,13 @@ namespace towerdefense
         //board
         board = graphic.LoadBitmapImage(L"Assets/board/board.bmp", scaleB);
 
+        //Option 
+        map1opt = graphic.LoadBitmapImage(L"Assets/map_resize/map1_scaleDown.bmp", scaleB);
+        map2opt = graphic.LoadBitmapImage(L"Assets/map_resize/map2_scaleDown.bmp", scaleB);
+        map3opt = graphic.LoadBitmapImage(L"Assets/map_resize/map3_scaleDown.bmp", scaleB);
+        map4opt = graphic.LoadBitmapImage(L"Assets/map_resize/map4_scaleDown.bmp", scaleB);
+        opt_hover = graphic.LoadBitmapImage(L"Assets/board/border.bmp", scaleB);
+
         // Cập nhật vị trí nút bấm theo tỉ lệ
         /*for (auto& pos : buttonPositions) {
             pos.x = static_cast<int>(pos.x * scaleB);
@@ -73,17 +93,36 @@ namespace towerdefense
         GetCursorPos(&cursorPos);
         ScreenToClient(GetActiveWindow(), &cursorPos);
 
-        for (size_t i = 0; i < buttonPositions.size(); ++i) {
-            RECT buttonRect = {
-                buttonPositions[i].x,
-                buttonPositions[i].y,
-                buttonPositions[i].x + buttonSize.x * 3, // Button width
-                buttonPositions[i].y + buttonSize.y * 3  // Button height
-            };
+        hover = -1;
 
-            if (PtInRect(&buttonRect, cursorPos)) {
-                hover = static_cast<int>(i); 
-                break; 
+        if (menu == 0) {
+            for (size_t i = 0; i < buttonPositions.size(); ++i) {
+                RECT buttonRect = {
+                    buttonPositions[i].x,
+                    buttonPositions[i].y,
+                    buttonPositions[i].x + buttonSize.x * 3, // Button width
+                    buttonPositions[i].y + buttonSize.y * 3  // Button height
+                };
+
+                if (PtInRect(&buttonRect, cursorPos)) {
+                    hover = static_cast<int>(i);
+                    break;
+                }
+            } 
+        }
+        else if (menu == 1) {
+            for (size_t i = 0; i < optionPositions.size(); ++i) {
+                RECT buttonRect = {
+                    optionPositions[i].x,
+                    optionPositions[i].y,
+                    optionPositions[i].x + optionSize.x, // Button width
+                    optionPositions[i].y + optionSize.y  // Button height
+                };
+
+                if (PtInRect(&buttonRect, cursorPos)) {
+                    hover = static_cast<int>(i);
+                    break;
+                }
             }
         }
 
@@ -132,7 +171,36 @@ namespace towerdefense
                 if (!PtInRect(&boardRect, cursorPos)) {
                     //isPopdown = true;
                     isPopup = false;
+                    currentpoint = initpoint;
                     menu = 0;
+                }
+                for (size_t i = 0; i < buttonPositions.size(); ++i) {
+                    RECT optionRect = {
+                        buttonPositions[i].x,
+                        buttonPositions[i].y,
+                        buttonPositions[i].x + optionSize.x, // Button width
+                        buttonPositions[i].y + optionSize.y // Button height
+                    };
+
+                    if (PtInRect(&optionRect, cursorPos)) {
+                        // Button click detected
+
+                        // sau nay xoa test
+                        switch (i) {
+                        case 0: // Play button
+                            OutputDebugString(L"Map");
+                            break;
+                        case 1: // Pause button
+                            OutputDebugString(L"Map");
+                            break;
+                        case 2: // Trophy button
+                            OutputDebugString(L"Map");
+                            break;
+                        case 3: // Settings button
+                            OutputDebugString(L"Map");
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -141,19 +209,54 @@ namespace towerdefense
 
     // Update logic (nếu có animation hoặc logic khác)
     void MainScreen::update(float delta) {
-        // Cập nhật trạng thái màn hình (nếu cần)
+        int speed = 200; // Speed in pixels per second
 
-        // Cập nhật vị trí bảng
+        // Update board position
         if (isPopup) {
             if (currentpoint.y > endpoint.y) {
-                //currentpoint.y -= static_cast<int>(200 * delta); // 200 pixels per second
-                currentpoint.y -= 20;
+                currentpoint.y -= static_cast<int>(speed * delta);
+
                 if (currentpoint.y < endpoint.y) {
                     currentpoint.y = endpoint.y; // Snap to the endpoint to prevent overshooting
                 }
+
+                // Update option positions relative to the board
+                for (size_t i = 0; i < optionPositions.size(); ++i) {
+                    if (i == 0) {
+                        optionPositions[i].x = currentpoint.x + 80; 
+                        optionPositions[i].y = currentpoint.y + 80; 
+                    }
+                    else if (i == 1) {
+                        optionPositions[i].x = currentpoint.x + 450;
+                        optionPositions[i].y = currentpoint.y + 80;
+                    }
+                    else if (i == 2) {
+                        optionPositions[i].x = currentpoint.x + 80;
+                        optionPositions[i].y = currentpoint.y + 320;
+                    }
+                    else if (i == 3) {
+                        optionPositions[i].x = currentpoint.x + 450;
+                        optionPositions[i].y = currentpoint.y + 320;
+                    }
+                }
             }
-        } 
+        }
+        else {
+            if (currentpoint.y < initpoint.y) {
+                currentpoint.y += static_cast<int>(speed * delta);
+
+                if (currentpoint.y > initpoint.y) {
+                    currentpoint.y = initpoint.y; // Snap to the initial position
+                }
+
+                // Reset option positions
+                for (size_t i = 0; i < optionPositions.size(); ++i) {
+                    optionPositions[i].y = currentpoint.y + 30 + (i * 60);
+                }
+            }
+        }
     }
+
 
     void MainScreen::render(HDC hdc) {
         // Vẽ hình nền với kích thước đã thay đổi
@@ -188,6 +291,17 @@ namespace towerdefense
             }
 
             Graphic::DrawBitmap(board, currentpoint, hdc);
+
+            for (size_t i = 0; i < optionPositions.size(); i++) {
+                POINT pos = optionPositions[i];
+
+                if (i == hover) Graphic::DrawBitmap(opt_hover, {pos.x - 3, pos.y - 3}, hdc);
+
+                if (i == 0) Graphic::DrawBitmap(map1opt, pos, hdc);
+                else if (i == 1) Graphic::DrawBitmap(map2opt, pos, hdc);
+                else if (i == 2) Graphic::DrawBitmap(map3opt, pos, hdc);
+                else if (i == 3) Graphic::DrawBitmap(map4opt, pos, hdc);
+            }
         }
     }
 }
