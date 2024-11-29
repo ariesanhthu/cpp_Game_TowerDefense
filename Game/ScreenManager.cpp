@@ -32,6 +32,9 @@ namespace towerdefense
         };
 
         loginPosition = { 1280 / 10 * 6, 720 * 7 / 100 };
+
+        dummyDataName.resize(dummyData.size());
+        dummyDataPoint.resize(dummyData.size());
     }
 
     // Destructor
@@ -55,6 +58,13 @@ namespace towerdefense
         Graphic::ReleaseBitmap(nameText);
         Graphic::ReleaseBitmap(passwordText);
         Graphic::ReleaseBitmap(inputtextbitmap);
+        Graphic::ReleaseBitmap(continueTitle);
+        for (auto i : dummyDataName) {
+            Graphic::ReleaseBitmap(i);
+        }
+        for (auto i : dummyDataPoint) {
+            Graphic::ReleaseBitmap(i);
+        }
     }
 
     int MainScreen::index = -1;
@@ -99,6 +109,13 @@ namespace towerdefense
         passwordText = graphic.LoadCustomTest("PASSWORD", scaleC);
         inputtextbitmap = graphic.LoadCustomTest(inputtext, scaleB);
 
+        //continue 
+        for (int i = 0; i < dummyData.size(); i++) {
+            dummyDataName[i] = graphic.LoadCustomTest((string)dummyData[i].getName(), 3);
+            dummyDataPoint[i] = graphic.LoadCustomTest(to_string(dummyData[i].getPoint()), 3);
+        }
+        continueTitle = graphic.LoadCustomTest("CONTINUE", scaleD);
+
         // Cập nhật vị trí nút bấm theo tỉ lệ
         /*for (auto& pos : buttonPositions) {
             pos.x = static_cast<int>(pos.x * scaleB);
@@ -111,8 +128,8 @@ namespace towerdefense
         GetCursorPos(&cursorPos);
         ScreenToClient(GetActiveWindow(), &cursorPos);
 
+        // hover handling
         hover = -1;
-
         if (menu == 0) {
             for (size_t i = 0; i < buttonPositions.size(); ++i) {
                 RECT buttonRect = {
@@ -155,6 +172,7 @@ namespace towerdefense
             }
         }
 
+        // on mouse click handling
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
             if (menu == 0) {
                 for (size_t i = 0; i < buttonPositions.size(); ++i) {
@@ -166,7 +184,6 @@ namespace towerdefense
                     };
 
                     if (PtInRect(&buttonRect, cursorPos)) {
-                        // Button click detected
                         switch (i) {
                         case 0:
                             index = 0;
@@ -176,6 +193,7 @@ namespace towerdefense
                         case 1:
                             index = 1;
                             menu = 2;
+                            isPopupEffect = true;
                             break;
                         case 2:
                             index = 2;
@@ -193,7 +211,7 @@ namespace towerdefense
                         case 5:
                             index = 5;
                             menu = 6;
-                            isAboutUsPopup = true;
+                            isPopupEffect = true;
                             break;
                         }
                     }
@@ -310,12 +328,32 @@ namespace towerdefense
             }
 
         }
+
+        // input handle
         if (start_to_input) {
             // Check if a key is pressed 
             for (wchar_t ch = 'A'; ch <= 'Z'; ++ch) {  // Printable ASCII characters
                 if (GetAsyncKeyState(ch) & 0x8000) {  // If the key is pressed
                     OutputDebugStringA((inputtext + '\n').c_str());
-                    inputtext.push_back(ch);  // Add the character to inputText
+
+                    // max 15 charactor
+                    if (inputtext.size() <= 15) {
+                        inputtext.push_back(ch);  // Add the character to inputText
+                    }
+
+                    Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
+                    inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
+                }
+            }
+
+            for (wchar_t ch = '0'; ch <= '9'; ++ch) {  // Printable ASCII characters
+                if (GetAsyncKeyState(ch) & 0x8000) {  // If the key is pressed
+                    OutputDebugStringA((inputtext + '\n').c_str());
+
+                    // max 15 charactor
+                    if (inputtext.size() <= 15) {
+                        inputtext.push_back(ch);  // Add the character to inputText
+                    }
 
                     Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
                     inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
@@ -378,12 +416,13 @@ namespace towerdefense
             }
         }
 
-        if (isAboutUsPopup) {
+        if (isPopupEffect) {
             if (currentpoint.y > endpoint.y) {
                 currentpoint.y -= static_cast<int>(speed * delta);
 
                 if (currentpoint.y < endpoint.y) {
-                    currentpoint.y = endpoint.y; 
+                    currentpoint.y = endpoint.y;
+                    isPopupEffect = false;
                 }
             }
         }
@@ -449,7 +488,28 @@ namespace towerdefense
             }
         }
         else if (menu == 2) {
-            // leaderboard here
+            // continue
+            Graphic::DrawBitmap(board, currentpoint, hdc);
+            if (!isPopupEffect) {
+                Graphic::DrawBitmap(continueTitle, titleContinuePos, hdc);
+                for (int i = 0; i < dummyData.size(); i++) {
+                    POINT pos = firstplayerCoverPos;
+                    pos.y += i * 100;
+                    Graphic::DrawBitmap(input, pos, hdc);
+                }
+                for (int i = 0; i < dummyData.size(); i++) {
+                    POINT pos = firstplayerCoverPos;
+                    pos.x += 30; 
+                    pos.y += i * 100 + 20;
+                    Graphic::DrawBitmap(dummyDataName[i], pos, hdc);
+                }
+                for (int i = 0; i < dummyData.size(); i++) {
+                    POINT pos = firstplayerCoverPos;
+                    pos.x += 250;
+                    pos.y += i * 100 + 20;
+                    Graphic::DrawBitmap(dummyDataPoint[i], pos, hdc);
+                }
+            }
         } 
         else if (menu == 3) {
             // setting here 
@@ -472,12 +532,9 @@ namespace towerdefense
             Graphic::DrawBitmap(loginText, loginTextPos, hdc);
             Graphic::DrawBitmap(nameText, nameTextPos, hdc);
             Graphic::DrawBitmap(passwordText, passwordTextPos, hdc);
-            //start_to_input = true;
             if (start_to_input) {
-                //inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
                 if (inputtext != "") {
                     Graphic::DrawBitmap(inputtextbitmap, { nameTextPos.x + 230 , nameTextPos.y + 10 }, hdc);
-
                 }
                 
             }

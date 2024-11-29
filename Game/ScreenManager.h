@@ -3,7 +3,9 @@
 #include <memory>
 #include "Graphic.h"
 #include <vector>
+#include <string>
 #include "Observer.h"
+#include "cplayer.h"
 
 using namespace std;
 namespace towerdefense
@@ -21,16 +23,21 @@ namespace towerdefense
 
     class MainScreen : public Screen {
     private:
+        // dung chung trong cac menu
         HBITMAP background = nullptr;             // Hình nền
+        // dung trong default menu
         HBITMAP button = nullptr;                 // Danh sách các nút bấm
         HBITMAP button_down = nullptr;
         HBITMAP button_hover = nullptr;
+        // popup
         HBITMAP board = nullptr;
+        // choose map
         HBITMAP map1opt = nullptr; 
         HBITMAP map2opt = nullptr; 
         HBITMAP map3opt = nullptr; 
         HBITMAP map4opt = nullptr; 
         HBITMAP opt_hover = nullptr;
+        // login
         HBITMAP login = nullptr;
         HBITMAP login_down = nullptr;
         HBITMAP login_hover = nullptr;
@@ -38,6 +45,15 @@ namespace towerdefense
         HBITMAP loginText = nullptr;
         HBITMAP nameText = nullptr;
         HBITMAP passwordText = nullptr;
+        // continue
+        HBITMAP continueTitle = nullptr;
+
+        // continue with dummydata
+        vector<cplayer> dummyData = { {"duck", 10}, {"thu", 12}, {"Hung", 44} };
+        vector<HBITMAP> dummyDataName = { nullptr };
+        vector<HBITMAP> dummyDataPoint = { nullptr };
+        POINT firstplayerCoverPos = { 420, 200 };
+        POINT titleContinuePos = { 390, 130 };
 
         vector<POINT> buttonPositions;           // Vị trí các nút bấm
         vector<POINT> optionPositions;            // Vi tri cac lua chon map
@@ -53,7 +69,7 @@ namespace towerdefense
         // Thiết lập 3 vị trí để popup board
         POINT initpoint, currentpoint, endpoint; 
         bool isChoosemapPopup = false;
-        bool isAboutUsPopup = false;
+        bool isPopupEffect = false;
 
         // string nhap tu input
         HBITMAP inputtextbitmap = nullptr;
@@ -79,6 +95,7 @@ namespace towerdefense
         // menu = 101 -> login
         static int menu; 
 
+        //size doi tuong
         POINT buttonSize = { 26, 29 };
         POINT sizeBoard = { 693, 447 };
         POINT optionSize = { 300, 168 };
