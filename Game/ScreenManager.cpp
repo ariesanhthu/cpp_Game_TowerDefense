@@ -298,48 +298,47 @@ namespace towerdefense
                 RECT inputNameRect = {
                     inputNamePosition.x,
                     inputNamePosition.y,
-                    inputNamePosition.x + inputNamePosition.x * 5, // boardsize width
-                    inputNamePosition.y + inputNamePosition.y * 5  // boardsize height
+                    inputNamePosition.x + inputSize.x * 5, // boardsize width
+                    inputNamePosition.y + inputSize.y * 5 // boardsize height
                 };
                 if (PtInRect(&inputNameRect, cursorPos)) {
                     start_to_input = true;
                 }
-
-                if (start_to_input) {
-                    // Check if a key is pressed 
-                    for (wchar_t ch = 'A'; ch <= 'Z'; ++ch) {  // Printable ASCII characters
-                        if (GetAsyncKeyState(ch) & 0x8000) {  // If the key is pressed
-                            OutputDebugStringA((inputtext + '\n').c_str());
-                            inputtext.push_back(ch);  // Add the character to inputText
-
-                            Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
-                            inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
-                        }
-                    }
-
-                    // Handle special keys like Backspace and Enter
-                    if (GetAsyncKeyState(VK_BACK) & 0x8000 && !inputtext.empty()) {
-                        inputtext.pop_back();  // Remove the last character
-
-                        Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
-                        inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
-                    }
-
-                    if (GetAsyncKeyState(VK_RETURN) & 0x8000) {
-                        // Handle Enter key press (submit or finalize input)
-                        // You could clear the input or store it here
-
-                        // handle login here
-
-                        // For now, just reset
-                        inputtext.clear();
-                        start_to_input = false;
-                    }
-                }
-
-                /*if (!PtInRect(&inputNameRect, cursorPos)) {
+                if (!PtInRect(&inputNameRect, cursorPos)) {
                     start_to_input = false;
-                }*/
+                }
+            }
+
+        }
+        if (start_to_input) {
+            // Check if a key is pressed 
+            for (wchar_t ch = 'A'; ch <= 'Z'; ++ch) {  // Printable ASCII characters
+                if (GetAsyncKeyState(ch) & 0x8000) {  // If the key is pressed
+                    OutputDebugStringA((inputtext + '\n').c_str());
+                    inputtext.push_back(ch);  // Add the character to inputText
+
+                    Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
+                    inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
+                }
+            }
+
+            // Handle special keys like Backspace and Enter
+            if (GetAsyncKeyState(VK_BACK) & 0x8000 && !inputtext.empty()) {
+                inputtext.pop_back();  // Remove the last character
+
+                Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
+                inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
+            }
+
+            if (GetAsyncKeyState(VK_RETURN) & 0x8000) {
+                // Handle Enter key press (submit or finalize input)
+                // You could clear the input or store it here
+
+                // handle login here
+
+                // For now, just reset
+                inputtext.clear();
+                start_to_input = false;
             }
         }
     }
