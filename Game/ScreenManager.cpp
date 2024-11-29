@@ -16,7 +16,8 @@ namespace towerdefense
             {1280 / 10 * 3, 720 * 7 / 10},   // Pause button
             {1280 / 10 * 5, 720 * 7 / 10},   // Trophy button
             {1280 / 10 * 7, 720 * 7 / 10},   // Settings button
-            {1280 / 10 * 9, 720 * 7 / 10}    // Exit button
+            {1280 / 10 * 9, 720 * 7 / 10},    // Exit button
+            {1280 / 10 * 9, 720 * 7 / 100}      // about us
         };
 
         initpoint = { 182, 700 };
@@ -30,12 +31,12 @@ namespace towerdefense
             currentpoint
         };
 
+        loginPosition = { 1280 / 10 * 6, 720 * 7 / 100 };
     }
 
     // Destructor
     MainScreen::~MainScreen() {
         // Giải phóng tài nguyên
-
         Graphic::ReleaseBitmap(background);
         Graphic::ReleaseBitmap(button);
         Graphic::ReleaseBitmap(button_down);
@@ -46,9 +47,14 @@ namespace towerdefense
         Graphic::ReleaseBitmap(map3opt);
         Graphic::ReleaseBitmap(map4opt);
         Graphic::ReleaseBitmap(opt_hover);
-
-        /*DeleteObject(background);
-        DeleteObject(button)*/;
+        Graphic::ReleaseBitmap(login); 
+        Graphic::ReleaseBitmap(login_down);
+        Graphic::ReleaseBitmap(login_hover);
+        Graphic::ReleaseBitmap(input);
+        Graphic::ReleaseBitmap(loginText);
+        Graphic::ReleaseBitmap(nameText);
+        Graphic::ReleaseBitmap(passwordText);
+        Graphic::ReleaseBitmap(inputtextbitmap);
     }
 
     int MainScreen::index = -1;
@@ -61,6 +67,8 @@ namespace towerdefense
         float scaleY = static_cast<float>(height) / 213.0f; // 720 là kích thước gốc của ảnh
         float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
         float scaleB = 3;                                   // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
+        float scaleC = 5;                                   // scale cho input
+        float scaleD = 10;                                   // sacle cho text login
 
         // Tải hình nền với tỉ lệ mới
 
@@ -80,6 +88,16 @@ namespace towerdefense
         map3opt = graphic.LoadBitmapImage(L"Assets/map_resize/map3_scaleDown.bmp", scaleB);
         map4opt = graphic.LoadBitmapImage(L"Assets/map_resize/map4_scaleDown.bmp", scaleB);
         opt_hover = graphic.LoadBitmapImage(L"Assets/board/border.bmp", scaleB);
+
+        // login 
+        login = graphic.LoadBitmapImage(L"Assets/button/login_up.bmp", scaleB); 
+        login_down = graphic.LoadBitmapImage(L"Assets/button/login_down.bmp", scaleB);
+        login_hover = graphic.LoadBitmapImage(L"Assets/button/selectBox2.bmp", scaleB);
+        input = graphic.LoadBitmapImage(L"Assets/button/input2.bmp", scaleC);
+        loginText = graphic.LoadCustomTest("LOGIN", scaleD);
+        nameText = graphic.LoadCustomTest("USERNAME", scaleC);
+        passwordText = graphic.LoadCustomTest("PASSWORD", scaleC);
+        inputtextbitmap = graphic.LoadCustomTest(inputtext, scaleB);
 
         // Cập nhật vị trí nút bấm theo tỉ lệ
         /*for (auto& pos : buttonPositions) {
@@ -109,6 +127,17 @@ namespace towerdefense
                     break;
                 }
             } 
+
+            RECT LoginRect = {
+                    loginPosition.x,
+                    loginPosition.y,
+                    loginPosition.x + loginSize.x * 3, // Button width
+                    loginPosition.y + loginSize.y * 3 // Button height
+            };
+            if (PtInRect(&LoginRect, cursorPos)) {
+                hover = 101;
+            }
+
         }
         else if (menu == 1) {
             for (size_t i = 0; i < optionPositions.size(); ++i) {
@@ -139,26 +168,47 @@ namespace towerdefense
                     if (PtInRect(&buttonRect, cursorPos)) {
                         // Button click detected
                         switch (i) {
-                        case 0: // Play button
+                        case 0:
                             index = 0;
                             menu = 1;
-                            isPopup = true;
+                            isChoosemapPopup = true;
                             break;
-                        case 1: // Pause button
+                        case 1:
                             index = 1;
+                            menu = 2;
                             break;
-                        case 2: // Trophy button
+                        case 2:
                             index = 2;
+                            menu = 3;
                             break;
-                        case 3: // Settings button
+                        case 3:
                             index = 3;
+                            menu = 4;
                             break;
-                        case 4: // Exit button
+                        case 4:
                             index = 4;
+                            menu = 5;
                             PostQuitMessage(0); // Exit the program
+                            break;
+                        case 5:
+                            index = 5;
+                            menu = 6;
+                            isAboutUsPopup = true;
                             break;
                         }
                     }
+                }
+                
+                RECT LoginRect = {
+                    loginPosition.x,
+                    loginPosition.y,
+                    loginPosition.x + loginSize.x * 3, // Button width
+                    loginPosition.y + loginSize.y * 3// Button height
+                };
+                if (PtInRect(&LoginRect, cursorPos)) {
+                    // if click login
+                    menu = 101;
+                    index = 101;
                 }
             }
             else if (menu == 1) {
@@ -170,7 +220,7 @@ namespace towerdefense
                 };
                 if (!PtInRect(&boardRect, cursorPos)) {
                     //isPopdown = true;
-                    isPopup = false;
+                    isChoosemapPopup = false;
                     currentpoint = initpoint;
                     menu = 0;
                 }
@@ -187,37 +237,124 @@ namespace towerdefense
 
                         // sau nay xoa test
                         switch (i) {
-                        case 0: // Play button
+                        case 0: 
                             OutputDebugString(L"Map");
                             break;
-                        case 1: // Pause button
+                        case 1: 
                             OutputDebugString(L"Map");
                             break;
-                        case 2: // Trophy button
+                        case 2: 
                             OutputDebugString(L"Map");
                             break;
-                        case 3: // Settings button
+                        case 3:
                             OutputDebugString(L"Map");
                             break;
                         }
                     }
                 }
             }
+            else if (menu == 2) {
+                
+            }
+            else if (menu == 3) {
+
+            }
+            else if (menu == 4) {
+
+            }
+            else if (menu == 5) {
+
+            }
+            else if (menu == 6) {
+                RECT boardRect = {
+                    endpoint.x,
+                    endpoint.y,
+                    endpoint.x + sizeBoard.x, // boardsize width
+                    endpoint.y + sizeBoard.y // boardsize height
+                };
+                if (!PtInRect(&boardRect, cursorPos)) {
+                    //isPopdown = true;
+                    isChoosemapPopup = false;
+                    currentpoint = initpoint;
+                    menu = 0;
+                }
+            }
+            else if (menu == 101) {
+                // board
+                RECT boardRect = {
+                    endpoint.x,
+                    endpoint.y,
+                    endpoint.x + sizeBoard.x, // boardsize width
+                    endpoint.y + sizeBoard.y // boardsize height
+                };
+                if (!PtInRect(&boardRect, cursorPos)) {
+                    //isPopdown = true;
+                    isChoosemapPopup = false;
+                    currentpoint = initpoint;
+                    menu = 0;
+                }
+            
+                // name input 
+                RECT inputNameRect = {
+                    inputNamePosition.x,
+                    inputNamePosition.y,
+                    inputNamePosition.x + inputNamePosition.x * 5, // boardsize width
+                    inputNamePosition.y + inputNamePosition.y * 5  // boardsize height
+                };
+                if (PtInRect(&inputNameRect, cursorPos)) {
+                    start_to_input = true;
+                }
+
+                if (start_to_input) {
+                    // Check if a key is pressed 
+                    for (wchar_t ch = 'A'; ch <= 'Z'; ++ch) {  // Printable ASCII characters
+                        if (GetAsyncKeyState(ch) & 0x8000) {  // If the key is pressed
+                            OutputDebugStringA((inputtext + '\n').c_str());
+                            inputtext.push_back(ch);  // Add the character to inputText
+
+                            Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
+                            inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
+                        }
+                    }
+
+                    // Handle special keys like Backspace and Enter
+                    if (GetAsyncKeyState(VK_BACK) & 0x8000 && !inputtext.empty()) {
+                        inputtext.pop_back();  // Remove the last character
+
+                        Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
+                        inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
+                    }
+
+                    if (GetAsyncKeyState(VK_RETURN) & 0x8000) {
+                        // Handle Enter key press (submit or finalize input)
+                        // You could clear the input or store it here
+
+                        // handle login here
+
+                        // For now, just reset
+                        inputtext.clear();
+                        start_to_input = false;
+                    }
+                }
+
+                /*if (!PtInRect(&inputNameRect, cursorPos)) {
+                    start_to_input = false;
+                }*/
+            }
         }
     }
 
-
     // Update logic (nếu có animation hoặc logic khác)
     void MainScreen::update(float delta) {
-        int speed = 200; // Speed in pixels per second
+        int speed = 200;
 
         // Update board position
-        if (isPopup) {
+        if (isChoosemapPopup) {
             if (currentpoint.y > endpoint.y) {
                 currentpoint.y -= static_cast<int>(speed * delta);
 
                 if (currentpoint.y < endpoint.y) {
-                    currentpoint.y = endpoint.y; // Snap to the endpoint to prevent overshooting
+                    currentpoint.y = endpoint.y;
                 }
 
                 // Update option positions relative to the board
@@ -241,22 +378,17 @@ namespace towerdefense
                 }
             }
         }
-        else {
-            if (currentpoint.y < initpoint.y) {
-                currentpoint.y += static_cast<int>(speed * delta);
 
-                if (currentpoint.y > initpoint.y) {
-                    currentpoint.y = initpoint.y; // Snap to the initial position
-                }
+        if (isAboutUsPopup) {
+            if (currentpoint.y > endpoint.y) {
+                currentpoint.y -= static_cast<int>(speed * delta);
 
-                // Reset option positions
-                for (size_t i = 0; i < optionPositions.size(); ++i) {
-                    optionPositions[i].y = currentpoint.y + 30 + (i * 60);
+                if (currentpoint.y < endpoint.y) {
+                    currentpoint.y = endpoint.y; 
                 }
             }
         }
     }
-
 
     void MainScreen::render(HDC hdc) {
         // Vẽ hình nền với kích thước đã thay đổi
@@ -270,6 +402,9 @@ namespace towerdefense
                     buttonPos.y += 8;
                     Graphic::DrawBitmap(button_down, buttonPos, hdc);
                     index = -1;
+
+                    // tao hieu ung nhan nut
+                    Sleep(30);
                 }
                 else {
                     if (i == hover) {
@@ -281,6 +416,17 @@ namespace towerdefense
                     }
                     Graphic::DrawBitmap(button, buttonPos, hdc); // Vẽ nút với tỉ lệ đã cập nhật
                 }
+            }
+
+            if (index == 101) {
+                Graphic::DrawBitmap(login_down, { loginPosition.x, loginPosition.y + 8 }, hdc);
+                index = -1;
+            }
+            else {
+                if (hover == 101) {
+                    Graphic::DrawBitmap(login_hover, { loginPosition.x - 18, loginPosition.y - 18 }, hdc);
+                }
+                Graphic::DrawBitmap(login, loginPosition, hdc);
             }
         }
         else if (menu == 1) {
@@ -303,5 +449,40 @@ namespace towerdefense
                 else if (i == 3) Graphic::DrawBitmap(map4opt, pos, hdc);
             }
         }
+        else if (menu == 2) {
+            // leaderboard here
+        } 
+        else if (menu == 3) {
+            // setting here 
+        }
+        else if (menu == 4) {
+            // display nothing
+        }
+        else if (menu == 6) {
+            for (size_t i = 0; i < buttonPositions.size(); ++i) {
+                POINT buttonPos = buttonPositions[i];
+                Graphic::DrawBitmap(button, buttonPos, hdc); // Vẽ nút với tỉ lệ đã cập nhật
+            }
+
+            Graphic::DrawBitmap(board, currentpoint, hdc);
+        }
+        else if (menu == 101) {
+            Graphic::DrawBitmap(board, endpoint, hdc);
+            Graphic::DrawBitmap(input, inputNamePosition, hdc);
+            Graphic::DrawBitmap(input, inputPasswordPosition, hdc);
+            Graphic::DrawBitmap(loginText, loginTextPos, hdc);
+            Graphic::DrawBitmap(nameText, nameTextPos, hdc);
+            Graphic::DrawBitmap(passwordText, passwordTextPos, hdc);
+            //start_to_input = true;
+            if (start_to_input) {
+                //inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
+                if (inputtext != "") {
+                    Graphic::DrawBitmap(inputtextbitmap, { nameTextPos.x + 230 , nameTextPos.y + 10 }, hdc);
+
+                }
+                
+            }
+        }
     }
+
 }

@@ -1,4 +1,4 @@
-#include "Graphic.h"
+﻿#include "Graphic.h"
 
 Graphic::Graphic() {
     InitGdiPlus();
@@ -74,6 +74,120 @@ void Graphic::DrawBitmap(HBITMAP hBitmap, POINT start, HDC hdc) {
     SelectObject(hdcMem, hbmOld);
     DeleteDC(hdcMem);
 }
+
+#define max_ if(maxHeight < static_cast<int>(tempBitmap.GetHeight() * factor)) {maxHeight = static_cast<int>(tempBitmap.GetHeight() * factor);}
+
+HBITMAP Graphic::LoadCustomTest(std::string text, double factor, int spacing) {
+    // Base folder path for character bitmaps
+    std::wstring basePath = L"Assets/text/";
+
+    // Calculate total dimensions for the combined bitmap
+    int totalWidth = 0;
+    int maxHeight = 0;
+
+    // Measure total width and maximum height
+    for (char c : text) {
+        if (std::islower(c)) {
+            c = std::toupper(c); // Convert to uppercase if necessary
+        }
+
+        std::wstring fileName;
+        if (std::isdigit(c)) {
+            fileName = basePath + std::to_wstring(c - '0') + L".bmp";
+        }
+        else if (std::isupper(c)) {
+            fileName = basePath + std::wstring(1, c) + L".bmp";
+        }
+        else {
+            continue; // Skip unsupported characters
+        }
+
+        Bitmap tempBitmap(fileName.c_str());
+        if (tempBitmap.GetLastStatus() != Ok) {
+            continue;
+        }
+
+        totalWidth += static_cast<int>(tempBitmap.GetWidth() * factor) + spacing;
+        if (maxHeight < static_cast<int>(tempBitmap.GetHeight() * factor)) { maxHeight = static_cast<int>(tempBitmap.GetHeight() * factor); }
+    }
+
+    // Adjust totalWidth to remove trailing spacing after the last character
+    if (!text.empty()) {
+        totalWidth -= spacing;
+    }
+
+    // Create the resulting bitmap
+    Bitmap resultBitmap(totalWidth, maxHeight, PixelFormat32bppARGB);
+
+    // Set all pixels in the result bitmap to transparent
+    for (int y = 0; y < maxHeight; ++y) {
+        for (int x = 0; x < totalWidth; ++x) {
+            resultBitmap.SetPixel(x, y, Color(0, 0, 0, 0)); // Transparent background
+        }
+    }
+
+    // Load and copy each character into the resulting bitmap
+    int currentX = 0;
+    for (char c : text) {
+        if (std::islower(c)) {
+            c = std::toupper(c); // Convert to uppercase if necessary
+        }
+
+        std::wstring fileName;
+        if (std::isdigit(c)) {
+            fileName = basePath + std::to_wstring(c - '0') + L".bmp";
+        }
+        else if (std::isupper(c)) {
+            fileName = basePath + std::wstring(1, c) + L".bmp";
+        }
+        else {
+            continue; // Skip unsupported characters
+        }
+
+        Bitmap tempBitmap(fileName.c_str());
+        if (tempBitmap.GetLastStatus() != Ok) {
+            continue;
+        }
+
+        int charWidth = tempBitmap.GetWidth();
+        int charHeight = tempBitmap.GetHeight();
+
+        for (int y = 0; y < charHeight; ++y) {
+            for (int x = 0; x < charWidth; ++x) {
+                Color pixelColor;
+                tempBitmap.GetPixel(x, y, &pixelColor);
+
+                // Copy scaled pixels into the result bitmap
+                for (int offsetY = 0; offsetY < factor; ++offsetY) {
+                    for (int offsetX = 0; offsetX < factor; ++offsetX) {
+                        int destX = currentX + static_cast<int>(x * factor) + offsetX;
+                        int destY = static_cast<int>(y * factor) + offsetY;
+
+                        if (destX < totalWidth && destY < maxHeight) {
+                            resultBitmap.SetPixel(destX, destY, pixelColor);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Move to the next character position, adding spacing
+        currentX += static_cast<int>(charWidth * factor) + spacing;
+    }
+
+    // Convert the resulting GDI+ Bitmap to HBITMAP
+    HBITMAP hBitmap = nullptr;
+    resultBitmap.GetHBITMAP(Color(0, 0, 0, 0), &hBitmap);
+
+    // Return the new HBITMAP
+    return hBitmap;
+}
+
+
+
+
+
+
 
 void Graphic::ReleaseBitmap(HBITMAP& hBitmap) {
     if (hBitmap) {

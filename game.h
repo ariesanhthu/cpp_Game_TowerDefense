@@ -4,11 +4,13 @@
 #include <functional>
 #include "State.h"
 #include <ScreenManager.h>
+#include "Observer.h"
+
 
 namespace towerdefense
 {
 
-	class Game
+	class Game 
 	{
 	private:
 		std::unique_ptr<GameState> currentState;
