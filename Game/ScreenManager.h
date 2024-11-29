@@ -6,6 +6,7 @@
 #include <string>
 #include "Observer.h"
 #include "cplayer.h"
+#include <chrono>
 
 using namespace std;
 namespace towerdefense
@@ -47,6 +48,7 @@ namespace towerdefense
         HBITMAP passwordText = nullptr;
         // continue
         HBITMAP continueTitle = nullptr;
+        HBITMAP arrow = nullptr;
 
         // continue with dummydata
         vector<cplayer> dummyData = { {"duck", 10}, {"thu", 12}, {"Hung", 44} };
@@ -101,6 +103,12 @@ namespace towerdefense
         POINT optionSize = { 300, 168 };
         POINT loginSize = { 99, 43 };
         POINT inputSize = { 60, 11 };
+
+
+        // avoid double click
+        std::chrono::steady_clock::time_point lastMouseClickTime;
+        std::chrono::steady_clock::time_point lastKeyPressTime;
+        const int debounceDelayMs = 200; // 200 ms debounce delay
 
     public:
         MainScreen();

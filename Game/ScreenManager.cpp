@@ -59,6 +59,7 @@ namespace towerdefense
         Graphic::ReleaseBitmap(passwordText);
         Graphic::ReleaseBitmap(inputtextbitmap);
         Graphic::ReleaseBitmap(continueTitle);
+        Graphic::ReleaseBitmap(arrow);
         for (auto i : dummyDataName) {
             Graphic::ReleaseBitmap(i);
         }
@@ -115,6 +116,7 @@ namespace towerdefense
             dummyDataPoint[i] = graphic.LoadCustomTest(to_string(dummyData[i].getPoint()), 3);
         }
         continueTitle = graphic.LoadCustomTest("CONTINUE", scaleD);
+        arrow = graphic.LoadBitmapImage(L"Assets/arrow.bmp", scaleC);
 
         // Cập nhật vị trí nút bấm theo tỉ lệ
         /*for (auto& pos : buttonPositions) {
@@ -171,219 +173,260 @@ namespace towerdefense
                 }
             }
         }
+        else if (menu == 2) {
+            for (size_t i = 0; i < dummyData.size(); ++i) {
+                RECT nameRect = {
+                    firstplayerCoverPos.x - 100,  // Adjust x to match hover offset
+                    firstplayerCoverPos.y + static_cast<int>(i) * 100,  // Top y
+                    firstplayerCoverPos.x + 200,  // Width of the rectangle
+                    firstplayerCoverPos.y + static_cast<int>(i) * 100 + 80  // Height of the rectangle
+                };
+
+                if (PtInRect(&nameRect, cursorPos)) {
+                    hover = static_cast<int>(i);
+                    break;
+                }
+            }
+        }
 
         // on mouse click handling
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
-            if (menu == 0) {
-                for (size_t i = 0; i < buttonPositions.size(); ++i) {
-                    RECT buttonRect = {
-                        buttonPositions[i].x,
-                        buttonPositions[i].y,
-                        buttonPositions[i].x + buttonSize.x * 3, // Button width
-                        buttonPositions[i].y + buttonSize.y * 3 // Button height
-                    };
 
-                    if (PtInRect(&buttonRect, cursorPos)) {
-                        switch (i) {
-                        case 0:
-                            index = 0;
-                            menu = 1;
-                            isChoosemapPopup = true;
-                            break;
-                        case 1:
-                            index = 1;
-                            menu = 2;
-                            isPopupEffect = true;
-                            break;
-                        case 2:
-                            index = 2;
-                            menu = 3;
-                            break;
-                        case 3:
-                            index = 3;
-                            menu = 4;
-                            break;
-                        case 4:
-                            index = 4;
-                            menu = 5;
-                            PostQuitMessage(0); // Exit the program
-                            break;
-                        case 5:
-                            index = 5;
-                            menu = 6;
-                            isPopupEffect = true;
-                            break;
+            auto now = std::chrono::steady_clock::now();
+            if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
+                lastMouseClickTime = now;
+
+                if (menu == 0) {
+                    for (size_t i = 0; i < buttonPositions.size(); ++i) {
+                        RECT buttonRect = {
+                            buttonPositions[i].x,
+                            buttonPositions[i].y,
+                            buttonPositions[i].x + buttonSize.x * 3, // Button width
+                            buttonPositions[i].y + buttonSize.y * 3 // Button height
+                        };
+
+                        if (PtInRect(&buttonRect, cursorPos)) {
+                            switch (i) {
+                            case 0:
+                                index = 0;
+                                menu = 1;
+                                isChoosemapPopup = true;
+                                break;
+                            case 1:
+                                index = 1;
+                                menu = 2;
+                                isPopupEffect = true;
+                                break;
+                            case 2:
+                                index = 2;
+                                menu = 3;
+                                break;
+                            case 3:
+                                index = 3;
+                                menu = 4;
+                                break;
+                            case 4:
+                                index = 4;
+                                menu = 5;
+                                PostQuitMessage(0); // Exit the program
+                                break;
+                            case 5:
+                                index = 5;
+                                menu = 6;
+                                isPopupEffect = true;
+                                break;
+                            }
+                        }
+                    }
+                    RECT LoginRect = {
+                        loginPosition.x,
+                        loginPosition.y,
+                        loginPosition.x + loginSize.x * 3, // Button width
+                        loginPosition.y + loginSize.y * 3// Button height
+                    };
+                    if (PtInRect(&LoginRect, cursorPos)) {
+                        // if click login
+                        menu = 101;
+                        index = 101;
+                    }
+                }
+                else if (menu == 1) {
+                    RECT boardRect = {
+                        endpoint.x,
+                        endpoint.y,
+                        endpoint.x + sizeBoard.x, // boardsize width
+                        endpoint.y + sizeBoard.y // boardsize height
+                    };
+                    if (!PtInRect(&boardRect, cursorPos)) {
+                        //isPopdown = true;
+                        isChoosemapPopup = false;
+                        currentpoint = initpoint;
+                        menu = 0;
+                    }
+                    for (size_t i = 0; i < buttonPositions.size(); ++i) {
+                        RECT optionRect = {
+                            buttonPositions[i].x,
+                            buttonPositions[i].y,
+                            buttonPositions[i].x + optionSize.x, // Button width
+                            buttonPositions[i].y + optionSize.y // Button height
+                        };
+
+                        if (PtInRect(&optionRect, cursorPos)) {
+                            // Button click detected
+
+                            // sau nay xoa test
+                            switch (i) {
+                            case 0:
+                                OutputDebugString(L"Map");
+                                break;
+                            case 1:
+                                OutputDebugString(L"Map");
+                                break;
+                            case 2:
+                                OutputDebugString(L"Map");
+                                break;
+                            case 3:
+                                OutputDebugString(L"Map");
+                                break;
+                            }
                         }
                     }
                 }
-                
-                RECT LoginRect = {
-                    loginPosition.x,
-                    loginPosition.y,
-                    loginPosition.x + loginSize.x * 3, // Button width
-                    loginPosition.y + loginSize.y * 3// Button height
-                };
-                if (PtInRect(&LoginRect, cursorPos)) {
-                    // if click login
-                    menu = 101;
-                    index = 101;
-                }
-            }
-            else if (menu == 1) {
-                RECT boardRect = {
-                    endpoint.x,
-                    endpoint.y,
-                    endpoint.x + sizeBoard.x, // boardsize width
-                    endpoint.y + sizeBoard.y // boardsize height
-                };
-                if (!PtInRect(&boardRect, cursorPos)) {
-                    //isPopdown = true;
-                    isChoosemapPopup = false;
-                    currentpoint = initpoint;
-                    menu = 0;
-                }
-                for (size_t i = 0; i < buttonPositions.size(); ++i) {
-                    RECT optionRect = {
-                        buttonPositions[i].x,
-                        buttonPositions[i].y,
-                        buttonPositions[i].x + optionSize.x, // Button width
-                        buttonPositions[i].y + optionSize.y // Button height
+                else if (menu == 2) {
+                    RECT boardRect = {
+                        endpoint.x,
+                        endpoint.y,
+                        endpoint.x + sizeBoard.x, // boardsize width
+                        endpoint.y + sizeBoard.y // boardsize height
                     };
+                    if (!PtInRect(&boardRect, cursorPos)) {
+                        //isPopdown = true;
+                        isChoosemapPopup = false;
+                        currentpoint = initpoint;
+                        menu = 0;
+                    }
+                }
+                else if (menu == 3) {
 
-                    if (PtInRect(&optionRect, cursorPos)) {
-                        // Button click detected
+                }
+                else if (menu == 4) {
 
-                        // sau nay xoa test
-                        switch (i) {
-                        case 0: 
-                            OutputDebugString(L"Map");
-                            break;
-                        case 1: 
-                            OutputDebugString(L"Map");
-                            break;
-                        case 2: 
-                            OutputDebugString(L"Map");
-                            break;
-                        case 3:
-                            OutputDebugString(L"Map");
-                            break;
-                        }
+                }
+                else if (menu == 5) {
+
+                }
+                else if (menu == 6) {
+                    RECT boardRect = {
+                        endpoint.x,
+                        endpoint.y,
+                        endpoint.x + sizeBoard.x, // boardsize width
+                        endpoint.y + sizeBoard.y // boardsize height
+                    };
+                    if (!PtInRect(&boardRect, cursorPos)) {
+                        //isPopdown = true;
+                        isChoosemapPopup = false;
+                        currentpoint = initpoint;
+                        menu = 0;
+                    }
+                }
+                else if (menu == 101) {
+                    // board
+                    RECT boardRect = {
+                        endpoint.x,
+                        endpoint.y,
+                        endpoint.x + sizeBoard.x, // boardsize width
+                        endpoint.y + sizeBoard.y // boardsize height
+                    };
+                    if (!PtInRect(&boardRect, cursorPos)) {
+                        //isPopdown = true;
+                        isChoosemapPopup = false;
+                        currentpoint = initpoint;
+                        menu = 0;
+                    }
+
+                    // name input 
+                    RECT inputNameRect = {
+                        inputNamePosition.x,
+                        inputNamePosition.y,
+                        inputNamePosition.x + inputSize.x * 5, // boardsize width
+                        inputNamePosition.y + inputSize.y * 5 // boardsize height
+                    };
+                    if (PtInRect(&inputNameRect, cursorPos)) {
+                        start_to_input = true;
+                    }
+                    if (!PtInRect(&inputNameRect, cursorPos)) {
+                        start_to_input = false;
                     }
                 }
             }
-            else if (menu == 2) {
-                
-            }
-            else if (menu == 3) {
-
-            }
-            else if (menu == 4) {
-
-            }
-            else if (menu == 5) {
-
-            }
-            else if (menu == 6) {
-                RECT boardRect = {
-                    endpoint.x,
-                    endpoint.y,
-                    endpoint.x + sizeBoard.x, // boardsize width
-                    endpoint.y + sizeBoard.y // boardsize height
-                };
-                if (!PtInRect(&boardRect, cursorPos)) {
-                    //isPopdown = true;
-                    isChoosemapPopup = false;
-                    currentpoint = initpoint;
-                    menu = 0;
-                }
-            }
-            else if (menu == 101) {
-                // board
-                RECT boardRect = {
-                    endpoint.x,
-                    endpoint.y,
-                    endpoint.x + sizeBoard.x, // boardsize width
-                    endpoint.y + sizeBoard.y // boardsize height
-                };
-                if (!PtInRect(&boardRect, cursorPos)) {
-                    //isPopdown = true;
-                    isChoosemapPopup = false;
-                    currentpoint = initpoint;
-                    menu = 0;
-                }
-            
-                // name input 
-                RECT inputNameRect = {
-                    inputNamePosition.x,
-                    inputNamePosition.y,
-                    inputNamePosition.x + inputSize.x * 5, // boardsize width
-                    inputNamePosition.y + inputSize.y * 5 // boardsize height
-                };
-                if (PtInRect(&inputNameRect, cursorPos)) {
-                    start_to_input = true;
-                }
-                if (!PtInRect(&inputNameRect, cursorPos)) {
-                    start_to_input = false;
-                }
-            }
-
         }
 
         // input handle
         if (start_to_input) {
             // Check if a key is pressed 
-            for (wchar_t ch = 'A'; ch <= 'Z'; ++ch) {  // Printable ASCII characters
-                if (GetAsyncKeyState(ch) & 0x8000) {  // If the key is pressed
-                    OutputDebugStringA((inputtext + '\n').c_str());
+            for (wchar_t ch = 'A'; ch <= 'Z'; ++ch) {
+                if (GetAsyncKeyState(ch) & 0x8000) {
+                    auto now = std::chrono::steady_clock::now();
+                    if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastKeyPressTime).count() >= debounceDelayMs) {
+                        lastKeyPressTime = now; // Update the last key press time
 
-                    // max 15 charactor
-                    if (inputtext.size() <= 15) {
-                        inputtext.push_back(ch);  // Add the character to inputText
+                        // Max 15 characters
+                        if (inputtext.size() <= 15) {
+                            inputtext.push_back(ch);  // Add the character to inputText
+                        }
+
+                        Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
+                        inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
                     }
-
-                    Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
-                    inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
                 }
             }
 
-            for (wchar_t ch = '0'; ch <= '9'; ++ch) {  // Printable ASCII characters
-                if (GetAsyncKeyState(ch) & 0x8000) {  // If the key is pressed
-                    OutputDebugStringA((inputtext + '\n').c_str());
+            for (wchar_t ch = '0'; ch <= '9'; ++ch) {
+                if (GetAsyncKeyState(ch) & 0x8000) {
+                    auto now = std::chrono::steady_clock::now();
+                    if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastKeyPressTime).count() >= debounceDelayMs) {
+                        lastKeyPressTime = now;
 
-                    // max 15 charactor
-                    if (inputtext.size() <= 15) {
-                        inputtext.push_back(ch);  // Add the character to inputText
+                        if (inputtext.size() <= 15) {
+                            inputtext.push_back(ch);
+                        }
+
+                        Graphic::ReleaseBitmap(inputtextbitmap);
+                        inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
                     }
-
-                    Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
-                    inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
                 }
             }
 
-            // Handle special keys like Backspace and Enter
+            // Handle Backspace
             if (GetAsyncKeyState(VK_BACK) & 0x8000 && !inputtext.empty()) {
-                inputtext.pop_back();  // Remove the last character
+                auto now = std::chrono::steady_clock::now();
+                if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastKeyPressTime).count() >= debounceDelayMs) {
+                    lastKeyPressTime = now;
+                    inputtext.pop_back();
 
-                Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
-                inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
+                    Graphic::ReleaseBitmap(inputtextbitmap);
+                    inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
+                }
             }
 
+            // Handle Enter
             if (GetAsyncKeyState(VK_RETURN) & 0x8000) {
-                // Handle Enter key press (submit or finalize input)
-                // You could clear the input or store it here
+                auto now = std::chrono::steady_clock::now();
+                if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastKeyPressTime).count() >= debounceDelayMs) {
+                    lastKeyPressTime = now;
 
-                // handle login here
-
-                // For now, just reset
-                inputtext.clear();
-                start_to_input = false;
+                    // Handle Enter logic
+                    inputtext.clear();
+                    start_to_input = false;
+                }
             }
         }
+
     }
 
     // Update logic (nếu có animation hoặc logic khác)
     void MainScreen::update(float delta) {
-        int speed = 200;
+        int speed = 500;
 
         // Update board position
         if (isChoosemapPopup) {
@@ -509,10 +552,21 @@ namespace towerdefense
                     pos.y += i * 100 + 20;
                     Graphic::DrawBitmap(dummyDataPoint[i], pos, hdc);
                 }
+                for (int i = 0; i < dummyData.size(); i++) {
+                    if (hover == i) {
+                        POINT pos = firstplayerCoverPos;
+                        pos.x -= 100;
+                        pos.y += i * 100;
+                        Graphic::DrawBitmap(arrow, pos, hdc);
+                    }
+                }
             }
         } 
         else if (menu == 3) {
-            // setting here 
+            // Leaderboard 
+
+            // copy from continue
+
         }
         else if (menu == 4) {
             // display nothing
