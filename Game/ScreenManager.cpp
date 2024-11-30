@@ -191,7 +191,6 @@ namespace towerdefense
 
         // on mouse click handling
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
-
             auto now = std::chrono::steady_clock::now();
             if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
                 lastMouseClickTime = now;
@@ -274,10 +273,12 @@ namespace towerdefense
                         if (PtInRect(&optionRect, cursorPos)) {
                             // Button click detected
 
-                            // sau nay xoa test
                             switch (i) {
                             case 0:
-                                notify(MOVESETTOWERSTATE);
+                                /*notify(MOVESETTOWERSTATE);*/
+                                
+
+
                                 break;
                             case 1:
                                 //OutputDebugString(L"Map");
@@ -488,7 +489,7 @@ namespace towerdefense
                     index = -1;
 
                     // tao hieu ung nhan nut
-                    //Sleep(100);
+                    Sleep(100);
                 }
                 else {
                     if (i == hover) {
@@ -601,36 +602,109 @@ namespace towerdefense
     //========================================================================================================================//
 
 
-    setTowerScreen::setTowerScreen() {
+    PlayScreen::PlayScreen() {
+        // Initialize dummy enemies
+        //for (int i = 0; i < 10; i++) {
+        //    cenemy dummy;
+        //    vector<POINT> enemyPath = {
+        //        {0, 150},
+        //        {100, 150},
+        //        {200, 200},
+        //        {300, 300},
+        //        {400, 400}
+        //    };
+        //    dummy.calPath(enemyPath);
+        //    enemylist.push_back(dummy);
+        //}
 
+        //// Resize and initialize enemy position vectors
+        //Einit.resize(enemylist.size(), { 0, 150 });
+        //Ecurrent.resize(enemylist.size(), { 0, 150 });
+
+
+        Einit = { 0, 150 };
+        Ecurrent = Einit;
+
+        Tinit = { 50, 565 };
+        Tcurrent = Tinit;
     }
 
-    setTowerScreen::~setTowerScreen() {
+
+    PlayScreen::~PlayScreen() {
         Graphic::ReleaseBitmap(background);
+        Graphic::ReleaseBitmap(tower);
+        Graphic::ReleaseBitmap(towerInitPlace);
+        Graphic::ReleaseBitmap(instructionBoard);
+        Graphic::ReleaseBitmap(enemy);
+        Graphic::ReleaseBitmap(hamburger);
     }
 
-    void setTowerScreen::loadContent(Graphic& graphic, int width, int height) {
+    void PlayScreen::loadContent(Graphic& graphic, int width, int height) {
         float scaleX = static_cast<float>(width) / 395.0f;  // 1280 là kích thước gốc của ảnh
         float scaleY = static_cast<float>(height) / 213.0f; // 720 là kích thước gốc của ảnh
         float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
         float scaleB = 3;                                   // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
         float scaleC = 5;                                   // scale cho input
         float scaleD = 10;                                   // sacle cho text login
-
-
-        graphic.LoadBitmapImage(L"Assets/background/map1.bmp", scale);
+        float scaleE = 2;
+        
+        background = graphic.LoadBitmapImage(L"Assets/background/map1.bmp", scale);
+        tower = graphic.LoadBitmapImage(L"Assets/game/tower.bmp", scaleB);
+        towerInitPlace = graphic.LoadBitmapImage(L"Assets/button/input.bmp", 11);
+        instructionBoard = graphic.LoadBitmapImage(L"Assets/board/board.bmp", 2);
+        enemy = graphic.LoadBitmapImage(L"Assets/game/slime.bmp", 2);
+        hamburger = graphic.LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
     }
 
-    void setTowerScreen::handleInput() {
+    void PlayScreen::handleInput() {
+        //POINT cursorPos;
+        //GetCursorPos(&cursorPos);
+        //ScreenToClient(GetActiveWindow(), &cursorPos);
 
+        //if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
+        //    auto now = std::chrono::steady_clock::now();
+        //    if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
+        //        lastMouseClickTime = now;
+
+        //        // if click in hamburger display board
+
+        //        // if hold tower 
+        //    }
+        //}
     }
 
-    void setTowerScreen::update(float delta) {
+    void PlayScreen::update(float delta) {
+        //for (size_t i = 0; i < enemylist.size(); ++i) {
+        //    if (!enemylist[i].isEnd()) { // Check if the enemy is not at the endpoint
+        //        enemylist[i].update();
+        //        Ecurrent[i] = enemylist[i].getCurr(); // Update `Ecurrent`
+        //    }
+        //}
 
+        /*if (!E1.isEnd()) {
+            E1.update();
+            Ecurrent = E1.getCurr();
+        }*/
+        
+        int dx = 1, dy = 2;
+        Ecurrent.x += dx;
+        Ecurrent.y += dy;
+        
     }
 
-    void setTowerScreen::render(HDC hdc) {
+    void PlayScreen::render(HDC hdc) {
         Graphic::DrawBitmap(background, { 0, 0 }, hdc);
+        Graphic::DrawBitmap(towerInitPlace, towerInitPos, hdc);
+        Graphic::DrawBitmap(tower, Tcurrent, hdc);
+        Graphic::DrawBitmap(instructionBoard, instructionPos, hdc);
+
+        /*for (const auto& position : Ecurrent) {
+            Graphic::DrawBitmap(enemy, position, hdc);
+        }*/
+
+        Graphic::DrawBitmap(enemy, Ecurrent, hdc);
+
+        Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
     }
 }
 

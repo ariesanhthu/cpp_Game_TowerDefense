@@ -211,8 +211,11 @@ namespace towerdefense
         // Tạo màn hình chính
         
 
-        std::shared_ptr<Screen> newscreen = std::make_shared<MainScreen>();
+        //std::shared_ptr<Screen> newscreen = std::make_shared<MainScreen>();
+        std::shared_ptr<Screen> newscreen = std::make_shared<PlayScreen>();
+
         screenManager.changeScreen(std::move(newscreen));
+
         screenManager.loadContent(graphic, windowWidth, windowHeight);
         
 

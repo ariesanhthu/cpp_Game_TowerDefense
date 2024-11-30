@@ -4,37 +4,28 @@
 #include <functional>
 #include "State.h"
 #include <ScreenManager.h>
-#include "Observer.h"
+//#include "Observer.h"
 #include <memory>
 
 
 namespace towerdefense
 {
 
-	class Game : public Observer, public std::enable_shared_from_this<Game>
+	class Game
 	{
 	private:
-		std::unique_ptr<GameState> currentState;
+		//std::unique_ptr<GameState> currentState;
 		ScreenManager screenManager;
 		Graphic graphic;
 
 	public:
-		void setState(std::unique_ptr<GameState> newState) {
+		/*void setState(std::unique_ptr<GameState> newState) {
 			currentState = std::move(newState);
-		}
+		}*/
 
-		void onNotify(const Event event) override {
-			if (event == MOVESETTOWERSTATE) {
-				std::shared_ptr<Screen> newScreen = std::make_shared<setTowerScreen>();
-				screenManager.changeScreen(newScreen);
-				screenManager.loadContent(graphic, windowWidth, windowHeight);
-				
-			}
-		}
-
-		void handleInput() { currentState->handleInput(); }
+		/*void handleInput() { currentState->handleInput(); }
 		void update(float delta) { currentState->update(delta); }
-		void render(HDC hdc) { currentState->render(hdc); }
+		void render(HDC hdc) { currentState->render(hdc); }*/
 
 		//-----------------------------------------------------------
 		friend LRESULT CALLBACK WindowCallback(

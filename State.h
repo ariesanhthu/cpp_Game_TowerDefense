@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <windows.h>
 #include <memory>
 
@@ -30,3 +30,15 @@ public:
     void update(float delta) override;
     void render(HDC hdc) override;
 };
+
+// screen manager phản ứng với state
+// screen manager quản lý hết, state thay đổi
+// if state này thì đổi con trỏ khác
+// màn hình phụ thuộc screen manager
+
+// các màn hình sẽ tự động cập nhật 
+// screen manager sẽ gửi thông báo 
+
+// ----> state 
+
+//

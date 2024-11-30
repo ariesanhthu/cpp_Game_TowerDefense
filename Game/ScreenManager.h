@@ -4,15 +4,17 @@
 #include "Graphic.h"
 #include <vector>
 #include <string>
-#include "Observer.h"
 #include "cplayer.h"
+#include "cenemy.h"
+#include "ctower.h"
 #include <chrono>
 
 using namespace std;
 namespace towerdefense
 {
-    class Screen : public Subject {
+    class Screen {
     public:
+
         // Dòng này làm MainScreen không destruct được
         //virtual ~Screen() = 0;
         virtual void loadContent(Graphic& graphic, int width, int height) = 0;
@@ -22,7 +24,7 @@ namespace towerdefense
         //virtual void resizeContent(int windowWidth, int windowHeight);
     };
 
-    class ScreenManager : public Subject {
+    class ScreenManager {
     private:
         std::shared_ptr<Screen> currentScreen = nullptr;
 
@@ -32,6 +34,7 @@ namespace towerdefense
         void changeScreen(std::shared_ptr<Screen> newScreen) {
             currentScreen = newScreen;
         }
+
         void loadContent(Graphic& graphic, int width, int height) {
             currentScreen->loadContent(graphic, width, height);
         }
@@ -44,8 +47,6 @@ namespace towerdefense
         void render(HDC hdc) {
             currentScreen->render(hdc);
         }
-
-
     };
 
     class MainScreen : public Screen {
@@ -147,14 +148,45 @@ namespace towerdefense
         //void resizeContent(int windowWidth, int windowHeight) override;
     };
 
-    class setTowerScreen : public Screen {
+    class PlayScreen : public Screen {
     private: 
-        HBITMAP background = nullptr;
 
+        // hbitmap
+        HBITMAP background = nullptr;
+        HBITMAP tower = nullptr;              // tower
+        HBITMAP towerInitPlace = nullptr;     // Ô chứa tháp
+        HBITMAP instructionBoard = nullptr;   // Bảng hướng dẫn 
+        HBITMAP enemy = nullptr;              // enemy
+        HBITMAP hamburger = nullptr;          // hamburger button
+
+        // instruction pos
+        POINT instructionPos = { 730, 50 };
+        POINT hamburgerPos = { 1200, 5 };
+
+        // position init place of box
+        POINT towerInitPos = { 10, 550 };
+
+        // delay hand variable
+        std::chrono::steady_clock::time_point lastMouseClickTime;
+        std::chrono::steady_clock::time_point lastKeyPressTime;
+        const int debounceDelayMs = 200; // 200 ms debounce delay
+
+        // dummy enemy 
+        /*std::vector<cenemy> enemylist;
+        std::vector<bool> enemyListIsMove;
+        std::vector<POINT> Ecurrent;
+        std::vector<POINT> Einit;*/              // enemy position
+
+        cenemy E1;
+        POINT Ecurrent, Einit;
+
+        // dummy tower
+        std::vector<ctower> towerlist;
+        POINT Tcurrent, Tinit;        // tower position 
 
     public:
-        setTowerScreen();
-        ~setTowerScreen();
+        PlayScreen();
+        ~PlayScreen();
 
         void loadContent(Graphic& graphic, int width, int height) override;
         void handleInput() override;
