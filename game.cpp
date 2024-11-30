@@ -57,7 +57,7 @@ namespace towerdefense
             HDC device_context = BeginPaint(windowHandle, &paint); // Bắt đầu vẽ
 
             // Vẽ nội dung game trực tiếp lên cửa sổ
-            Game::getInstance().currentScreen->render(device_context);
+            Game::getInstance().screenManager.render(device_context);
 
             EndPaint(windowHandle, &paint); // Kết thúc vẽ
         } break;
@@ -158,21 +158,7 @@ namespace towerdefense
                 }
                 else
                 {
-                    // Cập nhật và vẽ màn hình hiện tại
-
-                    //currentScreen->handleInput();
-
-                    //HDC hdc = GetDC(windowHandle); // Lấy ngữ cảnh thiết bị để vẽ
-
-                    //currentScreen->update(delta); // Cập nhật logic của màn hình
-                    //currentScreen->render(hdc);   // Vẽ màn hình
-
-                    //ReleaseDC(windowHandle, hdc); // Giải phóng ngữ cảnh thiết bị
-                    //
-                    //Sleep(16);
-                  
-                    // Tạo bộ đệm (off-screen buffer)
-                    currentScreen->handleInput();
+                    screenManager.handleInput();
 
                     HDC hdc = GetDC(windowHandle); // Lấy ngữ cảnh thiết bị từ cửa sổ
                     HDC bufferDC = CreateCompatibleDC(hdc); // Tạo DC tương thích để vẽ vào bộ đệm
@@ -192,8 +178,8 @@ namespace towerdefense
                     DeleteObject(brush);
 
                     // Vẽ vào bộ đệm
-                    currentScreen->update(delta);  // Cập nhật logic của màn hình
-                    currentScreen->render(bufferDC); // Vẽ màn hình vào DC bộ đệm
+                    screenManager.update(delta);  // Cập nhật logic của màn hình
+                    screenManager.render(bufferDC); // Vẽ màn hình vào DC bộ đệm
 
                     // Copy nội dung từ bộ đệm ra màn hình
                     BitBlt(hdc, 0, 0, width, height, bufferDC, 0, 0, SRCCOPY);
@@ -223,9 +209,13 @@ namespace towerdefense
     void Game::loadInitialScreen()
     {
         // Tạo màn hình chính
-        currentScreen = std::make_unique<MainScreen>();
+        
+
+        std::shared_ptr<Screen> newscreen = std::make_shared<MainScreen>();
+        screenManager.changeScreen(std::move(newscreen));
+        screenManager.loadContent(graphic, windowWidth, windowHeight);
+        
 
         // Tải nội dung màn hình chính
-        currentScreen->loadContent(graphic, windowWidth, windowHeight);
     }
 }

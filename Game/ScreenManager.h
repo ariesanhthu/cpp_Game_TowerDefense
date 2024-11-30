@@ -11,7 +11,7 @@
 using namespace std;
 namespace towerdefense
 {
-    class Screen {
+    class Screen : public Subject {
     public:
         // Dòng này làm MainScreen không destruct được
         //virtual ~Screen() = 0;
@@ -20,6 +20,32 @@ namespace towerdefense
         virtual void update(float delta) = 0;
         virtual void render(HDC hdc) = 0;
         //virtual void resizeContent(int windowWidth, int windowHeight);
+    };
+
+    class ScreenManager : public Subject {
+    private:
+        std::shared_ptr<Screen> currentScreen = nullptr;
+
+    public:
+        ~ScreenManager() {}
+
+        void changeScreen(std::shared_ptr<Screen> newScreen) {
+            currentScreen = newScreen;
+        }
+        void loadContent(Graphic& graphic, int width, int height) {
+            currentScreen->loadContent(graphic, width, height);
+        }
+        void handleInput() {
+            currentScreen->handleInput();
+        }
+        void update(float delta) {
+            currentScreen->update(delta);
+        }
+        void render(HDC hdc) {
+            currentScreen->render(hdc);
+        }
+
+
     };
 
     class MainScreen : public Screen {
@@ -119,5 +145,20 @@ namespace towerdefense
         void update(float delta) override;
         void render(HDC hdc) override;
         //void resizeContent(int windowWidth, int windowHeight) override;
+    };
+
+    class setTowerScreen : public Screen {
+    private: 
+        HBITMAP background = nullptr;
+
+
+    public:
+        setTowerScreen();
+        ~setTowerScreen();
+
+        void loadContent(Graphic& graphic, int width, int height) override;
+        void handleInput() override;
+        void update(float delta) override;
+        void render(HDC hdc) override;
     };
 }

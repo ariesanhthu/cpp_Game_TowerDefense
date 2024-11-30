@@ -263,12 +263,12 @@ namespace towerdefense
                         currentpoint = initpoint;
                         menu = 0;
                     }
-                    for (size_t i = 0; i < buttonPositions.size(); ++i) {
+                    for (size_t i = 0; i < optionPositions.size(); ++i) {
                         RECT optionRect = {
-                            buttonPositions[i].x,
-                            buttonPositions[i].y,
-                            buttonPositions[i].x + optionSize.x, // Button width
-                            buttonPositions[i].y + optionSize.y // Button height
+                            optionPositions[i].x,
+                            optionPositions[i].y,
+                            optionPositions[i].x + optionSize.x, // Button width
+                            optionPositions[i].y + optionSize.y // Button height
                         };
 
                         if (PtInRect(&optionRect, cursorPos)) {
@@ -277,16 +277,16 @@ namespace towerdefense
                             // sau nay xoa test
                             switch (i) {
                             case 0:
-                                OutputDebugString(L"Map");
+                                notify(MOVESETTOWERSTATE);
                                 break;
                             case 1:
-                                OutputDebugString(L"Map");
+                                //OutputDebugString(L"Map");
                                 break;
                             case 2:
-                                OutputDebugString(L"Map");
+                                //OutputDebugString(L"Map");
                                 break;
                             case 3:
-                                OutputDebugString(L"Map");
+                                //OutputDebugString(L"Map");
                                 break;
                             }
                         }
@@ -416,6 +416,9 @@ namespace towerdefense
                     lastKeyPressTime = now;
 
                     // Handle Enter logic
+                    
+                    
+
                     inputtext.clear();
                     start_to_input = false;
                 }
@@ -485,7 +488,7 @@ namespace towerdefense
                     index = -1;
 
                     // tao hieu ung nhan nut
-                    Sleep(30);
+                    //Sleep(100);
                 }
                 else {
                     if (i == hover) {
@@ -595,4 +598,40 @@ namespace towerdefense
         }
     }
 
+    //========================================================================================================================//
+
+
+    setTowerScreen::setTowerScreen() {
+
+    }
+
+    setTowerScreen::~setTowerScreen() {
+        Graphic::ReleaseBitmap(background);
+    }
+
+    void setTowerScreen::loadContent(Graphic& graphic, int width, int height) {
+        float scaleX = static_cast<float>(width) / 395.0f;  // 1280 là kích thước gốc của ảnh
+        float scaleY = static_cast<float>(height) / 213.0f; // 720 là kích thước gốc của ảnh
+        float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
+        float scaleB = 3;                                   // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
+        float scaleC = 5;                                   // scale cho input
+        float scaleD = 10;                                   // sacle cho text login
+
+
+        graphic.LoadBitmapImage(L"Assets/background/map1.bmp", scale);
+    }
+
+    void setTowerScreen::handleInput() {
+
+    }
+
+    void setTowerScreen::update(float delta) {
+
+    }
+
+    void setTowerScreen::render(HDC hdc) {
+        Graphic::DrawBitmap(background, { 0, 0 }, hdc);
+    }
 }
+
+

@@ -1,25 +1,35 @@
-#pragma once
+﻿#pragma once
 #include <windows.h>
 #include <string>
 #include <functional>
 #include "State.h"
 #include <ScreenManager.h>
 #include "Observer.h"
+#include <memory>
 
 
 namespace towerdefense
 {
 
-	class Game 
+	class Game : public Observer, public std::enable_shared_from_this<Game>
 	{
 	private:
 		std::unique_ptr<GameState> currentState;
-		std::unique_ptr<Screen> currentScreen;
+		ScreenManager screenManager;
 		Graphic graphic;
 
 	public:
 		void setState(std::unique_ptr<GameState> newState) {
 			currentState = std::move(newState);
+		}
+
+		void onNotify(const Event event) override {
+			if (event == MOVESETTOWERSTATE) {
+				std::shared_ptr<Screen> newScreen = std::make_shared<setTowerScreen>();
+				screenManager.changeScreen(newScreen);
+				screenManager.loadContent(graphic, windowWidth, windowHeight);
+				
+			}
 		}
 
 		void handleInput() { currentState->handleInput(); }
