@@ -17,8 +17,9 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Game\UIElement.cpp" />
     <ClCompile Include="Game\UIManager.cpp" />
-    <ClCompile Include="State.cpp" />
+    <ClCompile Include="Game\State.cpp" />
     <ClCompile Include="Graphics\Graphic.cpp" />
+    <ClCompile Include="Game\ScreenManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
@@ -38,7 +39,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Game\UIElement.h" />
     <ClInclude Include="Game\UIManager.h" />
-    <ClInclude Include="State.h" />
+    <ClInclude Include="Game\State.h" />
     <ClInclude Include="Graphics\Graphic.h" />
     <ClInclude Include="Game\ScreenManager.h" />
     <ClInclude Include="Game\ThreadManager.h" />
