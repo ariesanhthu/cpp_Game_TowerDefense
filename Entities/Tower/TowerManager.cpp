@@ -9,3 +9,17 @@ void TowerManager::addTower(TowerBase tower) {
 void TowerManager::renderTowers() {
 
 }
+
+void TowerManager::updateAllTower(std::vector<EnemyBase>& enemies_, std::vector<BulletBase>& bulllets_) {
+	for (TowerBase& tower : towers_) {
+		if (tower.canShoot()) {
+			for (EnemyBase& enemy : enemies_) {
+				if (tower.canShoot(&enemy)) {
+					BulletBase bullet = tower.shoot(&enemy);
+					bulllets_.push_back(bullet);
+					break;
+				}
+			}
+		}
+	}
+}

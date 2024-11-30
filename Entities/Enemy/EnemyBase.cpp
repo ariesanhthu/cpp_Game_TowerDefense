@@ -40,3 +40,26 @@ cpoint EnemyBase::getCurrentPosition() {
 int EnemyBase::getHealth() {
 	return health;
 }
+
+// file
+void EnemyBase::writeFile(ostream& o) {
+	o.write((char*)&health, sizeof(int));
+	o.write((char*)&currentPosition, sizeof(cpoint));
+	o.write((char*)&index, sizeof(int));
+	o.write((char*)&path, sizeof(int));
+}
+void EnemyBase::readFile(istream& i) {
+	i.read((char*)&health, sizeof(int));
+	i.read((char*)&currentPosition, sizeof(cpoint));
+	i.read((char*)&index, sizeof(int));
+	i.read((char*)&path, sizeof(int));
+}
+
+//update
+void EnemyBase::update(){
+	currentPosition = model->getPath(path)[index++];
+}
+
+void EnemyBase::hit(int n){
+	health -= n;
+}

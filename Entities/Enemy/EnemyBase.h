@@ -36,6 +36,13 @@ public:
 	cpoint getCurrentPosition();
 	int getHealth();
 
+	// file
+	void writeFile(ostream& o);
+	void readFile(istream& i);
+
+	//update
+	void update();
+	void hit( int n);
 };
 
 #endif

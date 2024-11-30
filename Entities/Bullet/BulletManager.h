@@ -1,6 +1,6 @@
 #pragma once
-#ifndef __ENEMY_MANAGER_h__
-#define __ENEMY_MANAGER_h__
+#ifndef __BULLET_MANAGER_h__
+#define __BULLET_MANAGER_h__
 
 #include "BulletModel.h"
 #include "BulletBase.h"
@@ -12,6 +12,7 @@ public:
     void addBullet(BulletBase bullet);
     void renderBullets();
 
+    void update();
 private:
     std::vector<BulletBase> bulllets_;
 

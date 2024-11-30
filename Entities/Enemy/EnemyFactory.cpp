@@ -11,6 +11,6 @@ unique_ptr<EnemyBase> EnemyFactory::createEnemy(const int type) {
         return make_unique<EnemyBase>();
     }
     else {
-        throw invalid_argument("Unknown bullet type");
+        throw invalid_argument("Unknown enemy type");
     }
 }

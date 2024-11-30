@@ -3,6 +3,7 @@
 TowerModel::TowerModel(){
 	range = 20;
 	rate = 1;
+	bulletModel = nullptr;
 }
 TowerModel::TowerModel(const TowerModel& other) {
 	range = other.range;

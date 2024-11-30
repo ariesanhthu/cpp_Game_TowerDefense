@@ -9,6 +9,9 @@ class EnemyManager
 {
 public:
     void addEnemy(EnemyModel* model,cpoint pos);
+
+    void updateAllEnemy();
+
     void renderEnemies();
 
 private:

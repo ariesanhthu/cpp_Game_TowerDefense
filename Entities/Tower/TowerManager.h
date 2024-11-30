@@ -12,6 +12,8 @@ public:
     void addTower(TowerBase tower);
     void renderTowers();
 
+    void updateAllTower(std::vector<EnemyBase> &enemies_, std::vector<BulletBase>& bulllets_);
+
 private:
     std::vector<TowerBase> towers_;
 
