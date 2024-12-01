@@ -604,29 +604,19 @@ namespace towerdefense
 
     PlayScreen::PlayScreen() {
         // Initialize dummy enemies
-        //for (int i = 0; i < 10; i++) {
-        //    cenemy dummy;
-        //    vector<POINT> enemyPath = {
-        //        {0, 150},
-        //        {100, 150},
-        //        {200, 200},
-        //        {300, 300},
-        //        {400, 400}
-        //    };
-        //    dummy.calPath(enemyPath);
-        //    enemylist.push_back(dummy);
-        //}
+        for (int i = 0; i < 10; i++) {
+            cenemy dummy;
+            dummy.setPath(epath);
+            enemylist.push_back(dummy);
+        }
 
-        //// Resize and initialize enemy position vectors
-        //Einit.resize(enemylist.size(), { 0, 150 });
-        //Ecurrent.resize(enemylist.size(), { 0, 150 });
+        //enemylist[0].isMove = true;
 
+        Einit = { -30, 150 };
+        Ecurrent.resize(enemylist.size(), Einit);
 
-        Einit = { 0, 150 };
-        Ecurrent = Einit;
-
-        Tinit = { 50, 565 };
-        Tcurrent = Tinit;
+        Turretinit = { 50, 565 };
+        TcurrentPick = Turretinit;
     }
 
 
@@ -637,6 +627,7 @@ namespace towerdefense
         Graphic::ReleaseBitmap(instructionBoard);
         Graphic::ReleaseBitmap(enemy);
         Graphic::ReleaseBitmap(hamburger);
+        Graphic::ReleaseBitmap(play_or_pause);
     }
 
     void PlayScreen::loadContent(Graphic& graphic, int width, int height) {
@@ -645,66 +636,131 @@ namespace towerdefense
         float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
         float scaleB = 3;                                   // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
         float scaleC = 5;                                   // scale cho input
-        float scaleD = 10;                                   // sacle cho text login
+        float scaleD = 10;                                  // sacle cho text login
         float scaleE = 2;
         
         background = graphic.LoadBitmapImage(L"Assets/background/map1.bmp", scale);
-        tower = graphic.LoadBitmapImage(L"Assets/game/tower.bmp", scaleB);
-        towerInitPlace = graphic.LoadBitmapImage(L"Assets/button/input.bmp", 11);
+        tower = graphic.LoadBitmapImage(L"Assets/game/tower.bmp", 2);
+        towerInitPlace = graphic.LoadBitmapImage(L"Assets/button/input.bmp", 8);
         instructionBoard = graphic.LoadBitmapImage(L"Assets/board/board.bmp", 2);
         enemy = graphic.LoadBitmapImage(L"Assets/game/slime.bmp", 2);
         hamburger = graphic.LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
+        play_or_pause = graphic.LoadBitmapImage(L"Assets/button/button_up.bmp", 1.8);
     }
 
     void PlayScreen::handleInput() {
-        //POINT cursorPos;
-        //GetCursorPos(&cursorPos);
-        //ScreenToClient(GetActiveWindow(), &cursorPos);
+        POINT cursorPos;
+        GetCursorPos(&cursorPos);
+        ScreenToClient(GetActiveWindow(), &cursorPos);
 
-        //if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
-        //    auto now = std::chrono::steady_clock::now();
-        //    if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
-        //        lastMouseClickTime = now;
+        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
+            auto now = std::chrono::steady_clock::now();
+            if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
+                lastMouseClickTime = now;
+                // if click the play 
+                RECT playRect = {
+                    posbuttonplay.x,
+                    posbuttonplay.y,
+                    posbuttonplay.x + buttonSize.x * 1.8, // Button width
+                    posbuttonplay.y + buttonSize.y * 1.8 // Button height
+                };
+                if (PtInRect(&playRect, cursorPos)) {
+                    // if click play 
+                    if (!enemylist[0].isMove) {
+                        enemylist[0].isMove = true;
+                    }
+                    else {
+                        for (int i = 0; i < enemylist.size(); i++) {
+                            enemylist[i].isMove = !enemylist[i].isMove;
+                        }
+                    }
+                }
+                
+                // if click in hamburger display board 
+                RECT hamburgerRect = {
+                    hamburgerPos.x,
+                    hamburgerPos.y,
+                    hamburgerPos.x + buttonSize.x * 1.5, // Button width
+                    hamburgerPos.y + buttonSize.y * 1.5 // Button height
+                };
+                if (PtInRect(&hamburgerRect, cursorPos)) {
+                    displayBoard = !displayBoard;
+                }
+            }
+        }
 
-        //        // if click in hamburger display board
+        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
+            // if hold tower 
+            RECT initTowerRect = {
+                Turretinit.x,
+                Turretinit.y,
+                Turretinit.x + towerSize.x * 2, // Button width
+                Turretinit.y + towerSize.y * 2 // Button height
+            };
+            if (PtInRect(&initTowerRect, cursorPos)) {
+                isPicking = true;
+            }
+            else {
+                isPicking = false;
+            }
+        }
 
-        //        // if hold tower 
-        //    }
-        //}
+        if (isPicking) {
+            TcurrentPick = cursorPos;
+        }
+        else {
+            if (checkValidPos(TcurrentPick)) {
+                // neu vi tri thoa dieu kien thi them vao list tower
+                towerlist.push_back(Tpicking);
+                Tcurrent.push_back(TcurrentPick);
+            }
+        }
     }
 
     void PlayScreen::update(float delta) {
-        //for (size_t i = 0; i < enemylist.size(); ++i) {
-        //    if (!enemylist[i].isEnd()) { // Check if the enemy is not at the endpoint
-        //        enemylist[i].update();
-        //        Ecurrent[i] = enemylist[i].getCurr(); // Update `Ecurrent`
-        //    }
-        //}
+        for (size_t i = 0; i < enemylist.size() - 1; ++i) {
+            if (enemylist[i].isMove) {
+                if (!enemylist[i].isEnd()) { // Check if the enemy is not at the endpoint
+                    enemylist[i].update(delta);
+                    Ecurrent[i] = enemylist[i].getCurr(); // Update `Ecurrent`
+                    if (Ecurrent[i].x - 100 > Ecurrent[i + 1].x) {
+                        enemylist[i + 1].isMove = true;
+                    }
+                }
+            }
+        }
 
-        /*if (!E1.isEnd()) {
-            E1.update();
-            Ecurrent = E1.getCurr();
-        }*/
-        
-        int dx = 1, dy = 2;
-        Ecurrent.x += dx;
-        Ecurrent.y += dy;
-        
+        if (enemylist[enemylist.size() - 1].isMove) {
+            enemylist[enemylist.size() - 1].update(delta);
+            Ecurrent[enemylist.size() - 1] = enemylist[enemylist.size() - 1].getCurr();
+        }
     }
 
     void PlayScreen::render(HDC hdc) {
         Graphic::DrawBitmap(background, { 0, 0 }, hdc);
         Graphic::DrawBitmap(towerInitPlace, towerInitPos, hdc);
-        Graphic::DrawBitmap(tower, Tcurrent, hdc);
-        Graphic::DrawBitmap(instructionBoard, instructionPos, hdc);
-
-        /*for (const auto& position : Ecurrent) {
-            Graphic::DrawBitmap(enemy, position, hdc);
-        }*/
-
-        Graphic::DrawBitmap(enemy, Ecurrent, hdc);
-
+        Graphic::DrawBitmap(play_or_pause, posbuttonplay, hdc);
+        if (displayBoard) {
+            Graphic::DrawBitmap(instructionBoard, instructionPos, hdc);
+        }
         Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
+
+        for (const auto& position : Ecurrent) {
+            Graphic::DrawBitmap(enemy, position, hdc);
+        }
+
+        // ve tat ca tower
+        for (const auto& position : Tcurrent) {
+            Graphic::DrawBitmap(tower, position, hdc);
+        }
+
+        // ve tower trong box
+        Graphic::DrawBitmap(tower, Turretinit, hdc);
+
+        // ve tower trong qua trinh di chuyen chuyen 
+        if (isPicking) {
+            Graphic::DrawBitmap(tower, TcurrentPick, hdc);
+        }
     }
 }
 

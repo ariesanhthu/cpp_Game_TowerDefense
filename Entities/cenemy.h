@@ -7,15 +7,6 @@ using namespace std;
 
 class cenemy {
 private:
-    vector<POINT> epath = {
-        {0, 150},
-        {100, 150},
-        {200, 200},
-        {300, 300},
-        {400, 400}
-    };
-
-private:
     int health;
     int speed;
     POINT currentPosition;
@@ -23,9 +14,19 @@ private:
     size_t index = 0;
 
 public:
+    bool isMove = false;
+    
     cenemy();
+    
     POINT getCurr() const { return this->currentPosition; }
-    void setPath(const vector<POINT>& ePath);
-    void update();
+    void setCurr(POINT curr) { this->currentPosition = curr; }
+
     bool isEnd() const { return index >= path.size() - 1; }
+    bool isDead() const { return health == 0; }
+
+    void setPath(vector<POINT> ePath);
+
+    void handleinput(); 
+    void update(float delta);
+    void render();
 };

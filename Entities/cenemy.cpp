@@ -4,10 +4,10 @@ cenemy::cenemy() {
     health = 3;
     speed = 4;
     path.clear();
-    //setPath(epath);
+    isMove = false;
 }
 
-void cenemy::setPath(const vector<POINT>& ePath) {
+void cenemy::setPath(vector<POINT> ePath) {
     if (ePath.empty()) {
         std::string err = "err";
         throw(err);
@@ -46,12 +46,22 @@ void cenemy::setPath(const vector<POINT>& ePath) {
             currY += directionY[i - 1];
         }
     }
+
 }
 
-void cenemy::update() {
-    if (isEnd()) {
+void cenemy::update(float delta) {
+    if (index >= path.size() - 1) {
+        isMove = false;
         return;
     }
 
-    currentPosition = path[++index];
+    if ((index + speed) < (path.size() - 1)) {
+        index += speed;
+    }
+    else {
+        index = path.size() - 1;
+    }
+
+    currentPosition = path[index];
 }
+

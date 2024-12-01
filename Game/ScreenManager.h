@@ -150,6 +150,12 @@ namespace towerdefense
 
     class PlayScreen : public Screen {
     private: 
+        vector<POINT> epath = {
+            {0, 150},
+            {390, 150},
+            {390, 490},
+            {1200, 490},
+        };
 
         // hbitmap
         HBITMAP background = nullptr;
@@ -158,31 +164,48 @@ namespace towerdefense
         HBITMAP instructionBoard = nullptr;   // Bảng hướng dẫn 
         HBITMAP enemy = nullptr;              // enemy
         HBITMAP hamburger = nullptr;          // hamburger button
+        HBITMAP play_or_pause = nullptr;      // nut play hoac pause
 
         // instruction pos
         POINT instructionPos = { 730, 50 };
         POINT hamburgerPos = { 1200, 5 };
+        bool displayBoard = true;
 
         // position init place of box
         POINT towerInitPos = { 10, 550 };
+        
+        // buton play or pause 
+        POINT posbuttonplay = { 350, 570 };
 
         // delay hand variable
         std::chrono::steady_clock::time_point lastMouseClickTime;
         std::chrono::steady_clock::time_point lastKeyPressTime;
         const int debounceDelayMs = 200; // 200 ms debounce delay
 
-        // dummy enemy 
-        /*std::vector<cenemy> enemylist;
-        std::vector<bool> enemyListIsMove;
+        // enemy 
+        std::vector<cenemy> enemylist;
         std::vector<POINT> Ecurrent;
-        std::vector<POINT> Einit;*/              // enemy position
+        POINT Einit;              // enemy position
 
-        cenemy E1;
-        POINT Ecurrent, Einit;
-
-        // dummy tower
+        // tower
         std::vector<ctower> towerlist;
-        POINT Tcurrent, Tinit;        // tower position 
+        std::vector<POINT> Tcurrent;
+        POINT Turretinit;                       // tower position 
+
+        // tower de chon di chuyen
+        ctower Tpicking; 
+        POINT TcurrentPick;
+        bool isPicking = false;
+
+        // size
+        POINT buttonSize = { 26, 29 };
+        POINT boardSize = { 260, 180 };
+        POINT towerSize = { 20,30 };
+
+        // support 
+        bool checkValidPos(POINT pos) {
+            return true;
+        }
 
     public:
         PlayScreen();
