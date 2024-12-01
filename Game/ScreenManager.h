@@ -183,14 +183,18 @@ namespace towerdefense
         const int debounceDelayMs = 200; // 200 ms debounce delay
 
         // enemy 
-        std::vector<cenemy> enemylist;
-        std::vector<POINT> Ecurrent;
+        std::vector<cenemy> enemylist;  
         POINT Einit;              // enemy position
 
         // tower
         std::vector<ctower> towerlist;
         std::vector<POINT> Tcurrent;
-        POINT Turretinit;                       // tower position 
+        POINT Turretinit;         // tower position 
+
+        // tower2 for test
+        /*HBITMAP tu2;
+        ctower t2; 
+        POINT t2current = { 20, 20 };*/
 
         // tower de chon di chuyen
         ctower Tpicking; 

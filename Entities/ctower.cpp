@@ -8,9 +8,3 @@
 //    }
 //}
 
-void ctower::draw(){
-    ctool::mtx.lock();
-    ctool::GotoXY(location.getX(), location.getY());
-    cout << "T";
-    ctool::mtx.unlock();
-}
