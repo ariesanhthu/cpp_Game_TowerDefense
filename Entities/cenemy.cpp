@@ -4,56 +4,64 @@ cenemy::cenemy() {
     health = 3;
     speed = 4;
     path.clear();
+    isMove = false;
 }
 
-void cenemy::calPath(vector<cpoint> ePath) {
+void cenemy::setPath(vector<POINT> ePath) {
+    if (ePath.empty()) {
+        std::string err = "err";
+        throw(err);
+    }
 
     vector<int> directionX;
     vector<int> directionY;
     currentPosition = ePath[0];
-    for (int i = 0; i < ePath.size()-1; i++) {
-        if (ePath[i].getX() < ePath[i + 1].getX())
-        {
+
+    for (size_t i = 0; i < ePath.size() - 1; i++) {
+        if (ePath[i].x < ePath[i + 1].x) {
             directionX.push_back(1);
             directionY.push_back(0);
         }
-        else if (ePath[i].getX() > ePath[i + 1].getX()) 
-        {
+        else if (ePath[i].x > ePath[i + 1].x) {
             directionX.push_back(-1);
             directionY.push_back(0);
         }
-        else if (ePath[i].getY() < ePath[i + 1].getY()) 
-        {
+        else if (ePath[i].y < ePath[i + 1].y) {
             directionY.push_back(1);
             directionX.push_back(0);
         }
-        else if (ePath[i].getY() > ePath[i + 1].getY()) 
-        {
+        else if (ePath[i].y > ePath[i + 1].y) {
             directionY.push_back(-1);
             directionX.push_back(0);
         }
     }
 
-    int currX = currentPosition.getX();
-    int currY = currentPosition.getY();
-    for (int i = 1; i < ePath.size(); i++)
-    {
-        while (currX != ePath[i].getX() || currY != ePath[i].getY()) {
-            path.push_back({ currX, currY, 0 });
-            currX += directionX[i-1];
-            currY += directionY[i-1];
+    int currX = currentPosition.x;
+    int currY = currentPosition.y;
+
+    for (size_t i = 1; i < ePath.size(); i++) {
+        while (currX != ePath[i].x || currY != ePath[i].y) {
+            path.push_back({ currX, currY });
+            currX += directionX[i - 1];
+            currY += directionY[i - 1];
         }
     }
-    
+
 }
 
-void cenemy::draw(){
-    ctool::mtx.lock();
-    ctool::GotoXY((int)currentPosition.getX(), (int)currentPosition.getY());
-    cout << " ";
-    currentPosition = path[++index];
-    ctool::GotoXY((int)currentPosition.getX(), (int)currentPosition.getY());
-    cout << health;
+void cenemy::update(float delta) {
+    if (index >= path.size() - 1) {
+        isMove = false;
+        return;
+    }
 
-    ctool::mtx.unlock();
+    if ((index + speed) < (path.size() - 1)) {
+        index += speed;
+    }
+    else {
+        index = path.size() - 1;
+    }
+
+    currentPosition = path[index];
 }
+

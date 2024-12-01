@@ -57,7 +57,7 @@ namespace towerdefense
             HDC device_context = BeginPaint(windowHandle, &paint); // Bắt đầu vẽ
 
             // Vẽ nội dung game trực tiếp lên cửa sổ
-            Game::getInstance().currentScreen->render(device_context);
+            Game::getInstance().screenManager.render(device_context);
 
             EndPaint(windowHandle, &paint); // Kết thúc vẽ
         } break;
@@ -158,13 +158,40 @@ namespace towerdefense
                 }
                 else
                 {
-                    // Cập nhật và vẽ màn hình hiện tại
-                    currentScreen->update(delta); // Cập nhật logic của màn hình
-                    HDC hdc = GetDC(windowHandle); // Lấy ngữ cảnh thiết bị để vẽ
-                    currentScreen->render(hdc);   // Vẽ màn hình
-                    ReleaseDC(windowHandle, hdc); // Giải phóng ngữ cảnh thiết bị
-                    
-                  // inputHadle
+                    screenManager.handleInput();
+
+                    HDC hdc = GetDC(windowHandle); // Lấy ngữ cảnh thiết bị từ cửa sổ
+                    HDC bufferDC = CreateCompatibleDC(hdc); // Tạo DC tương thích để vẽ vào bộ đệm
+
+                    // Tạo một bitmap để làm bộ đệm
+                    RECT clientRect;
+                    GetClientRect(windowHandle, &clientRect);
+                    int width = clientRect.right - clientRect.left;
+                    int height = clientRect.bottom - clientRect.top;
+
+                    HBITMAP bufferBitmap = CreateCompatibleBitmap(hdc, width, height);
+                    HBITMAP oldBitmap = (HBITMAP)SelectObject(bufferDC, bufferBitmap); // Gắn bitmap vào DC bộ đệm
+
+                    // Xóa bộ đệm trước khi vẽ
+                    HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0)); // Màu nền (đen)
+                    FillRect(bufferDC, &clientRect, brush);
+                    DeleteObject(brush);
+
+                    // Vẽ vào bộ đệm
+                    screenManager.update(delta);  // Cập nhật logic của màn hình
+                    screenManager.render(bufferDC); // Vẽ màn hình vào DC bộ đệm
+
+                    // Copy nội dung từ bộ đệm ra màn hình
+                    BitBlt(hdc, 0, 0, width, height, bufferDC, 0, 0, SRCCOPY);
+
+                    // Giải phóng tài nguyên
+                    SelectObject(bufferDC, oldBitmap);
+                    DeleteObject(bufferBitmap);
+                    DeleteDC(bufferDC);
+                    ReleaseDC(windowHandle, hdc);
+
+                    Sleep(16);
+                    // inputHadle
                     // update
                     // render
                 }
@@ -182,9 +209,17 @@ namespace towerdefense
     void Game::loadInitialScreen()
     {
         // Tạo màn hình chính
-        currentScreen = std::make_unique<MainScreen>();
+        
+
+        //std::shared_ptr<Screen> newscreen = std::make_shared<MainScreen>();
+        std::shared_ptr<Screen> newscreen = std::make_shared<PlayScreen>();
+
+        screenManager.changeScreen(std::move(newscreen));
+
+        screenManager.loadContent(graphic, windowWidth, windowHeight);
+        
 
         // Tải nội dung màn hình chính
-        currentScreen->loadContent(graphic, windowWidth, windowHeight);
+        //currentScreen->loadContent(graphic, windowWidth, windowHeight);
     }
 }

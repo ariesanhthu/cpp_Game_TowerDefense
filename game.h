@@ -4,6 +4,9 @@
 #include <functional>
 #include "State.h"
 #include <ScreenManager.h>
+//#include "Observer.h"
+#include <memory>
+
 
 namespace towerdefense
 {
@@ -11,18 +14,18 @@ namespace towerdefense
 	class Game
 	{
 	private:
-		std::unique_ptr<GameState> currentState;
-		std::unique_ptr<Screen> currentScreen;
+		//std::unique_ptr<GameState> currentState;
+		ScreenManager screenManager;
 		Graphic graphic;
 
 	public:
-		void setState(std::unique_ptr<GameState> newState) {
+		/*void setState(std::unique_ptr<GameState> newState) {
 			currentState = std::move(newState);
-		}
+		}*/
 
-		void handleInput() { currentState->handleInput(); }
+		/*void handleInput() { currentState->handleInput(); }
 		void update(float delta) { currentState->update(delta); }
-		void render(HDC hdc) { currentState->render(hdc); }
+		void render(HDC hdc) { currentState->render(hdc); }*/
 
 		//-----------------------------------------------------------
 		friend LRESULT CALLBACK WindowCallback(
