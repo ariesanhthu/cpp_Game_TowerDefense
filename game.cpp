@@ -4,11 +4,12 @@
 
 namespace towerdefense
 {
-
     //==========================================================
     // CALLBACK
     //==========================================================
     // Hàm xử lý các sự kiện của cửa sổ (Windows message)
+    HWND g_hwnd = nullptr;
+
     LRESULT CALLBACK WindowCallback(
         HWND windowHandle,
         UINT message,
@@ -19,6 +20,10 @@ namespace towerdefense
         LRESULT result = 0; // Lưu kết quả trả về từ Windows
         switch (message)
         {
+        case WM_CREATE: 
+            g_hwnd = windowHandle;
+            Game::getInstance().loadInitialScreen(0);
+        break;
         case WM_CLOSE: // Sự kiện đóng cửa sổ
         {
             Game::getInstance().running = false; // Dừng game
@@ -28,14 +33,6 @@ namespace towerdefense
         {
             Game::getInstance().running = false; // Dừng game
             OutputDebugString(L"window destroy\n");
-        } break;
-        case WM_KEYDOWN: // Phím được nhấn
-        case WM_KEYUP:   // Phím được nhả
-        {
-            uint32_t VKCode = wParam; // Mã phím
-            bool wasDown = (lParam & (1 << 30)) != 0; // Kiểm tra trạng thái phím
-            bool isDown = (lParam & (1 << 31)) == 0;
-            Input::processKeyboardInput(VKCode, wasDown, isDown); // Xử lý phím
         } break;
         case WM_SIZE:
         {
@@ -61,6 +58,15 @@ namespace towerdefense
 
             EndPaint(windowHandle, &paint); // Kết thúc vẽ
         } break;
+
+        case WM_CUSTOM_LOAD_SCREEN:
+        {
+            int x = (int)wParam;
+            OutputDebugStringA("hasduhaskd");
+            Game::getInstance().loadInitialScreen(x);
+
+        } break;
+
         default:
             result = DefWindowProc(windowHandle, message, wParam, lParam); // Xử lý mặc định
         }
@@ -116,7 +122,7 @@ namespace towerdefense
             CW_USEDEFAULT,                   // Vị trí mặc định
             windowWidth,
             windowHeight,
-            0,
+            nullptr,
             0,
             hInstance,
             0
@@ -129,7 +135,7 @@ namespace towerdefense
 
             //==========================================================
             // Tách phần load screen vào hàm riêng
-            loadInitialScreen(); // Gọi hàm tách code (xem định nghĩa bên dưới)
+            //loadInitialScreen(); // Gọi hàm tách code (xem định nghĩa bên dưới)
             //==========================================================
 
             // Thiết lập clock để tính toán delta time (thời gian giữa hai frame)
@@ -158,7 +164,6 @@ namespace towerdefense
                 }
                 else
                 {
-                    screenManager.handleInput();
 
                     HDC hdc = GetDC(windowHandle); // Lấy ngữ cảnh thiết bị từ cửa sổ
                     HDC bufferDC = CreateCompatibleDC(hdc); // Tạo DC tương thích để vẽ vào bộ đệm
@@ -178,6 +183,7 @@ namespace towerdefense
                     DeleteObject(brush);
 
                     // Vẽ vào bộ đệm
+                    screenManager.handleInput(g_hwnd);
                     screenManager.update(delta);  // Cập nhật logic của màn hình
                     screenManager.render(bufferDC); // Vẽ màn hình vào DC bộ đệm
 
@@ -206,16 +212,21 @@ namespace towerdefense
     //==========================================================
     // Tách phần load screen
     //==========================================================
-    void Game::loadInitialScreen()
+    void Game::loadInitialScreen(int x)
     {
         // Tạo màn hình chính
         
 
         //std::shared_ptr<Screen> newscreen = std::make_shared<MainScreen>();
-        std::shared_ptr<Screen> newscreen = std::make_shared<PlayScreen>();
+        std::shared_ptr<Screen> newscreen;
+        if (x == 0) {
+            newscreen = std::make_shared<MainScreen>();
+        }
+        else if (x == 1) {
+            newscreen = std::make_shared<PlayScreen>();
+        }
 
         screenManager.changeScreen(std::move(newscreen));
-
         screenManager.loadContent(graphic, windowWidth, windowHeight);
         
 
