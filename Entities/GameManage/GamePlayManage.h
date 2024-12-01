@@ -12,10 +12,12 @@ class GamePlayManage
 	BulletManager bulletManager;
 	TowerManager towerManager;
 
+
 public:
 	void setup();
 	void startGame();
 	void update();
+
 };
 
 

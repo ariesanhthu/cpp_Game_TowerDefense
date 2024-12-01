@@ -38,6 +38,7 @@
     <ClCompile Include="Entities\Bullet\BulletManager.cpp" />
     <ClCompile Include="Entities\Tower\TowerManager.cpp" />
     <ClCompile Include="Entities\Enemy\EnemyClass\Small.cpp" />
+    <ClCompile Include="Entities\GameManage\GamePlayManage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Entities\Bullet\BulletManager.h" />
     <ClInclude Include="Entities\Tower\TowerManager.h" />
     <ClInclude Include="Entities\Enemy\EnemyClass\Small.h" />
+    <ClInclude Include="Entities\GameManage\GamePlayManage.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="nhap.txt" />

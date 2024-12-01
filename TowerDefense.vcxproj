@@ -141,6 +141,7 @@
     <ClCompile Include="Entities\Enemy\EnemyBase.cpp" />
     <ClCompile Include="Entities\Enemy\EnemyManager.cpp" />
     <ClCompile Include="Entities\Enemy\EnemyModel.cpp" />
+    <ClCompile Include="Entities\GameManage\GamePlayManage.cpp" />
     <ClCompile Include="Menu\Button.cpp" />
     <ClCompile Include="constant.cpp" />
     <ClCompile Include="Entities\cplayer.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="Entities\Enemy\EnemyBase.h" />
     <ClInclude Include="Entities\Enemy\EnemyManager.h" />
     <ClInclude Include="Entities\Enemy\EnemyModel.h" />
+    <ClInclude Include="Entities\GameManage\GamePlayManage.h" />
     <ClInclude Include="Entities\Tower\TowerManager.h" />
     <ClInclude Include="Menu\Button.h" />
     <ClInclude Include="constant.h" />
