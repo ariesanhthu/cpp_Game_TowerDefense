@@ -115,18 +115,19 @@ namespace towerdefense
         HBITMAP insVolBtn = nullptr;
         HBITMAP desVolBtn = nullptr;
 
-        HBITMAP backgroundVol; 
-        HBITMAP foregroundVol;
+        HBITMAP backgroundVol = nullptr; 
+        HBITMAP foregroundVol = nullptr;
 
         POINT titlePos = { 400, 100 };
         POINT soundPos = { 270, 200 };
 
-        POINT firstVol = { 270, 300 };
-        int volumnCurrent = 0;
-        int volumeSize = 10;
+        POINT VolFirstPos = { 270, 300 };
+        POINT VolDesPos = { 370, 300 };
+        POINT VolInsPos = { 400, 300 };
 
-        POINT currentBtnVol = firstVol;
-        bool isEditVol = false;
+        int volumeSize = 10;
+        int currentVolume = 50;
+        int percent = currentVolume / volumeSize;
 
 
         vector<POINT> buttonPositions;           // Vị trí các nút bấm
@@ -177,12 +178,25 @@ namespace towerdefense
         POINT inputSize = { 60, 11 };
         POINT sizeSound = { 25, 29 };
         POINT sizeVolBtn = { 14, 21 };
+        POINT sizeEdit = { 7, 12 };
 
 
         // avoid double click
         std::chrono::steady_clock::time_point lastMouseClickTime;
         std::chrono::steady_clock::time_point lastKeyPressTime;
         const int debounceDelayMs = 200; // 200 ms debounce delay
+
+        // support
+        void SetVolume(int volumePercentage) {
+            if (volumePercentage < 0) volumePercentage = 0;
+            if (volumePercentage > 99) volumePercentage = 0;
+
+            DWORD volume = (DWORD)(0xFFFF * (volumePercentage / 100.0f));
+            DWORD volumeSetting = (volume & 0xFFFF) | (volume << 16);
+
+            waveOutSetVolume(0, volumeSetting);
+            currentVolume = volumePercentage;
+        }
 
     public:
         MainScreen();
