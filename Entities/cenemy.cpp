@@ -59,8 +59,8 @@ void cenemy::update(float delta) {
         index += speed;
     }
     else {
-        //index = path.size() - 1;
-        index = 0;
+        index = path.size() - 1;
+        //index = 0;
     }
 
     currentPosition = path[index];

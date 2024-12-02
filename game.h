@@ -18,7 +18,6 @@ namespace towerdefense
 	private:
 		//std::unique_ptr<GameState> currentState;
 		ScreenManager screenManager;
-		Graphic graphic;
 
 	public:
 		/*void setState(std::unique_ptr<GameState> newState) {

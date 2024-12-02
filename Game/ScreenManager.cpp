@@ -70,6 +70,13 @@ namespace towerdefense
         Graphic::ReleaseBitmap(exit);
         Graphic::ReleaseBitmap(about);
         Graphic::ReleaseBitmap(catfam);
+        Graphic::ReleaseBitmap(btnVolume);
+        Graphic::ReleaseBitmap(switchOff);
+        Graphic::ReleaseBitmap(switchOn);
+        Graphic::ReleaseBitmap(TitleSetting);
+        Graphic::ReleaseBitmap(VolumnOff);
+        Graphic::ReleaseBitmap(VolumnOn);
+
         for (auto i : dummyDataName) {
             Graphic::ReleaseBitmap(i);
         }
@@ -118,14 +125,22 @@ namespace towerdefense
         opt_hover = Graphic::LoadBitmapImage(L"Assets/board/border.bmp", scaleB);
 
         // login 
-        login = Graphic::LoadBitmapImage(L"Assets/button/login_up.bmp", 2); 
-        login_down = Graphic::LoadBitmapImage(L"Assets/button/login_down.bmp", 2);
+        login = Graphic::LoadBitmapImage(L"Assets/button/loginBtn.png", 2); 
+        login_down = Graphic::LoadBitmapImage(L"Assets/button/loginBtnDown.png", 2);
         login_hover = Graphic::LoadBitmapImage(L"Assets/button/selectBox2.bmp", 2);
         input = Graphic::LoadBitmapImage(L"Assets/button/input2.bmp", scaleC);
         loginText = Graphic::LoadCustomTest("LOGIN", scaleD);
         nameText = Graphic::LoadCustomTest("USERNAME", scaleC);
         passwordText = Graphic::LoadCustomTest("PASSWORD", scaleC);
         inputtextbitmap = Graphic::LoadCustomTest(inputtext, scaleB);
+
+        // setting
+        btnVolume = Graphic::LoadBitmapImage(L"Assets/setting/btnVolumn.png", 2);
+        switchOff = Graphic::LoadBitmapImage(L"Assets/decor/catWin0.png", 2);
+        switchOn = Graphic::LoadBitmapImage(L"Assets/decor/catWin1.png", 2);
+        TitleSetting = Graphic::LoadBitmapImage(L"Assets/setting/TitleSetting.png", 5);
+        VolumnOff = Graphic::LoadBitmapImage(L"Assets/setting/volumnOff.png", 2);
+        VolumnOn = Graphic::LoadBitmapImage(L"Assets/setting/volumnOn.png", 2);
 
         //continue 
         for (int i = 0; i < dummyData.size(); i++) {
@@ -205,7 +220,6 @@ namespace towerdefense
                 }
             }
         }
-
         // on mouse click handling
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
             auto now = std::chrono::steady_clock::now();
@@ -240,6 +254,7 @@ namespace towerdefense
                             case 3:
                                 index = 3;
                                 menu = 4;
+                                isPopupEffect = true;
                                 break;
                             case 4:
                                 index = 4;
@@ -324,13 +339,44 @@ namespace towerdefense
                     }
                 }
                 else if (menu == 3) {
-
+                    // leaderboard
                 }
                 else if (menu == 4) {
+                    RECT boardRect = {
+                        endpoint.x,
+                        endpoint.y,
+                        endpoint.x + sizeBoard.x, // boardsize width
+                        endpoint.y + sizeBoard.y // boardsize height
+                    };
+                    if (!PtInRect(&boardRect, cursorPos)) {
+                        //isPopdown = true;
+                        isChoosemapPopup = false;
+                        currentpoint = initpoint;
+                        menu = 0;
+                    }
+
+                    RECT soundRect = {
+                        soundPos.x,
+                        soundPos.y,
+                        soundPos.x + sizeSound.x * 2,
+                        soundPos.y + sizeSound.y * 2
+                    };
+                    if (PtInRect(&boardRect, cursorPos)) {
+                        if (!soundCheck) {
+                            if (!PlaySoundW(L"Assets/test.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP | SND_LOOP)) {
+                                MessageBox(hwnd, L"sound err", L"sound err", MB_OK);
+                            } 
+                            soundCheck = true;
+                        }
+                        else {
+                            PlaySoundW(NULL, NULL, 0);
+                            soundCheck = false;
+                        }
+                    }
 
                 }
                 else if (menu == 5) {
-
+                    
                 }
                 else if (menu == 6) {
                     RECT boardRect = {
@@ -547,7 +593,7 @@ namespace towerdefense
             }
             else {
                 if (hover == 101) {
-                    Graphic::DrawBitmap(login_hover, { loginPosition.x - 14, loginPosition.y - 15 }, hdc);
+                    Graphic::DrawBitmap(login_hover, { loginPosition.x - 14, loginPosition.y - 7 }, hdc);
                 }
                 Graphic::DrawBitmap(login, loginPosition, hdc);
             }
@@ -628,9 +674,51 @@ namespace towerdefense
 
             // copy from continue
 
+            // do not have user this time 
         }
         else if (menu == 4) {
-            // display nothing
+            // setting 
+            for (int i = 0; i < buttonPositions.size(); ++i) {
+                POINT buttonPos = buttonPositions[i];
+                switch (i) {
+                case 0:
+                    Graphic::DrawBitmap(play, buttonPos, hdc);
+                    break;
+                case 1:
+                    Graphic::DrawBitmap(cont, buttonPos, hdc);
+                    break;
+                case 2:
+                    Graphic::DrawBitmap(lead, buttonPos, hdc);
+                    break;
+                case 3:
+                    Graphic::DrawBitmap(setting, buttonPos, hdc);
+                    break;
+                case 4:
+                    Graphic::DrawBitmap(exit, buttonPos, hdc);
+                    break;
+                case 5:
+                    Graphic::DrawBitmap(about, buttonPos, hdc);
+                    break;
+                }
+            }
+
+            Graphic::DrawBitmap(board, currentpoint, hdc);
+
+            if (!isPopupEffect) {
+                Graphic::DrawBitmap(TitleSetting, titlePos, hdc);
+                
+                if (soundCheck) {
+                    Graphic::DrawBitmap(switchOn, soundPos, hdc); 
+                }
+                else {
+                    Graphic::DrawBitmap(switchOff, soundPos, hdc);
+                }
+
+                
+            }
+        }
+        else if (menu == 5) {
+            // handle exit so do notthing here
         }
         else if (menu == 6) {
             for (int  i = 0; i < buttonPositions.size(); ++i) {

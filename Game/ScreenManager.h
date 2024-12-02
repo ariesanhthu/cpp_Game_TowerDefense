@@ -8,6 +8,7 @@
 #include "cenemy.h"
 #include "ctower.h"
 #include <chrono>
+#include <mmsystem.h> 
 
 using namespace std;
 namespace towerdefense
@@ -102,9 +103,27 @@ namespace towerdefense
         POINT firstplayerCoverPos = { 420, 200 };
         POINT titleContinuePos = { 390, 130 };
 
+        // leaderboard 
+
+        // setting 
+        bool soundCheck = false;
+        HBITMAP btnVolume; 
+        HBITMAP switchOff;
+        HBITMAP switchOn;
+        HBITMAP TitleSetting;
+        HBITMAP VolumnOff;
+        HBITMAP VolumnOn;
+        POINT titlePos = { 400, 100 };
+        POINT soundPos = { 270, 200 };
+        POINT firstVol = { 270, 500 };
+        int volumnCurrent = 0;
+        int volumeSize = 10;
+
+
+
         vector<POINT> buttonPositions;           // Vị trí các nút bấm
         vector<POINT> optionPositions;            // Vi tri cac lua chon map
-        
+
         // Vẽ input box
         POINT loginPosition;
         POINT inputNamePosition = { 480, 250 };
@@ -148,6 +167,7 @@ namespace towerdefense
         POINT optionSize = { 75, 42 };
         POINT loginSize = { 99, 43 };
         POINT inputSize = { 60, 11 };
+        POINT sizeSound = { 25, 29 };
 
 
         // avoid double click
