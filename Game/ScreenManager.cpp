@@ -827,6 +827,10 @@ namespace towerdefense
         Graphic::ReleaseBitmap(hamburger);
         Graphic::ReleaseBitmap(play_or_pause);
         Graphic::ReleaseBitmap(hbullet);
+        Graphic::ReleaseBitmap(WantToContinue);
+        Graphic::ReleaseBitmap(yesBtn);
+        Graphic::ReleaseBitmap(noBtn);
+        Graphic::ReleaseBitmap(boardYesNo);
 
 
         OutputDebugStringA("~PlayScreen\n");
@@ -849,6 +853,13 @@ namespace towerdefense
         play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 1.8);
         hbullet              = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 2);
         tower                = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
+        
+        // route handle
+        WantToContinue = Graphic::LoadCustomTest("WANTTOCONTINUE", 4);
+        yesBtn = Graphic::LoadBitmapImage(L"Assets/button/AcceptBtn.png", 4);
+        noBtn = Graphic::LoadBitmapImage(L"Assets/button/RejectBtn.png", 4);
+        boardYesNo = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 1.5);
+        
     }
 
     void PlayScreen::handleInput(HWND hwnd) {
@@ -874,9 +885,50 @@ namespace towerdefense
                 */
                 if (PtInRect(&playRect, cursorPos)) {
                     // if click play 
-                    
-                    for (int i = 0; i < enemylist.size(); i++) {
-                        enemylist[i].isMove = !enemylist[i].isMove;
+                    if (manageFirstTime) {
+                        IsPlayGame = true;
+                        manageFirstTime = false;
+                        for (int i = 0; i < enemylist.size(); i++) {
+                            enemylist[i].isMove = true;
+                        }
+                    }
+                    else {
+                        if (IsPlayGame) {
+                            displayYesNoBoard = true;
+                            IsPlayGame = false;
+                            for (int i = 0; i < enemylist.size(); i++) {
+                                enemylist[i].isMove = false;
+                            }
+                        }
+                    }
+                }
+
+
+                if (displayYesNoBoard) {
+                    // if yes
+                    RECT yesRect = {
+                        yesBtnPos.x,
+                        yesBtnPos.y,
+                        yesBtnPos.x + yesnoSize.x * 4, // Button width
+                        yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+                    if (PtInRect(&yesRect, cursorPos)) {
+                        displayYesNoBoard = false;
+                        IsPlayGame = true;
+                        for (int i = 0; i < enemylist.size(); i++) {
+                            enemylist[i].isMove = true;
+                        }
+                    }
+
+                    // if no
+                    RECT noRect = {
+                        noBtnPos.x,
+                        noBtnPos.y,
+                        noBtnPos.x + yesnoSize.x * 4, // Button width
+                        noBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+                    if (PtInRect(&noRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                     }
                 }
                 
@@ -977,6 +1029,7 @@ namespace towerdefense
     }
 
     void PlayScreen::render(HDC hdc) {
+
         Graphic::DrawBitmap(background, { 0, 0 }, hdc);
         Graphic::DrawBitmap(towerInitPlace, towerInitPos, hdc);
         Graphic::DrawBitmap(play_or_pause, posbuttonplay, hdc);
@@ -1004,6 +1057,14 @@ namespace towerdefense
         if (isPicking) {
             Tpicking.render(tower, hdc);
         }
+
+        if (displayYesNoBoard) {
+            Graphic::DrawBitmap(boardYesNo, boardYesNoPos, hdc);
+            Graphic::DrawBitmap(WantToContinue, WantToContinuePos, hdc);
+            Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+            Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+        }
+
     }
 
     //========================================================================================================================//
