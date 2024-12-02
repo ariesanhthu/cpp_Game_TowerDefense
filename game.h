@@ -49,7 +49,7 @@ namespace towerdefense
 		Game(const Game&) = delete;
 		Game& operator= (const Game&) = delete;
 		~Game() {
-			OutputDebugStringA("~Game");
+			OutputDebugStringA("~Game\n");
 		}
 		
 		inline static Game& getInstance()

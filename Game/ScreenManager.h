@@ -62,15 +62,15 @@ namespace towerdefense
         //HBITMAP button = nullptr;                 // Danh sách các nút bấm
         //HBITMAP button_down = nullptr;
 
-        HBITMAP button_hover     = nullptr;
 
         // button  
         HBITMAP play             = nullptr;             // play
         HBITMAP cont             = nullptr;             // continue 
         HBITMAP lead             = nullptr;             // leaderboard
-        HBITMAP setting          = nullptr;          // setting 
+        HBITMAP setting          = nullptr;             // setting 
         HBITMAP exit             = nullptr;             // exit
-        HBITMAP about            = nullptr;            // about us
+        HBITMAP about            = nullptr;             // about us
+        HBITMAP button_hover     = nullptr;
 
         // popup
         HBITMAP board = nullptr;
@@ -242,7 +242,7 @@ namespace towerdefense
         // delay hand variable
         std::chrono::steady_clock::time_point lastMouseClickTime;
         std::chrono::steady_clock::time_point lastKeyPressTime;
-        const int debounceDelayMs = 300; // 200 ms debounce delay
+        const int debounceDelayMs = 200; // 200 ms debounce delay
 
         // enemy 
         std::vector<cenemy> enemylist;

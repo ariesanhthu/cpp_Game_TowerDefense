@@ -48,18 +48,6 @@ namespace towerdefense
             GetClientRect(windowHandle, &rect);
 
         }break;
-        case WM_PAINT: // Sự kiện vẽ lại cửa sổ
-        {
-            OutputDebugString(L"window paint\n");
-
-            PAINTSTRUCT paint;
-            HDC device_context = BeginPaint(windowHandle, &paint); // Bắt đầu vẽ
-
-            // Vẽ nội dung game trực tiếp lên cửa sổ
-            Game::getInstance().screenManager.render(device_context);
-
-            EndPaint(windowHandle, &paint); // Kết thúc vẽ
-        } break;
 
         case WM_CUSTOM_LOAD_SCREEN:
         {
@@ -142,8 +130,8 @@ namespace towerdefense
 
         ICONINFO iconInfo = { 0 };
         iconInfo.fIcon = FALSE; // Set to FALSE to indicate a cursor
-        iconInfo.xHotspot = 16; // Adjust based on your desired hotspot
-        iconInfo.yHotspot = 16;
+        iconInfo.xHotspot = 0; // Adjust based on your desired hotspot
+        iconInfo.yHotspot = 0;
         iconInfo.hbmMask = hBitmap;  // Use the same bitmap as a mask for simplicity
         iconInfo.hbmColor = hBitmap;
 
@@ -253,6 +241,7 @@ namespace towerdefense
         
 
         //std::shared_ptr<Screen> newscreen = std::make_shared<MainScreen>();
+
         std::shared_ptr<Screen> newscreen;
         if (x == 0) {
             newscreen = std::make_shared<MainScreen>();
@@ -263,9 +252,5 @@ namespace towerdefense
 
         screenManager.changeScreen(std::move(newscreen));
         screenManager.loadContent(windowWidth, windowHeight);
-        
-
-        // Tải nội dung màn hình chính
-        //currentScreen->loadContent(graphic, windowWidth, windowHeight);
     }
 }

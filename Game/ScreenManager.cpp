@@ -874,10 +874,9 @@ namespace towerdefense
                 if (PtInRect(&playRect, cursorPos)) {
                     // if click play 
                     
-                        for (int i = 0; i < enemylist.size(); i++) {
-                            enemylist[i].isMove = !enemylist[i].isMove;
-                        }
-                    
+                    for (int i = 0; i < enemylist.size(); i++) {
+                        enemylist[i].isMove = !enemylist[i].isMove;
+                    }
                 }
                 
                 // if click in hamburger display board 
@@ -967,7 +966,6 @@ namespace towerdefense
             if (nearestEnemy) {
                 tower.shootAt(nearestEnemy->getCurr());
                 POINT pos = tower.getBullet().getCurr();
-                //if (pos.x)
                 //nearestEnemy->takeDamage(tower.getBullet().getDamage());
             }
 
@@ -995,7 +993,6 @@ namespace towerdefense
                 b.render(hbullet, hdc);
             }
         }
-
 
         // ve tower trong box
         Graphic::DrawBitmap(tower, Turretinit, hdc);
