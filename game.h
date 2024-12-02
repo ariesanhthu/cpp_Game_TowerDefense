@@ -7,6 +7,8 @@
 //#include "Observer.h"
 #include <memory>
 
+#define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
+
 
 namespace towerdefense
 {
@@ -47,7 +49,9 @@ namespace towerdefense
 		Game();
 		Game(const Game&) = delete;
 		Game& operator= (const Game&) = delete;
-		~Game() {}
+		~Game() {
+			OutputDebugStringA("~Game");
+		}
 		
 		inline static Game& getInstance()
 		{
@@ -71,7 +75,7 @@ namespace towerdefense
 		inline static int getWindowWidth() { return getInstance().windowWidth; }
 		inline static int getWindowHeight() { return getInstance().windowHeight; }
 
-		void loadInitialScreen();
+		void loadInitialScreen(int);
 
 	private:
 		void startWindow();

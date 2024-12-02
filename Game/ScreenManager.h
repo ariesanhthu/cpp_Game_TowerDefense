@@ -17,8 +17,8 @@ namespace towerdefense
 
         // Dòng này làm MainScreen không destruct được
         //virtual ~Screen() = 0;
-        virtual void loadContent(Graphic& graphic, int width, int height) = 0;
-        virtual void handleInput() = 0;
+        virtual void loadContent(int width, int height) = 0;
+        virtual void handleInput(HWND hwnd) = 0;
         virtual void update(float delta) = 0;
         virtual void render(HDC hdc) = 0;
         //virtual void resizeContent(int windowWidth, int windowHeight);
@@ -29,17 +29,19 @@ namespace towerdefense
         std::shared_ptr<Screen> currentScreen = nullptr;
 
     public:
-        ~ScreenManager() {}
+        ~ScreenManager() {
+            OutputDebugStringA("~ScreenManager\n");
+        }
 
         void changeScreen(std::shared_ptr<Screen> newScreen) {
             currentScreen = newScreen;
         }
 
-        void loadContent(Graphic& graphic, int width, int height) {
-            currentScreen->loadContent(graphic, width, height);
+        void loadContent(int width, int height) {
+            currentScreen->loadContent(width, height);
         }
-        void handleInput() {
-            currentScreen->handleInput();
+        void handleInput(HWND hwnd) {
+            currentScreen->handleInput(hwnd);
         }
         void update(float delta) {
             currentScreen->update(delta);
@@ -52,19 +54,34 @@ namespace towerdefense
     class MainScreen : public Screen {
     private:
         // dung chung trong cac menu
-        HBITMAP background = nullptr;             // Hình nền
+        HBITMAP background = nullptr;               // Hình nền
+        HBITMAP catfam = nullptr;
+        
         // dung trong default menu
-        HBITMAP button = nullptr;                 // Danh sách các nút bấm
-        HBITMAP button_down = nullptr;
+        //HBITMAP button = nullptr;                 // Danh sách các nút bấm
+        //HBITMAP button_down = nullptr;
+
         HBITMAP button_hover = nullptr;
+
+        // button  
+        HBITMAP play = nullptr;             // play
+        HBITMAP cont = nullptr;             // continue 
+        HBITMAP lead = nullptr;             // leaderboard
+        HBITMAP setting = nullptr;          // setting 
+        HBITMAP exit = nullptr;             // exit
+        HBITMAP about = nullptr;            // about us
+
         // popup
         HBITMAP board = nullptr;
+
         // choose map
         HBITMAP map1opt = nullptr; 
         HBITMAP map2opt = nullptr; 
         HBITMAP map3opt = nullptr; 
         HBITMAP map4opt = nullptr; 
         HBITMAP opt_hover = nullptr;
+
+
         // login
         HBITMAP login = nullptr;
         HBITMAP login_down = nullptr;
@@ -73,6 +90,7 @@ namespace towerdefense
         HBITMAP loginText = nullptr;
         HBITMAP nameText = nullptr;
         HBITMAP passwordText = nullptr;
+
         // continue
         HBITMAP continueTitle = nullptr;
         HBITMAP arrow = nullptr;
@@ -127,7 +145,7 @@ namespace towerdefense
         //size doi tuong
         POINT buttonSize = { 26, 29 };
         POINT sizeBoard = { 693, 447 };
-        POINT optionSize = { 300, 168 };
+        POINT optionSize = { 75, 42 };
         POINT loginSize = { 99, 43 };
         POINT inputSize = { 60, 11 };
 
@@ -141,8 +159,8 @@ namespace towerdefense
         MainScreen();
         ~MainScreen();
 
-        void loadContent(Graphic& graphic, int width, int height) override;
-        void handleInput() override; 
+        void loadContent(int width, int height) override;
+        void handleInput(HWND hwnd) override; 
         void update(float delta) override;
         void render(HDC hdc) override;
         //void resizeContent(int windowWidth, int windowHeight) override;
@@ -151,7 +169,7 @@ namespace towerdefense
     class PlayScreen : public Screen {
     private: 
         vector<POINT> epath = {
-            {-10, 150},
+            {-100, 150},
             {390, 150},
             {390, 490},
             {1200, 490},
@@ -165,6 +183,7 @@ namespace towerdefense
         HBITMAP enemy = nullptr;              // enemy
         HBITMAP hamburger = nullptr;          // hamburger button
         HBITMAP play_or_pause = nullptr;      // nut play hoac pause
+        HBITMAP hbullet = nullptr;            // bullet
 
         // instruction pos
         POINT instructionPos = { 730, 50 };
@@ -188,8 +207,7 @@ namespace towerdefense
 
         // tower
         std::vector<ctower> towerlist;
-        std::vector<POINT> Tcurrent;
-        POINT Turretinit;                       // tower position 
+        POINT Turretinit;         // tower position 
 
         // tower de chon di chuyen
         ctower Tpicking; 
@@ -199,23 +217,30 @@ namespace towerdefense
         // size
         POINT buttonSize = { 26, 29 };
         POINT boardSize = { 260, 180 };
-        POINT towerSize = { 20,30 };
+        POINT towerSize = { 20, 30 };
 
         // support 
-        /*
-            FIX BUGGGGGGGGGGGGGGGGG
-            check vị trí đặt tháp
-        */
+
+
+        /* =======================================
+        
+        FIXBIG
+
+        ======================================= */
+
         bool checkValidPos(POINT pos) {
             return true;
+        }
+        bool isInRange(POINT pos, int range) {
+            return range < sqrt((pos.x * pos.x + pos.y * pos.y));
         }
 
     public:
         PlayScreen();
         ~PlayScreen();
 
-        void loadContent(Graphic& graphic, int width, int height) override;
-        void handleInput() override;
+        void loadContent(int width, int height) override;
+        void handleInput(HWND hwnd) override;
         void update(float delta) override;
         void render(HDC hdc) override;
     };

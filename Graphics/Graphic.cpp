@@ -6,6 +6,7 @@ Graphic::Graphic() {
 
 Graphic::~Graphic() {
     GdiplusShutdown(gdiPlusToken);
+    OutputDebugStringA("~Graphic\n");
 }
 
 void Graphic::InitGdiPlus() {

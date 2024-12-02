@@ -1,7 +1,7 @@
 #include "cenemy.h"
 
 cenemy::cenemy() {
-    health = 3;
+    health = 300;
     speed = 4;
     path.clear();
     isMove = false;
@@ -60,7 +60,8 @@ void cenemy::update(float delta) {
         index += speed;
     }
     else {
-        index = path.size() - 1;
+        //index = path.size() - 1;
+        index = 0;
     }
 
     currentPosition = path[index];

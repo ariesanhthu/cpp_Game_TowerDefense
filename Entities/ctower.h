@@ -1,33 +1,63 @@
-#pragma once
+﻿#pragma once
 #include "cbullet.h"
 #include "Graphic.h"
+#include "cenemy.h"
+#include <chrono>
+#include <cmath>
+#include <limits>
 
 class ctower {
 private:
     POINT location;
-    cbullet cb;
-    int speed, range;
+    cbullet bullet;
+    bool isShooting;
+    float range;
+    float cooldownTime; // Thời gian hồi chiêu
+    std::chrono::steady_clock::time_point lastShotTime;
+
 public:
-    ctower() {};
-    ctower(const POINT& lo) {
-        location = lo;
-        speed = 1;
-        range = 40;
+    ctower() : range(100.0f), isShooting(false), cooldownTime(500) {}
+
+    void setLocation(const POINT& loc) { location = loc; }
+    POINT getLocation() const { return location; }
+
+    float getRange() const { return range; }
+
+    void setShooting(bool flag) {
+        isShooting = flag;
     }
 
-    POINT getLocation() { return location;}
-    int getSpeed() { return speed;}
-    int getRange() { return range;}
-    void setLocation(POINT nLocation) { location = nLocation;}
+    bool getShooting() {
+        return isShooting;
+    }
 
     cbullet& getBullet() {
-        cb.setCurr(location);
-        return cb;
+        return bullet;
     }
 
-    void handleInput();
-    void update(float delta);
-    void render(HBITMAP element, HDC hdc) {
-        Graphic::DrawBitmap(element, location, hdc);
+    void shootAt(const POINT& target) {
+        auto now = std::chrono::steady_clock::now();
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastShotTime).count() >= cooldownTime) {
+            bullet.setCurr(location);
+            bullet.setTarget(target);
+            isShooting = true;
+            lastShotTime = now;
+        }
+    }
+
+    void updateBullet() {
+        if (isShooting) {
+            bullet.calPath();
+            if (!bullet.isActive()) {
+                isShooting = false;
+            }
+        }
+    }
+
+    void render(HBITMAP towerBitmap, HDC hdc) {
+        Graphic::DrawBitmap(towerBitmap, location, hdc);
     }
 };
+
+
+
