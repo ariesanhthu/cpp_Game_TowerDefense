@@ -255,6 +255,9 @@ namespace towerdefense
         else if(x == 3) {
             newscreen = std::make_shared<PlayScreen3>(); 
         }
+        else if (x == 4) {
+            newscreen = std::make_shared<PlayScreen4>();
+        }
 
         screenManager.changeScreen(std::move(newscreen));
         screenManager.loadContent(windowWidth, windowHeight);

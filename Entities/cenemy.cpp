@@ -2,7 +2,7 @@
 
 cenemy::cenemy() {
     health = 300;
-    speed = 4;
+    speed = 10;
     path.clear();
     isMove = false;
 }
