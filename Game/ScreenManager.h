@@ -55,46 +55,46 @@ namespace towerdefense
     class MainScreen : public Screen {
     private:
         // dung chung trong cac menu
-        HBITMAP background = nullptr;               // Hình nền
-        HBITMAP catfam = nullptr;
+        HBITMAP background       = nullptr;               // Hình nền
+        HBITMAP catfam           = nullptr;
         
         // dung trong default menu
         //HBITMAP button = nullptr;                 // Danh sách các nút bấm
         //HBITMAP button_down = nullptr;
 
-        HBITMAP button_hover = nullptr;
+        HBITMAP button_hover     = nullptr;
 
         // button  
-        HBITMAP play = nullptr;             // play
-        HBITMAP cont = nullptr;             // continue 
-        HBITMAP lead = nullptr;             // leaderboard
-        HBITMAP setting = nullptr;          // setting 
-        HBITMAP exit = nullptr;             // exit
-        HBITMAP about = nullptr;            // about us
+        HBITMAP play             = nullptr;             // play
+        HBITMAP cont             = nullptr;             // continue 
+        HBITMAP lead             = nullptr;             // leaderboard
+        HBITMAP setting          = nullptr;          // setting 
+        HBITMAP exit             = nullptr;             // exit
+        HBITMAP about            = nullptr;            // about us
 
         // popup
         HBITMAP board = nullptr;
 
         // choose map
-        HBITMAP map1opt = nullptr; 
-        HBITMAP map2opt = nullptr; 
-        HBITMAP map3opt = nullptr; 
-        HBITMAP map4opt = nullptr; 
-        HBITMAP opt_hover = nullptr;
+        HBITMAP map1opt          = nullptr; 
+        HBITMAP map2opt          = nullptr; 
+        HBITMAP map3opt          = nullptr; 
+        HBITMAP map4opt          = nullptr; 
+        HBITMAP opt_hover        = nullptr;
 
 
         // login
-        HBITMAP login = nullptr;
-        HBITMAP login_down = nullptr;
-        HBITMAP login_hover = nullptr;
-        HBITMAP input = nullptr;
-        HBITMAP loginText = nullptr;
-        HBITMAP nameText = nullptr;
-        HBITMAP passwordText = nullptr;
+        HBITMAP login            = nullptr;
+        HBITMAP login_down       = nullptr;
+        HBITMAP login_hover      = nullptr;
+        HBITMAP input            = nullptr;
+        HBITMAP loginText        = nullptr;
+        HBITMAP nameText         = nullptr;
+        HBITMAP passwordText     = nullptr;
 
         // continue
-        HBITMAP continueTitle = nullptr;
-        HBITMAP arrow = nullptr;
+        HBITMAP continueTitle    = nullptr;
+        HBITMAP arrow            = nullptr;
 
         // continue with dummydata
         vector<cplayer> dummyData = { {"duck", 10}, {"thu", 12}, {"Hung", 44} };
@@ -106,14 +106,14 @@ namespace towerdefense
         // leaderboard 
 
         // setting 
-        bool soundCheck = false;
-        HBITMAP TitleSetting;
+        bool soundCheck          = false;
+        HBITMAP TitleSetting     = nullptr;
 
-        HBITMAP switchOff;
-        HBITMAP switchOn;
+        HBITMAP switchOff        = nullptr;
+        HBITMAP switchOn         = nullptr;
 
-        HBITMAP insVolBtn;
-        HBITMAP desVolBtn;
+        HBITMAP insVolBtn = nullptr;
+        HBITMAP desVolBtn = nullptr;
 
         HBITMAP backgroundVol; 
         HBITMAP foregroundVol;
