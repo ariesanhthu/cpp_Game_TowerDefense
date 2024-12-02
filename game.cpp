@@ -44,10 +44,6 @@ namespace towerdefense
             // đọc kích thước màn hình
             GetClientRect(windowHandle, &rect);
 
-            //// tính toán buffer
-            /*Game::windowWidth = rect.right - rect.left;
-            Game::windowHeight = rect.bottom - rect.top;*/
-
         }break;
         case WM_PAINT: // Sự kiện vẽ lại cửa sổ
         {
@@ -211,8 +207,8 @@ namespace towerdefense
         // Tạo màn hình chính
         
 
-        //std::shared_ptr<Screen> newscreen = std::make_shared<MainScreen>();
-        std::shared_ptr<Screen> newscreen = std::make_shared<PlayScreen>();
+        std::shared_ptr<Screen> newscreen = std::make_shared<MainScreen>();
+        //std::shared_ptr<Screen> newscreen = std::make_shared<PlayScreen>();
 
         screenManager.changeScreen(std::move(newscreen));
 

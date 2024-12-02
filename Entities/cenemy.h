@@ -28,5 +28,7 @@ public:
 
     void handleinput(); 
     void update(float delta);
-    void render();
+    void render(HBITMAP element, HDC hdc) {
+        Graphic::DrawBitmap(element, currentPosition, hdc);
+    }
 };

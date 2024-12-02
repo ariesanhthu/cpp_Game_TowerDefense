@@ -15,6 +15,7 @@ void cenemy::setPath(vector<POINT> ePath) {
 
     vector<int> directionX;
     vector<int> directionY;
+
     currentPosition = ePath[0];
 
     for (size_t i = 0; i < ePath.size() - 1; i++) {

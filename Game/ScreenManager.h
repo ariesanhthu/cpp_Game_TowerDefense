@@ -151,7 +151,7 @@ namespace towerdefense
     class PlayScreen : public Screen {
     private: 
         vector<POINT> epath = {
-            {0, 150},
+            {-10, 150},
             {390, 150},
             {390, 490},
             {1200, 490},
@@ -180,11 +180,10 @@ namespace towerdefense
         // delay hand variable
         std::chrono::steady_clock::time_point lastMouseClickTime;
         std::chrono::steady_clock::time_point lastKeyPressTime;
-        const int debounceDelayMs = 200; // 200 ms debounce delay
+        const int debounceDelayMs = 300; // 200 ms debounce delay
 
         // enemy 
         std::vector<cenemy> enemylist;
-        std::vector<POINT> Ecurrent;
         POINT Einit;              // enemy position
 
         // tower

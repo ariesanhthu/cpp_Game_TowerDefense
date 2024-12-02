@@ -6,6 +6,7 @@
 //#include <fstream>
 
 using namespace std;
+
 namespace towerdefense
 {
     // Constructor
@@ -60,6 +61,7 @@ namespace towerdefense
         Graphic::ReleaseBitmap(inputtextbitmap);
         Graphic::ReleaseBitmap(continueTitle);
         Graphic::ReleaseBitmap(arrow);
+
         for (auto i : dummyDataName) {
             Graphic::ReleaseBitmap(i);
         }
@@ -622,7 +624,10 @@ namespace towerdefense
         //enemylist[0].isMove = true;
 
         Einit = { -30, 150 };
-        Ecurrent.resize(enemylist.size(), Einit);
+
+        for (int i = 0; i < enemylist.size(); i++) {
+            enemylist[i].setCurr({ Einit.x - (i*100), Einit.y});
+        }
 
         Turretinit = { 50, 565 };
         TcurrentPick = Turretinit;
@@ -637,6 +642,8 @@ namespace towerdefense
         Graphic::ReleaseBitmap(enemy);
         Graphic::ReleaseBitmap(hamburger);
         Graphic::ReleaseBitmap(play_or_pause);
+
+        //Graphic::ReleaseBitmap(tu2);
     }
 
     void PlayScreen::loadContent(Graphic& graphic, int width, int height) {
@@ -655,6 +662,8 @@ namespace towerdefense
         enemy = graphic.LoadBitmapImage(L"Assets/game/slime.bmp", 2);
         hamburger = graphic.LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
         play_or_pause = graphic.LoadBitmapImage(L"Assets/button/button_up.bmp", 1.8);
+
+        //tu2 = graphic.LoadBitmapImage(L"Assets/game/tured.bmp", 1);
     }
 
     void PlayScreen::handleInput() {
@@ -680,6 +689,10 @@ namespace towerdefense
                 */
                 if (PtInRect(&playRect, cursorPos)) {
                     // if click play 
+                   /* if (!enemylist[0].isMove) 
+                        enemylist[0].isMove = true;
+                    
+                    else */
                     for (int i = 0; i < enemylist.size(); i++) 
                         enemylist[i].isMove = !enemylist[i].isMove;
                     
@@ -716,39 +729,34 @@ namespace towerdefense
 
         if (isPicking) {
             TcurrentPick = cursorPos;
+            Tpicking.setLocation(cursorPos);    
         }
         else {
             if (checkValidPos(TcurrentPick)) {
                 // neu vi tri thoa dieu kien thi them vao list tower
                 towerlist.push_back(Tpicking);
-                Tcurrent.push_back(TcurrentPick);
             }
         }
     }
-
     void PlayScreen::update(float delta) 
     {
         for (size_t i = 0; i < enemylist.size() - 1; ++i) 
         {
             if (enemylist[i].isMove) {
-
-                if (!enemylist[i].isEnd()) { // Check if the enemy is not at the endpoint
-                    
+                if (!enemylist[i].isEnd()) { 
                     enemylist[i].update(delta);
 
-                    Ecurrent[i] = enemylist[i].getCurr(); // Update `Ecurrent`
-                   
-                    if (Ecurrent[i].x - 100 > Ecurrent[i + 1].x) {
+                    if (enemylist[i].getCurr().x - (100) > enemylist[i + 1].getCurr().x)
                         enemylist[i + 1].isMove = true;
-                    }
                 }
             }
         }
 
         if (enemylist[enemylist.size() - 1].isMove) {
             enemylist[enemylist.size() - 1].update(delta);
-            Ecurrent[enemylist.size() - 1] = enemylist[enemylist.size() - 1].getCurr();
         }
+
+
     }
 
     void PlayScreen::render(HDC hdc) {
@@ -760,8 +768,8 @@ namespace towerdefense
         }
         Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
 
-        for (const auto& position : Ecurrent) {
-            Graphic::DrawBitmap(enemy, position, hdc);
+        for (auto E : enemylist) {
+            E.render(enemy, hdc);
         }
 
         // ve tat ca tower
@@ -769,14 +777,21 @@ namespace towerdefense
             Graphic::DrawBitmap(tower, position, hdc);
         }
 
+        for (auto T : towerlist) {
+            T.render(tower, hdc);
+        }
+
         // ve tower trong box
         Graphic::DrawBitmap(tower, Turretinit, hdc);
 
-        // ve tower trong qua trinh di chuyen chuyen 
+        // ve tower trong qua trinh di chuyen 
         if (isPicking) {
             Graphic::DrawBitmap(tower, TcurrentPick, hdc);
         }
+
+        //Graphic::DrawBitmap(tu2, t2current, hdc);
     }
+
 }
 
 

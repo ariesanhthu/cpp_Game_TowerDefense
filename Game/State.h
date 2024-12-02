@@ -5,6 +5,7 @@
 class GameState {
 public:
     virtual ~GameState() = default;
+
     virtual void handleInput() = 0;
     virtual void update(float delta) = 0;
     virtual void render(HDC hdc) = 0;
