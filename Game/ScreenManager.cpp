@@ -71,6 +71,7 @@ namespace towerdefense
         Graphic::ReleaseBitmap(exit);
         Graphic::ReleaseBitmap(about);
         Graphic::ReleaseBitmap(catfam);
+
         for (auto i : dummyDataName) {
             Graphic::ReleaseBitmap(i);
         }
@@ -718,11 +719,11 @@ namespace towerdefense
         float scaleE = 2;
         
         background = Graphic::LoadBitmapImage(L"Assets/background/map1.bmp", scale);
-        towerInitPlace = Graphic::LoadBitmapImage(L"Assets/button/input.bmp", 8);
+        towerInitPlace = Graphic::LoadBitmapImage(L"Assets/game/BoardSetupTower.png", 1.5);
         instructionBoard = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 2);
         enemy = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
         hamburger = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
-        play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.8);
+        play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 1.8);// btnContinue.png
         hbullet = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 1);
         tower = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
     }

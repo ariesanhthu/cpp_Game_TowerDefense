@@ -185,11 +185,6 @@ HBITMAP Graphic::LoadCustomTest(std::string text, double factor, int spacing) {
 }
 
 
-
-
-
-
-
 void Graphic::ReleaseBitmap(HBITMAP& hBitmap) {
     if (hBitmap) {
         DeleteObject(hBitmap);

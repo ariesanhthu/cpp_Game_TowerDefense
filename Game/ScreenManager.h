@@ -191,10 +191,10 @@ namespace towerdefense
         bool displayBoard = true;
 
         // position init place of box
-        POINT towerInitPos = { 10, 550 };
+        POINT towerInitPos = { 25, 520 };
         
         // buton play or pause 
-        POINT posbuttonplay = { 350, 570 };
+        POINT posbuttonplay = { 580, 570 };
 
         // delay hand variable
         std::chrono::steady_clock::time_point lastMouseClickTime;

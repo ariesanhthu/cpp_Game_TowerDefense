@@ -133,11 +133,6 @@ namespace towerdefense
             OutputDebugString(L"GAME INIT\n");
             running = true;
 
-            //==========================================================
-            // Tách phần load screen vào hàm riêng
-            //loadInitialScreen(); // Gọi hàm tách code (xem định nghĩa bên dưới)
-            //==========================================================
-
             // Thiết lập clock để tính toán delta time (thời gian giữa hai frame)
             LARGE_INTEGER cpu_frequency;
             QueryPerformanceFrequency(&cpu_frequency);
@@ -226,11 +221,19 @@ namespace towerdefense
 
         //std::shared_ptr<Screen> newscreen = std::make_shared<MainScreen>();
         std::shared_ptr<Screen> newscreen;
-        if (x == 0) {
+
+        switch (x)
+        {
+        case 0:
+        {
             newscreen = std::make_shared<MainScreen>();
         }
-        else if (x == 1) {
+        case 1:
+        {
             newscreen = std::make_shared<PlayScreen>();
+        }
+        default:
+            break;
         }
 
         screenManager.changeScreen(std::move(newscreen));

@@ -11,7 +11,6 @@ private:
     int speed;
     int damage;
     bool active;
-
     
 
 public:
