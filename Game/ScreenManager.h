@@ -115,10 +115,13 @@ namespace towerdefense
         HBITMAP VolumnOn;
         POINT titlePos = { 400, 100 };
         POINT soundPos = { 270, 200 };
-        POINT firstVol = { 270, 500 };
+
+        POINT firstVol = { 270, 300 };
         int volumnCurrent = 0;
         int volumeSize = 10;
 
+        POINT currentBtnVol = firstVol;
+        bool isEditVol = true;
 
 
         vector<POINT> buttonPositions;           // Vị trí các nút bấm
@@ -168,6 +171,7 @@ namespace towerdefense
         POINT loginSize = { 99, 43 };
         POINT inputSize = { 60, 11 };
         POINT sizeSound = { 25, 29 };
+        POINT sizeVolBtn = { 14, 21 };
 
 
         // avoid double click

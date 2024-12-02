@@ -345,8 +345,8 @@ namespace towerdefense
                     RECT boardRect = {
                         endpoint.x,
                         endpoint.y,
-                        endpoint.x + sizeBoard.x, // boardsize width
-                        endpoint.y + sizeBoard.y // boardsize height
+                        endpoint.x + sizeBoard.x * 3, // boardsize width
+                        endpoint.y + sizeBoard.y * 3// boardsize height
                     };
                     if (!PtInRect(&boardRect, cursorPos)) {
                         //isPopdown = true;
@@ -361,7 +361,7 @@ namespace towerdefense
                         soundPos.x + sizeSound.x * 2,
                         soundPos.y + sizeSound.y * 2
                     };
-                    if (PtInRect(&boardRect, cursorPos)) {
+                    if (PtInRect(&soundRect, cursorPos)) {
                         if (!soundCheck) {
                             if (!PlaySoundW(L"Assets/test.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP | SND_LOOP)) {
                                 MessageBox(hwnd, L"sound err", L"sound err", MB_OK);
@@ -373,6 +373,18 @@ namespace towerdefense
                             soundCheck = false;
                         }
                     }
+
+                    RECT currentEditVolRect = {
+                        currentBtnVol.x,
+                        currentBtnVol.y,
+                        currentBtnVol.x + sizeVolBtn.x * 2,
+                        currentBtnVol.y + sizeVolBtn.y * 2
+                    };
+
+                    if (PtInRect(&currentEditVolRect, cursorPos)) {
+                        isEditVol = true;
+                    }
+
 
                 }
                 else if (menu == 5) {
@@ -714,7 +726,8 @@ namespace towerdefense
                     Graphic::DrawBitmap(switchOff, soundPos, hdc);
                 }
 
-                
+                Graphic::DrawBitmap(btnVolume, currentBtnVol, hdc); 
+
             }
         }
         else if (menu == 5) {
