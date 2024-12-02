@@ -809,11 +809,13 @@ namespace towerdefense
             cenemy dummy;
             std::vector<POINT> otherPath = epath;
             
-            otherPath[0].x -= i * ( rand() % 300 + 100 );
+            otherPath[0].x -= (i != 9 ? (i * (rand() % 300 + 100)) : 9*500);
 
             dummy.setPath(otherPath);
             enemylist.push_back(dummy);
         }
+
+        enemylist[9].setHealth(450);
 
         Turretinit = { 50, 565 };
     }
@@ -823,7 +825,12 @@ namespace towerdefense
         Graphic::ReleaseBitmap(tower);
         Graphic::ReleaseBitmap(towerInitPlace);
         Graphic::ReleaseBitmap(instructionBoard);
-        Graphic::ReleaseBitmap(enemy);
+
+        //
+        Graphic::ReleaseBitmap(enemy1);
+        Graphic::ReleaseBitmap(enemy2);
+        Graphic::ReleaseBitmap(enemy3);
+        
         Graphic::ReleaseBitmap(hamburger);
         Graphic::ReleaseBitmap(play_or_pause);
         Graphic::ReleaseBitmap(hbullet);
@@ -843,11 +850,18 @@ namespace towerdefense
         
         background           = Graphic::LoadBitmapImage(L"Assets/background/map1.bmp", scale);
         towerInitPlace       = Graphic::LoadBitmapImage(L"Assets/game/BoardSetupTower.png", 1.5);
-        instructionBoard     = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 2);
-        enemy                = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
-        hamburger            = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
+        instructionBoard     = Graphic::LoadBitmapImage(L"Assets/game/info/board1.png", 1);
+        
+        //ENEMY LOAD
+        enemy1               = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
+        enemy3               = Graphic::LoadBitmapImage(L"Assets/game/enemy3/enemy3-1.png", 2);
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
+        hamburger = Graphic::LoadBitmapImage(L"Assets/button/aboutBtn.png", 2);
         play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 1.8);
+        
         hbullet              = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 2);
+        
         tower                = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
     }
 
@@ -927,12 +941,12 @@ namespace towerdefense
             }
         }
 
-        enemylist.erase(
+        /*enemylist.erase(
             std::remove_if(enemylist.begin(), enemylist.end(), [](const cenemy& e) {
                 return e.isDead() || e.isEnd();  
                 }),
             enemylist.end()
-        );
+        );*/
 
         // Towers shoot at the nearest enemy in range and update bullets
         for (auto& tower : towerlist) {
@@ -985,9 +999,21 @@ namespace towerdefense
         }
         Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
 
-        for (auto E : enemylist) {
-            E.render(enemy, hdc);
-        }
+        int numberEnemy = enemylist.size();
+
+        for (int i = 0; i < numberEnemy - 1; i++)
+            if(!enemylist[i].isDead() && !enemylist[i].isEnd())
+                enemylist[i].render(enemy1, hdc);
+        
+        if(!enemylist[numberEnemy - 1].isDead() && !enemylist[numberEnemy - 1].isEnd())
+            enemylist[numberEnemy - 1].render(enemy3, hdc);
+        
+        
+        /*for (auto E : enemylist) {
+            E.render(enemy1, hdc);
+        }*/
+        
+        
 
         for (auto T : towerlist) {
             T.render(tower, hdc);
@@ -1027,7 +1053,12 @@ namespace towerdefense
         Graphic::ReleaseBitmap(tower);
         Graphic::ReleaseBitmap(towerInitPlace);
         Graphic::ReleaseBitmap(instructionBoard);
-        Graphic::ReleaseBitmap(enemy);
+
+        // Destroy enemy
+        Graphic::ReleaseBitmap(enemy1);
+        Graphic::ReleaseBitmap(enemy2);
+        Graphic::ReleaseBitmap(enemy3);
+        
         Graphic::ReleaseBitmap(hamburger);
         Graphic::ReleaseBitmap(play_or_pause);
         Graphic::ReleaseBitmap(hbullet);
@@ -1049,10 +1080,12 @@ namespace towerdefense
         towerInitPlace = Graphic::LoadBitmapImage(L"Assets/game/BoardSetupTower.png", 1.5);
         background = Graphic::LoadBitmapImage(L"Assets/background/map1.bmp", scale);
         towerInitPlace = Graphic::LoadBitmapImage(L"Assets/game/BoardSetupTower.png", 1.5);
-        instructionBoard = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 2);
-        enemy = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
-        hamburger = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
+        instructionBoard = Graphic::LoadBitmapImage(L"Assets/game/info/board2.png", 1);
 
+        enemy1 = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
+        enemy3 = Graphic::LoadBitmapImage(L"Assets/game/enemy3/enemy3-1.png", 2);
+        
+        hamburger = Graphic::LoadBitmapImage(L"Assets/button/aboutBtn.png", 2);
         play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 1.8);// btnContinue.png
         hbullet = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 1);
         tower = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
@@ -1193,7 +1226,7 @@ namespace towerdefense
         Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
 
         for (auto E : enemylist) {
-            E.render(enemy, hdc);
+            E.render(enemy1, hdc);
         }
 
         for (auto T : towerlist) {
@@ -1247,9 +1280,16 @@ namespace towerdefense
         Graphic::ReleaseBitmap(tower);
         Graphic::ReleaseBitmap(towerInitPlace);
         Graphic::ReleaseBitmap(instructionBoard);
-        Graphic::ReleaseBitmap(enemy);
+        
+        // Destroy Enemy
+        Graphic::ReleaseBitmap(enemy1);
+        Graphic::ReleaseBitmap(enemy2);
+        Graphic::ReleaseBitmap(enemy3);
+        
+        //
         Graphic::ReleaseBitmap(hamburger);
         Graphic::ReleaseBitmap(play_or_pause);
+        
         Graphic::ReleaseBitmap(hbullet);
 
 
@@ -1267,9 +1307,9 @@ namespace towerdefense
 
         background = Graphic::LoadBitmapImage(L"Assets/background/map3.bmp", scale);
         towerInitPlace = Graphic::LoadBitmapImage(L"Assets/game/BoardSetupTower.png", 1.5);
-        instructionBoard = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 2);
-        enemy = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
-        hamburger = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
+        instructionBoard = Graphic::LoadBitmapImage(L"Assets/game/info/board3.png", 1);
+        enemy1 = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
+        hamburger = Graphic::LoadBitmapImage(L"Assets/button/aboutBtn.png", 2);
         play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 1.8);
         hbullet = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 2);
         tower = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
@@ -1298,7 +1338,6 @@ namespace towerdefense
                 */
                 if (PtInRect(&playRect, cursorPos)) {
                     // if click play 
-
                     for (int i = 0; i < enemylist.size(); i++) {
                         enemylist[i].isMove = !enemylist[i].isMove;
                     }
@@ -1410,7 +1449,7 @@ namespace towerdefense
         Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
 
         for (auto E : enemylist) {
-            E.render(enemy, hdc);
+            E.render(enemy1, hdc);
         }
 
         for (auto T : towerlist) {
@@ -1464,7 +1503,12 @@ namespace towerdefense
         Graphic::ReleaseBitmap(tower);
         Graphic::ReleaseBitmap(towerInitPlace);
         Graphic::ReleaseBitmap(instructionBoard);
-        Graphic::ReleaseBitmap(enemy);
+
+        // Destroy enemy
+        Graphic::ReleaseBitmap(enemy1);
+        Graphic::ReleaseBitmap(enemy2);
+        Graphic::ReleaseBitmap(enemy3);
+        
         Graphic::ReleaseBitmap(hamburger);
         Graphic::ReleaseBitmap(play_or_pause);
         Graphic::ReleaseBitmap(hbullet);
@@ -1484,9 +1528,9 @@ namespace towerdefense
 
         background = Graphic::LoadBitmapImage(L"Assets/background/map4.bmp", scale);
         towerInitPlace = Graphic::LoadBitmapImage(L"Assets/game/BoardSetupTower.png", 1.5);
-        instructionBoard = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 2);
-        enemy = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
-        hamburger = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
+        instructionBoard = Graphic::LoadBitmapImage(L"Assets/game/info/board4.png", 1);
+        enemy1 = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
+        hamburger = Graphic::LoadBitmapImage(L"Assets/button/aboutBtn.png", 2);
         play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 1.8);
         hbullet = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 2);
         tower = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
@@ -1629,7 +1673,7 @@ namespace towerdefense
         Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
 
         for (auto E : enemylist) {
-            E.render(enemy, hdc);
+            E.render(enemy1, hdc);
         }
 
         for (auto T : towerlist) {
