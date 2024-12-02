@@ -1044,7 +1044,9 @@ namespace towerdefense
 
         for (auto T : towerlist) {
             T.render(tower, hdc);
+
             cbullet b = T.getBullet(); 
+
             if (b.isActive()) {
                 b.render(hbullet, hdc);
             }
