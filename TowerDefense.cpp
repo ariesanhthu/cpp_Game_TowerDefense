@@ -9,6 +9,8 @@ TowerDefense.h
 */
 #pragma once
 //#include "PrecompiledHeader.h"
+
+#pragma comment(lib, "winmm.lib") 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(lib, "Msimg32.lib")
 #include "TowerDefense.h"

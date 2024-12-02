@@ -1,8 +1,10 @@
 ﻿#include "game.h"
 #include "input.h"
 #include "ScreenManager.h"
+#include "Graphic.h"
 #include <chrono>
 #include <thread>
+
 
 namespace towerdefense
 {
@@ -11,6 +13,8 @@ namespace towerdefense
     //==========================================================
     // Hàm xử lý các sự kiện của cửa sổ (Windows message)
     HWND g_hwnd = nullptr;
+    HCURSOR hCustomCursor;
+    Graphic graphic;
 
     LRESULT CALLBACK WindowCallback(
         HWND windowHandle,
@@ -64,6 +68,14 @@ namespace towerdefense
 
         } break;
 
+        case WM_SETCURSOR:
+        {
+            // Set the custom cursor
+            SetCursor(hCustomCursor);
+            return TRUE;
+        } break;
+
+
         default:
             result = DefWindowProc(windowHandle, message, wParam, lParam); // Xử lý mặc định
         }
@@ -101,6 +113,7 @@ namespace towerdefense
         windowClass.lpfnWndProc = WindowCallback; // Đăng ký hàm callback xử lý sự kiện
         windowClass.hInstance = hInstance;
         windowClass.lpszClassName = className;
+        windowClass.hCursor = NULL;
 
         // Đăng ký lớp cửa sổ
         if (!RegisterClass(&windowClass))
@@ -124,6 +137,21 @@ namespace towerdefense
             hInstance,
             0
         );
+
+        HBITMAP hBitmap = Graphic::LoadBitmapImage(L"Assets/mouse/mouse1.png", 2);
+
+        ICONINFO iconInfo = { 0 };
+        iconInfo.fIcon = FALSE; // Set to FALSE to indicate a cursor
+        iconInfo.xHotspot = 16; // Adjust based on your desired hotspot
+        iconInfo.yHotspot = 16;
+        iconInfo.hbmMask = hBitmap;  // Use the same bitmap as a mask for simplicity
+        iconInfo.hbmColor = hBitmap;
+
+        hCustomCursor = CreateIconIndirect(&iconInfo);
+
+        if (!hCustomCursor) {
+            MessageBoxW(g_hwnd, L"Failed to create custom cursor", L"Error", MB_OK);
+        }
 
         const int FPS = 60;
         const int frameDelay = 1000 / FPS;

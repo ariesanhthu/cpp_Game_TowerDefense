@@ -71,6 +71,14 @@ namespace towerdefense
         Graphic::ReleaseBitmap(exit);
         Graphic::ReleaseBitmap(about);
         Graphic::ReleaseBitmap(catfam);
+        Graphic::ReleaseBitmap(switchOff);
+        Graphic::ReleaseBitmap(switchOn);
+        Graphic::ReleaseBitmap(TitleSetting);
+        Graphic::ReleaseBitmap(insVolBtn);
+        Graphic::ReleaseBitmap(desVolBtn);
+        Graphic::ReleaseBitmap(backgroundVol);
+        Graphic::ReleaseBitmap(foregroundVol);
+
         for (auto i : dummyDataName) {
             Graphic::ReleaseBitmap(i);
         }
@@ -83,58 +91,67 @@ namespace towerdefense
 
     int MainScreen::index = -1;
     int MainScreen::hover = -1;
-    int MainScreen::menu = 0;
+    int MainScreen::menu  = 0;
 
     void MainScreen::loadContent(int width, int height) {
         // Tính toán tỉ lệ dựa trên kích thước màn hình
         float scaleX = static_cast<float>(width) / 395.0f;  // 1280 là kích thước gốc của ảnh
         float scaleY = static_cast<float>(height) / 213.0f; // 720 là kích thước gốc của ảnh
-        float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
+        float scale  = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
         float scaleB = 3;                                   // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
         float scaleC = 5;                                   // scale cho input
         float scaleD = 10;                                   // sacle cho text login
 
         // Tải hình nền với tỉ lệ mới
 
-        background = Graphic::LoadBitmapImage(L"Assets/background/map4.bmp", scale);
-        catfam = Graphic::LoadBitmapImage(L"Assets/decor/nameLogo.png", 2);
+        background      = Graphic::LoadBitmapImage(L"Assets/background/map4.bmp", scale);
+        catfam          = Graphic::LoadBitmapImage(L"Assets/decor/nameLogo.png", 2);
 
         // default button
-        play = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 2); 
-        cont = Graphic::LoadBitmapImage(L"Assets/button/btnContinue.png", 2); 
-        lead = Graphic::LoadBitmapImage(L"Assets/button/btnLeaderboard.png", 2); 
-        setting = Graphic::LoadBitmapImage(L"Assets/button/btnSetting.png", 2); 
-        exit = Graphic::LoadBitmapImage(L"Assets/button/btnExit.png", 2); 
-        about = Graphic::LoadBitmapImage(L"Assets/button/aboutBtn.png", 2); 
-        button_hover = Graphic::LoadBitmapImage(L"Assets/button/selectBox.bmp", 2);
+        play            = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 2); 
+        cont            = Graphic::LoadBitmapImage(L"Assets/button/btnContinue.png", 2); 
+        lead            = Graphic::LoadBitmapImage(L"Assets/button/btnLeaderboard.png", 2); 
+        setting         = Graphic::LoadBitmapImage(L"Assets/button/btnSetting.png", 2); 
+        exit            = Graphic::LoadBitmapImage(L"Assets/button/btnExit.png", 2); 
+        about           = Graphic::LoadBitmapImage(L"Assets/button/aboutBtn.png", 2); 
+        button_hover    = Graphic::LoadBitmapImage(L"Assets/button/selectBox.bmp", 2);
         
         //board
-        board = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", scaleB);
+        board           = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", scaleB);
 
         //Option 
-        map1opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map1_scaleDown.bmp", scaleB);
-        map2opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map2_scaleDown.bmp", scaleB);
-        map3opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map3_scaleDown.bmp", scaleB);
-        map4opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map4_scaleDown.bmp", scaleB);
-        opt_hover = Graphic::LoadBitmapImage(L"Assets/board/border.bmp", scaleB);
+        map1opt         = Graphic::LoadBitmapImage(L"Assets/map_resize/map1_scaleDown.bmp", scaleB);
+        map2opt         = Graphic::LoadBitmapImage(L"Assets/map_resize/map2_scaleDown.bmp", scaleB);
+        map3opt         = Graphic::LoadBitmapImage(L"Assets/map_resize/map3_scaleDown.bmp", scaleB);
+        map4opt         = Graphic::LoadBitmapImage(L"Assets/map_resize/map4_scaleDown.bmp", scaleB);
+        opt_hover       = Graphic::LoadBitmapImage(L"Assets/board/border.bmp", scaleB);
 
         // login 
-        login = Graphic::LoadBitmapImage(L"Assets/button/login_up.bmp", 2); 
-        login_down = Graphic::LoadBitmapImage(L"Assets/button/login_down.bmp", 2);
-        login_hover = Graphic::LoadBitmapImage(L"Assets/button/selectBox2.bmp", 2);
-        input = Graphic::LoadBitmapImage(L"Assets/button/input2.bmp", scaleC);
-        loginText = Graphic::LoadCustomTest("LOGIN", scaleD);
-        nameText = Graphic::LoadCustomTest("USERNAME", scaleC);
-        passwordText = Graphic::LoadCustomTest("PASSWORD", scaleC);
+        login           = Graphic::LoadBitmapImage(L"Assets/button/loginBtn.png", 2); 
+        login_down      = Graphic::LoadBitmapImage(L"Assets/button/loginBtnDown.png", 2);
+        login_hover     = Graphic::LoadBitmapImage(L"Assets/button/selectBox2.bmp", 2);
+        input           = Graphic::LoadBitmapImage(L"Assets/button/input2.bmp", scaleC);
+        loginText       = Graphic::LoadCustomTest("LOGIN", scaleD);
+        nameText        = Graphic::LoadCustomTest("USERNAME", scaleC);
+        passwordText    = Graphic::LoadCustomTest("PASSWORD", scaleC);
         inputtextbitmap = Graphic::LoadCustomTest(inputtext, scaleB);
+
+        // setting
+        TitleSetting    = Graphic::LoadBitmapImage(L"Assets/setting/TitleSetting.png", 5);
+        switchOff       = Graphic::LoadBitmapImage(L"Assets/decor/catWin0.png", 2);
+        switchOn        = Graphic::LoadBitmapImage(L"Assets/decor/catWin1.png", 2);
+        insVolBtn       = Graphic::LoadBitmapImage(L"Assets/setting/volumnOff.png", 2);   //
+        desVolBtn       = Graphic::LoadBitmapImage(L"Assets/setting/volumnOn.png", 2);    //
+        backgroundVol   = Graphic::LoadBitmapImage(L"Assets/setting/volumnOn.png", 2); //
+        foregroundVol   = Graphic::LoadBitmapImage(L"Assets/setting/volumnOn.png", 2); 
 
         //continue 
         for (int i = 0; i < dummyData.size(); i++) {
-            dummyDataName[i] = Graphic::LoadCustomTest((string)dummyData[i].getName(), 3);
+            dummyDataName[i]  = Graphic::LoadCustomTest((string)dummyData[i].getName(), 3);
             dummyDataPoint[i] = Graphic::LoadCustomTest(to_string(dummyData[i].getPoint()), 3);
         }
-        continueTitle = Graphic::LoadCustomTest("CONTINUE", scaleD);
-        arrow = Graphic::LoadBitmapImage(L"Assets/arrow.bmp", scaleC);
+        continueTitle   = Graphic::LoadCustomTest("CONTINUE", scaleD);
+        arrow           = Graphic::LoadBitmapImage(L"Assets/arrow.bmp", scaleC);
 
         // Cập nhật vị trí nút bấm theo tỉ lệ
         /*for (auto& pos : buttonPositions) {
@@ -206,7 +223,6 @@ namespace towerdefense
                 }
             }
         }
-
         // on mouse click handling
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
             auto now = std::chrono::steady_clock::now();
@@ -241,6 +257,7 @@ namespace towerdefense
                             case 3:
                                 index = 3;
                                 menu = 4;
+                                isPopupEffect = true;
                                 break;
                             case 4:
                                 index = 4;
@@ -325,13 +342,45 @@ namespace towerdefense
                     }
                 }
                 else if (menu == 3) {
-
+                    // leaderboard
                 }
                 else if (menu == 4) {
+                    RECT boardRect = {
+                        endpoint.x,
+                        endpoint.y,
+                        endpoint.x + sizeBoard.x * 3, // boardsize width
+                        endpoint.y + sizeBoard.y * 3// boardsize height
+                    };
+                    if (!PtInRect(&boardRect, cursorPos)) {
+                        //isPopdown = true;
+                        isChoosemapPopup = false;
+                        currentpoint = initpoint;
+                        menu = 0;
+                    }
 
+                    RECT soundRect = {
+                        soundPos.x,
+                        soundPos.y,
+                        soundPos.x + sizeSound.x * 2,
+                        soundPos.y + sizeSound.y * 2
+                    };
+                    if (PtInRect(&soundRect, cursorPos)) {
+                        if (!soundCheck) {
+                            if (!PlaySoundW(L"Assets/test.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP | SND_LOOP)) {
+                                MessageBox(hwnd, L"sound err", L"sound err", MB_OK);
+                            } 
+                            soundCheck = true;
+                        }
+                        else {
+                            PlaySoundW(NULL, NULL, 0);
+                            soundCheck = false;
+                        }
+                    }
+
+                    
                 }
                 else if (menu == 5) {
-
+                    
                 }
                 else if (menu == 6) {
                     RECT boardRect = {
@@ -376,7 +425,7 @@ namespace towerdefense
                         start_to_input = false;
                     }
                 }
-            }
+            } 
         }
 
         // input handle
@@ -441,6 +490,10 @@ namespace towerdefense
                     start_to_input = false;
                 }
             }
+        }
+
+        if (isEditVol) {
+            currentBtnVol = { cursorPos.x - 30, cursorPos.y - 30 };
         }
 
     }
@@ -548,7 +601,7 @@ namespace towerdefense
             }
             else {
                 if (hover == 101) {
-                    Graphic::DrawBitmap(login_hover, { loginPosition.x - 14, loginPosition.y - 15 }, hdc);
+                    Graphic::DrawBitmap(login_hover, { loginPosition.x - 14, loginPosition.y - 7 }, hdc);
                 }
                 Graphic::DrawBitmap(login, loginPosition, hdc);
             }
@@ -629,9 +682,51 @@ namespace towerdefense
 
             // copy from continue
 
+            // do not have user this time 
         }
         else if (menu == 4) {
-            // display nothing
+            // setting 
+            for (int i = 0; i < buttonPositions.size(); ++i) {
+                POINT buttonPos = buttonPositions[i];
+                switch (i) {
+                case 0:
+                    Graphic::DrawBitmap(play, buttonPos, hdc);
+                    break;
+                case 1:
+                    Graphic::DrawBitmap(cont, buttonPos, hdc);
+                    break;
+                case 2:
+                    Graphic::DrawBitmap(lead, buttonPos, hdc);
+                    break;
+                case 3:
+                    Graphic::DrawBitmap(setting, buttonPos, hdc);
+                    break;
+                case 4:
+                    Graphic::DrawBitmap(exit, buttonPos, hdc);
+                    break;
+                case 5:
+                    Graphic::DrawBitmap(about, buttonPos, hdc);
+                    break;
+                }
+            }
+
+            Graphic::DrawBitmap(board, currentpoint, hdc);
+
+            if (!isPopupEffect) {
+                Graphic::DrawBitmap(TitleSetting, titlePos, hdc);
+                
+                if (soundCheck) {
+                    Graphic::DrawBitmap(switchOn, soundPos, hdc); 
+                }
+                else {
+                    Graphic::DrawBitmap(switchOff, soundPos, hdc);
+                }
+ 
+
+            }
+        }
+        else if (menu == 5) {
+            // handle exit so do notthing here
         }
         else if (menu == 6) {
             for (int  i = 0; i < buttonPositions.size(); ++i) {
@@ -717,14 +812,14 @@ namespace towerdefense
         float scaleD = 10;                                  // sacle cho text login
         float scaleE = 2;
         
-        background = Graphic::LoadBitmapImage(L"Assets/background/map1.bmp", scale);
-        towerInitPlace = Graphic::LoadBitmapImage(L"Assets/button/input.bmp", 8);
-        instructionBoard = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 2);
-        enemy = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
-        hamburger = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
-        play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.8);
-        hbullet = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 1);
-        tower = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
+        background           = Graphic::LoadBitmapImage(L"Assets/background/map1.bmp", scale);
+        towerInitPlace       = Graphic::LoadBitmapImage(L"Assets/button/input.bmp", 8);
+        instructionBoard     = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 2);
+        enemy                = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
+        hamburger            = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
+        play_or_pause        = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.8);
+        hbullet              = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 2);
+        tower                = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
     }
 
     void PlayScreen::handleInput(HWND hwnd) {
