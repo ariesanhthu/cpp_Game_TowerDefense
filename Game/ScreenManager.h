@@ -107,12 +107,17 @@ namespace towerdefense
 
         // setting 
         bool soundCheck = false;
-        HBITMAP btnVolume; 
+        HBITMAP TitleSetting;
+
         HBITMAP switchOff;
         HBITMAP switchOn;
-        HBITMAP TitleSetting;
-        HBITMAP VolumnOff;
-        HBITMAP VolumnOn;
+
+        HBITMAP insVolBtn;
+        HBITMAP desVolBtn;
+
+        HBITMAP backgroundVol; 
+        HBITMAP foregroundVol;
+
         POINT titlePos = { 400, 100 };
         POINT soundPos = { 270, 200 };
 
@@ -121,7 +126,7 @@ namespace towerdefense
         int volumeSize = 10;
 
         POINT currentBtnVol = firstVol;
-        bool isEditVol = true;
+        bool isEditVol = false;
 
 
         vector<POINT> buttonPositions;           // Vị trí các nút bấm
