@@ -844,7 +844,7 @@ namespace towerdefense
             if (nearestEnemy) {
                 // tower.shootAt(nearestEnemy->getCurr());
                 tower.shootAt(nearestEnemy);
-                POINT pos = tower.getBullet().getCurr();
+                //POINT pos = tower.getBullet().getCurr();
                 //if (pos.x)
                 //nearestEnemy->takeDamage(tower.getBullet().getDamage());
             }
