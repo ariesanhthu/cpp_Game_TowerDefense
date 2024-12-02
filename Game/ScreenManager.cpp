@@ -928,7 +928,7 @@ namespace towerdefense
 
         enemylist.erase(
             std::remove_if(enemylist.begin(), enemylist.end(), [](const cenemy& e) {
-                return e.isDead();  
+                return e.isDead() || e.isEnd();  
                 }),
             enemylist.end()
         );
@@ -964,7 +964,8 @@ namespace towerdefense
             }
 
             if (nearestEnemy) {
-                tower.shootAt(nearestEnemy->getCurr());
+                // tower.shootAt(nearestEnemy->getCurr());
+                tower.shootAt(nearestEnemy);
                 POINT pos = tower.getBullet().getCurr();
                 //nearestEnemy->takeDamage(tower.getBullet().getDamage());
             }
