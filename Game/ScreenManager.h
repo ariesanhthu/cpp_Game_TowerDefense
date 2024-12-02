@@ -17,7 +17,7 @@ namespace towerdefense
 
         // Dòng này làm MainScreen không destruct được
         //virtual ~Screen() = 0;
-        virtual void loadContent(Graphic& graphic, int width, int height) = 0;
+        virtual void loadContent(int width, int height) = 0;
         virtual void handleInput(HWND hwnd) = 0;
         virtual void update(float delta) = 0;
         virtual void render(HDC hdc) = 0;
@@ -29,14 +29,16 @@ namespace towerdefense
         std::shared_ptr<Screen> currentScreen = nullptr;
 
     public:
-        ~ScreenManager() {}
+        ~ScreenManager() {
+            OutputDebugStringA("~ScreenManager\n");
+        }
 
         void changeScreen(std::shared_ptr<Screen> newScreen) {
             currentScreen = newScreen;
         }
 
-        void loadContent(Graphic& graphic, int width, int height) {
-            currentScreen->loadContent(graphic, width, height);
+        void loadContent(int width, int height) {
+            currentScreen->loadContent(width, height);
         }
         void handleInput(HWND hwnd) {
             currentScreen->handleInput(hwnd);
@@ -54,8 +56,6 @@ namespace towerdefense
         // dung chung trong cac menu
         HBITMAP background = nullptr;               // Hình nền
         HBITMAP catfam = nullptr;
-        
-        
         
         // dung trong default menu
         //HBITMAP button = nullptr;                 // Danh sách các nút bấm
@@ -159,7 +159,7 @@ namespace towerdefense
         MainScreen();
         ~MainScreen();
 
-        void loadContent(Graphic& graphic, int width, int height) override;
+        void loadContent(int width, int height) override;
         void handleInput(HWND hwnd) override; 
         void update(float delta) override;
         void render(HDC hdc) override;
@@ -244,7 +244,7 @@ namespace towerdefense
         PlayScreen();
         ~PlayScreen();
 
-        void loadContent(Graphic& graphic, int width, int height) override;
+        void loadContent(int width, int height) override;
         void handleInput(HWND hwnd) override;
         void update(float delta) override;
         void render(HDC hdc) override;

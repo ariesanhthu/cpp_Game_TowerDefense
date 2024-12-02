@@ -4,6 +4,8 @@
 #include <vector>
 #include <stdlib.h>
 
+#include <fstream>
+
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
 
 //#include <fstream>
@@ -74,13 +76,15 @@ namespace towerdefense
         for (auto i : dummyDataPoint) {
             Graphic::ReleaseBitmap(i);
         }
+
+        OutputDebugStringA("~MainScreen\n");
     }
 
     int MainScreen::index = -1;
     int MainScreen::hover = -1;
     int MainScreen::menu = 0;
 
-    void MainScreen::loadContent(Graphic& graphic, int width, int height) {
+    void MainScreen::loadContent(int width, int height) {
         // Tính toán tỉ lệ dựa trên kích thước màn hình
         float scaleX = static_cast<float>(width) / 395.0f;  // 1280 là kích thước gốc của ảnh
         float scaleY = static_cast<float>(height) / 213.0f; // 720 là kích thước gốc của ảnh
@@ -91,45 +95,45 @@ namespace towerdefense
 
         // Tải hình nền với tỉ lệ mới
 
-        background = graphic.LoadBitmapImage(L"Assets/background/map4.bmp", scale);
-        catfam = graphic.LoadBitmapImage(L"Assets/decor/nameLogo.png", 2);
+        background = Graphic::LoadBitmapImage(L"Assets/background/map4.bmp", scale);
+        catfam = Graphic::LoadBitmapImage(L"Assets/decor/nameLogo.png", 2);
 
         // default button
-        play = graphic.LoadBitmapImage(L"Assets/button/btnPlay.png", 2); 
-        cont = graphic.LoadBitmapImage(L"Assets/button/btnContinue.png", 2); 
-        lead = graphic.LoadBitmapImage(L"Assets/button/btnLeaderboard.png", 2); 
-        setting = graphic.LoadBitmapImage(L"Assets/button/btnSetting.png", 2); 
-        exit = graphic.LoadBitmapImage(L"Assets/button/btnExit.png", 2); 
-        about = graphic.LoadBitmapImage(L"Assets/button/aboutBtn.png", 2); 
-        button_hover = graphic.LoadBitmapImage(L"Assets/button/selectBox.bmp", 2);
+        play = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 2); 
+        cont = Graphic::LoadBitmapImage(L"Assets/button/btnContinue.png", 2); 
+        lead = Graphic::LoadBitmapImage(L"Assets/button/btnLeaderboard.png", 2); 
+        setting = Graphic::LoadBitmapImage(L"Assets/button/btnSetting.png", 2); 
+        exit = Graphic::LoadBitmapImage(L"Assets/button/btnExit.png", 2); 
+        about = Graphic::LoadBitmapImage(L"Assets/button/aboutBtn.png", 2); 
+        button_hover = Graphic::LoadBitmapImage(L"Assets/button/selectBox.bmp", 2);
         
         //board
-        board = graphic.LoadBitmapImage(L"Assets/board/board.bmp", scaleB);
+        board = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", scaleB);
 
         //Option 
-        map1opt = graphic.LoadBitmapImage(L"Assets/map_resize/map1_scaleDown.bmp", scaleB);
-        map2opt = graphic.LoadBitmapImage(L"Assets/map_resize/map2_scaleDown.bmp", scaleB);
-        map3opt = graphic.LoadBitmapImage(L"Assets/map_resize/map3_scaleDown.bmp", scaleB);
-        map4opt = graphic.LoadBitmapImage(L"Assets/map_resize/map4_scaleDown.bmp", scaleB);
-        opt_hover = graphic.LoadBitmapImage(L"Assets/board/border.bmp", scaleB);
+        map1opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map1_scaleDown.bmp", scaleB);
+        map2opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map2_scaleDown.bmp", scaleB);
+        map3opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map3_scaleDown.bmp", scaleB);
+        map4opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map4_scaleDown.bmp", scaleB);
+        opt_hover = Graphic::LoadBitmapImage(L"Assets/board/border.bmp", scaleB);
 
         // login 
-        login = graphic.LoadBitmapImage(L"Assets/button/login_up.bmp", 2); 
-        login_down = graphic.LoadBitmapImage(L"Assets/button/login_down.bmp", 2);
-        login_hover = graphic.LoadBitmapImage(L"Assets/button/selectBox2.bmp", 2);
-        input = graphic.LoadBitmapImage(L"Assets/button/input2.bmp", scaleC);
-        loginText = graphic.LoadCustomTest("LOGIN", scaleD);
-        nameText = graphic.LoadCustomTest("USERNAME", scaleC);
-        passwordText = graphic.LoadCustomTest("PASSWORD", scaleC);
-        inputtextbitmap = graphic.LoadCustomTest(inputtext, scaleB);
+        login = Graphic::LoadBitmapImage(L"Assets/button/login_up.bmp", 2); 
+        login_down = Graphic::LoadBitmapImage(L"Assets/button/login_down.bmp", 2);
+        login_hover = Graphic::LoadBitmapImage(L"Assets/button/selectBox2.bmp", 2);
+        input = Graphic::LoadBitmapImage(L"Assets/button/input2.bmp", scaleC);
+        loginText = Graphic::LoadCustomTest("LOGIN", scaleD);
+        nameText = Graphic::LoadCustomTest("USERNAME", scaleC);
+        passwordText = Graphic::LoadCustomTest("PASSWORD", scaleC);
+        inputtextbitmap = Graphic::LoadCustomTest(inputtext, scaleB);
 
         //continue 
         for (int i = 0; i < dummyData.size(); i++) {
-            dummyDataName[i] = graphic.LoadCustomTest((string)dummyData[i].getName(), 3);
-            dummyDataPoint[i] = graphic.LoadCustomTest(to_string(dummyData[i].getPoint()), 3);
+            dummyDataName[i] = Graphic::LoadCustomTest((string)dummyData[i].getName(), 3);
+            dummyDataPoint[i] = Graphic::LoadCustomTest(to_string(dummyData[i].getPoint()), 3);
         }
-        continueTitle = graphic.LoadCustomTest("CONTINUE", scaleD);
-        arrow = graphic.LoadBitmapImage(L"Assets/arrow.bmp", scaleC);
+        continueTitle = Graphic::LoadCustomTest("CONTINUE", scaleD);
+        arrow = Graphic::LoadBitmapImage(L"Assets/arrow.bmp", scaleC);
 
         // Cập nhật vị trí nút bấm theo tỉ lệ
         /*for (auto& pos : buttonPositions) {
@@ -699,10 +703,11 @@ namespace towerdefense
         Graphic::ReleaseBitmap(play_or_pause);
         Graphic::ReleaseBitmap(hbullet);
 
-        //Graphic::ReleaseBitmap(tu2);
+
+        OutputDebugStringA("~PlayScreen\n");
     }
 
-    void PlayScreen::loadContent(Graphic& graphic, int width, int height) {
+    void PlayScreen::loadContent(int width, int height) {
         float scaleX = static_cast<float>(width) / 395.0f;  // 1280 là kích thước gốc của ảnh
         float scaleY = static_cast<float>(height) / 213.0f; // 720 là kích thước gốc của ảnh
         float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
@@ -711,14 +716,14 @@ namespace towerdefense
         float scaleD = 10;                                  // sacle cho text login
         float scaleE = 2;
         
-        background = graphic.LoadBitmapImage(L"Assets/background/map1.bmp", scale);
-        towerInitPlace = graphic.LoadBitmapImage(L"Assets/button/input.bmp", 8);
-        instructionBoard = graphic.LoadBitmapImage(L"Assets/board/board.bmp", 2);
-        enemy = graphic.LoadBitmapImage(L"Assets/game/slime.bmp", 2);
-        hamburger = graphic.LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
-        play_or_pause = graphic.LoadBitmapImage(L"Assets/button/button_up.bmp", 1.8);
-        hbullet = graphic.LoadBitmapImage(L"Assets/game/bullet2-2.png", 2);
-        tower = graphic.LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
+        background = Graphic::LoadBitmapImage(L"Assets/background/map1.bmp", scale);
+        towerInitPlace = Graphic::LoadBitmapImage(L"Assets/button/input.bmp", 8);
+        instructionBoard = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 2);
+        enemy = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
+        hamburger = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.5);
+        play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/button_up.bmp", 1.8);
+        hbullet = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 2);
+        tower = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
     }
 
     void PlayScreen::handleInput(HWND hwnd) {

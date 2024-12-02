@@ -1,6 +1,8 @@
 ﻿#include "game.h"
 #include "input.h"
 #include "ScreenManager.h"
+#include <chrono>
+#include <thread>
 
 namespace towerdefense
 {
@@ -62,7 +64,6 @@ namespace towerdefense
         case WM_CUSTOM_LOAD_SCREEN:
         {
             int x = (int)wParam;
-            OutputDebugStringA("hasduhaskd");
             Game::getInstance().loadInitialScreen(x);
 
         } break;
@@ -128,6 +129,9 @@ namespace towerdefense
             0
         );
 
+        const int FPS = 60;
+        const int frameDelay = 1000 / FPS;
+
         if (windowHandle) // Kiểm tra nếu cửa sổ tạo thành công
         {
             OutputDebugString(L"GAME INIT\n");
@@ -152,6 +156,8 @@ namespace towerdefense
                 int64_t counter_elapsed = current_counter.QuadPart - last_counter.QuadPart;
                 float delta = (float)counter_elapsed / (float)cpu_frequency.QuadPart; // Thời gian giữa hai frame
                 last_counter = current_counter;
+
+                auto frameStart = std::chrono::high_resolution_clock::now();
 
                 // Xử lý các sự kiện Windows
                 MSG message;
@@ -196,7 +202,12 @@ namespace towerdefense
                     DeleteDC(bufferDC);
                     ReleaseDC(windowHandle, hdc);
 
-                    Sleep(16);
+                    auto frameEnd = std::chrono::high_resolution_clock::now();
+                    auto frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
+
+                    if (frameDelay > frameTime) {
+                        std::this_thread::sleep_for(std::chrono::milliseconds(frameDelay - frameTime));
+                    }
                     // inputHadle
                     // update
                     // render
@@ -227,7 +238,7 @@ namespace towerdefense
         }
 
         screenManager.changeScreen(std::move(newscreen));
-        screenManager.loadContent(graphic, windowWidth, windowHeight);
+        screenManager.loadContent(windowWidth, windowHeight);
         
 
         // Tải nội dung màn hình chính
