@@ -209,97 +209,7 @@ namespace towerdefense
         //void resizeContent(int windowWidth, int windowHeight) override;
     };
 
-    class PlayScreen : public Screen {
-    private:
-        vector<POINT> epath = {
-            {-100, 150},
-            {390, 150},
-            {390, 490},
-            {1200, 490},
-        };
-
-    protected: 
-        // hbitmap
-        HBITMAP background = nullptr;
-        HBITMAP tower = nullptr;              // tower
-        HBITMAP towerInitPlace = nullptr;     // Ô chứa tháp
-        HBITMAP instructionBoard = nullptr;   // Bảng hướng dẫn 
-        HBITMAP enemy = nullptr;              // enemy
-        HBITMAP hamburger = nullptr;          // hamburger button
-        HBITMAP play_or_pause = nullptr;      // nut play hoac pause
-        HBITMAP hbullet = nullptr;            // bullet
-
-        // instruction pos
-        POINT instructionPos = { 730, 50 };
-        POINT hamburgerPos = { 1200, 5 };
-        bool displayBoard = true;
-
-        // position init place of box
-        POINT towerInitPos = { 10, 550 };
-        
-        // buton play or pause 
-        POINT posbuttonplay = { 350, 570 };
-
-        // delay hand variable
-        std::chrono::steady_clock::time_point lastMouseClickTime;
-        std::chrono::steady_clock::time_point lastKeyPressTime;
-        const int debounceDelayMs = 200; // 200 ms debounce delay
-
-        // enemy 
-        std::vector<cenemy> enemylist;
-        POINT Einit;              // enemy position
-
-        // tower
-        std::vector<ctower> towerlist;
-        POINT Turretinit;         // tower position 
-
-        // tower de chon di chuyen
-        ctower Tpicking; 
-        POINT TcurrentPick;
-        bool isPicking = false;
-
-        // size
-        POINT buttonSize = { 26, 29 };
-        POINT boardSize = { 260, 180 };
-        POINT towerSize = { 20, 30 };
-
-        // support 
-
-
-        /* =======================================
-        
-        FIXBIG
-
-        ======================================= */
-
-        bool checkValidPos(POINT pos) {
-            return true;
-        }
-        bool isInRange(POINT pos, int range) {
-            return range < sqrt((pos.x * pos.x + pos.y * pos.y));
-        }
-
-    public:
-        PlayScreen();
-        ~PlayScreen();
-
-        void loadContent(int width, int height) override;
-        void handleInput(HWND hwnd) override;
-        void update(float delta) override;
-        void render(HDC hdc) override;
-    };
-
-    class PlayScreen2 : public Screen {
-    private:
-        vector<POINT> epath = {
-            {-100, 115},
-            {435, 115},
-            {435, 330},
-            {265, 330},
-            {265, 515},
-            {1200, 515},
-        };
-
+    class MapScreen : public Screen {
     protected:
         // hbitmap
         HBITMAP background = nullptr;
@@ -362,6 +272,46 @@ namespace towerdefense
         }
 
     public:
+        //MapScreen();
+        virtual ~MapScreen() {}
+
+        virtual void loadContent(int width, int height) = 0;
+        virtual void handleInput(HWND hwnd) = 0;
+        virtual void update(float delta) = 0;
+        virtual void render(HDC hdc) = 0;
+    };
+
+    class PlayScreen : public MapScreen {
+    private:
+        vector<POINT> epath = {
+            {-100, 150},
+            {390, 150},
+            {390, 490},
+            {1200, 490},
+        };
+
+    public:
+        PlayScreen();
+        ~PlayScreen();
+
+        void loadContent(int width, int height) override;
+        void handleInput(HWND hwnd) override;
+        void update(float delta) override;
+        void render(HDC hdc) override;
+    };
+
+    class PlayScreen2 : public MapScreen {
+    private:
+        vector<POINT> epath = {
+            {-100, 115},
+            {435, 115},
+            {435, 330},
+            {265, 330},
+            {265, 515},
+            {1200, 515},
+        };
+
+    public:
         PlayScreen2();
         ~PlayScreen2();
 
@@ -371,7 +321,7 @@ namespace towerdefense
         void render(HDC hdc) override;
     };
 
-    class PlayScreen3 : public Screen {
+    class PlayScreen3 : public MapScreen {
     private:
         vector<POINT> epath1 = {
             {-100, 170},
@@ -386,67 +336,6 @@ namespace towerdefense
             { 1200, 450 }
         };
 
-    protected:
-        // hbitmap
-        HBITMAP background = nullptr;
-        HBITMAP tower = nullptr;              // tower
-        HBITMAP towerInitPlace = nullptr;     // Ô chứa tháp
-        HBITMAP instructionBoard = nullptr;   // Bảng hướng dẫn 
-        HBITMAP enemy = nullptr;              // enemy
-        HBITMAP hamburger = nullptr;          // hamburger button
-        HBITMAP play_or_pause = nullptr;      // nut play hoac pause
-        HBITMAP hbullet = nullptr;            // bullet
-
-        // instruction pos
-        POINT instructionPos = { 730, 50 };
-        POINT hamburgerPos = { 1200, 5 };
-        bool displayBoard = true;
-
-        // position init place of box
-        POINT towerInitPos = { 10, 550 };
-
-        // buton play or pause 
-        POINT posbuttonplay = { 350, 570 };
-
-        // delay hand variable
-        std::chrono::steady_clock::time_point lastMouseClickTime;
-        std::chrono::steady_clock::time_point lastKeyPressTime;
-        const int debounceDelayMs = 200; // 200 ms debounce delay
-
-        // enemy 
-        std::vector<cenemy> enemylist;
-        POINT Einit;              // enemy position
-
-        // tower
-        std::vector<ctower> towerlist;
-        POINT Turretinit;         // tower position 
-
-        // tower de chon di chuyen
-        ctower Tpicking;
-        POINT TcurrentPick;
-        bool isPicking = false;
-
-        // size
-        POINT buttonSize = { 26, 29 };
-        POINT boardSize = { 260, 180 };
-        POINT towerSize = { 20, 30 };
-
-        // support 
-
-
-        /* =======================================
-
-        FIXBIG
-
-        ======================================= */
-
-        bool checkValidPos(POINT pos) {
-            return true;
-        }
-        bool isInRange(POINT pos, int range) {
-            return range < sqrt((pos.x * pos.x + pos.y * pos.y));
-        }
-
     public:
         PlayScreen3();
         ~PlayScreen3();
@@ -457,7 +346,7 @@ namespace towerdefense
         void render(HDC hdc) override;
     };
 
-    class PlayScreen4 : public Screen {
+    class PlayScreen4 : public MapScreen {
     private:
         vector<POINT> epath1 = {
             { -100, 160 },
@@ -470,67 +359,6 @@ namespace towerdefense
             { 290, 400 },
             { 1200, 400 }
         };
-
-    protected:
-        // hbitmap
-        HBITMAP background = nullptr;
-        HBITMAP tower = nullptr;              // tower
-        HBITMAP towerInitPlace = nullptr;     // Ô chứa tháp
-        HBITMAP instructionBoard = nullptr;   // Bảng hướng dẫn 
-        HBITMAP enemy = nullptr;              // enemy
-        HBITMAP hamburger = nullptr;          // hamburger button
-        HBITMAP play_or_pause = nullptr;      // nut play hoac pause
-        HBITMAP hbullet = nullptr;            // bullet
-
-        // instruction pos
-        POINT instructionPos = { 730, 50 };
-        POINT hamburgerPos = { 1200, 5 };
-        bool displayBoard = true;
-
-        // position init place of box
-        POINT towerInitPos = { 10, 550 };
-
-        // buton play or pause 
-        POINT posbuttonplay = { 350, 570 };
-
-        // delay hand variable
-        std::chrono::steady_clock::time_point lastMouseClickTime;
-        std::chrono::steady_clock::time_point lastKeyPressTime;
-        const int debounceDelayMs = 200; // 200 ms debounce delay
-
-        // enemy 
-        std::vector<cenemy> enemylist;
-        POINT Einit;              // enemy position
-
-        // tower
-        std::vector<ctower> towerlist;
-        POINT Turretinit;         // tower position 
-
-        // tower de chon di chuyen
-        ctower Tpicking;
-        POINT TcurrentPick;
-        bool isPicking = false;
-
-        // size
-        POINT buttonSize = { 26, 29 };
-        POINT boardSize = { 260, 180 };
-        POINT towerSize = { 20, 30 };
-
-        // support 
-
-
-        /* =======================================
-
-        FIXBIG
-
-        ======================================= */
-
-        bool checkValidPos(POINT pos) {
-            return true;
-        }
-        bool isInRange(POINT pos, int range) {
-            return range < sqrt((pos.x * pos.x + pos.y * pos.y));
-        }
 
     public:
         PlayScreen4();

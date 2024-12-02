@@ -235,14 +235,9 @@ namespace towerdefense
     //==========================================================
     // Tách phần load screen
     //==========================================================
-    void Game::loadInitialScreen(int x)
-    {
-        // Tạo màn hình chính
-        
-
-        //std::shared_ptr<Screen> newscreen = std::make_shared<MainScreen>();
-
+    void Game::loadInitialScreen(int x) {
         std::shared_ptr<Screen> newscreen;
+
         if (x == 0) {
             newscreen = std::make_shared<MainScreen>();
         }
@@ -252,11 +247,15 @@ namespace towerdefense
         else if (x == 2) {
             newscreen = std::make_shared<PlayScreen2>();
         }
-        else if(x == 3) {
-            newscreen = std::make_shared<PlayScreen3>(); 
+        else if (x == 3) {
+            newscreen = std::make_shared<PlayScreen3>();
         }
         else if (x == 4) {
             newscreen = std::make_shared<PlayScreen4>();
+        }
+        else {
+            OutputDebugStringA("Invalid screen index.\n");
+            return;  // Exit early for invalid `x`
         }
 
         screenManager.changeScreen(std::move(newscreen));
