@@ -2,7 +2,7 @@
 
 cenemy::cenemy() {
     health = 300;
-    speed = 4;
+    speed = 10;
     path.clear();
     isMove = false;
 }
@@ -58,12 +58,13 @@ void cenemy::update(float delta) {
 
     if ((index + speed) < (path.size() - 1)) {
         index += speed;
+        currentPosition = path[index];
     }
     else {
-        //index = path.size() - 1;
-        index = 0;
+        index = path.size() - 1;
+        //index = 0;
+
     }
 
-    currentPosition = path[index];
 }
 

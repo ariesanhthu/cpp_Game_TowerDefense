@@ -15,6 +15,8 @@ private:
     float cooldownTime; // Thời gian hồi chiêu
     std::chrono::steady_clock::time_point lastShotTime;
 
+    cenemy* enemy = NULL;
+
 public:
     ctower() : range(100.0f), isShooting(false), cooldownTime(500) {}
 
@@ -45,11 +47,24 @@ public:
         }
     }
 
+    void shootAt(const cenemy* target) {
+        auto now = std::chrono::steady_clock::now();
+        enemy = const_cast<cenemy*> (target);
+        POINT pos = {target->getCurr().x, target->getCurr().y};
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastShotTime).count() >= cooldownTime) {
+            bullet.setCurr(location);
+            bullet.setTarget(pos);
+            isShooting = true;
+            lastShotTime = now;
+        }
+    }
+
     void updateBullet() {
         if (isShooting) {
             bullet.calPath();
             if (!bullet.isActive()) {
                 isShooting = false;
+                enemy->takeDamage(2);
             }
         }
     }

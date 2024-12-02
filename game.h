@@ -18,7 +18,6 @@ namespace towerdefense
 	private:
 		//std::unique_ptr<GameState> currentState;
 		ScreenManager screenManager;
-		Graphic graphic;
 
 	public:
 		/*void setState(std::unique_ptr<GameState> newState) {
@@ -50,7 +49,7 @@ namespace towerdefense
 		Game(const Game&) = delete;
 		Game& operator= (const Game&) = delete;
 		~Game() {
-			OutputDebugStringA("~Game");
+			OutputDebugStringA("~Game\n");
 		}
 		
 		inline static Game& getInstance()

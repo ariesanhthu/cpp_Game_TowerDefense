@@ -76,7 +76,7 @@ void Graphic::DrawBitmap(HBITMAP hBitmap, POINT start, HDC hdc) {
     DeleteDC(hdcMem);
 }
 
-#define max_ if(maxHeight < static_cast<int>(tempBitmap.GetHeight() * factor)) {maxHeight = static_cast<int>(tempBitmap.GetHeight() * factor);}
+//#define max_ if(maxHeight < static_cast<int>(tempBitmap.GetHeight() * factor)) {maxHeight = static_cast<int>(tempBitmap.GetHeight() * factor);}
 
 HBITMAP Graphic::LoadCustomTest(std::string text, double factor, int spacing) {
     // Base folder path for character bitmaps

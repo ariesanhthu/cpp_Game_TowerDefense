@@ -7,7 +7,7 @@ using namespace std;
 
 class cenemy {
 private:
-    int health = 100;
+    int health = 300;
     int speed;
     POINT currentPosition;
     vector<POINT> path;
