@@ -8,6 +8,7 @@
 #include "cenemy.h"
 #include "ctower.h"
 #include <chrono>
+#include <mmsystem.h> 
 
 using namespace std;
 namespace towerdefense
@@ -54,46 +55,46 @@ namespace towerdefense
     class MainScreen : public Screen {
     private:
         // dung chung trong cac menu
-        HBITMAP background = nullptr;               // Hình nền
-        HBITMAP catfam = nullptr;
+        HBITMAP background       = nullptr;               // Hình nền
+        HBITMAP catfam           = nullptr;
         
         // dung trong default menu
         //HBITMAP button = nullptr;                 // Danh sách các nút bấm
         //HBITMAP button_down = nullptr;
 
-        HBITMAP button_hover = nullptr;
 
         // button  
-        HBITMAP play = nullptr;             // play
-        HBITMAP cont = nullptr;             // continue 
-        HBITMAP lead = nullptr;             // leaderboard
-        HBITMAP setting = nullptr;          // setting 
-        HBITMAP exit = nullptr;             // exit
-        HBITMAP about = nullptr;            // about us
+        HBITMAP play             = nullptr;             // play
+        HBITMAP cont             = nullptr;             // continue 
+        HBITMAP lead             = nullptr;             // leaderboard
+        HBITMAP setting          = nullptr;             // setting 
+        HBITMAP exit             = nullptr;             // exit
+        HBITMAP about            = nullptr;             // about us
+        HBITMAP button_hover     = nullptr;
 
         // popup
         HBITMAP board = nullptr;
 
         // choose map
-        HBITMAP map1opt = nullptr; 
-        HBITMAP map2opt = nullptr; 
-        HBITMAP map3opt = nullptr; 
-        HBITMAP map4opt = nullptr; 
-        HBITMAP opt_hover = nullptr;
+        HBITMAP map1opt          = nullptr; 
+        HBITMAP map2opt          = nullptr; 
+        HBITMAP map3opt          = nullptr; 
+        HBITMAP map4opt          = nullptr; 
+        HBITMAP opt_hover        = nullptr;
 
 
         // login
-        HBITMAP login = nullptr;
-        HBITMAP login_down = nullptr;
-        HBITMAP login_hover = nullptr;
-        HBITMAP input = nullptr;
-        HBITMAP loginText = nullptr;
-        HBITMAP nameText = nullptr;
-        HBITMAP passwordText = nullptr;
+        HBITMAP login            = nullptr;
+        HBITMAP login_down       = nullptr;
+        HBITMAP login_hover      = nullptr;
+        HBITMAP input            = nullptr;
+        HBITMAP loginText        = nullptr;
+        HBITMAP nameText         = nullptr;
+        HBITMAP passwordText     = nullptr;
 
         // continue
-        HBITMAP continueTitle = nullptr;
-        HBITMAP arrow = nullptr;
+        HBITMAP continueTitle    = nullptr;
+        HBITMAP arrow            = nullptr;
 
         // continue with dummydata
         vector<cplayer> dummyData = { {"duck", 10}, {"thu", 12}, {"Hung", 44} };
@@ -102,9 +103,36 @@ namespace towerdefense
         POINT firstplayerCoverPos = { 420, 200 };
         POINT titleContinuePos = { 390, 130 };
 
+        // leaderboard 
+
+        // setting 
+        bool soundCheck          = false;
+        HBITMAP TitleSetting     = nullptr;
+
+        HBITMAP switchOff        = nullptr;
+        HBITMAP switchOn         = nullptr;
+
+        HBITMAP insVolBtn = nullptr;
+        HBITMAP desVolBtn = nullptr;
+
+        HBITMAP backgroundVol = nullptr; 
+        HBITMAP foregroundVol = nullptr;
+
+        POINT titlePos = { 400, 100 };
+        POINT soundPos = { 270, 200 };
+
+        POINT VolFirstPos = { 270, 300 };
+        POINT VolDesPos = { 370, 300 };
+        POINT VolInsPos = { 400, 300 };
+
+        int volumeSize = 10;
+        int currentVolume = 50;
+        int percent = currentVolume / volumeSize;
+
+
         vector<POINT> buttonPositions;           // Vị trí các nút bấm
         vector<POINT> optionPositions;            // Vi tri cac lua chon map
-        
+
         // Vẽ input box
         POINT loginPosition;
         POINT inputNamePosition = { 480, 250 };
@@ -148,12 +176,27 @@ namespace towerdefense
         POINT optionSize = { 75, 42 };
         POINT loginSize = { 99, 43 };
         POINT inputSize = { 60, 11 };
+        POINT sizeSound = { 25, 29 };
+        POINT sizeVolBtn = { 14, 21 };
+        POINT sizeEdit = { 7, 12 };
 
 
         // avoid double click
         std::chrono::steady_clock::time_point lastMouseClickTime;
         std::chrono::steady_clock::time_point lastKeyPressTime;
         const int debounceDelayMs = 200; // 200 ms debounce delay
+
+        // support
+        void SetVolume(int volumePercentage) {
+            if (volumePercentage < 0) volumePercentage = 0;
+            if (volumePercentage > 99) volumePercentage = 0;
+
+            DWORD volume = (DWORD)(0xFFFF * (volumePercentage / 100.0f));
+            DWORD volumeSetting = (volume & 0xFFFF) | (volume << 16);
+
+            waveOutSetVolume(0, volumeSetting);
+            currentVolume = volumePercentage;
+        }
 
     public:
         MainScreen();
@@ -167,7 +210,7 @@ namespace towerdefense
     };
 
     class PlayScreen : public Screen {
-    private: 
+    private:
         vector<POINT> epath = {
             {-100, 150},
             {390, 150},
@@ -175,6 +218,7 @@ namespace towerdefense
             {1200, 490},
         };
 
+    protected: 
         // hbitmap
         HBITMAP background = nullptr;
         HBITMAP tower = nullptr;              // tower
@@ -199,7 +243,7 @@ namespace towerdefense
         // delay hand variable
         std::chrono::steady_clock::time_point lastMouseClickTime;
         std::chrono::steady_clock::time_point lastKeyPressTime;
-        const int debounceDelayMs = 300; // 200 ms debounce delay
+        const int debounceDelayMs = 200; // 200 ms debounce delay
 
         // enemy 
         std::vector<cenemy> enemylist;
@@ -238,6 +282,170 @@ namespace towerdefense
     public:
         PlayScreen();
         ~PlayScreen();
+
+        void loadContent(int width, int height) override;
+        void handleInput(HWND hwnd) override;
+        void update(float delta) override;
+        void render(HDC hdc) override;
+    };
+
+    class PlayScreen2 : public Screen {
+    private:
+        vector<POINT> epath = {
+            {-100, 115},
+            {435, 115},
+            {435, 330},
+            {265, 330},
+            {265, 515},
+            {1200, 515},
+        };
+
+    protected:
+        // hbitmap
+        HBITMAP background = nullptr;
+        HBITMAP tower = nullptr;              // tower
+        HBITMAP towerInitPlace = nullptr;     // Ô chứa tháp
+        HBITMAP instructionBoard = nullptr;   // Bảng hướng dẫn 
+        HBITMAP enemy = nullptr;              // enemy
+        HBITMAP hamburger = nullptr;          // hamburger button
+        HBITMAP play_or_pause = nullptr;      // nut play hoac pause
+        HBITMAP hbullet = nullptr;            // bullet
+
+        // instruction pos
+        POINT instructionPos = { 730, 50 };
+        POINT hamburgerPos = { 1200, 5 };
+        bool displayBoard = true;
+
+        // position init place of box
+        POINT towerInitPos = { 10, 550 };
+
+        // buton play or pause 
+        POINT posbuttonplay = { 350, 570 };
+
+        // delay hand variable
+        std::chrono::steady_clock::time_point lastMouseClickTime;
+        std::chrono::steady_clock::time_point lastKeyPressTime;
+        const int debounceDelayMs = 200; // 200 ms debounce delay
+
+        // enemy 
+        std::vector<cenemy> enemylist;
+        POINT Einit;              // enemy position
+
+        // tower
+        std::vector<ctower> towerlist;
+        POINT Turretinit;         // tower position 
+
+        // tower de chon di chuyen
+        ctower Tpicking;
+        POINT TcurrentPick;
+        bool isPicking = false;
+
+        // size
+        POINT buttonSize = { 26, 29 };
+        POINT boardSize = { 260, 180 };
+        POINT towerSize = { 20, 30 };
+
+        // support 
+
+
+        /* =======================================
+
+        FIXBIG
+
+        ======================================= */
+
+        bool checkValidPos(POINT pos) {
+            return true;
+        }
+        bool isInRange(POINT pos, int range) {
+            return range < sqrt((pos.x * pos.x + pos.y * pos.y));
+        }
+
+    public:
+        PlayScreen2();
+        ~PlayScreen2();
+
+        void loadContent(int width, int height) override;
+        void handleInput(HWND hwnd) override;
+        void update(float delta) override;
+        void render(HDC hdc) override;
+    };
+
+    class PlayScreen3 : public Screen {
+    private:
+        vector<POINT> epath = {
+            {-100, 115},
+            {435, 115},
+            {435, 330},
+            {265, 330},
+            {265, 515},
+            {1200, 515},
+        };
+
+    protected:
+        // hbitmap
+        HBITMAP background = nullptr;
+        HBITMAP tower = nullptr;              // tower
+        HBITMAP towerInitPlace = nullptr;     // Ô chứa tháp
+        HBITMAP instructionBoard = nullptr;   // Bảng hướng dẫn 
+        HBITMAP enemy = nullptr;              // enemy
+        HBITMAP hamburger = nullptr;          // hamburger button
+        HBITMAP play_or_pause = nullptr;      // nut play hoac pause
+        HBITMAP hbullet = nullptr;            // bullet
+
+        // instruction pos
+        POINT instructionPos = { 730, 50 };
+        POINT hamburgerPos = { 1200, 5 };
+        bool displayBoard = true;
+
+        // position init place of box
+        POINT towerInitPos = { 10, 550 };
+
+        // buton play or pause 
+        POINT posbuttonplay = { 350, 570 };
+
+        // delay hand variable
+        std::chrono::steady_clock::time_point lastMouseClickTime;
+        std::chrono::steady_clock::time_point lastKeyPressTime;
+        const int debounceDelayMs = 200; // 200 ms debounce delay
+
+        // enemy 
+        std::vector<cenemy> enemylist;
+        POINT Einit;              // enemy position
+
+        // tower
+        std::vector<ctower> towerlist;
+        POINT Turretinit;         // tower position 
+
+        // tower de chon di chuyen
+        ctower Tpicking;
+        POINT TcurrentPick;
+        bool isPicking = false;
+
+        // size
+        POINT buttonSize = { 26, 29 };
+        POINT boardSize = { 260, 180 };
+        POINT towerSize = { 20, 30 };
+
+        // support 
+
+
+        /* =======================================
+
+        FIXBIG
+
+        ======================================= */
+
+        bool checkValidPos(POINT pos) {
+            return true;
+        }
+        bool isInRange(POINT pos, int range) {
+            return range < sqrt((pos.x * pos.x + pos.y * pos.y));
+        }
+
+    public:
+        PlayScreen3();
+        ~PlayScreen3();
 
         void loadContent(int width, int height) override;
         void handleInput(HWND hwnd) override;
