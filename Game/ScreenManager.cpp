@@ -914,13 +914,15 @@ namespace towerdefense
         }
         else {
             // neu vi tri thoa dieu kien thi them vao list tower
-            if (checkValidPos(TcurrentPick)) {
+            if (checkValidPos(TcurrentPick) && NOfTower < 5) {
                 towerlist.push_back(Tpicking);
+                NOfTower++;
             }
         }
     }
 
     void PlayScreen::update(float delta) {
+
         for (auto& enemy : enemylist) {
             if (enemy.isMove && !enemy.isEnd()) {
                 enemy.update(delta);
