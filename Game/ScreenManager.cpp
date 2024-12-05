@@ -16,14 +16,17 @@ namespace towerdefense
 {
     // Constructor
     MainScreen::MainScreen() {
+        background = Graphic::LoadBitmapImage(L"Assets/background/map4.bmp", 2);
+        uiElements.push_back(std::make_shared<Background>(POINT{ 0, 0 }, background));
+
         // Xác định vị trí các nút bấm
         buttonPositions = {
             {1280 / 10 * 1, 720 * 7 / 10},   // Play button
             {1280 / 10 * 3, 720 * 7 / 10},   // Pause button
             {1280 / 10 * 5, 720 * 7 / 10},   // Trophy button
             {1280 / 10 * 7, 720 * 7 / 10},   // Settings button
-            {1280 / 10 * 9, 720 * 7 / 10},    // Exit button
-            {1280 / 10 * 9, 720 * 7 / 100}      // about us
+            {1280 / 10 * 9, 720 * 7 / 10},   // Exit button
+            {1280 / 10 * 9, 720 * 7 / 100}   // about us
         };
 
         initpoint = { 182, 700 };
@@ -39,8 +42,11 @@ namespace towerdefense
 
         loginPosition = { (int)(1280 / 10 * 7.5), 720 * 7 / 100 };
 
-        dummyDataName.resize(dummyData.size());
-        dummyDataPoint.resize(dummyData.size());
+        userdata = getUserList();
+        gamedata = getGameList();
+        dummyDataName.resize(userdata.size());
+        dummyDataPoint.resize(gamedata.size());
+
     }
 
     // Destructor
@@ -104,7 +110,7 @@ namespace towerdefense
 
         // Tải hình nền với tỉ lệ mới
 
-        background              = Graphic::LoadBitmapImage(L"Assets/background/map4.bmp", scale);
+        //background = Graphic::LoadBitmapImage(L"Assets/background/map4.bmp", scale);
         catfam                  = Graphic::LoadBitmapImage(L"Assets/decor/nameLogo.png", 2);
 
         // default button
@@ -146,9 +152,9 @@ namespace towerdefense
         foregroundVol           = Graphic::LoadBitmapImage(L"Assets/setting/volumnOn.png", 2); 
 
         //continue 
-        for (int i = 0; i < dummyData.size(); i++) {
-            dummyDataName[i]    = Graphic::LoadCustomTest((string)dummyData[i].getName(), 3);
-            dummyDataPoint[i]   = Graphic::LoadCustomTest(to_string(dummyData[i].getPoint()), 3);
+        for (int i = 0; i < userdata.size(); i++) {
+            dummyDataName[i]    = Graphic::LoadCustomTest((string)userdata[i].name, 3);
+            dummyDataPoint[i]   = Graphic::LoadCustomTest(to_string(userdata[i].point), 3);
         }
         continueTitle           = Graphic::LoadCustomTest("CONTINUE", scaleD);
         arrow                   = Graphic::LoadBitmapImage(L"Assets/arrow.bmp", scaleC);
@@ -183,10 +189,10 @@ namespace towerdefense
             } 
 
             RECT LoginRect = {
-                    loginPosition.x,
-                    loginPosition.y,
-                    loginPosition.x + loginSize.x * 2, // Button width
-                    loginPosition.y + loginSize.y * 2 // Button height
+                loginPosition.x,
+                loginPosition.y,
+                loginPosition.x + loginSize.x * 2, // Button width
+                loginPosition.y + loginSize.y * 2 // Button height
             };
             if (PtInRect(&LoginRect, cursorPos)) {
                 hover = 101;
@@ -209,7 +215,7 @@ namespace towerdefense
             }
         }
         else if (menu == 2) {
-            for (int  i = 0; i < dummyData.size(); ++i) {
+            for (int  i = 0; i < userdata.size(); ++i) {
                 RECT nameRect = {
                     firstplayerCoverPos.x - 100,  // Adjust x to match hover offset
                     firstplayerCoverPos.y + static_cast<int>(i) * 100,  // Top y
@@ -333,13 +339,40 @@ namespace towerdefense
                     RECT boardRect = {
                         endpoint.x,
                         endpoint.y,
-                        endpoint.x + sizeBoard.x, // boardsize width
-                        endpoint.y + sizeBoard.y // boardsize height
+                        endpoint.x + sizeBoard.x, 
+                        endpoint.y + sizeBoard.y 
                     };
                     if (!PtInRect(&boardRect, cursorPos)) {
                         isChoosemapPopup = false;
                         currentpoint = initpoint;
                         menu = 0;
+                    }
+
+                    for (int i = 0; i < userdata.size(); ++i) {
+                        RECT nameRect = {
+                            firstplayerCoverPos.x - 100,  // Adjust x to match hover offset
+                            firstplayerCoverPos.y + static_cast<int>(i) * 100,  // Top y
+                            firstplayerCoverPos.x + 200,  // Width of the rectangle
+                            firstplayerCoverPos.y + static_cast<int>(i) * 100 + 80  // Height of the rectangle
+                        };
+
+                        if (PtInRect(&nameRect, cursorPos)) {
+                            
+                            int mapCode = 0;
+                            for (auto i : gamedata) {
+                                for (auto j : userdata) {
+                                    if (i.gameId == j.UserId) {
+                                        mapCode = i.mapCode; 
+                                        break;
+                                    }
+                                }
+                                if (!mapCode) break;
+                            }
+                            OutputDebugStringA(std::to_string(mapCode).c_str());
+                            PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, mapCode, 0);
+
+                            break;
+                        }
                     }
                 }
                 else if (menu == 3) {
@@ -567,7 +600,10 @@ namespace towerdefense
     }
 
     void MainScreen::render(HDC hdc) {
-        Graphic::DrawBitmap(background, { 0, 0 }, hdc);
+        //Graphic::DrawBitmap(background, { 0, 0 }, hdc);
+        for (auto& element : uiElements) {
+            element->render(hdc);
+        }
         Graphic::DrawBitmap(catfam, { 0, 0 }, hdc);
         if (menu == 0) {
             for (int i = 0; i < buttonPositions.size(); ++i) {
@@ -671,24 +707,24 @@ namespace towerdefense
             Graphic::DrawBitmap(board, currentpoint, hdc);
             if (!isPopupEffect) {
                 Graphic::DrawBitmap(continueTitle, titleContinuePos, hdc);
-                for (int i = 0; i < dummyData.size(); i++) {
+                for (int i = 0; i < userdata.size(); i++) {
                     POINT pos = firstplayerCoverPos;
                     pos.y += i * 100;
                     Graphic::DrawBitmap(input, pos, hdc);
                 }
-                for (int i = 0; i < dummyData.size(); i++) {
+                for (int i = 0; i < userdata.size(); i++) {
                     POINT pos = firstplayerCoverPos;
                     pos.x += 30; 
                     pos.y += i * 100 + 20;
                     Graphic::DrawBitmap(dummyDataName[i], pos, hdc);
                 }
-                for (int i = 0; i < dummyData.size(); i++) {
+                for (int i = 0; i < userdata.size(); i++) {
                     POINT pos = firstplayerCoverPos;
                     pos.x += 250;
                     pos.y += i * 100 + 20;
                     Graphic::DrawBitmap(dummyDataPoint[i], pos, hdc);
                 }
-                for (int i = 0; i < dummyData.size(); i++) {
+                for (int i = 0; i < userdata.size(); i++) {
                     if (hover == i) {
                         POINT pos = firstplayerCoverPos;
                         pos.x -= 100;
@@ -804,18 +840,63 @@ namespace towerdefense
     //========================================================================================================================//
 
     PlayScreen::PlayScreen() {
-        // Initialize dummy enemies
-        for (int i = 0; i < 10; i++) {
-            cenemy dummy;
-            std::vector<POINT> otherPath = epath;
-            
-            otherPath[0].x -= (i != 9 ? (i * (rand() % 300 + 100)) : 9*500);
+        gamedata = getGameList();
+        userdata = getUserList();
+        sGame _game;
 
-            dummy.setPath(otherPath);
-            enemylist.push_back(dummy);
+        bool check = false;
+
+        for (int i = 0; i < gamedata.size(); i++) {
+            for (int j = 0; j < userdata.size(); j++) {
+                if (gamedata[i].gameId == userdata[j].UserId) {
+                    _game.Tcurr = gamedata[i].Tcurr;
+                    _game.Ecurr = gamedata[i].Ecurr;
+                    check = true;
+                    break; 
+                }
+            }
+            if (!check) break;
         }
 
-        enemylist[9].setHealth(450);
+        check = false;
+
+        if (!check) {
+            for (int i = 0; i < 10; i++) {
+                cenemy dummy;
+                std::vector<POINT> otherPath = epath;
+            
+                otherPath[0].x -= (i != 9 ? (i * (rand() % 300 + 100)) : 9*500);
+
+                dummy.setPath(otherPath);
+                enemylist.push_back(dummy);
+            }
+            enemylist[9].setHealth(450);
+        }
+        else {
+            for (int i = 0; i < _game.Ecurr.size(); i++) {
+                cenemy dummy; 
+                std::vector<POINT> otherPath = _game.Ecurr[i].path; 
+                int x = _game.Ecurr[i].index; // Lấy index từ enemy hiện tại
+
+                // Thiết lập giá trị cho dummy
+                dummy.setPath(otherPath);
+                dummy.setIndex(x);
+
+                // Thêm dummy vào danh sách enemylist
+                enemylist.push_back(dummy);
+            }
+
+            for (int i = 0; i < _game.Tcurr.size(); i++) {
+                ctower dummy;
+                dummy.setLocation(_game.Tcurr[i].location);
+                towerlist.push_back(dummy);
+            }
+
+            enemylist[9].setHealth(450);
+        }
+
+        // Initialize dummy enemies
+
 
         Turretinit = { 50, 565 };
     }
@@ -942,6 +1023,39 @@ namespace towerdefense
                         noBtnPos.y + yesnoSize.y * 4 // Button height
                     };
                     if (PtInRect(&noRect, cursorPos)) {
+
+                        sUser _user; 
+                        _user.name = guess.getName();
+                        _user.password = "";
+                        _user.point = guess.getPoint();
+
+                        sGame _game;
+
+                        for (auto i : enemylist) {
+                            int health = i.getHealth();
+                            POINT curr = i.getCurr();
+                            std::vector<POINT> path = i.getPath();
+                            int ind = i.getIndex();
+                            _game.Ecurr.push_back({ health, curr, path, ind });
+                        }
+
+                        for (auto i : towerlist) {
+                            POINT curr = i.getLocation();
+                            _game.Tcurr.push_back({ curr });
+                        }
+
+                        _game.mapCode = mapCode;
+                        _game.UserId = 0;
+                        
+
+                        // ============================ BUG ========================//
+                        int x = rand() % 100 + 1;
+                        
+                        _user.UserId = x;
+                        _game.gameId = x;
+                        appendUserToFile(_user);
+                        appendGameToFile(_game);
+
                         PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                     }
                 }
@@ -1031,11 +1145,13 @@ namespace towerdefense
             }
 
             if (nearestEnemy) {
-                // tower.shootAt(nearestEnemy->getCurr());
-                tower.shootAt(nearestEnemy);
-                //POINT pos = tower.getBullet().getCurr();
-                //if (pos.x)
-                //nearestEnemy->takeDamage(tower.getBullet().getDamage());
+                tower.shootAt(nearestEnemy);   
+            }
+            if (nearestEnemy) {
+                int x = nearestEnemy->getHealth();
+                if (x < 0) {
+                    guess.setPoint(guess.getPoint() + 10);
+                }
             }
 
             tower.updateBullet();
@@ -1140,8 +1256,6 @@ namespace towerdefense
         float scaleE = 2;
 
         background = Graphic::LoadBitmapImage(L"Assets/background/map2.bmp", scale);
-        towerInitPlace = Graphic::LoadBitmapImage(L"Assets/game/BoardSetupTower.png", 1.5);
-        background = Graphic::LoadBitmapImage(L"Assets/background/map1.bmp", scale);
         towerInitPlace = Graphic::LoadBitmapImage(L"Assets/game/BoardSetupTower.png", 1.5);
         instructionBoard = Graphic::LoadBitmapImage(L"Assets/game/info/board2.png", 1);
 

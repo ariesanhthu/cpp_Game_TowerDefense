@@ -19,6 +19,9 @@
     <ClCompile Include="Game\UIManager.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Graphics\Graphic.cpp" />
+    <ClCompile Include="Game\ScreenManager.cpp" />
+    <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="Loadgame\CreateData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
@@ -43,6 +46,8 @@
     <ClInclude Include="Game\ScreenManager.h" />
     <ClInclude Include="Game\ThreadManager.h" />
     <ClInclude Include="Game\InputManager.h" />
+    <ClInclude Include="Observer.h" />
+    <ClInclude Include="Game\menuitem.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SetupMap\map1.txt" />

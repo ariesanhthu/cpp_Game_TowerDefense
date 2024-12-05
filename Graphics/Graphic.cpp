@@ -1,4 +1,4 @@
-#include "Graphic.h"
+﻿#include "Graphic.h"
 
 Graphic::Graphic() {
     InitGdiPlus();
@@ -184,7 +184,18 @@ HBITMAP Graphic::LoadCustomTest(std::string text, double factor, int spacing) {
     return hBitmap;
 }
 
+POINT Graphic::GetBitmapSize(HBITMAP hbitmap) {
+    BITMAP bitmap;
+    POINT size = { 0, 0 }; // Khởi tạo POINT với giá trị mặc định là (0, 0)
 
+    // Lấy thông tin về HBITMAP vào cấu trúc BITMAP
+    if (GetObject(hbitmap, sizeof(BITMAP), &bitmap)) {
+        size.x = bitmap.bmWidth;  // Chiều rộng của bitmap
+        size.y = bitmap.bmHeight; // Chiều cao của bitmap
+    }
+
+    return size;
+}
 void Graphic::ReleaseBitmap(HBITMAP& hBitmap) {
     if (hBitmap) {
         DeleteObject(hBitmap);

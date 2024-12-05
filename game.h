@@ -4,20 +4,17 @@
 #include <functional>
 #include "State.h"
 #include <ScreenManager.h>
-//#include "Observer.h"
 #include <memory>
 
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
 
-
 namespace towerdefense
 {
-
 	class Game
 	{
 	private:
 		//std::unique_ptr<GameState> currentState;
-		ScreenManager screenManager;
+		ScreenManager* screenManager;
 
 	public:
 		/*void setState(std::unique_ptr<GameState> newState) {
@@ -38,10 +35,11 @@ namespace towerdefense
 
 	private:
 		HINSTANCE hInstance;
+		HCURSOR hCustomCursor;
 		HWND windowHandle = 0;
+
 		bool running = false;
 		std::wstring windowTitle;
-		//std::function<void(float delta)> update;
 		int windowWidth, windowHeight;
 	
 	public:

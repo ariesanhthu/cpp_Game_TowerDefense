@@ -9,6 +9,9 @@
 #include "ctower.h"
 #include <chrono>
 #include <mmsystem.h> 
+#include <LoadGame/CreateData.cpp>
+#include <UIElement.h>
+#include <menuitem.h>
 
 using namespace std;
 namespace towerdefense
@@ -54,14 +57,10 @@ namespace towerdefense
 
     class MainScreen : public Screen {
     private:
-        // dung chung trong cac menu
-        HBITMAP background       = nullptr;               // Hình nền
-        HBITMAP catfam           = nullptr;
-        
-        // dung trong default menu
-        //HBITMAP button = nullptr;                 // Danh sách các nút bấm
-        //HBITMAP button_down = nullptr;
+        std::vector<std::shared_ptr<UIElement>> uiElements;
 
+        HBITMAP background       = nullptr;             // Hình nền
+        HBITMAP catfam           = nullptr;
 
         // button  
         HBITMAP play             = nullptr;             // play
@@ -97,9 +96,12 @@ namespace towerdefense
         HBITMAP arrow            = nullptr;
 
         // continue with dummydata
-        vector<cplayer> dummyData = { {"duck", 10}, {"thu", 12}, {"Hung", 44} };
+        vector<sUser> userdata;
+        vector<sGame> gamedata;
+
         vector<HBITMAP> dummyDataName = { nullptr };
         vector<HBITMAP> dummyDataPoint = { nullptr };
+
         POINT firstplayerCoverPos = { 420, 200 };
         POINT titleContinuePos = { 390, 130 };
 
@@ -211,6 +213,10 @@ namespace towerdefense
 
     class MapScreen : public Screen {
     protected:
+        cplayer guess;
+        std::vector<sUser> userdata;
+        std::vector<sGame> gamedata;
+
         // hbitmap
         HBITMAP background = nullptr;
         HBITMAP tower = nullptr;              // tower
@@ -307,6 +313,7 @@ namespace towerdefense
             {390, 490},
             {1200, 490},
         };
+        int mapCode = 1;
 
     public:
         PlayScreen();

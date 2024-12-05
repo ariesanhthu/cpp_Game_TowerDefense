@@ -22,4 +22,5 @@ public:
     static void DrawBitmap(HBITMAP hBitmap, POINT start, HDC hdc);
     //void DrawBitmap(HBITMAP hBitmap, POINT start, HDC hdc) const;
     static void ReleaseBitmap(HBITMAP& hBitmap);
+    static POINT GetBitmapSize(HBITMAP hbitmap); 
 };

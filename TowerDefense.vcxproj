@@ -136,6 +136,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Game\ScreenManager.cpp" />
     <ClCompile Include="Graphics\Graphic.cpp" />
+    <ClCompile Include="Loadgame\CreateData.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Game\cgame.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Entities\cenemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Game\InputManager.h" />
+    <ClInclude Include="Game\menuitem.h" />
     <ClInclude Include="Game\ThreadManager.h" />
     <ClInclude Include="Graphics\Graphic.h" />
     <ClInclude Include="Game\ScreenManager.h" />
