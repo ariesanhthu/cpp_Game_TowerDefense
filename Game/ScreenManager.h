@@ -59,8 +59,18 @@ namespace towerdefense
     private:
         std::vector<std::shared_ptr<UIElement>> uiElements;
 
-        HBITMAP background       = nullptr;             // Hình nền
-        HBITMAP catfam           = nullptr;
+        std::shared_ptr<Item> _background; 
+        std::shared_ptr<Item> _catfam;
+        std::shared_ptr<Button> _play;
+        std::shared_ptr<Button> _cont;
+        std::shared_ptr<Button> _lead;
+        std::shared_ptr<Button> _sett;
+        std::shared_ptr<Button> _exit;
+        std::shared_ptr<Button> _about;
+        std::shared_ptr<Popup> popup;
+
+        //HBITMAP background       = nullptr;             // Hình nền
+        //HBITMAP catfam           = nullptr;
 
         // button  
         HBITMAP play             = nullptr;             // play
@@ -72,7 +82,7 @@ namespace towerdefense
         HBITMAP button_hover     = nullptr;
 
         // popup
-        HBITMAP board = nullptr;
+        HBITMAP board            = nullptr;
 
         // choose map
         HBITMAP map1opt          = nullptr; 
@@ -95,16 +105,9 @@ namespace towerdefense
         HBITMAP continueTitle    = nullptr;
         HBITMAP arrow            = nullptr;
 
-        // continue with dummydata
-        vector<sUser> userdata;
-        vector<sGame> gamedata;
-
-        vector<HBITMAP> dummyDataName = { nullptr };
-        vector<HBITMAP> dummyDataPoint = { nullptr };
-
         POINT firstplayerCoverPos = { 420, 200 };
         POINT titleContinuePos = { 390, 130 };
-
+        POINT backgroundPos = { 0, 0 };
         // leaderboard 
 
         // setting 
@@ -130,7 +133,6 @@ namespace towerdefense
         int volumeSize = 10;
         int currentVolume = 50;
         int percent = currentVolume / volumeSize;
-
 
         vector<POINT> buttonPositions;           // Vị trí các nút bấm
         vector<POINT> optionPositions;            // Vi tri cac lua chon map

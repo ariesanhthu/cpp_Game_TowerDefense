@@ -16,43 +16,40 @@ namespace towerdefense
 {
     // Constructor
     MainScreen::MainScreen() {
-        background = Graphic::LoadBitmapImage(L"Assets/background/map4.bmp", 2);
-        uiElements.push_back(std::make_shared<Background>(POINT{ 0, 0 }, background));
+        loadContent(1280, 720);
 
-        // Xác định vị trí các nút bấm
-        buttonPositions = {
-            {1280 / 10 * 1, 720 * 7 / 10},   // Play button
-            {1280 / 10 * 3, 720 * 7 / 10},   // Pause button
-            {1280 / 10 * 5, 720 * 7 / 10},   // Trophy button
-            {1280 / 10 * 7, 720 * 7 / 10},   // Settings button
-            {1280 / 10 * 9, 720 * 7 / 10},   // Exit button
-            {1280 / 10 * 9, 720 * 7 / 100}   // about us
-        };
+        float scaleX = static_cast<float>(1280) / 395.0f;  // 1280 là kích thước gốc của ảnh
+        float scaleY = static_cast<float>(720) / 213.0f; // 720 là kích thước gốc của ảnh
+        float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
 
-        initpoint = { 182, 700 };
-        currentpoint = initpoint;
-        endpoint = { 182, 42 };
+        _background = std::make_shared<Item>(L"Assets/background/map4.bmp", scale, 0, 0);
+        _catfam = std::make_shared<Item>(L"Assets/decor/nameLogo.png", 2, 0, 0);
+        //_play = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[0].x, buttonPositions[0].y);
+        
+        popup = std::make_shared<Popup>(initpoint, endpoint, board); 
 
-        optionPositions = {
-            currentpoint,
-            currentpoint,
-            currentpoint,
-            currentpoint
-        };
-
-        loginPosition = { (int)(1280 / 10 * 7.5), 720 * 7 / 100 };
-
-        userdata = getUserList();
-        gamedata = getGameList();
-        dummyDataName.resize(userdata.size());
-        dummyDataPoint.resize(gamedata.size());
-
+        _play = std::make_shared<Button>(buttonPositions[0], play, button_hover);
+        _cont = std::make_shared<Button>(buttonPositions[1], cont, button_hover);
+        _lead = std::make_shared<Button>(buttonPositions[2], lead, button_hover);
+        _sett = std::make_shared<Button>(buttonPositions[3], setting, button_hover);
+        _exit = std::make_shared<Button>(buttonPositions[4], exit, button_hover);
+        _about = std::make_shared<Button>(buttonPositions[5], about, button_hover);
+        
+        uiElements.push_back(_background);
+        uiElements.push_back(_catfam);
+        uiElements.push_back(_play);
+        uiElements.push_back(_cont);
+        uiElements.push_back(_lead);
+        uiElements.push_back(_sett);
+        uiElements.push_back(_exit);
+        uiElements.push_back(_about);
+        uiElements.push_back(popup);
+        uiElements.push_back(std::make_shared<Button>(loginPosition, login, login_hover));
     }
 
     // Destructor
     MainScreen::~MainScreen() {
         // Giải phóng tài nguyên
-        Graphic::ReleaseBitmap(background);
         Graphic::ReleaseBitmap(button_hover);
         Graphic::ReleaseBitmap(board);
         Graphic::ReleaseBitmap(map1opt);
@@ -76,7 +73,6 @@ namespace towerdefense
         Graphic::ReleaseBitmap(cont);
         Graphic::ReleaseBitmap(exit);
         Graphic::ReleaseBitmap(about);
-        Graphic::ReleaseBitmap(catfam);
         Graphic::ReleaseBitmap(switchOff);
         Graphic::ReleaseBitmap(switchOn);
         Graphic::ReleaseBitmap(TitleSetting);
@@ -84,13 +80,6 @@ namespace towerdefense
         Graphic::ReleaseBitmap(desVolBtn);
         Graphic::ReleaseBitmap(backgroundVol);
         Graphic::ReleaseBitmap(foregroundVol);
-
-        for (auto i : dummyDataName) {
-            Graphic::ReleaseBitmap(i);
-        }
-        for (auto i : dummyDataPoint) {
-            Graphic::ReleaseBitmap(i);
-        }
 
         OutputDebugStringA("~MainScreen\n");
     }
@@ -103,67 +92,55 @@ namespace towerdefense
         // Tính toán tỉ lệ dựa trên kích thước màn hình
         float scaleX = static_cast<float>(width) / 395.0f;  // 1280 là kích thước gốc của ảnh
         float scaleY = static_cast<float>(height) / 213.0f; // 720 là kích thước gốc của ảnh
-        float scale  = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
-        float scaleB = 3;                                   // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
-        float scaleC = 5;                                   // scale cho input
-        float scaleD = 10;                                   // sacle cho text login
+        float scale  = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh     
 
-        // Tải hình nền với tỉ lệ mới
+        play = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 2);
+        button_hover = Graphic::LoadBitmapImage(L"Assets/button/selectBox.bmp", 2);
+        cont = Graphic::LoadBitmapImage(L"Assets/button/btnContinue.png", 2);
+        lead = Graphic::LoadBitmapImage(L"Assets/button/btnLeaderboard.png", 2);
+        setting = Graphic::LoadBitmapImage(L"Assets/button/btnSetting.png", 2);
+        exit = Graphic::LoadBitmapImage(L"Assets/button/btnExit.png", 2);
+        about = Graphic::LoadBitmapImage(L"Assets/button/aboutBtn.png", 2);
+        login = Graphic::LoadBitmapImage(L"Assets/button/loginBtn.png", 2);
+        login_hover = Graphic::LoadBitmapImage(L"Assets/button/selectBox2.bmp", 2);
+        board = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 3);
+        map1opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map1_scaleDown.bmp", 3);
+        map2opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map2_scaleDown.bmp", 3);
+        map3opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map3_scaleDown.bmp", 3);
+        map4opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map4_scaleDown.bmp", 3);
+        opt_hover = Graphic::LoadBitmapImage(L"Assets/board/border.bmp", 3);
+        input = Graphic::LoadBitmapImage(L"Assets/button/input2.bmp", 5);
+        loginText = Graphic::LoadCustomTest("LOGIN", 10);
+        nameText = Graphic::LoadCustomTest("USERNAME", 5);
+        passwordText = Graphic::LoadCustomTest("PASSWORD", 5);
+        inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
+        TitleSetting = Graphic::LoadBitmapImage(L"Assets/setting/TitleSetting.bmp", 5);
+        switchOff = Graphic::LoadBitmapImage(L"Assets/decor/catWin0.png", 2);
+        switchOn = Graphic::LoadBitmapImage(L"Assets/decor/catWin1.png", 2);
+        insVolBtn = Graphic::LoadBitmapImage(L"Assets/setting/arrowUp.png", 2);
+        desVolBtn = Graphic::LoadBitmapImage(L"Assets/setting/arrowDown.png", 2);
+        backgroundVol = Graphic::LoadBitmapImage(L"Assets/setting/volumn.png", 2);
+        foregroundVol = Graphic::LoadBitmapImage(L"Assets/setting/volumnOn.png", 2);
 
-        //background = Graphic::LoadBitmapImage(L"Assets/background/map4.bmp", scale);
-        catfam                  = Graphic::LoadBitmapImage(L"Assets/decor/nameLogo.png", 2);
+        buttonPositions = {
+            {1280 / 10 * 1, 720 * 7 / 10},   // Play button
+            {1280 / 10 * 3, 720 * 7 / 10},   // Pause button
+            {1280 / 10 * 5, 720 * 7 / 10},   // Trophy button
+            {1280 / 10 * 7, 720 * 7 / 10},   // Settings button
+            {1280 / 10 * 9, 720 * 7 / 10},   // Exit button
+            {1280 / 10 * 9, 720 * 7 / 100}   // about us
+        };
+        loginPosition = { 1280 / 10 * 7 + 70, 720 * 7 / 100 };
+        initpoint = { 182, 700 };
+        currentpoint = initpoint;
+        endpoint = { 182, 42 };
 
-        // default button
-        play                    = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 2); 
-        cont                    = Graphic::LoadBitmapImage(L"Assets/button/btnContinue.png", 2); 
-        lead                    = Graphic::LoadBitmapImage(L"Assets/button/btnLeaderboard.png", 2); 
-        setting                 = Graphic::LoadBitmapImage(L"Assets/button/btnSetting.png", 2); 
-        exit                    = Graphic::LoadBitmapImage(L"Assets/button/btnExit.png", 2); 
-        about                   = Graphic::LoadBitmapImage(L"Assets/button/aboutBtn.png", 2); 
-        button_hover            = Graphic::LoadBitmapImage(L"Assets/button/selectBox.bmp", 2);
-        
-        //board
-        board                   = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", scaleB);
-
-        //Option 
-        map1opt                 = Graphic::LoadBitmapImage(L"Assets/map_resize/map1_scaleDown.bmp", scaleB);
-        map2opt                 = Graphic::LoadBitmapImage(L"Assets/map_resize/map2_scaleDown.bmp", scaleB);
-        map3opt                 = Graphic::LoadBitmapImage(L"Assets/map_resize/map3_scaleDown.bmp", scaleB);
-        map4opt                 = Graphic::LoadBitmapImage(L"Assets/map_resize/map4_scaleDown.bmp", scaleB);
-        opt_hover               = Graphic::LoadBitmapImage(L"Assets/board/border.bmp", scaleB);
-
-        // login 
-        login                   = Graphic::LoadBitmapImage(L"Assets/button/loginBtn.png", 2); 
-        login_down              = Graphic::LoadBitmapImage(L"Assets/button/loginBtnDown.png", 2);
-        login_hover             = Graphic::LoadBitmapImage(L"Assets/button/selectBox2.bmp", 2);
-        input                   = Graphic::LoadBitmapImage(L"Assets/button/input2.bmp", scaleC);
-        loginText               = Graphic::LoadCustomTest("LOGIN", scaleD);
-        nameText                = Graphic::LoadCustomTest("USERNAME", scaleC);
-        passwordText            = Graphic::LoadCustomTest("PASSWORD", scaleC);
-        inputtextbitmap         = Graphic::LoadCustomTest(inputtext, scaleB);
-
-        // setting
-        TitleSetting            = Graphic::LoadBitmapImage(L"Assets/setting/TitleSetting.bmp", 5);
-        switchOff               = Graphic::LoadBitmapImage(L"Assets/decor/catWin0.png", 2);
-        switchOn                = Graphic::LoadBitmapImage(L"Assets/decor/catWin1.png", 2);
-        insVolBtn               = Graphic::LoadBitmapImage(L"Assets/setting/arrowUp.png", 2);   
-        desVolBtn               = Graphic::LoadBitmapImage(L"Assets/setting/arrowDown.png", 2);    
-        backgroundVol           = Graphic::LoadBitmapImage(L"Assets/setting/volumn.png", 2); 
-        foregroundVol           = Graphic::LoadBitmapImage(L"Assets/setting/volumnOn.png", 2); 
-
-        //continue 
-        for (int i = 0; i < userdata.size(); i++) {
-            dummyDataName[i]    = Graphic::LoadCustomTest((string)userdata[i].name, 3);
-            dummyDataPoint[i]   = Graphic::LoadCustomTest(to_string(userdata[i].point), 3);
-        }
-        continueTitle           = Graphic::LoadCustomTest("CONTINUE", scaleD);
-        arrow                   = Graphic::LoadBitmapImage(L"Assets/arrow.bmp", scaleC);
-
-        // Cập nhật vị trí nút bấm theo tỉ lệ
-        /*for (auto& pos : buttonPositions) {
-            pos.x = static_cast<int>(pos.x * scaleB);
-            pos.y = static_cast<int>(pos.y * scaleB);
-        }*/
+        optionPositions = {
+            currentpoint,
+            currentpoint,
+            currentpoint,
+            currentpoint
+        };
     }
 
     void MainScreen::handleInput(HWND hwnd) {
@@ -171,669 +148,61 @@ namespace towerdefense
         GetCursorPos(&cursorPos);
         ScreenToClient(GetActiveWindow(), &cursorPos);
 
-        // hover handling
-        hover = -1;
+        if (_play && _play->isClicked(cursorPos) == 1) {
+            menu = 1;
+            popup->startAnimation();
+            popup->setTriger(true);
+        }
+
+        if (popup && !popup->isHovered(cursorPos) && (GetAsyncKeyState(VK_LBUTTON) & 0x8000)) {
+            menu = 0;
+            popup->setPosition(initpoint);
+        }
+
         if (menu == 0) {
-            for (int  i = 0; i < buttonPositions.size(); ++i) {
-                RECT buttonRect = {
-                    buttonPositions[i].x,
-                    buttonPositions[i].y,
-                    buttonPositions[i].x + buttonSize.x * 3, // Button width
-                    buttonPositions[i].y + buttonSize.y * 3  // Button height
-                };
-
-                if (PtInRect(&buttonRect, cursorPos)) {
-                    hover = static_cast<int>(i);
-                    break;
-                }
-            } 
-
-            RECT LoginRect = {
-                loginPosition.x,
-                loginPosition.y,
-                loginPosition.x + loginSize.x * 2, // Button width
-                loginPosition.y + loginSize.y * 2 // Button height
-            };
-            if (PtInRect(&LoginRect, cursorPos)) {
-                hover = 101;
-            }
 
         }
-        else if (menu == 1) {
-            for (int  i = 0; i < optionPositions.size(); ++i) {
-                RECT buttonRect = {
-                    optionPositions[i].x,
-                    optionPositions[i].y,
-                    optionPositions[i].x + optionSize.x * 3, // Button width
-                    optionPositions[i].y + optionSize.y * 3 // Button height
-                };
-
-                if (PtInRect(&buttonRect, cursorPos)) {
-                    hover = static_cast<int>(i);
-                    break;
-                }
-            }
-        }
-        else if (menu == 2) {
-            for (int  i = 0; i < userdata.size(); ++i) {
-                RECT nameRect = {
-                    firstplayerCoverPos.x - 100,  // Adjust x to match hover offset
-                    firstplayerCoverPos.y + static_cast<int>(i) * 100,  // Top y
-                    firstplayerCoverPos.x + 200,  // Width of the rectangle
-                    firstplayerCoverPos.y + static_cast<int>(i) * 100 + 80  // Height of the rectangle
-                };
-
-                if (PtInRect(&nameRect, cursorPos)) {
-                    hover = static_cast<int>(i);
-                    break;
-                }
-            }
-        }
-        // on mouse click handling
-        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
-            auto now = std::chrono::steady_clock::now();
-            if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
-                lastMouseClickTime = now;
-
-                if (menu == 0) {
-                    for (int  i = 0; i < buttonPositions.size(); ++i) {
-                        RECT buttonRect = {
-                            buttonPositions[i].x,
-                            buttonPositions[i].y,
-                            buttonPositions[i].x + buttonSize.x * 3, // Button width
-                            buttonPositions[i].y + buttonSize.y * 3 // Button height
-                        };
-
-                        if (PtInRect(&buttonRect, cursorPos)) {
-                            switch (i) {
-                            case 0:
-                                index = 0;
-                                menu = 1;
-                                isChoosemapPopup = true;
-                                break;
-                            case 1:
-                                index = 1;
-                                menu = 2;
-                                isPopupEffect = true;
-                                break;
-                            case 2:
-                                index = 2;
-                                menu = 3;
-                                break;
-                            case 3:
-                                index = 3;
-                                menu = 4;
-                                isPopupEffect = true;
-                                break;
-                            case 4:
-                                index = 4;
-                                menu = 5;
-                                PostQuitMessage(0); // Exit the program
-                                break;
-                            case 5:
-                                index = 5;
-                                menu = 6;
-                                isPopupEffect = true;
-                                break;
-                            }
-                        }
-                    }
-                    RECT LoginRect = {
-                        loginPosition.x,
-                        loginPosition.y,
-                        loginPosition.x + loginSize.x * 3, // Button width
-                        loginPosition.y + loginSize.y * 3// Button height
-                    };
-                    if (PtInRect(&LoginRect, cursorPos)) {
-                        // if click login
-                        menu = 101;
-                        index = 101;
-                    }
-                }
-                else if (menu == 1) {
-                    RECT boardRect = {
-                        endpoint.x,
-                        endpoint.y,
-                        endpoint.x + sizeBoard.x, // boardsize width
-                        endpoint.y + sizeBoard.y // boardsize height
-                    };
-                    if (!PtInRect(&boardRect, cursorPos)) {
-                        //isPopdown = true;
-                        isChoosemapPopup = false;
-                        currentpoint = initpoint;
-                        menu = 0;
-                    }
-                    for (int  i = 0; i < optionPositions.size(); ++i) {
-                        RECT optionRect = {
-                            optionPositions[i].x,
-                            optionPositions[i].y,
-                            optionPositions[i].x + optionSize.x * 3, // Button width
-                            optionPositions[i].y + optionSize.y * 3  // Button height
-                        };
-
-                        if (PtInRect(&optionRect, cursorPos)) {
-                            // Button click detected
-
-                            
-                            switch (i) {
-                            case 0:
-                                /*notify(MOVESETTOWERSTATE);*/
-                                PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, 1, 0);
-                                break;
-                            case 1:
-                                PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
-                                break;
-                            case 2:
-                                PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, 3, 0);
-                                //OutputDebugString(L"Map");
-                                break;
-                            case 3:
-                                PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, 4, 0);
-                                //OutputDebugString(L"Map");
-                                break;
-                            }
-                        }
-                    }
-                }
-                else if (menu == 2) {
-                    RECT boardRect = {
-                        endpoint.x,
-                        endpoint.y,
-                        endpoint.x + sizeBoard.x, 
-                        endpoint.y + sizeBoard.y 
-                    };
-                    if (!PtInRect(&boardRect, cursorPos)) {
-                        isChoosemapPopup = false;
-                        currentpoint = initpoint;
-                        menu = 0;
-                    }
-
-                    for (int i = 0; i < userdata.size(); ++i) {
-                        RECT nameRect = {
-                            firstplayerCoverPos.x - 100,  // Adjust x to match hover offset
-                            firstplayerCoverPos.y + static_cast<int>(i) * 100,  // Top y
-                            firstplayerCoverPos.x + 200,  // Width of the rectangle
-                            firstplayerCoverPos.y + static_cast<int>(i) * 100 + 80  // Height of the rectangle
-                        };
-
-                        if (PtInRect(&nameRect, cursorPos)) {
-                            
-                            int mapCode = 0;
-                            for (auto i : gamedata) {
-                                for (auto j : userdata) {
-                                    if (i.gameId == j.UserId) {
-                                        mapCode = i.mapCode; 
-                                        break;
-                                    }
-                                }
-                                if (!mapCode) break;
-                            }
-                            OutputDebugStringA(std::to_string(mapCode).c_str());
-                            PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, mapCode, 0);
-
-                            break;
-                        }
-                    }
-                }
-                else if (menu == 3) {
-                    // leaderboard
-                }
-                else if (menu == 4) {
-                    RECT boardRect = {
-                        endpoint.x,
-                        endpoint.y,
-                        endpoint.x + sizeBoard.x, // boardsize width
-                        endpoint.y + sizeBoard.y // boardsize height
-                    };
-                    if (!PtInRect(&boardRect, cursorPos)) {
-                        //isPopdown = true;
-                        isPopupEffect = false;
-                        currentpoint = initpoint;
-                        menu = 0;
-                    }
-
-                    RECT soundRect = {
-                        soundPos.x,
-                        soundPos.y,
-                        soundPos.x + sizeSound.x * 2,
-                        soundPos.y + sizeSound.y * 2
-                    };
-                    if (PtInRect(&soundRect, cursorPos)) {
-                        if (!soundCheck) {
-                            if (!PlaySoundW(L"Assets/test.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP | SND_LOOP)) {
-                                MessageBox(hwnd, L"sound err", L"sound err", MB_OK);
-                            } 
-                            soundCheck = true;
-                        }
-                        else {
-                            PlaySoundW(NULL, NULL, 0);
-                            soundCheck = false;
-                        }
-                    }
-
-                    RECT left = {
-                        VolDesPos.x,
-                        VolDesPos.y,
-                        VolDesPos.x + sizeEdit.x * 3, // boardsize width
-                        VolDesPos.y + sizeEdit.y * 3 // boardsize height
-                    };
-                    if (PtInRect(&left, cursorPos)) {
-                        if (currentVolume == 0) currentVolume = 99;
-                        currentVolume -= 9;
-                        percent = currentVolume / volumeSize;
-                        SetVolume(currentVolume);
-                    }
-                    RECT right = {
-                        VolInsPos.x,
-                        VolInsPos.y,
-                        VolInsPos.x + sizeEdit.x * 3, // boardsize width
-                        VolInsPos.y + sizeEdit.y * 3// boardsize height
-                    };
-                    if (PtInRect(&right, cursorPos)) {
-                        if (currentVolume == 99) currentVolume = 0;
-                        currentVolume += 9;
-                        percent = currentVolume / volumeSize;
-                        SetVolume(currentVolume);
-                    }
-
-                }
-                else if (menu == 5) {
-                    
-                }
-                else if (menu == 6) {
-                    RECT boardRect = {
-                        endpoint.x,
-                        endpoint.y,
-                        endpoint.x + sizeBoard.x, // boardsize width
-                        endpoint.y + sizeBoard.y // boardsize height
-                    };
-                    if (!PtInRect(&boardRect, cursorPos)) {
-                        //isPopdown = true;
-                        isChoosemapPopup = false;
-                        currentpoint = initpoint;
-                        menu = 0;
-                    }
-                }
-                else if (menu == 101) {
-                    // board
-                    RECT boardRect = {
-                        endpoint.x,
-                        endpoint.y,
-                        endpoint.x + sizeBoard.x, // boardsize width
-                        endpoint.y + sizeBoard.y // boardsize height
-                    };
-                    if (!PtInRect(&boardRect, cursorPos)) {
-                        //isPopdown = true;
-                        isChoosemapPopup = false;
-                        currentpoint = initpoint;
-                        menu = 0;
-                    }
-
-                    // name input 
-                    RECT inputNameRect = {
-                        inputNamePosition.x,
-                        inputNamePosition.y,
-                        inputNamePosition.x + inputSize.x * 5, // boardsize width
-                        inputNamePosition.y + inputSize.y * 5 // boardsize height
-                    };
-                    if (PtInRect(&inputNameRect, cursorPos)) {
-                        start_to_input = true;
-                    }
-                    if (!PtInRect(&inputNameRect, cursorPos)) {
-                        start_to_input = false;
-                    }
-                }
-            } 
-        }
-
-        // input handle
-        if (start_to_input) {
-            // Check if a key is pressed 
-            for (wchar_t ch = 'A'; ch <= 'Z'; ++ch) {
-                if (GetAsyncKeyState(ch) & 0x8000) {
-                    auto now = std::chrono::steady_clock::now();
-                    if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastKeyPressTime).count() >= debounceDelayMs) {
-                        lastKeyPressTime = now; // Update the last key press time
-
-                        // Max 15 characters
-                        if (inputtext.size() <= 15) {
-                            inputtext.push_back(ch);  // Add the character to inputText
-                        }
-
-                        Graphic::ReleaseBitmap(inputtextbitmap); // Release old bitmap
-                        inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
-                    }
-                }
-            }
-
-            for (wchar_t ch = '0'; ch <= '9'; ++ch) {
-                if (GetAsyncKeyState(ch) & 0x8000) {
-                    auto now = std::chrono::steady_clock::now();
-                    if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastKeyPressTime).count() >= debounceDelayMs) {
-                        lastKeyPressTime = now;
-
-                        if (inputtext.size() <= 15) {
-                            inputtext.push_back(ch);
-                        }
-
-                        Graphic::ReleaseBitmap(inputtextbitmap);
-                        inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
-                    }
-                }
-            }
-
-            // Handle Backspace
-            if (GetAsyncKeyState(VK_BACK) & 0x8000 && !inputtext.empty()) {
-                auto now = std::chrono::steady_clock::now();
-                if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastKeyPressTime).count() >= debounceDelayMs) {
-                    lastKeyPressTime = now;
-                    inputtext.pop_back();
-
-                    Graphic::ReleaseBitmap(inputtextbitmap);
-                    inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
-                }
-            }
-
-            // Handle Enter
-            if (GetAsyncKeyState(VK_RETURN) & 0x8000) {
-                auto now = std::chrono::steady_clock::now();
-                if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastKeyPressTime).count() >= debounceDelayMs) {
-                    lastKeyPressTime = now;
-
-                    // Handle Enter logic
-                    
-                    
-
-                    inputtext.clear();
-                    start_to_input = false;
-                }
-            }
-        }
-
     }
 
     // Update logic (nếu có animation hoặc logic khác)
     void MainScreen::update(float delta) {
-        int speed = 500;
-
-        // Update board position
-        if (isChoosemapPopup) {
-            if (currentpoint.y > endpoint.y) {
-                currentpoint.y -= static_cast<int>(speed * delta);
-
-                if (currentpoint.y < endpoint.y) {
-                    currentpoint.y = endpoint.y;
-                }
-
-                // Update option positions relative to the board
-                for (int  i = 0; i < optionPositions.size(); ++i) {
-                    if (i == 0) {
-                        optionPositions[i].x = currentpoint.x + 80; 
-                        optionPositions[i].y = currentpoint.y + 80; 
-                    }
-                    else if (i == 1) {
-                        optionPositions[i].x = currentpoint.x + 450;
-                        optionPositions[i].y = currentpoint.y + 80;
-                    }
-                    else if (i == 2) {
-                        optionPositions[i].x = currentpoint.x + 80;
-                        optionPositions[i].y = currentpoint.y + 320;
-                    }
-                    else if (i == 3) {
-                        optionPositions[i].x = currentpoint.x + 450;
-                        optionPositions[i].y = currentpoint.y + 320;
-                    }
-                }
-            }
-        }
-
-        if (isPopupEffect) {
-            if (currentpoint.y > endpoint.y) {
-                currentpoint.y -= static_cast<int>(speed * delta);
-
-                if (currentpoint.y < endpoint.y) {
-                    currentpoint.y = endpoint.y;
-                    isPopupEffect = false;
-                }
-            }
+        if (popup && !popup->isFinished()) {
+            popup->update(delta);
         }
     }
 
     void MainScreen::render(HDC hdc) {
-        //Graphic::DrawBitmap(background, { 0, 0 }, hdc);
-        for (auto& element : uiElements) {
-            element->render(hdc);
+        _background->render(hdc);
+        _catfam->render(hdc);
+        
+        if (popup && popup->getTriger()) {
+            popup->render(hdc);
         }
-        Graphic::DrawBitmap(catfam, { 0, 0 }, hdc);
+        _play->render(hdc);
+
         if (menu == 0) {
-            for (int i = 0; i < buttonPositions.size(); ++i) {
-                POINT buttonPos = buttonPositions[i];
-                if (i == index) {
-                    buttonPos.y += 8;
-
-                    /* =====================
-                    
-                    FIX BUG CLICK 
-                    
-                    ====================== */ 
-
-                    //Graphic::DrawBitmap(button_down, buttonPos, hdc);
-                    index = -1;
-                }
-                else {
-                    if (i == hover) {
-                        POINT buttonPosHover = buttonPositions[i];
-                        buttonPosHover.x -= 12;
-                        buttonPosHover.y -= 14;
-                        Graphic::DrawBitmap(button_hover, buttonPosHover, hdc);
-                        hover = -1;
-                    }
-
-                    switch (i) {
-                    case 0: 
-                        Graphic::DrawBitmap(play, buttonPos, hdc); 
-                        break;
-                    case 1:
-                        Graphic::DrawBitmap(cont, buttonPos, hdc); 
-                        break;
-                    case 2:
-                        Graphic::DrawBitmap(lead, buttonPos, hdc); 
-                        break;
-                    case 3:
-                        Graphic::DrawBitmap(setting, buttonPos, hdc); 
-                        break;
-                    case 4:
-                        Graphic::DrawBitmap(exit, buttonPos, hdc); 
-                        break;
-                    case 5: 
-                        Graphic::DrawBitmap(about, buttonPos, hdc);
-                        break;
-                    }
-                }
-            }
-
-            if (index == 101) {
-                Graphic::DrawBitmap(login_down, { loginPosition.x, loginPosition.y + 8 }, hdc);
-                index = -1;
-            }
-            else {
-                if (hover == 101) {
-                    Graphic::DrawBitmap(login_hover, { loginPosition.x - 14, loginPosition.y - 7 }, hdc);
-                }
-                Graphic::DrawBitmap(login, loginPosition, hdc);
-            }
+            
         }
         else if (menu == 1) {
-            //Graphic::DrawBitmap(background, { 0, 0 }, hdc);
-            for (int  i = 0; i < buttonPositions.size(); ++i) {
-                POINT buttonPos = buttonPositions[i];
-                switch (i) {
-                case 0:
-                    Graphic::DrawBitmap(play, buttonPos, hdc);
-                    break;
-                case 1:
-                    Graphic::DrawBitmap(cont, buttonPos, hdc);
-                    break;
-                case 2:
-                    Graphic::DrawBitmap(lead, buttonPos, hdc);
-                    break;
-                case 3:
-                    Graphic::DrawBitmap(setting, buttonPos, hdc);
-                    break;
-                case 4:
-                    Graphic::DrawBitmap(exit, buttonPos, hdc);
-                    break;
-                case 5:
-                    Graphic::DrawBitmap(about, buttonPos, hdc);
-                    break;
-                }
-            }
-
-            Graphic::DrawBitmap(board, currentpoint, hdc);
-
-            for (int  i = 0; i < optionPositions.size(); i++) {
-                POINT pos = optionPositions[i];
-
-                if (i == hover) Graphic::DrawBitmap(opt_hover, {pos.x - 3, pos.y - 3}, hdc);
-
-                if (i == 0) Graphic::DrawBitmap(map1opt, pos, hdc);
-                else if (i == 1) Graphic::DrawBitmap(map2opt, pos, hdc);
-                else if (i == 2) Graphic::DrawBitmap(map3opt, pos, hdc);
-                else if (i == 3) Graphic::DrawBitmap(map4opt, pos, hdc);
-            }
+            
         }
         else if (menu == 2) {
-            // continue
-            Graphic::DrawBitmap(board, currentpoint, hdc);
-            if (!isPopupEffect) {
-                Graphic::DrawBitmap(continueTitle, titleContinuePos, hdc);
-                for (int i = 0; i < userdata.size(); i++) {
-                    POINT pos = firstplayerCoverPos;
-                    pos.y += i * 100;
-                    Graphic::DrawBitmap(input, pos, hdc);
-                }
-                for (int i = 0; i < userdata.size(); i++) {
-                    POINT pos = firstplayerCoverPos;
-                    pos.x += 30; 
-                    pos.y += i * 100 + 20;
-                    Graphic::DrawBitmap(dummyDataName[i], pos, hdc);
-                }
-                for (int i = 0; i < userdata.size(); i++) {
-                    POINT pos = firstplayerCoverPos;
-                    pos.x += 250;
-                    pos.y += i * 100 + 20;
-                    Graphic::DrawBitmap(dummyDataPoint[i], pos, hdc);
-                }
-                for (int i = 0; i < userdata.size(); i++) {
-                    if (hover == i) {
-                        POINT pos = firstplayerCoverPos;
-                        pos.x -= 100;
-                        pos.y += i * 100;
-                        Graphic::DrawBitmap(arrow, pos, hdc);
-                    }
-                }
-            }
+
         } 
         else if (menu == 3) {
-            // Leaderboard 
 
-            // copy from continue
-
-            // do not have user this time 
         }
         else if (menu == 4) {
-            // setting 
-            for (int i = 0; i < buttonPositions.size(); ++i) {
-                POINT buttonPos = buttonPositions[i];
-                switch (i) {
-                case 0:
-                    Graphic::DrawBitmap(play, buttonPos, hdc);
-                    break;
-                case 1:
-                    Graphic::DrawBitmap(cont, buttonPos, hdc);
-                    break;
-                case 2:
-                    Graphic::DrawBitmap(lead, buttonPos, hdc);
-                    break;
-                case 3:
-                    Graphic::DrawBitmap(setting, buttonPos, hdc);
-                    break;
-                case 4:
-                    Graphic::DrawBitmap(exit, buttonPos, hdc);
-                    break;
-                case 5:
-                    Graphic::DrawBitmap(about, buttonPos, hdc);
-                    break;
-                }
-            }
 
-            Graphic::DrawBitmap(board, currentpoint, hdc);
-
-            if (!isPopupEffect) {
-                Graphic::DrawBitmap(TitleSetting, titlePos, hdc);
-                
-                if (soundCheck) {
-                    Graphic::DrawBitmap(switchOn, soundPos, hdc); 
-                }
-                else {
-                    Graphic::DrawBitmap(switchOff, soundPos, hdc);
-                }
-
-                Graphic::DrawBitmap(backgroundVol, VolFirstPos, hdc);
-
-                for (int i = 0; i < percent; i++) {
-                    POINT pos = VolFirstPos;
-                    pos.x += i * 10;
-                    Graphic::DrawBitmap(foregroundVol, pos, hdc);
-                }
-
-                Graphic::DrawBitmap(insVolBtn, VolInsPos, hdc);
-                Graphic::DrawBitmap(desVolBtn, VolDesPos, hdc);
-            }
         }
         else if (menu == 5) {
-            // handle exit so do notthing here
+            
         }
         else if (menu == 6) {
-            for (int  i = 0; i < buttonPositions.size(); ++i) {
-                POINT buttonPos = buttonPositions[i];
-                switch (i) {
-                case 0:
-                    Graphic::DrawBitmap(play, buttonPos, hdc);
-                    break;
-                case 1:
-                    Graphic::DrawBitmap(cont, buttonPos, hdc);
-                    break;
-                case 2:
-                    Graphic::DrawBitmap(lead, buttonPos, hdc);
-                    break;
-                case 3:
-                    Graphic::DrawBitmap(setting, buttonPos, hdc);
-                    break;
-                case 4:
-                    Graphic::DrawBitmap(exit, buttonPos, hdc);
-                    break;
-                case 5:
-                    Graphic::DrawBitmap(about, buttonPos, hdc);
-                    break;
-                }
-            }
-
-            Graphic::DrawBitmap(board, currentpoint, hdc);
+            
         }
         else if (menu == 101) {
-            Graphic::DrawBitmap(board, endpoint, hdc);
-            Graphic::DrawBitmap(input, inputNamePosition, hdc);
-            Graphic::DrawBitmap(input, inputPasswordPosition, hdc);
-            Graphic::DrawBitmap(loginText, loginTextPos, hdc);
-            Graphic::DrawBitmap(nameText, nameTextPos, hdc);
-            Graphic::DrawBitmap(passwordText, passwordTextPos, hdc);
-            if (start_to_input) {
-                if (inputtext != "") {
-                    Graphic::DrawBitmap(inputtextbitmap, { nameTextPos.x + 230 , nameTextPos.y + 10 }, hdc);
-                }
-                
-            }
+            
         }
     }
 
@@ -1873,8 +1242,6 @@ namespace towerdefense
 
 
     }
-
-
 }
 
 
