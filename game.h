@@ -4,6 +4,11 @@
 #include <functional>
 #include "State.h"
 #include <ScreenManager.h>
+//#include "Observer.h"
+#include <memory>
+
+#define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
+
 
 namespace towerdefense
 {
@@ -11,18 +16,17 @@ namespace towerdefense
 	class Game
 	{
 	private:
-		std::unique_ptr<GameState> currentState;
-		std::unique_ptr<Screen> currentScreen;
-		Graphic graphic;
+		//std::unique_ptr<GameState> currentState;
+		ScreenManager screenManager;
 
 	public:
-		void setState(std::unique_ptr<GameState> newState) {
+		/*void setState(std::unique_ptr<GameState> newState) {
 			currentState = std::move(newState);
-		}
+		}*/
 
-		void handleInput() { currentState->handleInput(); }
+		/*void handleInput() { currentState->handleInput(); }
 		void update(float delta) { currentState->update(delta); }
-		void render(HDC hdc) { currentState->render(hdc); }
+		void render(HDC hdc) { currentState->render(hdc); }*/
 
 		//-----------------------------------------------------------
 		friend LRESULT CALLBACK WindowCallback(
@@ -44,7 +48,9 @@ namespace towerdefense
 		Game();
 		Game(const Game&) = delete;
 		Game& operator= (const Game&) = delete;
-		~Game() {}
+		~Game() {
+			OutputDebugStringA("~Game\n");
+		}
 		
 		inline static Game& getInstance()
 		{
@@ -68,7 +74,7 @@ namespace towerdefense
 		inline static int getWindowWidth() { return getInstance().windowWidth; }
 		inline static int getWindowHeight() { return getInstance().windowHeight; }
 
-		void loadInitialScreen();
+		void loadInitialScreen(int);
 
 	private:
 		void startWindow();

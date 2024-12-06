@@ -21,8 +21,8 @@ public:
     BulletBase(const BulletBase& other);
     BulletBase(BulletModel* nModel,cpoint pos, EnemyBase* nTarget);
 
-    void setCurr(const cpoint& p) { currentPosition = p; }
-    void setTarget(EnemyBase* nTarget) { target = nTarget; }
+    void setCurr(const cpoint& p);
+    void setTarget(EnemyBase* nTarget);
 
     // get model attribute
     int getDame();

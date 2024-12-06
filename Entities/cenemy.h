@@ -1,30 +1,57 @@
-#pragma once
-#include "cpoint.h"
+﻿#pragma once
+#include <vector>
+#include <cmath> 
+#include <windows.h>
+#include <Graphic.h>
+using namespace std;
 
 class cenemy {
-    protected:
-        int health;
-        int speed;
-        cpoint currentPosition;
-        vector<cpoint> path;
-        int index = 0;
-    public:
-        cenemy();
-        cpoint& getCurr() {return currentPosition;}
-        int getSpeed() { return speed;}
-        int getHealth() { return health;}
-        int getIdex() { return index;}
-        void setIdex(int idx) { index = idx;}
-        void calPath(vector<cpoint> ePath);
-        bool isEnd() {
-            return index == path.size() - 1;
+private:
+    int health = 300;
+    int speed;
+    POINT currentPosition;
+    vector<POINT> path;
+    size_t index = 0;
+
+public:
+    bool isMove = false;
+
+    cenemy();
+
+    int getHealth() const { return health; }
+
+    void setHealth(int value) {
+        health = value;
+        if (health <= 0) {
+            health = 0;
+            isMove = false;  // Dừng di chuyển nếu chết
         }
-        void hit(int dame) { health -= dame; }
+    }
 
-        virtual void update();
+    void takeDamage(int damage) {
+        if (health > 0) { // Prevent negative health
+            health -= damage;
+            if (health <= 0) {
+                health = 0;   // Ensure no negative values
+                if (isDead()) {
+                    isMove = false;
+                }
+            }
+        }
+    }
 
-        void draw();
+    POINT getCurr() const { return currentPosition; }
+    void setCurr(POINT curr) { currentPosition = curr; }
 
-        virtual void writeFile(ofstream&);
-        virtual void readFile(ifstream&);
+    bool isEnd() const { return index >= path.size() - 1; }
+    bool isDead() const { return health <= 0; }
+
+    void setPath(vector<POINT> ePath);
+
+    void update(float delta);
+    void render(HBITMAP element, HDC hdc) {
+        if (!isDead()) {  // Chỉ vẽ nếu không chết
+            Graphic::DrawBitmap(element, currentPosition, hdc);
+        }
+    }
 };

@@ -1,7 +1,7 @@
 #include "BulletFactory.h"
 
 unique_ptr<BulletBase> BulletFactory::createEnemy(const int type) {
-    if (type == SMALL) {
+   /* if (type == SMALL) {
         return make_unique<BulletBase>();
     }
     else if (type == BIG) {
@@ -12,5 +12,5 @@ unique_ptr<BulletBase> BulletFactory::createEnemy(const int type) {
     }
     else {
         throw invalid_argument("Unknown bullet type");
-    }
+    }*/
 }

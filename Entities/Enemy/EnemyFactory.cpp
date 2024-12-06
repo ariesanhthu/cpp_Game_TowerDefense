@@ -1,7 +1,7 @@
 #include "EnemyFactory.h"
 
 unique_ptr<EnemyBase> EnemyFactory::createEnemy(const int type) {
-    if (type == 1) {
+   /* if (type == 1) {
         return make_unique<EnemyBase>();
     }
     else if (type == 2) {
@@ -12,5 +12,5 @@ unique_ptr<EnemyBase> EnemyFactory::createEnemy(const int type) {
     }
     else {
         throw invalid_argument("Unknown enemy type");
-    }
+    }*/
 }

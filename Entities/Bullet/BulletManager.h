@@ -8,7 +8,7 @@
 class BulletManager
 {
 public:
-    void addBullet(BulletModel* model, cpoint pos);
+    void addBullet(BulletModel* model, cpoint pos, EnemyBase* target);
     void addBullet(BulletBase bullet);
     void renderBullets();
 

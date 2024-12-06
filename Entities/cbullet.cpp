@@ -1,42 +1,22 @@
 #include "cbullet.h"
-cbullet::cbullet() {
-    speed = 2;
-    dame = 1;
-} 
 
-cbullet::cbullet(cpoint pos, cenemy* nTarget, int nSpeed, int nDame) {
-    currentPosition = pos;
-    speed = nSpeed;
-    dame = nDame;
-    target = nTarget;
-}
 
-cbullet::cbullet(cpoint pos, cenemy* nTarget) : cbullet() {
-    currentPosition = pos;
-    target = nTarget;
-}
+//void cbullet::calPath(POINT& e){
+//    POINT direction;
+//    direction.x = e.x - currentPosition.x;
+//    direction.y = e.y - currentPosition.y;
+//
+//    POINT normalizedDirection = direction;
+//    normalizedDirection.x = direction.x / abs(direction.x);
+//    normalizedDirection.y = direction.y / abs(direction.y);
+//
+//    currentPosition.x = currentPosition.x + normalizedDirection.x;
+//    currentPosition.y = currentPosition.y + normalizedDirection.y;
+//}
 
-void cbullet::update(){
-    cpoint e = target->getCurr();
-    
-    cpoint derection = e - currentPosition;
-    cpoint normalizedDirection = derection.normalized();
-    this->currentPosition = this->currentPosition + normalizedDirection * speed;
-    //cout << e.getX() << " " << e.getY() << " ";
-}
-
-cenemy* cbullet::checkCollision() {
-    if (currentPosition.distance(target->getCurr()) < speed) {
-        cenemy* re = target;
-        target = NULL;
-        return re;
-    }
-    return NULL;
-}
-
-void cbullet::draw(char c){
-    ctool::mtx.lock();
-    ctool::GotoXY(currentPosition.getX(), currentPosition.getY());
-    cout << c;
-    ctool::mtx.unlock();
-}
+//void cbullet::draw(char c){
+//    ctool::mtx.lock();
+//    ctool::GotoXY(currentPosition.getX(), currentPosition.getY());
+//    cout << c;
+//    ctool::mtx.unlock();
+//}

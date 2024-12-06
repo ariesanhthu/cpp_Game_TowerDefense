@@ -1,14 +1,21 @@
 ﻿#include "game.h"
 #include "input.h"
 #include "ScreenManager.h"
+#include "Graphic.h"
+#include <chrono>
+#include <thread>
+
 
 namespace towerdefense
 {
-
     //==========================================================
     // CALLBACK
     //==========================================================
     // Hàm xử lý các sự kiện của cửa sổ (Windows message)
+    HWND g_hwnd = nullptr;
+    HCURSOR hCustomCursor;
+    Graphic graphic;
+
     LRESULT CALLBACK WindowCallback(
         HWND windowHandle,
         UINT message,
@@ -19,6 +26,10 @@ namespace towerdefense
         LRESULT result = 0; // Lưu kết quả trả về từ Windows
         switch (message)
         {
+        case WM_CREATE: 
+            g_hwnd = windowHandle;
+            Game::getInstance().loadInitialScreen(0);
+        break;
         case WM_CLOSE: // Sự kiện đóng cửa sổ
         {
             Game::getInstance().running = false; // Dừng game
@@ -29,14 +40,6 @@ namespace towerdefense
             Game::getInstance().running = false; // Dừng game
             OutputDebugString(L"window destroy\n");
         } break;
-        case WM_KEYDOWN: // Phím được nhấn
-        case WM_KEYUP:   // Phím được nhả
-        {
-            uint32_t VKCode = wParam; // Mã phím
-            bool wasDown = (lParam & (1 << 30)) != 0; // Kiểm tra trạng thái phím
-            bool isDown = (lParam & (1 << 31)) == 0;
-            Input::processKeyboardInput(VKCode, wasDown, isDown); // Xử lý phím
-        } break;
         case WM_SIZE:
         {
             RECT rect;
@@ -44,23 +47,23 @@ namespace towerdefense
             // đọc kích thước màn hình
             GetClientRect(windowHandle, &rect);
 
-            //// tính toán buffer
-            /*Game::windowWidth = rect.right - rect.left;
-            Game::windowHeight = rect.bottom - rect.top;*/
-
         }break;
-        case WM_PAINT: // Sự kiện vẽ lại cửa sổ
+
+        case WM_CUSTOM_LOAD_SCREEN:
         {
-            OutputDebugString(L"window paint\n");
+            int x = (int)wParam;
+            Game::getInstance().loadInitialScreen(x);
 
-            PAINTSTRUCT paint;
-            HDC device_context = BeginPaint(windowHandle, &paint); // Bắt đầu vẽ
-
-            // Vẽ nội dung game trực tiếp lên cửa sổ
-            Game::getInstance().currentScreen->render(device_context);
-
-            EndPaint(windowHandle, &paint); // Kết thúc vẽ
         } break;
+
+        case WM_SETCURSOR:
+        {
+            // Set the custom cursor
+            SetCursor(hCustomCursor);
+            return TRUE;
+        } break;
+
+
         default:
             result = DefWindowProc(windowHandle, message, wParam, lParam); // Xử lý mặc định
         }
@@ -98,6 +101,7 @@ namespace towerdefense
         windowClass.lpfnWndProc = WindowCallback; // Đăng ký hàm callback xử lý sự kiện
         windowClass.hInstance = hInstance;
         windowClass.lpszClassName = className;
+        windowClass.hCursor = NULL;
 
         // Đăng ký lớp cửa sổ
         if (!RegisterClass(&windowClass))
@@ -116,21 +120,34 @@ namespace towerdefense
             CW_USEDEFAULT,                   // Vị trí mặc định
             windowWidth,
             windowHeight,
-            0,
+            nullptr,
             0,
             hInstance,
             0
         );
 
+        HBITMAP hBitmap = Graphic::LoadBitmapImage(L"Assets/mouse/mouse1.png", 2);
+
+        ICONINFO iconInfo = { 0 };
+        iconInfo.fIcon = FALSE; // Set to FALSE to indicate a cursor
+        iconInfo.xHotspot = 0; // Adjust based on your desired hotspot
+        iconInfo.yHotspot = 0;
+        iconInfo.hbmMask = hBitmap;  // Use the same bitmap as a mask for simplicity
+        iconInfo.hbmColor = hBitmap;
+
+        hCustomCursor = CreateIconIndirect(&iconInfo);
+
+        if (!hCustomCursor) {
+            MessageBoxW(g_hwnd, L"Failed to create custom cursor", L"Error", MB_OK);
+        }
+
+        const int FPS = 60;
+        const int frameDelay = 1000 / FPS;
+
         if (windowHandle) // Kiểm tra nếu cửa sổ tạo thành công
         {
             OutputDebugString(L"GAME INIT\n");
             running = true;
-
-            //==========================================================
-            // Tách phần load screen vào hàm riêng
-            loadInitialScreen(); // Gọi hàm tách code (xem định nghĩa bên dưới)
-            //==========================================================
 
             // Thiết lập clock để tính toán delta time (thời gian giữa hai frame)
             LARGE_INTEGER cpu_frequency;
@@ -147,6 +164,8 @@ namespace towerdefense
                 float delta = (float)counter_elapsed / (float)cpu_frequency.QuadPart; // Thời gian giữa hai frame
                 last_counter = current_counter;
 
+                auto frameStart = std::chrono::high_resolution_clock::now();
+
                 // Xử lý các sự kiện Windows
                 MSG message;
                 if (PeekMessage(&message, 0, 0, 0, PM_REMOVE))
@@ -158,13 +177,45 @@ namespace towerdefense
                 }
                 else
                 {
-                    // Cập nhật và vẽ màn hình hiện tại
-                    currentScreen->update(delta); // Cập nhật logic của màn hình
-                    HDC hdc = GetDC(windowHandle); // Lấy ngữ cảnh thiết bị để vẽ
-                    currentScreen->render(hdc);   // Vẽ màn hình
-                    ReleaseDC(windowHandle, hdc); // Giải phóng ngữ cảnh thiết bị
-                    
-                  // inputHadle
+
+                    HDC hdc = GetDC(windowHandle); // Lấy ngữ cảnh thiết bị từ cửa sổ
+                    HDC bufferDC = CreateCompatibleDC(hdc); // Tạo DC tương thích để vẽ vào bộ đệm
+
+                    // Tạo một bitmap để làm bộ đệm
+                    RECT clientRect;
+                    GetClientRect(windowHandle, &clientRect);
+                    int width = clientRect.right - clientRect.left;
+                    int height = clientRect.bottom - clientRect.top;
+
+                    HBITMAP bufferBitmap = CreateCompatibleBitmap(hdc, width, height);
+                    HBITMAP oldBitmap = (HBITMAP)SelectObject(bufferDC, bufferBitmap); // Gắn bitmap vào DC bộ đệm
+
+                    // Xóa bộ đệm trước khi vẽ
+                    HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0)); // Màu nền (đen)
+                    FillRect(bufferDC, &clientRect, brush);
+                    DeleteObject(brush);
+
+                    // Vẽ vào bộ đệm
+                    screenManager.handleInput(g_hwnd);
+                    screenManager.update(delta);  // Cập nhật logic của màn hình
+                    screenManager.render(bufferDC); // Vẽ màn hình vào DC bộ đệm
+
+                    // Copy nội dung từ bộ đệm ra màn hình
+                    BitBlt(hdc, 0, 0, width, height, bufferDC, 0, 0, SRCCOPY);
+
+                    // Giải phóng tài nguyên
+                    SelectObject(bufferDC, oldBitmap);
+                    DeleteObject(bufferBitmap);
+                    DeleteDC(bufferDC);
+                    ReleaseDC(windowHandle, hdc);
+
+                    auto frameEnd = std::chrono::high_resolution_clock::now();
+                    auto frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
+
+                    if (frameDelay > frameTime) {
+                        std::this_thread::sleep_for(std::chrono::milliseconds(frameDelay - frameTime));
+                    }
+                    // inputHadle
                     // update
                     // render
                 }
@@ -179,12 +230,30 @@ namespace towerdefense
     //==========================================================
     // Tách phần load screen
     //==========================================================
-    void Game::loadInitialScreen()
-    {
-        // Tạo màn hình chính
-        currentScreen = std::make_unique<MainScreen>();
+    void Game::loadInitialScreen(int x) {
+        std::shared_ptr<Screen> newscreen;
 
-        // Tải nội dung màn hình chính
-        currentScreen->loadContent(graphic, windowWidth, windowHeight);
+        if (x == 0) {
+            newscreen = std::make_shared<MainScreen>();
+        }
+        else if (x == 1) {
+            newscreen = std::make_shared<PlayScreen>();
+        }
+        else if (x == 2) {
+            newscreen = std::make_shared<PlayScreen2>();
+        }
+        else if (x == 3) {
+            newscreen = std::make_shared<PlayScreen3>();
+        }
+        else if (x == 4) {
+            newscreen = std::make_shared<PlayScreen4>();
+        }
+        else {
+            OutputDebugStringA("Invalid screen index.\n");
+            return;  // Exit early for invalid `x`
+        }
+
+        screenManager.changeScreen(std::move(newscreen));
+        screenManager.loadContent(windowWidth, windowHeight);
     }
 }
