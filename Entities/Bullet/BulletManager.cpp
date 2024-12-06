@@ -1,7 +1,7 @@
 #include "BulletManager.h"
 
-void BulletManager::addBullet(BulletModel* model, cpoint pos) {
-	bulllets_.emplace_back(model, pos);
+void BulletManager::addBullet(BulletModel* model, cpoint pos, EnemyBase* target) {
+	bulllets_.emplace_back(model, pos, target);
 }
 
 void BulletManager::addBullet(BulletBase bullet) {
