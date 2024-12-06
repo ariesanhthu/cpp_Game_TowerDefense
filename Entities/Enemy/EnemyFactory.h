@@ -9,8 +9,11 @@
 
 class EnemyFactory
 {
+    static vector<EnemyModel*> Models;
 public:
-    static unique_ptr<EnemyBase> createEnemy(const int type);
+    static unique_ptr<EnemyBase> createEnemy(const int type, int path);
+    static void createModels();
+    static void deleteModels();
 };
 
 #endif

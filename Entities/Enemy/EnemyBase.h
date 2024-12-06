@@ -14,13 +14,13 @@ protected:
 	EnemyModel* model;
 
 	// private attribute
+	int path;
 	cpoint currentPosition;
 	int health;
-	int path;
 	int index = 0;
 
 public:
-	//EnemyBase();
+	EnemyBase() = default;
 	EnemyBase(EnemyModel* nModel, int path);
 	EnemyBase(EnemyModel* nModel, int path, int nHealth);
 	EnemyBase(const EnemyBase& other);

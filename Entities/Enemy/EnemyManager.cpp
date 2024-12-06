@@ -1,7 +1,7 @@
 #include "EnemyManager.h"
 
-void EnemyManager::addEnemy(EnemyModel* model, cpoint pos) {
-    enemies_.emplace_back(model, pos);
+void EnemyManager::addEnemy(EnemyModel* model, int path) {
+    enemies_.emplace_back(model, path);
 }
 
 void EnemyManager::updateAllEnemy() {

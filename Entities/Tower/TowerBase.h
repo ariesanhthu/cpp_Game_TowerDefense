@@ -22,7 +22,7 @@ protected:
 	TIME_POINT lastShoot;
 
 public:
-	//TowerBase();
+	TowerBase() = default;
 	TowerBase(const TowerBase& other);
 	TowerBase(TowerModel* nModel, cpoint pos);
 

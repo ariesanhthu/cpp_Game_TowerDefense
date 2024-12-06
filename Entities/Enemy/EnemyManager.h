@@ -9,7 +9,7 @@
 class EnemyManager
 {
 public:
-    void addEnemy(EnemyModel* model,cpoint pos);
+    void addEnemy(EnemyModel* model, int path);
 
     void updateAllEnemy();
 
