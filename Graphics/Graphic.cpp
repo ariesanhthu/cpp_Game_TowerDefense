@@ -76,8 +76,6 @@ void Graphic::DrawBitmap(HBITMAP hBitmap, POINT start, HDC hdc) {
     DeleteDC(hdcMem);
 }
 
-//#define max_ if(maxHeight < static_cast<int>(tempBitmap.GetHeight() * factor)) {maxHeight = static_cast<int>(tempBitmap.GetHeight() * factor);}
-
 HBITMAP Graphic::LoadCustomTest(std::string text, double factor, int spacing) {
     // Base folder path for character bitmaps
     std::wstring basePath = L"Assets/text/";
@@ -196,6 +194,44 @@ POINT Graphic::GetBitmapSize(HBITMAP hbitmap) {
 
     return size;
 }
+
+HFONT Graphic::CreateCustomFont(int fontSize, const wchar_t* fontName) {
+    return CreateFontW(
+        fontSize,               // Font height (size)
+        0,                      // Default width
+        0,                      // No rotation angle
+        0,                      // No base-line orientation angle
+        FW_NORMAL,              // Normal font weight
+        FALSE,                  // Not italic
+        FALSE,                  // No underline
+        FALSE,                  // No strikeout
+        DEFAULT_CHARSET,        // Default character set
+        OUT_DEFAULT_PRECIS,     // Default output precision
+        CLIP_DEFAULT_PRECIS,    // Default clipping precision
+        DEFAULT_QUALITY,        // Default quality
+        DEFAULT_PITCH | FF_SWISS, // Default pitch and family
+        fontName                // Font name
+    );
+}
+
+void Graphic::RenderText(const wchar_t* text, HDC hdc, POINT pos, HFONT hFont, COLORREF color) {
+    // Select the font into the device context
+    HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
+
+    // Set text color
+    SetTextColor(hdc, color);
+
+    // Set transparent background for text
+    SetBkMode(hdc, TRANSPARENT);
+
+    // Render the text at the specified position
+    TextOutW(hdc, pos.x, pos.y, text, wcslen(text));
+
+    // Restore the old font
+    SelectObject(hdc, oldFont);
+}
+
+
 void Graphic::ReleaseBitmap(HBITMAP& hBitmap) {
     if (hBitmap) {
         DeleteObject(hBitmap);

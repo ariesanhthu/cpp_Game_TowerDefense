@@ -22,6 +22,12 @@ public:
         position.x = x;
         position.y = y; 
         image = Graphic::LoadBitmapImage(link, factor); 
+        size = Graphic::GetBitmapSize(image);
+    }
+    UIElement(const wchar_t* link, float factor, POINT pos) {
+        position = pos; 
+        image = Graphic::LoadBitmapImage(link, factor);
+        size = Graphic::GetBitmapSize(image);
     }
 
     virtual ~UIElement() {
@@ -43,23 +49,61 @@ public:
             mousePos.y >= position.y && mousePos.y <= position.y + size.y;
     }
 
+    virtual bool isHoverInside(POINT mousePos) const {
+        RECT area = {
+            position.x,
+            position.y,
+            position.x + size.x,
+            position.y + size.y   
+        };
+
+        if (PtInRect(&area, mousePos)) {
+            return true;
+        } 
+
+        return false;
+    }
+
     // Check if the element is clicked, with debounce handling
-    virtual int isClicked(POINT mousePos) const {
+    virtual bool isClicked(POINT mousePos) const {
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
             auto now = std::chrono::steady_clock::now();
             if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
                 lastMouseClickTime = now;
                 if (isHovered(mousePos)) {
-                    return 1;
-                }
-                else {
-                    return -1;
+                    return true;
                 }
             }
         }
-        else {
-            return 0;
+        return false;
+    }
+
+    virtual bool isNotClicked(POINT mousePos) const {
+        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
+            auto now = std::chrono::steady_clock::now();
+            if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
+                lastMouseClickTime = now;
+                if (!isHoverInside(mousePos)) {
+                    return true;
+                }
+            }
         }
+        return false;
+    }
+
+    virtual bool isNotHoverInside(POINT mousePos) const {
+        RECT area = {
+            position.x,
+            position.y,
+            position.x + size.x,
+            position.y + size.y
+        };
+
+        if (!PtInRect(&area, mousePos)) {
+            return true;
+        }
+
+        return false;
     }
 
     virtual HBITMAP getBitmap() {
@@ -75,5 +119,5 @@ public:
     }
 
     // Handle click event on the element
-    virtual void handleClick() {}
+    virtual void handleClick(POINT mousePos) {}
 };

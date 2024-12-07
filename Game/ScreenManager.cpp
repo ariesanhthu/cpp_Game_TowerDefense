@@ -17,24 +17,29 @@ namespace towerdefense
     // Constructor
     MainScreen::MainScreen() {
         loadContent(1280, 720);
+        customfont = Graphic::CreateCustomFont(24, L"pixelFont-7-8x14-sproutLands");
 
-        float scaleX = static_cast<float>(1280) / 395.0f;  // 1280 là kích thước gốc của ảnh
-        float scaleY = static_cast<float>(720) / 213.0f; // 720 là kích thước gốc của ảnh
+        float scaleX = static_cast<float>(1280) / 395.0f;   // 1280 là kích thước gốc của ảnh
+        float scaleY = static_cast<float>(720) / 213.0f;    // 720 là kích thước gốc của ảnh
         float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
 
         _background = std::make_shared<Item>(L"Assets/background/map4.bmp", scale, 0, 0);
         _catfam = std::make_shared<Item>(L"Assets/decor/nameLogo.png", 2, 0, 0);
-        //_play = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[0].x, buttonPositions[0].y);
-        
-        popup = std::make_shared<Popup>(initpoint, endpoint, board); 
+        _play = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[0]);
+        _cont = std::make_shared<Button>(L"Assets/button/btnContinue.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[1]);
+        _lead = std::make_shared<Button>(L"Assets/button/btnLeaderboard.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[2]);
+        _sett = std::make_shared<Button>(L"Assets/button/btnSetting.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[3]);
+        _exit = std::make_shared<Button>(L"Assets/button/btnExit.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[4]);
+        _about = std::make_shared<Button>(L"Assets/button/aboutBtn.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[5]);        
+        popup = std::make_shared<Popup>(L"Assets/board/board.bmp", 3, initpoint, endpoint);
+        _map1 = std::make_shared<Option>(L"Assets/map_resize/map1_scaleDown.bmp", L"Assets/board/border.bmp", 3, optionPositionsStart[0], optionPositionsEnd[0]);
+        _map2 = std::make_shared<Option>(L"Assets/map_resize/map2_scaleDown.bmp", L"Assets/board/border.bmp", 3, optionPositionsStart[1], optionPositionsEnd[1]);
+        _map3 = std::make_shared<Option>(L"Assets/map_resize/map3_scaleDown.bmp", L"Assets/board/border.bmp", 3, optionPositionsStart[2], optionPositionsEnd[2]);
+        _map4 = std::make_shared<Option>(L"Assets/map_resize/map4_scaleDown.bmp", L"Assets/board/border.bmp", 3, optionPositionsStart[3], optionPositionsEnd[3]);
+        _login = std::make_shared<Button>(L"Assets/button/LoginBtn.png", L"Assets/button/selectBox2.bmp", 2, loginPosition);
+        _inputName = std::make_shared<InputElement>(L"Name", inputNamePosition, customfont, RGB(255, 255, 255), L"Assets/button/input.bmp", 5);
+        _inputPassword = std::make_shared<InputElement>(L"Password", inputPasswordPosition, customfont, RGB(255, 255, 255), L"Assets/button/input.bmp", 5);
 
-        _play = std::make_shared<Button>(buttonPositions[0], play, button_hover);
-        _cont = std::make_shared<Button>(buttonPositions[1], cont, button_hover);
-        _lead = std::make_shared<Button>(buttonPositions[2], lead, button_hover);
-        _sett = std::make_shared<Button>(buttonPositions[3], setting, button_hover);
-        _exit = std::make_shared<Button>(buttonPositions[4], exit, button_hover);
-        _about = std::make_shared<Button>(buttonPositions[5], about, button_hover);
-        
         uiElements.push_back(_background);
         uiElements.push_back(_catfam);
         uiElements.push_back(_play);
@@ -44,48 +49,23 @@ namespace towerdefense
         uiElements.push_back(_exit);
         uiElements.push_back(_about);
         uiElements.push_back(popup);
-        uiElements.push_back(std::make_shared<Button>(loginPosition, login, login_hover));
+        uiElements.push_back(_map1);
+        uiElements.push_back(_map2);
+        uiElements.push_back(_map3);
+        uiElements.push_back(_map4);
+        uiElements.push_back(_login);
+        uiElements.push_back(_inputName);
+        uiElements.push_back(_inputPassword);
+
     }
 
     // Destructor
     MainScreen::~MainScreen() {
         // Giải phóng tài nguyên
-        Graphic::ReleaseBitmap(button_hover);
-        Graphic::ReleaseBitmap(board);
-        Graphic::ReleaseBitmap(map1opt);
-        Graphic::ReleaseBitmap(map2opt);
-        Graphic::ReleaseBitmap(map3opt);
-        Graphic::ReleaseBitmap(map4opt);
-        Graphic::ReleaseBitmap(opt_hover);
-        Graphic::ReleaseBitmap(login); 
-        Graphic::ReleaseBitmap(login_down);
-        Graphic::ReleaseBitmap(login_hover);
-        Graphic::ReleaseBitmap(input);
-        Graphic::ReleaseBitmap(loginText);
-        Graphic::ReleaseBitmap(nameText);
-        Graphic::ReleaseBitmap(passwordText);
-        Graphic::ReleaseBitmap(inputtextbitmap);
-        Graphic::ReleaseBitmap(continueTitle);
-        Graphic::ReleaseBitmap(arrow);
-        Graphic::ReleaseBitmap(play);
-        Graphic::ReleaseBitmap(setting);
-        Graphic::ReleaseBitmap(lead);
-        Graphic::ReleaseBitmap(cont);
-        Graphic::ReleaseBitmap(exit);
-        Graphic::ReleaseBitmap(about);
-        Graphic::ReleaseBitmap(switchOff);
-        Graphic::ReleaseBitmap(switchOn);
-        Graphic::ReleaseBitmap(TitleSetting);
-        Graphic::ReleaseBitmap(insVolBtn);
-        Graphic::ReleaseBitmap(desVolBtn);
-        Graphic::ReleaseBitmap(backgroundVol);
-        Graphic::ReleaseBitmap(foregroundVol);
+        DeleteObject(customfont);
 
         OutputDebugStringA("~MainScreen\n");
     }
-
-    int MainScreen::index = -1;
-    int MainScreen::hover = -1;
     int MainScreen::menu  = 0;
 
     void MainScreen::loadContent(int width, int height) {
@@ -93,34 +73,6 @@ namespace towerdefense
         float scaleX = static_cast<float>(width) / 395.0f;  // 1280 là kích thước gốc của ảnh
         float scaleY = static_cast<float>(height) / 213.0f; // 720 là kích thước gốc của ảnh
         float scale  = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh     
-
-        play = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 2);
-        button_hover = Graphic::LoadBitmapImage(L"Assets/button/selectBox.bmp", 2);
-        cont = Graphic::LoadBitmapImage(L"Assets/button/btnContinue.png", 2);
-        lead = Graphic::LoadBitmapImage(L"Assets/button/btnLeaderboard.png", 2);
-        setting = Graphic::LoadBitmapImage(L"Assets/button/btnSetting.png", 2);
-        exit = Graphic::LoadBitmapImage(L"Assets/button/btnExit.png", 2);
-        about = Graphic::LoadBitmapImage(L"Assets/button/aboutBtn.png", 2);
-        login = Graphic::LoadBitmapImage(L"Assets/button/loginBtn.png", 2);
-        login_hover = Graphic::LoadBitmapImage(L"Assets/button/selectBox2.bmp", 2);
-        board = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 3);
-        map1opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map1_scaleDown.bmp", 3);
-        map2opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map2_scaleDown.bmp", 3);
-        map3opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map3_scaleDown.bmp", 3);
-        map4opt = Graphic::LoadBitmapImage(L"Assets/map_resize/map4_scaleDown.bmp", 3);
-        opt_hover = Graphic::LoadBitmapImage(L"Assets/board/border.bmp", 3);
-        input = Graphic::LoadBitmapImage(L"Assets/button/input2.bmp", 5);
-        loginText = Graphic::LoadCustomTest("LOGIN", 10);
-        nameText = Graphic::LoadCustomTest("USERNAME", 5);
-        passwordText = Graphic::LoadCustomTest("PASSWORD", 5);
-        inputtextbitmap = Graphic::LoadCustomTest(inputtext, 3);
-        TitleSetting = Graphic::LoadBitmapImage(L"Assets/setting/TitleSetting.bmp", 5);
-        switchOff = Graphic::LoadBitmapImage(L"Assets/decor/catWin0.png", 2);
-        switchOn = Graphic::LoadBitmapImage(L"Assets/decor/catWin1.png", 2);
-        insVolBtn = Graphic::LoadBitmapImage(L"Assets/setting/arrowUp.png", 2);
-        desVolBtn = Graphic::LoadBitmapImage(L"Assets/setting/arrowDown.png", 2);
-        backgroundVol = Graphic::LoadBitmapImage(L"Assets/setting/volumn.png", 2);
-        foregroundVol = Graphic::LoadBitmapImage(L"Assets/setting/volumnOn.png", 2);
 
         buttonPositions = {
             {1280 / 10 * 1, 720 * 7 / 10},   // Play button
@@ -132,14 +84,18 @@ namespace towerdefense
         };
         loginPosition = { 1280 / 10 * 7 + 70, 720 * 7 / 100 };
         initpoint = { 182, 700 };
-        currentpoint = initpoint;
         endpoint = { 182, 42 };
-
-        optionPositions = {
-            currentpoint,
-            currentpoint,
-            currentpoint,
-            currentpoint
+        optionPositionsStart = {
+            {initpoint.x + 80, initpoint.y + 80},
+            {initpoint.x + 450, initpoint.y + 80},
+            {initpoint.x + 80, initpoint.y + 320},
+            {initpoint.x + 450, initpoint.y + 320},
+        };
+        optionPositionsEnd = {
+            {endpoint.x + 80, endpoint.y + 80},
+            {endpoint.x + 450, endpoint.y + 80},
+            {endpoint.x + 80, endpoint.y + 320},
+            {endpoint.x + 450, endpoint.y + 320},
         };
     }
 
@@ -148,20 +104,137 @@ namespace towerdefense
         GetCursorPos(&cursorPos);
         ScreenToClient(GetActiveWindow(), &cursorPos);
 
-        if (_play && _play->isClicked(cursorPos) == 1) {
-            menu = 1;
-            popup->startAnimation();
-            popup->setTriger(true);
+        // nếu có hiện tượng click chuột
+        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
+            auto now = std::chrono::steady_clock::now();
+            if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
+                lastMouseClickTime = now;
+
+                if (popup->getTriger()) {
+                    if (!popup->isHoverInside(cursorPos)) {
+                        menu = 0;
+                        popup->setTriger(false);
+                    }
+                }
+                else {
+                    if (_play && _play->isHoverInside(cursorPos)) {
+                        menu = 1;
+                        popup->setTriger(true);
+                        _map1->setTriger(true);
+                        _map2->setTriger(true);
+                        _map3->setTriger(true);
+                        _map4->setTriger(true);
+                    }
+                    else if (_cont && _cont->isHoverInside(cursorPos)) {
+                        menu = 2;
+                        popup->setTriger(true);
+                    }
+                    else if (_lead && _lead->isHoverInside(cursorPos)) {
+                        menu = 3; 
+                        popup->setTriger(true);
+                    }
+                    else if (_sett && _sett->isHoverInside(cursorPos)) {
+                        menu = 4; 
+                        popup->setTriger(true);
+                    }
+                    else if (_exit && _exit->isHoverInside(cursorPos)) {
+                        menu = 5; 
+                        popup->setTriger(true);
+                    }
+                    else if (_about && _about->isHoverInside(cursorPos)) {
+                        menu = 6;
+                        popup->setTriger(true);
+                    }
+                    else if (_login && _login->isHoverInside(cursorPos)) {
+                        menu = 101; 
+                        popup->setTriger(true);
+                    }
+                }
+            }
         }
 
-        if (popup && !popup->isHovered(cursorPos) && (GetAsyncKeyState(VK_LBUTTON) & 0x8000)) {
-            menu = 0;
-            popup->setPosition(initpoint);
-        }
+        // nếu bật cờ popup thì popup
+        if (popup->getTriger() == true) popup->startAnimation();
+        else popup->setPosition(initpoint);
+        
+        if (_map1->getTriger() == true) _map1->startAnimation();
+        else _map1->setPosition(optionPositionsStart[0]);
 
+        if (_map2->getTriger() == true) _map2->startAnimation();
+        else _map2->setPosition(optionPositionsStart[1]);
+
+        if (_map3->getTriger() == true) _map3->startAnimation();
+        else _map3->setPosition(optionPositionsStart[2]);
+
+        if (_map4->getTriger() == true) _map4->startAnimation();
+        else _map4->setPosition(optionPositionsStart[3]);
+
+        
         if (menu == 0) {
 
         }
+        else if (menu == 1) {
+            if (_map1->isClicked(cursorPos)) {
+                PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, 1, 0);
+            } 
+        }
+        else if (menu == 2) {
+
+        }
+        else if (menu == 3) {
+
+        }
+        else if (menu == 4) {
+
+        }
+        else if (menu == 5) {
+            PostQuitMessage(0);
+        }
+        else if (menu == 6) {
+
+        }
+        else if(menu == 101) {
+            if (_inputName->isHoverInside(cursorPos)) {
+                _inputName->setEdit(true);
+            } 
+
+            if (_inputName->isNotHoverInside(cursorPos)) {
+                _inputName->setEdit(false);
+            }
+
+            if (_inputPassword->isHoverInside(cursorPos)) {
+                _inputPassword->setEdit(true);
+            }
+
+            if (_inputPassword->isNotHoverInside(cursorPos)) {
+                _inputPassword->setEdit(false);
+            }
+
+            if (GetAsyncKeyState(VK_RETURN) & 0x8000) {
+                auto now = std::chrono::steady_clock::now();
+                if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
+                    lastMouseClickTime = now;
+
+                    // handle login 
+                    
+                    // write id 
+                    // write name 
+                    // write password 
+
+                    _inputName->setText(L"");
+                    _inputPassword->setText(L"");
+
+                }
+            }
+        }
+
+        if (_inputName->isEdit()) {
+            _inputName->handleEdit();
+        }
+
+        if (_inputPassword->isEdit()) {
+            _inputPassword->handleEdit();
+        } 
     }
 
     // Update logic (nếu có animation hoặc logic khác)
@@ -169,22 +242,50 @@ namespace towerdefense
         if (popup && !popup->isFinished()) {
             popup->update(delta);
         }
+        if (_map1 && !_map1->isFinished()) {
+            _map1->update(delta);
+        }
+        if (_map2 && !_map2->isFinished()) {
+            _map2->update(delta);
+        }
+        if (_map3 && !_map3->isFinished()) {
+            _map3->update(delta);
+        }
+        if (_map4 && !_map4->isFinished()) {
+            _map4->update(delta);
+        }
     }
 
     void MainScreen::render(HDC hdc) {
         _background->render(hdc);
         _catfam->render(hdc);
         
-        if (popup && popup->getTriger()) {
-            popup->render(hdc);
-        }
         _play->render(hdc);
+        _cont->render(hdc);
+        _lead->render(hdc);
+        _sett->render(hdc);
+        _exit->render(hdc);
+        _about->render(hdc);
+        _login->render(hdc);
+        popup->render(hdc);
+        
 
         if (menu == 0) {
             
         }
         else if (menu == 1) {
-            
+            if (_map1) {
+                _map1->render(hdc);
+            }
+            if (_map2) {
+                _map2->render(hdc);
+            }
+            if (_map3) {
+                _map3->render(hdc);
+            }
+            if (_map4) {
+                _map4->render(hdc);
+            }
         }
         else if (menu == 2) {
 
@@ -202,7 +303,8 @@ namespace towerdefense
             
         }
         else if (menu == 101) {
-            
+            _inputName->render(hdc); 
+            _inputPassword->render(hdc);
         }
     }
 
@@ -415,6 +517,8 @@ namespace towerdefense
 
                         _game.mapCode = mapCode;
                         _game.UserId = 0;
+
+
                         
 
                         // ============================ BUG ========================//

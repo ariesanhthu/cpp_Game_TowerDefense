@@ -58,6 +58,7 @@ namespace towerdefense
     class MainScreen : public Screen {
     private:
         std::vector<std::shared_ptr<UIElement>> uiElements;
+        HFONT customfont;
 
         std::shared_ptr<Item> _background; 
         std::shared_ptr<Item> _catfam;
@@ -69,59 +70,20 @@ namespace towerdefense
         std::shared_ptr<Button> _about;
         std::shared_ptr<Popup> popup;
 
-        //HBITMAP background       = nullptr;             // Hình nền
-        //HBITMAP catfam           = nullptr;
+        std::shared_ptr<Option> _map1;
+        std::shared_ptr<Option> _map2;
+        std::shared_ptr<Option> _map3;
+        std::shared_ptr<Option> _map4;
 
-        // button  
-        HBITMAP play             = nullptr;             // play
-        HBITMAP cont             = nullptr;             // continue 
-        HBITMAP lead             = nullptr;             // leaderboard
-        HBITMAP setting          = nullptr;             // setting 
-        HBITMAP exit             = nullptr;             // exit
-        HBITMAP about            = nullptr;             // about us
-        HBITMAP button_hover     = nullptr;
-
-        // popup
-        HBITMAP board            = nullptr;
-
-        // choose map
-        HBITMAP map1opt          = nullptr; 
-        HBITMAP map2opt          = nullptr; 
-        HBITMAP map3opt          = nullptr; 
-        HBITMAP map4opt          = nullptr; 
-        HBITMAP opt_hover        = nullptr;
-
-
-        // login
-        HBITMAP login            = nullptr;
-        HBITMAP login_down       = nullptr;
-        HBITMAP login_hover      = nullptr;
-        HBITMAP input            = nullptr;
-        HBITMAP loginText        = nullptr;
-        HBITMAP nameText         = nullptr;
-        HBITMAP passwordText     = nullptr;
-
-        // continue
-        HBITMAP continueTitle    = nullptr;
-        HBITMAP arrow            = nullptr;
+        std::shared_ptr<Button> _login;
+        std::shared_ptr<InputElement> _inputName;
+        std::shared_ptr<InputElement> _inputPassword;
 
         POINT firstplayerCoverPos = { 420, 200 };
         POINT titleContinuePos = { 390, 130 };
         POINT backgroundPos = { 0, 0 };
         // leaderboard 
 
-        // setting 
-        bool soundCheck          = false;
-        HBITMAP TitleSetting     = nullptr;
-
-        HBITMAP switchOff        = nullptr;
-        HBITMAP switchOn         = nullptr;
-
-        HBITMAP insVolBtn = nullptr;
-        HBITMAP desVolBtn = nullptr;
-
-        HBITMAP backgroundVol = nullptr; 
-        HBITMAP foregroundVol = nullptr;
 
         POINT titlePos = { 400, 100 };
         POINT soundPos = { 270, 200 };
@@ -135,7 +97,8 @@ namespace towerdefense
         int percent = currentVolume / volumeSize;
 
         vector<POINT> buttonPositions;           // Vị trí các nút bấm
-        vector<POINT> optionPositions;            // Vi tri cac lua chon map
+        vector<POINT> optionPositionsStart;            // Vi tri cac lua chon map
+        vector<POINT> optionPositionsEnd;
 
         // Vẽ input box
         POINT loginPosition;
@@ -147,23 +110,8 @@ namespace towerdefense
 
         // Thiết lập 3 vị trí để popup board
         POINT initpoint, currentpoint, endpoint; 
-        bool isChoosemapPopup = false;
-        bool isPopupEffect = false;
 
-        // string nhap tu input
-        HBITMAP inputtextbitmap = nullptr;
-        bool start_to_input = false;
-        string inputtext = "YOURNAME";
-
-        // index = 0 -> choose map menu 
-        // index = 1 -> continue menu
-        // index = 2 -> leaderboard menu 
-        // index = 3 -> setting menu
-        // index = 4 -> exit handling
-        // index = 5 -> about us menu 
-        // index = 101 -> login 
-        static int index;
-        static int hover;
+     
         // menu = 0 -> default
         // menu = 1 -> choose map
         // menu = 2 -> continue
@@ -186,9 +134,9 @@ namespace towerdefense
 
 
         // avoid double click
-        std::chrono::steady_clock::time_point lastMouseClickTime;
+        mutable std::chrono::steady_clock::time_point lastMouseClickTime;  // mutable to modify in const method
         std::chrono::steady_clock::time_point lastKeyPressTime;
-        const int debounceDelayMs = 200; // 200 ms debounce delay
+        const int debounceDelayMs = 300; // 200 ms debounce delay
 
         // support
         void SetVolume(int volumePercentage) {
