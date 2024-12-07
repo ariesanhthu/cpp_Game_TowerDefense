@@ -216,13 +216,31 @@ namespace towerdefense
         HBITMAP tower = nullptr;              // tower
         HBITMAP towerInitPlace = nullptr;     // Ô chứa tháp
         HBITMAP instructionBoard = nullptr;   // Bảng hướng dẫn 
-        HBITMAP enemy = nullptr;              // enemy
+        HBITMAP enemy1 = nullptr;              // enemy
+        HBITMAP enemy2 = nullptr;              // enemy
+        HBITMAP enemy3 = nullptr;              // enemy
         HBITMAP hamburger = nullptr;          // hamburger button
         HBITMAP play_or_pause = nullptr;      // nut play hoac pause
         HBITMAP hbullet = nullptr;            // bullet
 
+        HBITMAP boardYesNo = nullptr;
+        HBITMAP WantToContinue = nullptr;
+        HBITMAP yesBtn = nullptr; 
+        HBITMAP noBtn = nullptr;
+
+        bool IsPlayGame = false;
+        bool manageFirstTime = true;
+
+        // Pause handling
+        bool displayYesNoBoard = false;
+        POINT WantToContinuePos = { 500, 250 };
+        POINT boardYesNoPos = {450, 200 };
+        POINT yesBtnPos = { 525, 350 };
+        POINT noBtnPos = { 700, 350 };
+        POINT yesnoSize = { 18, 20 };
+
         // instruction pos
-        POINT instructionPos = { 730, 50 };
+        POINT instructionPos = { 800, 50 };
         POINT hamburgerPos = { 1200, 5 };
         bool displayBoard = true;
 
