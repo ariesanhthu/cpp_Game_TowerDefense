@@ -10,6 +10,8 @@
 #include <chrono>
 #include <mmsystem.h> 
 
+#include "GameManage/GamePlayManage.h"
+
 using namespace std;
 namespace towerdefense
 {
@@ -262,6 +264,8 @@ namespace towerdefense
         // tower
         std::vector<ctower> towerlist;
         POINT Turretinit;         // tower position 
+
+
 
         // tower de chon di chuyen
         ctower Tpicking;

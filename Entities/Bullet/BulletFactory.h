@@ -11,14 +11,13 @@
 //#include "BulletBase.h"
 
 
-#define SMALL 1
-#define BIG 2
-#define BOSS 3
-
 class BulletFactory
 {
 public:
-    static unique_ptr<BulletBase> createEnemy(const int type);
+    static vector<BulletModel*> Models;
+    static unique_ptr<BulletBase> createEnemy(const string type, cpoint pos, EnemyBase* target);
+    static void createModels();
+    static void deleteModels();
 };
 
 #endif
