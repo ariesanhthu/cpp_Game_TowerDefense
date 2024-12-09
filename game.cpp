@@ -21,12 +21,18 @@ namespace towerdefense
         Graphic* graphic = nullptr; 
        
         LRESULT result = 0; // Lưu kết quả trả về từ Windows
+
+        //std::vector<saveUser> s = { {0, "guess", "", vector<int>{}} };
+        //std::vector<saveGame> s = { {0, vector<saveEnemy> {}, vector<saveTower> {}, 0, 0} };
+
         switch (message)
         {
         case WM_CREATE: 
             if (graphic) delete graphic; 
             graphic = new Graphic();
             Game::getInstance().loadInitialScreen(0);
+            //createDummyGameDataFile(s);
+            //createDummyUserDataFile(s);
         break;
         case WM_CLOSE: // Sự kiện đóng cửa sổ
         {
@@ -81,6 +87,7 @@ namespace towerdefense
         windowTitle = L"Cat-farm Tower Defense";
         windowWidth = 1280;
         windowHeight = 720;
+
         screenManager = new ScreenManager();
 
         // Lấy kích thước cửa sổ hiện tại (nếu có)

@@ -1,10 +1,13 @@
 #pragma once
+
 #include <windows.h>
 #include <string>
 #include <functional>
 #include "State.h"
 #include <ScreenManager.h>
 #include <memory>
+#include "User/cFile.h"
+#include "User/userManager.h"
 
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
 

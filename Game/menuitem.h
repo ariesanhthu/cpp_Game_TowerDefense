@@ -208,24 +208,25 @@ public:
 
 class TextElement : public UIElement {
 private:
-    std::wstring text;   // Text to display
-    std::wstring label;
-    HFONT font;          // Font for rendering
-    COLORREF color;      // Text color
+    std::wstring text;   
+    HFONT font;          
+    COLORREF textColor;
 
 public:
-    TextElement(const wchar_t* text, const wchar_t* label, POINT position, POINT size, HFONT font, COLORREF color)
-        : UIElement(position, NULL), text(text), font(font), color(color) {
-        this->size = size; // Set size of the element
+    TextElement(wstring text, HFONT font, COLORREF textColor, POINT pos)
+        : UIElement(pos, nullptr), text(text), font(font), textColor(textColor) {
     }
 
     void render(HDC hdc) override {
-        Graphic::RenderText(text.c_str(), hdc, position, font, color);
+        Graphic::RenderText(text.c_str(), hdc, position, font, textColor);
     }
 
     // Update the text
     void setText(const wchar_t* newText) {
         text = newText;
+    }
+    std::wstring getText() const {
+        return text;
     }
 };
 
@@ -239,7 +240,7 @@ private:
     bool isFocused;      // Focus state of the input element
 
 public:
-    InputElement(wstring label,POINT position, HFONT font, COLORREF textColor, const wchar_t* link, float factor)
+    InputElement(wstring label, POINT position, HFONT font, COLORREF textColor, const wchar_t* link, float factor)
         : UIElement(link, factor, position), label(label), font(font), textColor(textColor), isFocused(false) {
     }
 

@@ -21,7 +21,7 @@
     <ClCompile Include="Graphics\Graphic.cpp" />
     <ClCompile Include="Game\ScreenManager.cpp" />
     <ClCompile Include="Observer.cpp" />
-    <ClCompile Include="Loadgame\CreateData.cpp" />
+    <ClCompile Include="User\cFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\cbullet.h" />
@@ -48,6 +48,8 @@
     <ClInclude Include="Game\InputManager.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Game\menuitem.h" />
+    <ClInclude Include="User\userManager.h" />
+    <ClInclude Include="User\converted.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="SetupMap\map1.txt" />

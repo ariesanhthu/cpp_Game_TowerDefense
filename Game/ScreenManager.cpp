@@ -25,38 +25,30 @@ namespace towerdefense
 
         _background = std::make_shared<Item>(L"Assets/background/map4.bmp", scale, 0, 0);
         _catfam = std::make_shared<Item>(L"Assets/decor/nameLogo.png", 2, 0, 0);
+        
         _play = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[0]);
         _cont = std::make_shared<Button>(L"Assets/button/btnContinue.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[1]);
         _lead = std::make_shared<Button>(L"Assets/button/btnLeaderboard.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[2]);
         _sett = std::make_shared<Button>(L"Assets/button/btnSetting.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[3]);
         _exit = std::make_shared<Button>(L"Assets/button/btnExit.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[4]);
         _about = std::make_shared<Button>(L"Assets/button/aboutBtn.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[5]);        
+        
         popup = std::make_shared<Popup>(L"Assets/board/board.bmp", 3, initpoint, endpoint);
+        
         _map1 = std::make_shared<Option>(L"Assets/map_resize/map1_scaleDown.bmp", L"Assets/board/border.bmp", 3, optionPositionsStart[0], optionPositionsEnd[0]);
         _map2 = std::make_shared<Option>(L"Assets/map_resize/map2_scaleDown.bmp", L"Assets/board/border.bmp", 3, optionPositionsStart[1], optionPositionsEnd[1]);
         _map3 = std::make_shared<Option>(L"Assets/map_resize/map3_scaleDown.bmp", L"Assets/board/border.bmp", 3, optionPositionsStart[2], optionPositionsEnd[2]);
         _map4 = std::make_shared<Option>(L"Assets/map_resize/map4_scaleDown.bmp", L"Assets/board/border.bmp", 3, optionPositionsStart[3], optionPositionsEnd[3]);
+        
         _login = std::make_shared<Button>(L"Assets/button/LoginBtn.png", L"Assets/button/selectBox2.bmp", 2, loginPosition);
         _inputName = std::make_shared<InputElement>(L"Name", inputNamePosition, customfont, RGB(255, 255, 255), L"Assets/button/input.bmp", 5);
         _inputPassword = std::make_shared<InputElement>(L"Password", inputPasswordPosition, customfont, RGB(255, 255, 255), L"Assets/button/input.bmp", 5);
-
-        uiElements.push_back(_background);
-        uiElements.push_back(_catfam);
-        uiElements.push_back(_play);
-        uiElements.push_back(_cont);
-        uiElements.push_back(_lead);
-        uiElements.push_back(_sett);
-        uiElements.push_back(_exit);
-        uiElements.push_back(_about);
-        uiElements.push_back(popup);
-        uiElements.push_back(_map1);
-        uiElements.push_back(_map2);
-        uiElements.push_back(_map3);
-        uiElements.push_back(_map4);
-        uiElements.push_back(_login);
-        uiElements.push_back(_inputName);
-        uiElements.push_back(_inputPassword);
-
+        
+        _register = std::make_shared<Button>(L"Assets/button/LoginBtn.png", L"Assets/button/selectBox2.bmp", 2, registerPosition);
+        _inputNameReg = std::make_shared<InputElement>(L"Name", inputNamePosition, customfont, RGB(255, 255, 255), L"Assets/button/input.bmp", 5);
+        _inputPasswordReg = std::make_shared<InputElement>(L"Password", inputPasswordPosition, customfont, RGB(255, 255, 255), L"Assets/button/input.bmp", 5);
+        
+        _gotoPage = std::make_shared<TextElement>(L"Goto Register Form", customfont, RGB(255, 255, 255), linkPos);
     }
 
     // Destructor
@@ -66,7 +58,7 @@ namespace towerdefense
 
         OutputDebugStringA("~MainScreen\n");
     }
-    int MainScreen::menu  = 0;
+    int MainScreen::menu = 0;
 
     void MainScreen::loadContent(int width, int height) {
         // Tính toán tỉ lệ dựa trên kích thước màn hình
@@ -179,7 +171,9 @@ namespace towerdefense
             } 
         }
         else if (menu == 2) {
+            // if click user 
 
+            // loadgame 
         }
         else if (menu == 3) {
 
@@ -215,14 +209,28 @@ namespace towerdefense
                 if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
                     lastMouseClickTime = now;
 
-                    // handle login 
-                    
-                    // write id 
-                    // write name 
-                    // write password 
+                    std::string name = wstringToString(_inputName->getText());
+                    for (int i = 0; i < name.length(); i++) {
+                        name[i] = tolower(name[i]);
+                    }
+                    Guess.setName(name);
 
-                    _inputName->setText(L"");
-                    _inputPassword->setText(L"");
+                    std::string password = wstringToString(_inputPassword->getText());
+                    for (int i = 0; i < name.length(); i++) {
+                        password[i] = tolower(password[i]);
+                    }
+                    Guess.setPassword(password);
+
+                    if (Guess.hlogin()) {
+                        Guess.authenticated = true;
+                        _inputName->setText(L"");
+                        _inputPassword->setText(L"");
+                        OutputDebugStringW(_inputName->getText().c_str());
+                        OutputDebugStringW(_inputPassword->getText().c_str());
+                    }
+                    else {
+                        OutputDebugStringW(L"Fail");
+                    }
 
                 }
             }
@@ -269,7 +277,6 @@ namespace towerdefense
         _login->render(hdc);
         popup->render(hdc);
         
-
         if (menu == 0) {
             
         }
@@ -289,6 +296,8 @@ namespace towerdefense
         }
         else if (menu == 2) {
 
+            // render user item
+
         } 
         else if (menu == 3) {
 
@@ -303,6 +312,7 @@ namespace towerdefense
             
         }
         else if (menu == 101) {
+            _gotoPage->render(hdc);
             _inputName->render(hdc); 
             _inputPassword->render(hdc);
         }
@@ -311,64 +321,45 @@ namespace towerdefense
     //========================================================================================================================//
 
     PlayScreen::PlayScreen() {
-        gamedata = getGameList();
-        userdata = getUserList();
-        sGame _game;
 
-        bool check = false;
-
-        for (int i = 0; i < gamedata.size(); i++) {
-            for (int j = 0; j < userdata.size(); j++) {
-                if (gamedata[i].gameId == userdata[j].UserId) {
-                    _game.Tcurr = gamedata[i].Tcurr;
-                    _game.Ecurr = gamedata[i].Ecurr;
-                    check = true;
-                    break; 
-                }
+        std::vector<saveGame> allgames = getGameList(); 
+        saveGame loadGame;
+        for (auto games : allgames) {
+            if (games.gameId == 5) {
+                loadGame = games;
+                break;
             }
-            if (!check) break;
         }
 
-        check = false;
-
-        if (!check) {
-            for (int i = 0; i < 10; i++) {
-                cenemy dummy;
-                std::vector<POINT> otherPath = epath;
+        for (int i = 0; i < loadGame.listEnemy.size(); i++) {
+            cenemy dummy;
             
-                otherPath[0].x -= (i != 9 ? (i * (rand() % 300 + 100)) : 9*500);
-
-                dummy.setPath(otherPath);
-                enemylist.push_back(dummy);
-            }
-            enemylist[9].setHealth(450);
-        }
-        else {
-            for (int i = 0; i < _game.Ecurr.size(); i++) {
-                cenemy dummy; 
-                std::vector<POINT> otherPath = _game.Ecurr[i].path; 
-                int x = _game.Ecurr[i].index; // Lấy index từ enemy hiện tại
-
-                // Thiết lập giá trị cho dummy
-                dummy.setPath(otherPath);
-                dummy.setIndex(x);
-
-                // Thêm dummy vào danh sách enemylist
-                enemylist.push_back(dummy);
-            }
-
-            for (int i = 0; i < _game.Tcurr.size(); i++) {
-                ctower dummy;
-                dummy.setLocation(_game.Tcurr[i].location);
-                towerlist.push_back(dummy);
-            }
-
-            enemylist[9].setHealth(450);
+            std::vector<POINT> otherPath = loadGame.listEnemy[i].path;
+            dummy.setPath(otherPath);
+            dummy.setHealth(loadGame.listEnemy[i].health + 100000);
+            dummy.setCurr(loadGame.listEnemy[i].currentPosition);
+            dummy.setIndex(loadGame.listEnemy[i].index);
+            
+            enemylist.push_back(dummy);
         }
 
-        // Initialize dummy enemies
+        for (int i = 0; i < loadGame.listTower.size(); i++) {
+            ctower tower; 
+            tower.setLocation(loadGame.listTower[i].location);
+            towerlist.push_back(tower);
+        }
 
+        /*for (int i = 0; i < 10; i++) {
+            cenemy dummy;
+            std::vector<POINT> otherPath = epath;
+            
+            otherPath[0].x -= (i != 9 ? (i * (rand() % 300 + 100)) : 9*500);
 
+            dummy.setPath(otherPath);
+            enemylist.push_back(dummy);
+        }
+        enemylist[9].setHealth(450);*/
+        
         Turretinit = { 50, 565 };
     }
 
@@ -495,40 +486,38 @@ namespace towerdefense
                     };
                     if (PtInRect(&noRect, cursorPos)) {
 
-                        sUser _user; 
-                        _user.name = guess.getName();
-                        _user.password = "";
-                        _user.point = guess.getPoint();
-
-                        sGame _game;
-
-                        for (auto i : enemylist) {
-                            int health = i.getHealth();
-                            POINT curr = i.getCurr();
-                            std::vector<POINT> path = i.getPath();
-                            int ind = i.getIndex();
-                            _game.Ecurr.push_back({ health, curr, path, ind });
+                        for (int i = 0; i < enemylist.size(); i++) {
+                            enemylist[i].isMove = false;
                         }
 
-                        for (auto i : towerlist) {
-                            POINT curr = i.getLocation();
-                            _game.Tcurr.push_back({ curr });
+                        std::vector<saveGame> games = getGameList();
+
+                        saveGame newGame; 
+
+                        newGame.gameId = 0;
+                        for (auto game : games) {
+                            if (newGame.gameId <= game.gameId) {
+                                newGame.gameId++;
+                            }
                         }
-
-                        _game.mapCode = mapCode;
-                        _game.UserId = 0;
-
-
+                        for (auto enemy : enemylist) {
+                            newGame.listEnemy.push_back({ enemy.getHealth(), enemy.getCurr(), enemy.getPath(), enemy.getIndex()});
+                        }
+                        for (auto tower : towerlist) {
+                            newGame.listTower.push_back({ tower.getLocation() });
+                        }
+                        newGame.mapCode = mapCode;
+                        newGame.UserId = Guess.getId();
                         
 
-                        // ============================ BUG ========================//
-                        int x = rand() % 100 + 1;
-                        
-                        _user.UserId = x;
-                        _game.gameId = x;
-                        appendUserToFile(_user);
-                        appendGameToFile(_game);
+                        /*vector<int> gameID = Guess.getListGame();
+                        gameID.push_back(newGame.gameId);
+                        Guess.setListGame(gameID);*/
+                        //OutputDebugStringA(std::to_string(newGame.UserId).c_str());
 
+                        appendGameToFile(newGame);
+
+                      
                         PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                     }
                 }
@@ -546,31 +535,44 @@ namespace towerdefense
             }
         }
 
-        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
-            // if hold tower 
-            RECT initTowerRect = {
-                Turretinit.x,
-                Turretinit.y,
-                Turretinit.x + towerSize.x * 2, // Button width
-                Turretinit.y + towerSize.y * 2 // Button height
-            };
-            if (PtInRect(&initTowerRect, cursorPos)) {
-                isPicking = true;
+        bool mouseClicked = (GetAsyncKeyState(VK_LBUTTON) & 0x8000);
+
+        static bool mouseReleased = true; // Trạng thái chuột đã nhả (tránh lặp sự kiện)
+        if (mouseClicked && mouseReleased) {
+            mouseReleased = false; // Đánh dấu chuột đã bấm
+
+            if (!isPicking) {
+                // Người dùng chưa "nhặt tháp", bắt đầu "nhặt tháp"
+                RECT initTowerRect = {
+                    Turretinit.x,
+                    Turretinit.y,
+                    Turretinit.x + towerSize.x * 2, // Chiều rộng nút
+                    Turretinit.y + towerSize.y * 2  // Chiều cao nút
+                };
+
+                if (PtInRect(&initTowerRect, cursorPos)) {
+                    isPicking = true;                // Chuyển sang trạng thái "nhặt tháp"
+                    Tpicking.setLocation(cursorPos); // Đặt vị trí ban đầu theo con trỏ chuột
+                }
             }
             else {
-                isPicking = false;
+                // Người dùng đang "nhặt tháp", kiểm tra để "đặt tháp"
+                if (checkValidPos(Tpicking.getLocation())) {
+                    towerlist.push_back(Tpicking); // Thêm vào danh sách nếu hợp lệ
+                    isPicking = false;            // Kết thúc trạng thái "nhặt tháp"
+                }
             }
         }
 
+        if (!mouseClicked) {
+            mouseReleased = true; // Đánh dấu chuột đã nhả
+        }
+
+        // Nếu đang "nhặt tháp", cập nhật vị trí theo con trỏ chuột
         if (isPicking) {
-            Tpicking.setLocation(cursorPos);    
+            Tpicking.setLocation(cursorPos);
         }
-        else {
-            // neu vi tri thoa dieu kien thi them vao list tower
-            if (checkValidPos(TcurrentPick)) {
-                towerlist.push_back(Tpicking);
-            }
-        }
+
     }
 
     void PlayScreen::update(float delta) {

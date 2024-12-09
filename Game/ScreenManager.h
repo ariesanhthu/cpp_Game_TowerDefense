@@ -9,18 +9,22 @@
 #include "ctower.h"
 #include <chrono>
 #include <mmsystem.h> 
-#include <LoadGame/CreateData.cpp>
 #include <UIElement.h>
 #include <menuitem.h>
+#include "User/cFile.h"
+#include "User/userManager.h"
+#include "User/converted.h"
 
 using namespace std;
 namespace towerdefense
 {
     class Screen {
     public:
+        
+        // 1 nguoi choi ton tai qua tat ca cac man hinh choi
+        User Guess;
 
-        // Dòng này làm MainScreen không destruct được
-        //virtual ~Screen() = 0;
+        //virtual ~Screen() {}
         virtual void loadContent(int width, int height) = 0;
         virtual void handleInput(HWND hwnd) = 0;
         virtual void update(float delta) = 0;
@@ -31,6 +35,7 @@ namespace towerdefense
     class ScreenManager {
     private:
         std::shared_ptr<Screen> currentScreen = nullptr;
+        
 
     public:
         ~ScreenManager() {
@@ -79,11 +84,16 @@ namespace towerdefense
         std::shared_ptr<InputElement> _inputName;
         std::shared_ptr<InputElement> _inputPassword;
 
+        std::shared_ptr<Button> _register;
+        std::shared_ptr<InputElement> _inputNameReg;
+        std::shared_ptr<InputElement> _inputPasswordReg;
+
+        std::shared_ptr<TextElement> _gotoPage;
+
+
         POINT firstplayerCoverPos = { 420, 200 };
         POINT titleContinuePos = { 390, 130 };
         POINT backgroundPos = { 0, 0 };
-        // leaderboard 
-
 
         POINT titlePos = { 400, 100 };
         POINT soundPos = { 270, 200 };
@@ -96,21 +106,21 @@ namespace towerdefense
         int currentVolume = 50;
         int percent = currentVolume / volumeSize;
 
-        vector<POINT> buttonPositions;           // Vị trí các nút bấm
+        vector<POINT> buttonPositions;                  // Vị trí các nút bấm
         vector<POINT> optionPositionsStart;            // Vi tri cac lua chon map
         vector<POINT> optionPositionsEnd;
-
         // Vẽ input box
         POINT loginPosition;
         POINT inputNamePosition = { 480, 250 };
         POINT inputPasswordPosition = { 480, 350 };
-        POINT loginTextPos = { 480, 150 };
         POINT nameTextPos = { 270, 260 };
         POINT passwordTextPos = { 270, 360 };
+        POINT loginTextPos = { 480, 150 };
+        POINT registerPosition = { 480, 200 };
+        POINT linkPos = { 270, 460 };
 
         // Thiết lập 3 vị trí để popup board
-        POINT initpoint, currentpoint, endpoint; 
-
+        POINT initpoint, endpoint; 
      
         // menu = 0 -> default
         // menu = 1 -> choose map
@@ -121,6 +131,7 @@ namespace towerdefense
         // menu = 6 -> about us
         // menu = 101 -> login
         static int menu; 
+        bool loginMenu = true;
 
         //size doi tuong
         POINT buttonSize = { 26, 29 };
@@ -131,7 +142,6 @@ namespace towerdefense
         POINT sizeSound = { 25, 29 };
         POINT sizeVolBtn = { 14, 21 };
         POINT sizeEdit = { 7, 12 };
-
 
         // avoid double click
         mutable std::chrono::steady_clock::time_point lastMouseClickTime;  // mutable to modify in const method
@@ -164,8 +174,6 @@ namespace towerdefense
     class MapScreen : public Screen {
     protected:
         cplayer guess;
-        std::vector<sUser> userdata;
-        std::vector<sGame> gamedata;
 
         // hbitmap
         HBITMAP background = nullptr;
@@ -223,6 +231,7 @@ namespace towerdefense
         ctower Tpicking;
         POINT TcurrentPick;
         bool isPicking = false;
+        bool isMouseDown = false;
 
         // size
         POINT buttonSize = { 26, 29 };
