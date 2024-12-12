@@ -15,7 +15,6 @@ public:
     void update();
 private:
     std::vector<BulletBase> bulllets_;
-
 };
 
 #endif
