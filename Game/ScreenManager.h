@@ -187,6 +187,8 @@ namespace towerdefense
     class MapScreen : public Screen {
     protected:
         //
+        cplayer guess;
+
         GameState statePlayingGame = PLAY;
         int countHeart = 0;
 
