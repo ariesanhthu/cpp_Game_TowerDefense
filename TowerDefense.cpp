@@ -1,22 +1,21 @@
-﻿
-#include <stdlib.h>
+﻿#include <stdlib.h>
 #include <crtdbg.h>
-/*
-file xử dụng
-game.h
-game.cpp
-TowerDefense.h
-*/
-#pragma once
-//#include "PrecompiledHeader.h"
-
+///*
+//file xử dụng
+//game.h
+//game.cpp
+//TowerDefense.h
+//*/
+//#pragma once
+////#include "PrecompiledHeader.h"
+//
 #pragma comment(lib, "winmm.lib") 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(lib, "Msimg32.lib")
 #include "TowerDefense.h"
 #include <time.h>
 using namespace std;
-
+//
 app_entry_point
 {
 	srand(time(0));

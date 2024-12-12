@@ -51,18 +51,18 @@ void cenemy::setPath(vector<POINT> ePath) {
 }
 
 void cenemy::update(float delta) {
-    if (index >= path.size() - 1) {
+    /*if (index >= path.size() - 1) {
         isMove = false;
         return;
-    }
+    }*/
 
     if ((index + speed) < (path.size() - 1)) {
         index += speed;
         currentPosition = path[index];
     }
     else {
-        index = path.size() - 1;
-        //index = 0;
+        //index = path.size() - 1;
+        index = 0;
 
     }
 

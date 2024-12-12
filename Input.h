@@ -1,14 +1,12 @@
 #pragma once
+
 #include <windows.h>
+#include <windowsx.h>
+
 #include <stdint.h>
 
-/*
-
-	Define keyboard
-
-*/
-
 #define DC_MAX_KEYS 52
+
 #define DC_A			0
 #define DC_B			1
 #define DC_C			2
@@ -35,10 +33,12 @@
 #define DC_X			23
 #define DC_Y			24
 #define DC_Z			25
+
 #define DC_UP			26
 #define DC_DOWN			27
 #define DC_LEFT			28
 #define DC_RIGHT		29
+
 #define DC_0			30
 #define DC_1			31
 #define DC_2			32
@@ -51,6 +51,7 @@
 #define DC_9			39
 #define DC_MINUS		40
 #define DC_PLUS			41
+
 #define DC_SHIFT		42
 #define DC_CONTROL		43
 #define DC_ALT			44
@@ -62,6 +63,14 @@
 #define DC_BACKSPACE	50
 #define DC_TILDE		51
 
+#define DC_MAX_MOUSE_BUTTONS 5
+
+#define DC_MOUSE_LEFT	0
+#define DC_MOUSE_RIGHT	1
+#define DC_MOUSE_MIDDLE	2
+#define DC_MOUSE_X1		3
+#define DC_MOUSE_X2		4
+
 namespace towerdefense
 {
 	class Input
@@ -72,9 +81,8 @@ namespace towerdefense
 			WPARAM wParam,
 			LPARAM lParam
 		);
-	
+
 	public:
-	
 		struct KeyState
 		{
 			bool wasDown, isDown;
@@ -84,20 +92,52 @@ namespace towerdefense
 		{
 			KeyState keys[DC_MAX_KEYS];
 		};
-	
+
+		struct ButtonState
+		{
+			bool wasDown, isDown;
+		};
+
+		struct Position
+		{
+			int x, y;
+		};
+
+		struct MouseInputMap
+		{
+			ButtonState buttons[DC_MAX_MOUSE_BUTTONS];
+			Position position;
+		};
+
 	private:
 		static KeyboardInputMap keyboard;
-	
+		static MouseInputMap mouse;
+
 	public:
-		
 		static KeyState getKeyState(uint32_t keycode);
+
 		static bool isKeyPressed(uint32_t keycode);
+
 		static bool isKeyReleased(uint32_t keycode);
 
 		// returns true if the key has just been pressed
 		static bool wasKeyHit(uint32_t keycode);
 
+
+		static Position getMousePosition();
+
+		static bool isMouseButtonPressed(unsigned int buttonCode);
+
+		static bool isMouseButtonReleased(unsigned int buttonCode);
+
+		// returns true if the mouse button has just been pressed
+		static bool wasMouseButtonHit(unsigned int buttonCode);
+
 	private:
 		static void processKeyboardInput(uint32_t VKCode, bool wasDown, bool isDown);
+
+		static void processMouseInput(WPARAM wParam, LPARAM lParam);
+
+		static void updateMousePosition(LPARAM lParam);
 	};
 }

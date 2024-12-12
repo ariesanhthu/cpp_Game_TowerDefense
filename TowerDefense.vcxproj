@@ -150,6 +150,7 @@
     <ClCompile Include="TowerDefense.cpp" />
     <ClCompile Include="Game\UIElement.cpp" />
     <ClCompile Include="Game\UIManager.cpp" />
+    <ClCompile Include="User\cFile.h" />
     <ClCompile Include="Utils\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +158,7 @@
     <ClInclude Include="Entities\cenemy.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Game\InputManager.h" />
+    <ClInclude Include="Game\menuitem.h" />
     <ClInclude Include="Game\ThreadManager.h" />
     <ClInclude Include="Graphics\Graphic.h" />
     <ClInclude Include="Game\ScreenManager.h" />
@@ -175,6 +177,8 @@
     <ClInclude Include="TowerDefense.h" />
     <ClInclude Include="Game\UIElement.h" />
     <ClInclude Include="Game\UIManager.h" />
+    <ClInclude Include="User\converted.h" />
+    <ClInclude Include="User\userManager.h" />
     <ClInclude Include="Utils\utility.h" />
   </ItemGroup>
   <ItemGroup>
