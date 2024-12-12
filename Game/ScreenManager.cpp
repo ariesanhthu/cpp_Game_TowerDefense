@@ -137,7 +137,7 @@ namespace towerdefense
         inputtextbitmap         = Graphic::LoadCustomTest(inputtext, scaleB);
 
         // setting
-        TitleSetting            = Graphic::LoadBitmapImage(L"Assets/setting/TitleSetting.bmp", 5);
+        TitleSetting            = Graphic::LoadBitmapImage(L"Assets/setting/TitleSetting.png", 1);
         switchOff               = Graphic::LoadBitmapImage(L"Assets/decor/catWin0.png", 2);
         switchOn                = Graphic::LoadBitmapImage(L"Assets/decor/catWin1.png", 2);
         insVolBtn               = Graphic::LoadBitmapImage(L"Assets/setting/arrowUp.png", 2);   
@@ -859,6 +859,7 @@ namespace towerdefense
         //ENEMY LOAD
         enemy1               = Graphic::LoadBitmapImage(L"Assets/game/slime.bmp", 2);
         enemy3               = Graphic::LoadBitmapImage(L"Assets/game/enemy3/enemy3-1.png", 2);
+
         ///////////////////////////////////////////////////////////////////////////////////////////
 
         hamburger = Graphic::LoadBitmapImage(L"Assets/button/aboutBtn.png", 2);
@@ -881,7 +882,8 @@ namespace towerdefense
         GetCursorPos(&cursorPos);
         ScreenToClient(GetActiveWindow(), &cursorPos);
 
-        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
+        // Left mouse button pressed
+        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { 
             auto now = std::chrono::steady_clock::now();
             if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
                 lastMouseClickTime = now;
@@ -910,14 +912,19 @@ namespace towerdefense
                         if (IsPlayGame) {
                             displayYesNoBoard = true;
                             IsPlayGame = false;
-                            for (int i = 0; i < enemylist.size(); i++) {
+                            /*for (int i = 0; i < enemylist.size(); i++) {
                                 enemylist[i].isMove = false;
-                            }
+                            }*/
                         }
+
+                        statePlayingGame = PAUSE;
                     }
                 }
 
-
+                /*=========================================================================
+                    PAUSE GAME
+                  =========================================================================
+                */
                 if (displayYesNoBoard) {
                     // if yes
                     RECT yesRect = {
@@ -926,12 +933,15 @@ namespace towerdefense
                         yesBtnPos.x + yesnoSize.x * 4, // Button width
                         yesBtnPos.y + yesnoSize.y * 4 // Button height
                     };
+
                     if (PtInRect(&yesRect, cursorPos)) {
                         displayYesNoBoard = false;
-                        IsPlayGame = true;
-                        for (int i = 0; i < enemylist.size(); i++) {
+                        //IsPlayGame = true;
+                        /*for (int i = 0; i < enemylist.size(); i++) {
                             enemylist[i].isMove = true;
-                        }
+                        }*/
+
+                        statePlayingGame = PLAY;
                     }
 
                     // if no
@@ -956,7 +966,72 @@ namespace towerdefense
                 if (PtInRect(&hamburgerRect, cursorPos)) {
                     displayBoard = !displayBoard;
                 }
+
+
+                /*
+                    CHECK END GAME
+                */
+                    // HANDLE INPUT BOARD WIN GAME
+                if (statePlayingGame == WIN)
+                {
+                    // if yes
+                    RECT yesRect = {
+                        yesBtnPos.x,
+                        yesBtnPos.y,
+                        yesBtnPos.x + yesnoSize.x * 4, // Button width
+                        yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    // GO TO THE NEXT LEVEL 
+                    if (PtInRect(&yesRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
+                    }
+
+                    // if no
+                    RECT noRect = {
+                        noBtnPos.x,
+                        noBtnPos.y,
+                        noBtnPos.x + yesnoSize.x * 4, // Button width
+                        noBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    // back to MAIN SCREEN
+                    if (PtInRect(&noRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                    }
+                }
+                else
+                    // HANDLE INPUT BOARD LOSE GAME
+                    if (statePlayingGame == LOSE)
+                    {
+                        // if yes
+                        RECT yesRect = {
+                            yesBtnPos.x,
+                            yesBtnPos.y,
+                            yesBtnPos.x + yesnoSize.x * 4, // Button width
+                            yesBtnPos.y + yesnoSize.y * 4 // Button height
+                        };
+
+                        // GO TO THE NEXT LEVEL 
+                        if (PtInRect(&yesRect, cursorPos)) {
+                            PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 1, 0);
+                        }
+
+                        // if no
+                        RECT noRect = {
+                            noBtnPos.x,
+                            noBtnPos.y,
+                            noBtnPos.x + yesnoSize.x * 4, // Button width
+                            noBtnPos.y + yesnoSize.y * 4 // Button height
+                        };
+
+                        // back to MAIN SCREEN
+                        if (PtInRect(&noRect, cursorPos)) {
+                            PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                        }
+                    }
             }
+        
         }
 
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
@@ -987,12 +1062,44 @@ namespace towerdefense
     }
 
     void PlayScreen::update(float delta) {
+        
+        // KIỂM TRA TRẠNG THÁI GAME
+        // CHỈ CẬP NHẬT TRẠNG THÁI MỚI NẾU STATE == PLAY
+        if (statePlayingGame != PLAY) return;
+        
+        // CẬP NHẬT TRẠNG THÁI ENEMY
+
         for (auto& enemy : enemylist) {
             if (enemy.isMove && !enemy.isEnd()) {
                 enemy.update(delta);
             }
         }
 
+        // update state playing game (win,lose,countheart)
+        //
+        int countDead = 0;
+        for (auto& enemy : enemylist) {
+            if (enemy.isEnd()) {
+                countHeart++;
+            }
+            if (enemy.isDead()) countDead++;
+        }
+
+        if (countDead + countHeart >= 10 && countHeart == 0)
+        {
+            statePlayingGame = WIN;
+            return;
+        }
+        else countDead = 0;
+
+        if (countHeart >= 1)
+        {
+            statePlayingGame = LOSE;
+            return;
+        }
+        else countHeart = 0;
+        //======================================================================
+        
         /*enemylist.erase(
             std::remove_if(enemylist.begin(), enemylist.end(), [](const cenemy& e) {
                 return e.isDead() || e.isEnd();  
@@ -1040,6 +1147,8 @@ namespace towerdefense
 
             tower.updateBullet();
         }
+    
+    
     }
 
     void PlayScreen::render(HDC hdc) {
@@ -1047,10 +1156,9 @@ namespace towerdefense
         Graphic::DrawBitmap(background, { 0, 0 }, hdc);
         Graphic::DrawBitmap(towerInitPlace, towerInitPos, hdc);
         Graphic::DrawBitmap(play_or_pause, posbuttonplay, hdc);
-        if (displayBoard) {
-            Graphic::DrawBitmap(instructionBoard, instructionPos, hdc);
-        }
+
         Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
+
 
         int numberEnemy = enemylist.size();
 
@@ -1084,12 +1192,35 @@ namespace towerdefense
             Tpicking.render(tower, hdc);
         }
 
+        // BẢNG HƯỚNG DẪN
+        if (displayBoard) {
+            Graphic::DrawBitmap(instructionBoard, instructionPos, hdc);
+        }
         if (displayYesNoBoard) {
             Graphic::DrawBitmap(boardYesNo, boardYesNoPos, hdc);
             Graphic::DrawBitmap(WantToContinue, WantToContinuePos, hdc);
             Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
             Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
         }
+
+
+        //----------------------------------------------
+        // DRAW BOARD END GAME
+        //----------------------------------------------
+        if (statePlayingGame == LOSE)
+        {
+            Graphic::DrawBitmap(Graphic::LoadBitmapImage(L"Assets/game/info/BoardLose.png", 1.2), { 280, 60 }, hdc);
+            Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+            Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+        }
+        else
+            if (statePlayingGame == WIN)
+            {
+            Graphic::DrawBitmap(Graphic::LoadBitmapImage(L"Assets/game/info/BoardWin.png", 1.2), { 280, 60 }, hdc);
+            Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+            Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+        }
+
 
     }
 
@@ -1139,7 +1270,6 @@ namespace towerdefense
 
         background = Graphic::LoadBitmapImage(L"Assets/background/map2.bmp", scale);
         towerInitPlace = Graphic::LoadBitmapImage(L"Assets/game/BoardSetupTower.png", 1.5);
-        background = Graphic::LoadBitmapImage(L"Assets/background/map1.bmp", scale);
         towerInitPlace = Graphic::LoadBitmapImage(L"Assets/game/BoardSetupTower.png", 1.5);
         instructionBoard = Graphic::LoadBitmapImage(L"Assets/game/info/board2.png", 1);
 
@@ -1150,6 +1280,13 @@ namespace towerdefense
         play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 1.8);// btnContinue.png
         hbullet = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 1);
         tower = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
+
+
+        // route handle
+        WantToContinue = Graphic::LoadCustomTest("WANTTOCONTINUE", 4);
+        yesBtn = Graphic::LoadBitmapImage(L"Assets/button/AcceptBtn.png", 4);
+        noBtn = Graphic::LoadBitmapImage(L"Assets/button/RejectBtn.png", 4);
+        boardYesNo = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 1.5);
     }
 
     void PlayScreen2::handleInput(HWND hwnd) {
@@ -1175,9 +1312,53 @@ namespace towerdefense
                 */
                 if (PtInRect(&playRect, cursorPos)) {
                     // if click play 
+                    if (manageFirstTime) {
+                        IsPlayGame = true;
+                        manageFirstTime = false;
+                        for (int i = 0; i < enemylist.size(); i++) {
+                            enemylist[i].isMove = true;
+                        }
+                    }
+                    else {
+                        if (IsPlayGame) {
+                            displayYesNoBoard = true;
+                            IsPlayGame = false;
+                            /*for (int i = 0; i < enemylist.size(); i++) {
+                                enemylist[i].isMove = false;
+                            }*/
+                        }
 
-                    for (int i = 0; i < enemylist.size(); i++) {
-                        enemylist[i].isMove = !enemylist[i].isMove;
+                        statePlayingGame = PAUSE;
+                    }
+                }
+                if (displayYesNoBoard) {
+                    // if yes
+                    RECT yesRect = {
+                        yesBtnPos.x,
+                        yesBtnPos.y,
+                        yesBtnPos.x + yesnoSize.x * 4, // Button width
+                        yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    if (PtInRect(&yesRect, cursorPos)) {
+                        displayYesNoBoard = false;
+                        //IsPlayGame = true;
+                        /*for (int i = 0; i < enemylist.size(); i++) {
+                            enemylist[i].isMove = true;
+                        }*/
+
+                        statePlayingGame = PLAY;
+                    }
+
+                    // if no
+                    RECT noRect = {
+                        noBtnPos.x,
+                        noBtnPos.y,
+                        noBtnPos.x + yesnoSize.x * 4, // Button width
+                        noBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+                    if (PtInRect(&noRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                     }
                 }
 
@@ -1191,6 +1372,71 @@ namespace towerdefense
                 if (PtInRect(&hamburgerRect, cursorPos)) {
                     displayBoard = !displayBoard;
                 }
+
+
+                /*
+                    CHECK END GAME
+                */
+                // HANDLE INPUT BOARD WIN GAME
+                if (statePlayingGame == WIN)
+                {
+                    // if yes
+                    RECT yesRect = {
+                        yesBtnPos.x,
+                        yesBtnPos.y,
+                        yesBtnPos.x + yesnoSize.x * 4, // Button width
+                        yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    // GO TO THE NEXT LEVEL 
+                    if (PtInRect(&yesRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 3, 0);
+                    }
+
+                    // if no
+                    RECT noRect = {
+                        noBtnPos.x,
+                        noBtnPos.y,
+                        noBtnPos.x + yesnoSize.x * 4, // Button width
+                        noBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    // back to MAIN SCREEN
+                    if (PtInRect(&noRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                    }
+                }
+                else
+                    // HANDLE INPUT BOARD LOSE GAME
+                    if (statePlayingGame == LOSE)
+                    {
+                        // if yes
+                        RECT yesRect = {
+                            yesBtnPos.x,
+                            yesBtnPos.y,
+                            yesBtnPos.x + yesnoSize.x * 4, // Button width
+                            yesBtnPos.y + yesnoSize.y * 4 // Button height
+                        };
+
+                        // PLAY AGAIN
+                        if (PtInRect(&yesRect, cursorPos)) {
+                            PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
+                        }
+
+                        // if no
+                        RECT noRect = {
+                            noBtnPos.x,
+                            noBtnPos.y,
+                            noBtnPos.x + yesnoSize.x * 4, // Button width
+                            noBtnPos.y + yesnoSize.y * 4 // Button height
+                        };
+
+                        // back to MAIN SCREEN
+                        if (PtInRect(&noRect, cursorPos)) {
+                            PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                        }
+                    }
+
             }
         }
 
@@ -1222,19 +1468,49 @@ namespace towerdefense
     }
 
     void PlayScreen2::update(float delta) {
+
+        //
+        if (statePlayingGame != PLAY) return;
+
+
         for (auto& enemy : enemylist) {
             if (enemy.isMove && !enemy.isEnd()) {
                 enemy.update(delta);
             }
         }
 
-        enemylist.erase(
+        /*enemylist.erase(
             std::remove_if(enemylist.begin(), enemylist.end(), [](const cenemy& e) {
                 return e.isDead() || e.isEnd();
                 }),
             enemylist.end()
-        );
+        );*/
 
+        // update state playing game (win,lose,countheart)
+//
+        int countDead = 0;
+        for (auto& enemy : enemylist) {
+            if (enemy.isEnd()) {
+                countHeart++;
+            }
+            if (enemy.isDead()) countDead++;
+        }
+
+        if (countDead + countHeart >= 10 && countHeart == 0)
+        {
+            statePlayingGame = WIN;
+            return;
+        }
+        else countDead = 0;
+
+        if (countHeart >= 1)
+        {
+            statePlayingGame = LOSE;
+            return;
+        }
+        else countHeart = 0;
+        //======================================================================
+        
         // Towers shoot at the nearest enemy in range and update bullets
         for (auto& tower : towerlist) {
             cenemy* nearestEnemy = nullptr;
@@ -1281,9 +1557,6 @@ namespace towerdefense
         Graphic::DrawBitmap(background, { 0, 0 }, hdc);
         Graphic::DrawBitmap(towerInitPlace, towerInitPos, hdc);
         Graphic::DrawBitmap(play_or_pause, posbuttonplay, hdc);
-        if (displayBoard) {
-            Graphic::DrawBitmap(instructionBoard, instructionPos, hdc);
-        }
         Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
 
         for (auto E : enemylist) {
@@ -1306,8 +1579,32 @@ namespace towerdefense
             Tpicking.render(tower, hdc);
         }
 
+        if (displayYesNoBoard) {
+            Graphic::DrawBitmap(boardYesNo, boardYesNoPos, hdc);
+            Graphic::DrawBitmap(WantToContinue, WantToContinuePos, hdc);
+            Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+            Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+        }
 
-
+        if (displayBoard) {
+            Graphic::DrawBitmap(instructionBoard, instructionPos, hdc);
+        }
+        //----------------------------------------------
+// DRAW BOARD END GAME
+//----------------------------------------------
+        if (statePlayingGame == LOSE)
+        {
+            Graphic::DrawBitmap(Graphic::LoadBitmapImage(L"Assets/game/info/BoardLose.png", 1.2), { 280, 60 }, hdc);
+            Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+            Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+        }
+        else
+            if (statePlayingGame == WIN)
+            {
+                Graphic::DrawBitmap(Graphic::LoadBitmapImage(L"Assets/game/info/BoardWin.png", 1.2), { 280, 60 }, hdc);
+                Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+                Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+            }
     }
 
     //========================================================================================================================//
@@ -1374,6 +1671,13 @@ namespace towerdefense
         play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 1.8);
         hbullet = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 2);
         tower = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
+
+
+        // route handle
+        WantToContinue = Graphic::LoadCustomTest("WANTTOCONTINUE", 4);
+        yesBtn = Graphic::LoadBitmapImage(L"Assets/button/AcceptBtn.png", 4);
+        noBtn = Graphic::LoadBitmapImage(L"Assets/button/RejectBtn.png", 4);
+        boardYesNo = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 1.5);
     }
 
     void PlayScreen3::handleInput(HWND hwnd) {
@@ -1397,10 +1701,34 @@ namespace towerdefense
 
                     PAUSE GAME || PLAY GAME
                 */
-                if (PtInRect(&playRect, cursorPos)) {
-                    // if click play 
-                    for (int i = 0; i < enemylist.size(); i++) {
-                        enemylist[i].isMove = !enemylist[i].isMove;
+                if (displayYesNoBoard) {
+                    // if yes
+                    RECT yesRect = {
+                        yesBtnPos.x,
+                        yesBtnPos.y,
+                        yesBtnPos.x + yesnoSize.x * 4, // Button width
+                        yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    if (PtInRect(&yesRect, cursorPos)) {
+                        displayYesNoBoard = false;
+                        //IsPlayGame = true;
+                        /*for (int i = 0; i < enemylist.size(); i++) {
+                            enemylist[i].isMove = true;
+                        }*/
+
+                        statePlayingGame = PLAY;
+                    }
+
+                    // if no
+                    RECT noRect = {
+                        noBtnPos.x,
+                        noBtnPos.y,
+                        noBtnPos.x + yesnoSize.x * 4, // Button width
+                        noBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+                    if (PtInRect(&noRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                     }
                 }
 
@@ -1414,6 +1742,71 @@ namespace towerdefense
                 if (PtInRect(&hamburgerRect, cursorPos)) {
                     displayBoard = !displayBoard;
                 }
+
+                /*
+                    CHECK END GAME
+                */
+                // HANDLE INPUT BOARD WIN GAME
+                if (statePlayingGame == WIN)
+                {
+                    // if yes
+                    RECT yesRect = {
+                        yesBtnPos.x,
+                        yesBtnPos.y,
+                        yesBtnPos.x + yesnoSize.x * 4, // Button width
+                        yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    // GO TO THE NEXT LEVEL 
+                    if (PtInRect(&yesRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 4, 0);
+                    }
+
+                    // if no
+                    RECT noRect = {
+                        noBtnPos.x,
+                        noBtnPos.y,
+                        noBtnPos.x + yesnoSize.x * 4, // Button width
+                        noBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    // back to MAIN SCREEN
+                    if (PtInRect(&noRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                    }
+                }
+                else
+                    //============================================================
+                    // HANDLE INPUT BOARD LOSE GAME
+                    if (statePlayingGame == LOSE)
+                    {
+                        // if yes
+                        RECT yesRect = {
+                            yesBtnPos.x,
+                            yesBtnPos.y,
+                            yesBtnPos.x + yesnoSize.x * 4, // Button width
+                            yesBtnPos.y + yesnoSize.y * 4 // Button height
+                        };
+
+                        // PLAY AGAIN
+                        if (PtInRect(&yesRect, cursorPos)) {
+                            PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 3, 0);
+                        }
+
+                        // if no
+                        RECT noRect = {
+                            noBtnPos.x,
+                            noBtnPos.y,
+                            noBtnPos.x + yesnoSize.x * 4, // Button width
+                            noBtnPos.y + yesnoSize.y * 4 // Button height
+                        };
+
+                        // back to MAIN SCREEN
+                        if (PtInRect(&noRect, cursorPos)) {
+                            PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                        }
+                    }
+
             }
         }
 
@@ -1445,18 +1838,47 @@ namespace towerdefense
     }
 
     void PlayScreen3::update(float delta) {
+
+        if (statePlayingGame != PLAY) return;
+
+
         for (auto& enemy : enemylist) {
             if (enemy.isMove && !enemy.isEnd()) {
                 enemy.update(delta);
             }
         }
 
-        enemylist.erase(
+        /*enemylist.erase(
             std::remove_if(enemylist.begin(), enemylist.end(), [](const cenemy& e) {
                 return e.isDead() || e.isEnd();
                 }),
             enemylist.end()
-        );
+        );*/
+
+        // update state playing game (win,lose,countheart)
+//
+        int countDead = 0;
+        for (auto& enemy : enemylist) {
+            if (enemy.isEnd()) {
+                countHeart++;
+            }
+            if (enemy.isDead()) countDead++;
+        }
+
+        if (countDead + countHeart >= 10 && countHeart == 0)
+        {
+            statePlayingGame = WIN;
+            return;
+        }
+        else countDead = 0;
+
+        if (countHeart >= 1)
+        {
+            statePlayingGame = LOSE;
+            return;
+        }
+        else countHeart = 0;
+        //======================================================================
 
         // Towers shoot at the nearest enemy in range and update bullets
         for (auto& tower : towerlist) {
@@ -1504,9 +1926,6 @@ namespace towerdefense
         Graphic::DrawBitmap(background, { 0, 0 }, hdc);
         Graphic::DrawBitmap(towerInitPlace, towerInitPos, hdc);
         Graphic::DrawBitmap(play_or_pause, posbuttonplay, hdc);
-        if (displayBoard) {
-            Graphic::DrawBitmap(instructionBoard, instructionPos, hdc);
-        }
         Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
 
         for (auto E : enemylist) {
@@ -1529,8 +1948,33 @@ namespace towerdefense
             Tpicking.render(tower, hdc);
         }
 
+        if (displayYesNoBoard) {
+            Graphic::DrawBitmap(boardYesNo, boardYesNoPos, hdc);
+            Graphic::DrawBitmap(WantToContinue, WantToContinuePos, hdc);
+            Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+            Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+        }
 
+        if (displayBoard) {
+            Graphic::DrawBitmap(instructionBoard, instructionPos, hdc);
+        }
 
+        //----------------------------------------------
+// DRAW BOARD END GAME
+//----------------------------------------------
+        if (statePlayingGame == LOSE)
+        {
+            Graphic::DrawBitmap(Graphic::LoadBitmapImage(L"Assets/game/info/BoardLose.png", 1.2), { 280, 60 }, hdc);
+            Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+            Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+        }
+        else
+            if (statePlayingGame == WIN)
+            {
+                Graphic::DrawBitmap(Graphic::LoadBitmapImage(L"Assets/game/info/BoardWin.png", 1.2), { 280, 60 }, hdc);
+                Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+                Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+            }
     }
 
     //========================================================================================================================//
@@ -1595,6 +2039,13 @@ namespace towerdefense
         play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 1.8);
         hbullet = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 2);
         tower = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);
+
+
+        // route handle
+        WantToContinue = Graphic::LoadCustomTest("WANTTOCONTINUE", 4);
+        yesBtn = Graphic::LoadBitmapImage(L"Assets/button/AcceptBtn.png", 4);
+        noBtn = Graphic::LoadBitmapImage(L"Assets/button/RejectBtn.png", 4);
+        boardYesNo = Graphic::LoadBitmapImage(L"Assets/board/board.bmp", 1.5);
     }
 
     void PlayScreen4::handleInput(HWND hwnd) {
@@ -1620,11 +2071,34 @@ namespace towerdefense
 
                     PAUSE GAME || PLAY GAME
                 */
-                if (PtInRect(&playRect, cursorPos)) {
-                    // if click play 
+                if (displayYesNoBoard) {
+                    // if yes
+                    RECT yesRect = {
+                        yesBtnPos.x,
+                        yesBtnPos.y,
+                        yesBtnPos.x + yesnoSize.x * 4, // Button width
+                        yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
 
-                    for (int i = 0; i < enemylist.size(); i++) {
-                        enemylist[i].isMove = !enemylist[i].isMove;
+                    if (PtInRect(&yesRect, cursorPos)) {
+                        displayYesNoBoard = false;
+                        //IsPlayGame = true;
+                        /*for (int i = 0; i < enemylist.size(); i++) {
+                            enemylist[i].isMove = true;
+                        }*/
+
+                        statePlayingGame = PLAY;
+                    }
+
+                    // if no
+                    RECT noRect = {
+                        noBtnPos.x,
+                        noBtnPos.y,
+                        noBtnPos.x + yesnoSize.x * 4, // Button width
+                        noBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+                    if (PtInRect(&noRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                     }
                 }
 
@@ -1638,6 +2112,71 @@ namespace towerdefense
                 if (PtInRect(&hamburgerRect, cursorPos)) {
                     displayBoard = !displayBoard;
                 }
+
+
+                /*
+                    CHECK END GAME
+                */
+                // HANDLE INPUT BOARD WIN GAME
+                if (statePlayingGame == WIN)
+                {
+                    // if yes
+                    RECT yesRect = {
+                        yesBtnPos.x,
+                        yesBtnPos.y,
+                        yesBtnPos.x + yesnoSize.x * 4, // Button width
+                        yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    // GO TO THE NEXT LEVEL 
+                    if (PtInRect(&yesRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 4, 0);
+                    }
+
+                    // if no
+                    RECT noRect = {
+                        noBtnPos.x,
+                        noBtnPos.y,
+                        noBtnPos.x + yesnoSize.x * 4, // Button width
+                        noBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    // back to MAIN SCREEN
+                    if (PtInRect(&noRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                    }
+                }
+                else
+                    // HANDLE INPUT BOARD LOSE GAME
+                    if (statePlayingGame == LOSE)
+                    {
+                        // if yes
+                        RECT yesRect = {
+                            yesBtnPos.x,
+                            yesBtnPos.y,
+                            yesBtnPos.x + yesnoSize.x * 4, // Button width
+                            yesBtnPos.y + yesnoSize.y * 4 // Button height
+                        };
+
+                        // PLAY AGAIN
+                        if (PtInRect(&yesRect, cursorPos)) {
+                            PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 4, 0);
+                        }
+
+                        // if no
+                        RECT noRect = {
+                            noBtnPos.x,
+                            noBtnPos.y,
+                            noBtnPos.x + yesnoSize.x * 4, // Button width
+                            noBtnPos.y + yesnoSize.y * 4 // Button height
+                        };
+
+                        // back to MAIN SCREEN
+                        if (PtInRect(&noRect, cursorPos)) {
+                            PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                        }
+                    }
+
             }
         }
 
@@ -1669,18 +2208,48 @@ namespace towerdefense
     }
 
     void PlayScreen4::update(float delta) {
+
+        if (statePlayingGame != PLAY) return;
+
         for (auto& enemy : enemylist) {
             if (enemy.isMove && !enemy.isEnd()) {
                 enemy.update(delta);
             }
         }
 
-        enemylist.erase(
+        // update state playing game (win,lose,countheart)
+//
+        int countDead = 0;
+        for (auto& enemy : enemylist) {
+            if (enemy.isEnd()) {
+                countHeart++;
+            }
+            if (enemy.isDead()) countDead++;
+        }
+
+        if (countDead + countHeart >= 10 && countHeart == 0)
+        {
+            statePlayingGame = WIN;
+            return;
+        }
+        else countDead = 0;
+
+        if (countHeart >= 1)
+        {
+            statePlayingGame = LOSE;
+            return;
+        }
+        else countHeart = 0;
+        //======================================================================
+        
+
+        /*enemylist.erase(
             std::remove_if(enemylist.begin(), enemylist.end(), [](const cenemy& e) {
                 return e.isDead() || e.isEnd();
                 }),
             enemylist.end()
-        );
+        );*/
+
 
         // Towers shoot at the nearest enemy in range and update bullets
         for (auto& tower : towerlist) {
@@ -1728,9 +2297,6 @@ namespace towerdefense
         Graphic::DrawBitmap(background, { 0, 0 }, hdc);
         Graphic::DrawBitmap(towerInitPlace, towerInitPos, hdc);
         Graphic::DrawBitmap(play_or_pause, posbuttonplay, hdc);
-        if (displayBoard) {
-            Graphic::DrawBitmap(instructionBoard, instructionPos, hdc);
-        }
         Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
 
         for (auto E : enemylist) {
@@ -1752,10 +2318,36 @@ namespace towerdefense
         // ve tower trong qua trinh di chuyen 
         if (isPicking) {
             Tpicking.render(tower, hdc);
+        
         }
 
+        if (displayYesNoBoard) {
+            Graphic::DrawBitmap(boardYesNo, boardYesNoPos, hdc);
+            Graphic::DrawBitmap(WantToContinue, WantToContinuePos, hdc);
+            Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+            Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+        }
 
+        if (displayBoard) {
+            Graphic::DrawBitmap(instructionBoard, instructionPos, hdc);
+        }
 
+        //----------------------------------------------
+// DRAW BOARD END GAME
+//----------------------------------------------
+        if (statePlayingGame == LOSE)
+        {
+            Graphic::DrawBitmap(Graphic::LoadBitmapImage(L"Assets/game/info/BoardLose.png", 1.2), { 280, 60 }, hdc);
+            Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+            Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+        }
+        else
+            if (statePlayingGame == WIN)
+            {
+                Graphic::DrawBitmap(Graphic::LoadBitmapImage(L"Assets/game/info/BoardWin.png", 1.2), { 280, 60 }, hdc);
+                Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+                Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+            }
     }
 
 

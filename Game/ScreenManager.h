@@ -209,8 +209,25 @@ namespace towerdefense
         //void resizeContent(int windowWidth, int windowHeight) override;
     };
 
+
+    /*
+    ////////////////////////////////
+            STATE GAME
+    ////////////////////////////////
+    */
+    enum GameState {
+        PLAY = 0,
+        WIN = 1,
+        LOSE = 2,
+        PAUSE = 3,
+    };
+
     class MapScreen : public Screen {
     protected:
+        //
+        GameState statePlayingGame = PLAY;
+        int countHeart = 0;
+
         // hbitmap
         HBITMAP background = nullptr;
         HBITMAP tower = nullptr;              // tower
@@ -299,6 +316,8 @@ namespace towerdefense
         virtual void render(HDC hdc) = 0;
     };
 
+
+
     class PlayScreen : public MapScreen {
     private:
         vector<POINT> epath = {
@@ -307,6 +326,8 @@ namespace towerdefense
             {390, 490},
             {1200, 490},
         };
+
+    
 
     public:
         PlayScreen();

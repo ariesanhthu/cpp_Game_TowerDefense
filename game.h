@@ -69,6 +69,7 @@ namespace towerdefense
 			getInstance().windowWidth = width;
 			getInstance().windowHeight = height;
 		}
+
 		//inline static void setGameUpdate(const std::function<void(float delta)>& update) { getInstance().update = update; }
 		inline static std::wstring getWindowTitle() { return getInstance().windowTitle; }
 		inline static int getWindowWidth() { return getInstance().windowWidth; }
