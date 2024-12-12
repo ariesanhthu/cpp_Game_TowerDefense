@@ -556,7 +556,6 @@ namespace towerdefense
                 }
             }
             else {
-                // Người dùng đang "nhặt tháp", kiểm tra để "đặt tháp"
                 if (checkValidPos(Tpicking.getLocation())) {
                     towerlist.push_back(Tpicking); // Thêm vào danh sách nếu hợp lệ
                     isPicking = false;            // Kết thúc trạng thái "nhặt tháp"
