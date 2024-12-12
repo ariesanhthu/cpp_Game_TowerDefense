@@ -12,31 +12,39 @@ namespace towerdefense
     // CALLBACK
     //==========================================================
     // Hàm xử lý các sự kiện của cửa sổ (Windows message)
-    HWND g_hwnd = nullptr;
-    HCURSOR hCustomCursor;
-    Graphic graphic;
-
     LRESULT CALLBACK WindowCallback(
         HWND windowHandle,
         UINT message,
         WPARAM wParam,
         LPARAM lParam
-    )
-    {
+    ) {
+        Graphic* graphic = nullptr; 
+       
         LRESULT result = 0; // Lưu kết quả trả về từ Windows
+
+        //std::vector<saveUser> s = { {0, "guess", "", vector<int>{}} };
+        //std::vector<saveGame> s = { {0, vector<saveEnemy> {}, vector<saveTower> {}, 0, 0} };
+
         switch (message)
         {
         case WM_CREATE: 
-            g_hwnd = windowHandle;
+            if (graphic) delete graphic; 
+            graphic = new Graphic();
             Game::getInstance().loadInitialScreen(0);
+            //createDummyGameDataFile(s);
+            //createDummyUserDataFile(s);
         break;
         case WM_CLOSE: // Sự kiện đóng cửa sổ
         {
+            if (graphic) delete graphic; 
+            delete Game::getInstance().screenManager;
             Game::getInstance().running = false; // Dừng game
             OutputDebugString(L"window close\n");
         } break;
         case WM_DESTROY: // Sự kiện hủy cửa sổ
         {
+            if (graphic) delete graphic; 
+            delete Game::getInstance().screenManager;
             Game::getInstance().running = false; // Dừng game
             OutputDebugString(L"window destroy\n");
         } break;
@@ -59,7 +67,7 @@ namespace towerdefense
         case WM_SETCURSOR:
         {
             // Set the custom cursor
-            SetCursor(hCustomCursor);
+            SetCursor(Game::getInstance().hCustomCursor);
             return TRUE;
         } break;
 
@@ -79,6 +87,8 @@ namespace towerdefense
         windowTitle = L"Cat-farm Tower Defense";
         windowWidth = 1280;
         windowHeight = 720;
+
+        screenManager = new ScreenManager();
 
         // Lấy kích thước cửa sổ hiện tại (nếu có)
         /*RECT rect;
@@ -138,11 +148,8 @@ namespace towerdefense
         hCustomCursor = CreateIconIndirect(&iconInfo);
 
         if (!hCustomCursor) {
-            MessageBoxW(g_hwnd, L"Failed to create custom cursor", L"Error", MB_OK);
+            MessageBoxW(windowHandle, L"Failed to create custom cursor", L"Error", MB_OK);
         }
-
-        const int FPS = 60;
-        const int frameDelay = 1000 / FPS;
 
         if (windowHandle) // Kiểm tra nếu cửa sổ tạo thành công
         {
@@ -177,6 +184,7 @@ namespace towerdefense
                 }
                 else
                 {
+                    auto start = std::chrono::high_resolution_clock::now();
 
                     HDC hdc = GetDC(windowHandle); // Lấy ngữ cảnh thiết bị từ cửa sổ
                     HDC bufferDC = CreateCompatibleDC(hdc); // Tạo DC tương thích để vẽ vào bộ đệm
@@ -196,9 +204,9 @@ namespace towerdefense
                     DeleteObject(brush);
 
                     // Vẽ vào bộ đệm
-                    screenManager.handleInput(g_hwnd);
-                    screenManager.update(delta);  // Cập nhật logic của màn hình
-                    screenManager.render(bufferDC); // Vẽ màn hình vào DC bộ đệm
+                    screenManager->handleInput(windowHandle);
+                    screenManager->update(delta);  // Cập nhật logic của màn hình
+                    screenManager->render(bufferDC); // Vẽ màn hình vào DC bộ đệm
 
                     // Copy nội dung từ bộ đệm ra màn hình
                     BitBlt(hdc, 0, 0, width, height, bufferDC, 0, 0, SRCCOPY);
@@ -209,12 +217,8 @@ namespace towerdefense
                     DeleteDC(bufferDC);
                     ReleaseDC(windowHandle, hdc);
 
-                    auto frameEnd = std::chrono::high_resolution_clock::now();
-                    auto frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
-
-                    if (frameDelay > frameTime) {
-                        std::this_thread::sleep_for(std::chrono::milliseconds(frameDelay - frameTime));
-                    }
+                    auto end = std::chrono::high_resolution_clock::now();
+                    std::this_thread::sleep_for(std::chrono::milliseconds(16) - (end - start));
                     // inputHadle
                     // update
                     // render
@@ -253,7 +257,7 @@ namespace towerdefense
             return;  // Exit early for invalid `x`
         }
 
-        screenManager.changeScreen(std::move(newscreen));
-        screenManager.loadContent(windowWidth, windowHeight);
+        screenManager->changeScreen(std::move(newscreen));
+        screenManager->loadContent(windowWidth, windowHeight);
     }
 }
