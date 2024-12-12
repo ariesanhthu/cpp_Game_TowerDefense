@@ -38,6 +38,9 @@
     <ClCompile Include="Entities\Tower\TowerFactory.cpp" />
     <ClCompile Include="Entities\Tower\TowerManager.cpp" />
     <ClCompile Include="Utils\utility.cpp" />
+    <ClCompile Include="Game\ScreenManager.cpp" />
+    <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="User\cFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Bullet\BulletFactory.h" />
@@ -79,6 +82,10 @@
     <ClInclude Include="Entities\Tower\TowerModel.h" />
     <ClInclude Include="Entities\Tower\TowerFactory.h" />
     <ClInclude Include="Utils\utility.h" />
+    <ClInclude Include="Observer.h" />
+    <ClInclude Include="Game\menuitem.h" />
+    <ClInclude Include="User\userManager.h" />
+    <ClInclude Include="User\converted.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="nhap.txt" />

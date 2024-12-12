@@ -11,14 +11,18 @@ private:
     int speed;
     POINT currentPosition;
     vector<POINT> path;
-    size_t index = 0;
+    int index = 0;
 
 public:
     bool isMove = false;
 
     cenemy();
 
-    int getHealth() const { return health; }
+    int getHealth() const { return this->health; }
+    int getIndex() const { return index; }
+    void setIndex(int x) {
+        index = x;
+    }
 
     void setHealth(int value) {
         health = value;
@@ -47,6 +51,7 @@ public:
     bool isDead() const { return health <= 0; }
 
     void setPath(vector<POINT> ePath);
+    std::vector<POINT> getPath() { return path; }
 
     void update(float delta);
     void render(HBITMAP element, HDC hdc) {

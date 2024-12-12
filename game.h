@@ -1,23 +1,23 @@
-﻿#pragma once
+#pragma once
+
 #include <windows.h>
 #include <string>
 #include <functional>
 #include "State.h"
 #include <ScreenManager.h>
-//#include "Observer.h"
 #include <memory>
+#include "User/cFile.h"
+#include "User/userManager.h"
 
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
 
-
 namespace towerdefense
 {
-
 	class Game
 	{
 	private:
 		//std::unique_ptr<GameState> currentState;
-		ScreenManager screenManager;
+		ScreenManager* screenManager;
 
 	public:
 		/*void setState(std::unique_ptr<GameState> newState) {
@@ -38,10 +38,11 @@ namespace towerdefense
 
 	private:
 		HINSTANCE hInstance;
+		HCURSOR hCustomCursor;
 		HWND windowHandle = 0;
+
 		bool running = false;
 		std::wstring windowTitle;
-		//std::function<void(float delta)> update;
 		int windowWidth, windowHeight;
 	
 	public:
@@ -69,6 +70,7 @@ namespace towerdefense
 			getInstance().windowWidth = width;
 			getInstance().windowHeight = height;
 		}
+
 		//inline static void setGameUpdate(const std::function<void(float delta)>& update) { getInstance().update = update; }
 		inline static std::wstring getWindowTitle() { return getInstance().windowTitle; }
 		inline static int getWindowWidth() { return getInstance().windowWidth; }
