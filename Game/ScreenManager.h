@@ -187,6 +187,8 @@ namespace towerdefense
     class MapScreen : public Screen {
     protected:
         //
+        cplayer guess;
+
         GameState statePlayingGame = PLAY;
         int countHeart = 0;
 
@@ -254,7 +256,7 @@ namespace towerdefense
         POINT towerSize = { 20, 30 };
 
         // support 
-        int NOfTower = 0;
+
 
         /* =======================================
 
@@ -263,7 +265,7 @@ namespace towerdefense
         ======================================= */
 
         bool checkValidPos(POINT pos) {
-            return (true);
+            return true;
         }
         bool isInRange(POINT pos, int range) {
             return range < sqrt((pos.x * pos.x + pos.y * pos.y));

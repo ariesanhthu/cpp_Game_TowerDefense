@@ -322,7 +322,7 @@ namespace towerdefense
 
     PlayScreen::PlayScreen() {
 
-        std::vector<saveGame> allgames = getGameList(); 
+        /*std::vector<saveGame> allgames = getGameList(); 
         saveGame loadGame;
         for (auto games : allgames) {
             if (games.gameId == 5) {
@@ -347,9 +347,9 @@ namespace towerdefense
             ctower tower; 
             tower.setLocation(loadGame.listTower[i].location);
             towerlist.push_back(tower);
-        }
+        }*/
 
-        /*for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             cenemy dummy;
             std::vector<POINT> otherPath = epath;
             
@@ -358,7 +358,7 @@ namespace towerdefense
             dummy.setPath(otherPath);
             enemylist.push_back(dummy);
         }
-        enemylist[9].setHealth(450);*/
+        enemylist[9].setHealth(450);
         
         Turretinit = { 50, 565 };
     }
@@ -426,7 +426,7 @@ namespace towerdefense
         ScreenToClient(GetActiveWindow(), &cursorPos);
 
         // Left mouse button pressed
-        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { 
+        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
             auto now = std::chrono::steady_clock::now();
             if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
                 lastMouseClickTime = now;
@@ -456,11 +456,11 @@ namespace towerdefense
                             displayYesNoBoard = true;
                             IsPlayGame = false;
                             /*for (int i = 0; i < enemylist.size(); i++) {
-                                enemylist[i].isMove = false;
-                            }
+                                enemylist[i].isMove = false;*/
                         }
                     }
                 }
+                //}
 
                 /*=========================================================================
                     PAUSE GAME
@@ -500,7 +500,7 @@ namespace towerdefense
 
                         std::vector<saveGame> games = getGameList();
 
-                        saveGame newGame; 
+                        saveGame newGame;
 
                         newGame.gameId = 0;
                         for (auto game : games) {
@@ -509,14 +509,14 @@ namespace towerdefense
                             }
                         }
                         for (auto enemy : enemylist) {
-                            newGame.listEnemy.push_back({ enemy.getHealth(), enemy.getCurr(), enemy.getPath(), enemy.getIndex()});
+                            newGame.listEnemy.push_back({ enemy.getHealth(), enemy.getCurr(), enemy.getPath(), enemy.getIndex() });
                         }
                         for (auto tower : towerlist) {
                             newGame.listTower.push_back({ tower.getLocation() });
                         }
                         newGame.mapCode = mapCode;
                         newGame.UserId = Guess.getId();
-                        
+
 
                         /*vector<int> gameID = Guess.getListGame();
                         gameID.push_back(newGame.gameId);
@@ -525,11 +525,11 @@ namespace towerdefense
 
                         appendGameToFile(newGame);
 
-                      
+
                         PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                     }
                 }
-                
+
                 // if click in hamburger display board 
                 RECT hamburgerRect = {
                     hamburgerPos.x,
@@ -545,7 +545,7 @@ namespace towerdefense
                 /*
                     CHECK END GAME
                 */
-                    // HANDLE INPUT BOARD WIN GAME
+                // HANDLE INPUT BOARD WIN GAME
                 if (statePlayingGame == WIN)
                 {
                     // if yes
@@ -585,7 +585,10 @@ namespace towerdefense
                             yesBtnPos.x + yesnoSize.x * 4, // Button width
                             yesBtnPos.y + yesnoSize.y * 4 // Button height
                         };
-
+                    }
+            }
+        }
+       
         bool mouseClicked = (GetAsyncKeyState(VK_LBUTTON) & 0x8000);
 
         static bool mouseReleased = true; // Trạng thái chuột đã nhả (tránh lặp sự kiện)
@@ -605,6 +608,12 @@ namespace towerdefense
                     isPicking = true;                // Chuyển sang trạng thái "nhặt tháp"
                     Tpicking.setLocation(cursorPos); // Đặt vị trí ban đầu theo con trỏ chuột
                 }
+                RECT yesRect = {
+                            yesBtnPos.x,
+                            yesBtnPos.y,
+                            yesBtnPos.x + yesnoSize.x * 4, // Button width
+                            yesBtnPos.y + yesnoSize.y * 4 // Button height
+                };
                         // GO TO THE NEXT LEVEL 
                         if (PtInRect(&yesRect, cursorPos)) {
                             PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 1, 0);
@@ -622,7 +631,7 @@ namespace towerdefense
                         if (PtInRect(&noRect, cursorPos)) {
                             PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                         }
-                    }
+                    
             }
         
         }
@@ -652,32 +661,18 @@ namespace towerdefense
 
         // Nếu đang "nhặt tháp", cập nhật vị trí theo con trỏ chuột
         if (isPicking) {
-<<<<<<< HEAD
-            Tpicking.setLocation(cursorPos);    
-        }
-        else {
-            // neu vi tri thoa dieu kien thi them vao list tower
-            if (checkValidPos(TcurrentPick) && NOfTower < 5) {
-                towerlist.push_back(Tpicking);
-                NOfTower++;
-            }
-=======
             Tpicking.setLocation(cursorPos);
->>>>>>> d4629c452ec732dec3052c573f1d30bba067ff17
         }
 
     }
 
     void PlayScreen::update(float delta) {
-<<<<<<< HEAD
-=======
         
         // KIỂM TRA TRẠNG THÁI GAME
         // CHỈ CẬP NHẬT TRẠNG THÁI MỚI NẾU STATE == PLAY
         if (statePlayingGame != PLAY) return;
         
         // CẬP NHẬT TRẠNG THÁI ENEMY
->>>>>>> d4629c452ec732dec3052c573f1d30bba067ff17
 
         for (auto& enemy : enemylist) {
             if (enemy.isMove && !enemy.isEnd()) {
@@ -775,23 +770,23 @@ namespace towerdefense
         int numberEnemy = enemylist.size();
 
         for (int i = 0; i < numberEnemy - 1; i++)
-            if(!enemylist[i].isDead() && !enemylist[i].isEnd())
+            if (!enemylist[i].isDead() && !enemylist[i].isEnd())
                 enemylist[i].render(enemy1, hdc);
-        
-        if(!enemylist[numberEnemy - 1].isDead() && !enemylist[numberEnemy - 1].isEnd())
+
+        if (!enemylist[numberEnemy - 1].isDead() && !enemylist[numberEnemy - 1].isEnd())
             enemylist[numberEnemy - 1].render(enemy3, hdc);
-        
-        
+
+
         /*for (auto E : enemylist) {
             E.render(enemy1, hdc);
         }*/
-        
-        
+
+
 
         for (auto T : towerlist) {
             T.render(tower, hdc);
 
-            cbullet b = T.getBullet(); 
+            cbullet b = T.getBullet();
 
             if (b.isActive()) {
                 b.render(hbullet, hdc);
@@ -830,11 +825,11 @@ namespace towerdefense
         else
             if (statePlayingGame == WIN)
             {
-            Graphic::DrawBitmap(Graphic::LoadBitmapImage(L"Assets/game/info/BoardWin.png", 1.2), { 280, 60 }, hdc);
-            Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
-            Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
-        }
-
+                Graphic::DrawBitmap(Graphic::LoadBitmapImage(L"Assets/game/info/BoardWin.png", 1.2), { 280, 60 }, hdc);
+                Graphic::DrawBitmap(yesBtn, yesBtnPos, hdc);
+                Graphic::DrawBitmap(noBtn, noBtnPos, hdc);
+            }
+    }
     //========================================================================================================================//
 
     PlayScreen2::PlayScreen2() {
