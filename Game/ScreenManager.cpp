@@ -855,6 +855,8 @@ namespace towerdefense
         for (int i = 0; i < 10; i++) {
             manager.enemyManager.addEnemy(EnemyFactory::createEnemy(1, rand() % nofpath));
         }
+        vector<int> mapSetup{3,5,4,1};
+        manager.enemyManager.setup(mapSetup);
 
         //Turretinit = { 50, 565 };
 

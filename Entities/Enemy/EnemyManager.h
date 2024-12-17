@@ -22,14 +22,16 @@ public:
 
     void writeFile(ofstream& o);
 
+    void setup(vector<int> arg);
+
     std::vector<shared_ptr<EnemyBase>> enemies_;
 
 private:
 
-    int nOfPhase;                       // số lượng phase
+    int nOfPhase = 3;                       // số lượng phase
     vector <int> nOfEnemyEachPhase;     // số lượng e mỗi phase
-    int phase;                          // phase hiện tại 
-    int remainEnemy;                    // số lượng e còn lại trên màn hình
+    int phase = 0;                          // phase hiện tại 
+    int remainEnemy = 0;                    // số lượng e còn lại trên màn hình
     int nOfEnemy = 0;                   // số lượng e 
     int spawnedEnemy = 0;               // số lượng e đã spawn
 	const int enemySpawnInterval = 1;   // tốc độ spawn e
