@@ -20,7 +20,7 @@ protected:
 	int health;
 	int index = 0;
 
-	bool isDead;
+	bool isDead = false;
 
 public:
 	EnemyBase() = default;
@@ -47,11 +47,13 @@ public:
 	void readFile(istream& i);
 
 	//update
-	bool update();
-	void hit( int n);
+	bool update(float delta);
+	void hit(int n);
 
 	void render(HDC hdc) {
-		if (!isDead) {  // Chỉ vẽ nếu không chết
+		if (isDead == false) {  // Chỉ vẽ nếu không chết
+			OutputDebugStringA("DDDDDDDDDDDDDDDDDDDDDDDDDDd\n");
+			OutputDebugStringA((std::to_string(currentPosition.getX()) + " " + std::to_string(currentPosition.getY()) + "\n").c_str());
 			Graphic::DrawBitmap(image, {currentPosition.getX(), currentPosition.getY()}, hdc);
 		}
 	}

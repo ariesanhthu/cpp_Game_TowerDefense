@@ -12,7 +12,7 @@ public:
     //void addEnemy(EnemyModel* model, int path);
     void addEnemy(shared_ptr<EnemyBase> e);
 
-    void updateAllEnemy();
+    void updateAllEnemy(float delta);
 
     int getStatus() { return gameStatus; }
 

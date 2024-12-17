@@ -1,4 +1,5 @@
 #include "EnemyModel.h"
+
 EnemyModel::EnemyModel() {
 	speed = 1;
 	defaultHealth = 5;

@@ -40,6 +40,9 @@ public:
 	void destroy();
 
 	void render(HDC hdc) {
+
+		OutputDebugStringA("BBBBBBBBBBBBBBBBBBBBBbbb\n");
+
 		// luon ve
 		enemyManager.renderEnemies(hdc);
 		//towerManager.render(hdc);
