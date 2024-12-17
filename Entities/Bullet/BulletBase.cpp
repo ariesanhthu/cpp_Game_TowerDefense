@@ -5,7 +5,7 @@ BulletBase::BulletBase(const BulletBase& other) {
 	model = other.model;
 	currentPosition = other.currentPosition;
 }
-BulletBase::BulletBase(BulletModel* nModel, cpoint pos, EnemyBase* nTarget) {
+BulletBase::BulletBase(BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nTarget) {
 	model = nModel;
 	currentPosition = pos;
 	target = nTarget;
@@ -14,8 +14,11 @@ BulletBase::BulletBase(BulletModel* nModel, cpoint pos, EnemyBase* nTarget) {
 void BulletBase::setCurr(const cpoint& p) { 
 	currentPosition = p; 
 }
-void BulletBase::setTarget(EnemyBase* nTarget) { 
+void BulletBase::setTarget(shared_ptr<EnemyBase> nTarget) { 
 	target = nTarget; 
+}
+void BulletBase::setVisible(bool vis) {
+	visible = vis;
 }
 
 // get model attribute
@@ -30,12 +33,15 @@ int BulletBase::getSpeed() {
 cpoint BulletBase::getCurr() { 
 	return currentPosition;
 }
-EnemyBase* BulletBase::getTarget() { 
+shared_ptr<EnemyBase> BulletBase::getTarget() { 
 	return target; 
+}
+bool BulletBase::getVisible() {
+	return visible;
 }
 
 // check collision
-EnemyBase* BulletBase::checkCollision() {
+shared_ptr<EnemyBase> BulletBase::checkCollision() {
 	if (currentPosition.distance(target->getCurrentPosition()) < model->getSpeed()) {
 		return target;
 	}

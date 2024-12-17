@@ -11,16 +11,17 @@
 
 class GamePlayManage
 {
+public:
 	EnemyManager enemyManager;
-	BulletManager bulletManager;
+	//BulletManager bulletManager;
 	TowerManager towerManager;
 
 	int gameCode;
+	int gameStatus; // 1 is win, 2 is lose, 0 is game conmtinue
 
-public:
 	GamePlayManage() = default;
 	GamePlayManage(int n) : gameCode(n) {};
-	void setup();
+	void setup(vector<vector<cpoint>> path);
 	void startGame();
 	void update();
 	void destroy();

@@ -14,15 +14,17 @@ protected:
 	
 	// private attribute
 	cpoint currentPosition;
-    EnemyBase* target;
+    shared_ptr<EnemyBase> target;
 
+    bool visible = false;
 public:
     BulletBase() = default;
     BulletBase(const BulletBase& other);
-    BulletBase(BulletModel* nModel,cpoint pos, EnemyBase* nTarget);
+    BulletBase(BulletModel* nModel,cpoint pos, shared_ptr<EnemyBase> nTarget);
 
     void setCurr(const cpoint& p);
-    void setTarget(EnemyBase* nTarget);
+    void setTarget(shared_ptr<EnemyBase> nTarget);
+    void setVisible(bool vis);
 
     // get model attribute
     int getDame();
@@ -30,10 +32,10 @@ public:
 
     // get private attribute
     cpoint getCurr();
-    EnemyBase* getTarget();
-
+    shared_ptr<EnemyBase> getTarget();
+    bool getVisible();
     // check collision
-    EnemyBase* checkCollision();
+    shared_ptr<EnemyBase> checkCollision();
 
     // update position
     virtual void update();

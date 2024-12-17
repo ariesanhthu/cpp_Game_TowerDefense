@@ -15,7 +15,7 @@ class BulletFactory
 {
 public:
     static vector<BulletModel*> Models;
-    static unique_ptr<BulletBase> createEnemy(const string type, cpoint pos, EnemyBase* target);
+    static shared_ptr<BulletBase> createEnemy(const string type, shared_ptr<EnemyBase> target, cpoint pos);
     static void createModels();
     static void deleteModels();
 };

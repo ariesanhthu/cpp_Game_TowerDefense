@@ -18,6 +18,14 @@ cpoint TowerBase::getCurrentPosition(){
 	return currentPosition;
 }
 
+void TowerBase::setBullet(shared_ptr<BulletBase> bullet) {
+	this->bullet = bullet;
+}
+
+shared_ptr<BulletBase> TowerBase::getBullet() {
+	return bullet;
+}
+
 bool TowerBase::canShoot() {
 	TIME_POINT now = chrono::system_clock::now();
 	if (MILI_SEC(1000 / model->getRate()) < MILI_SEC_CAST(now - lastShoot)) {
@@ -27,7 +35,7 @@ bool TowerBase::canShoot() {
 	return false;
 }
 
-bool TowerBase::canShoot(EnemyBase* target) {
+bool TowerBase::canShoot(shared_ptr<EnemyBase> target) {
 	if (canShoot()
 		&& target->getHealth() > 0
 		&& currentPosition.distance(target->getCurrentPosition()) <= model->getRange()
@@ -37,7 +45,15 @@ bool TowerBase::canShoot(EnemyBase* target) {
 }
 
 //virtual method
-BulletBase TowerBase::shoot(EnemyBase* target) {
+
+//BulletBase TowerBase::shoot(shared_ptr<EnemyBase> target) {
+//	lastShoot = chrono::system_clock::now();
+//	return BulletBase(model->getBulletModel(), currentPosition, target);
+//}
+
+void TowerBase::shoot(shared_ptr<EnemyBase> target) {
 	lastShoot = chrono::system_clock::now();
-	return BulletBase(model->getBulletModel(), currentPosition, target);
+	bullet.get()->setCurr(this->currentPosition);
+	bullet.get()->setTarget(target);
+	bullet.get()->setVisible(true);
 }

@@ -2,9 +2,9 @@
 
 vector<TowerModel*> TowerFactory::Models;
 
-unique_ptr<TowerBase> TowerFactory::createEnemy(const int type) {
+shared_ptr<TowerBase> TowerFactory::createTower(const int type, cpoint pos) {
     if (type == 1) {
-        return make_unique<TowerBase>();
+        return make_shared<TowerBase>(Models[0], pos);
     }
    /* else if (type == 2) {
         return make_unique<TowerBase>();

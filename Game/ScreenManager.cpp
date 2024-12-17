@@ -168,7 +168,10 @@ namespace towerdefense
         else if (menu == 1) {
             if (_map1->isClicked(cursorPos)) {
                 PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, 1, 0);
-            } 
+            }
+            else if (_map2->isClicked(cursorPos)) {
+                PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
+            }
         }
         else if (menu == 2) {
             // if click user 
@@ -445,138 +448,110 @@ namespace towerdefense
                 if (PtInRect(&playRect, cursorPos)) {
                     // if click play 
                     if (manageFirstTime) {
-                        IsPlayGame = true;
+                        //IsPlayGame = true;
+                        statePlayingGame = PLAY;
                         manageFirstTime = false;
                         for (int i = 0; i < enemylist.size(); i++) {
                             enemylist[i].isMove = true;
                         }
                     }
                     else {
-                        if (IsPlayGame) {
+                        if (statePlayingGame == PLAY) {
                             displayYesNoBoard = true;
-                            IsPlayGame = false;
-                            /*for (int i = 0; i < enemylist.size(); i++) {
-                                enemylist[i].isMove = false;*/
-                        }
-                    }
-                }
-                //}
-
-                /*=========================================================================
-                    PAUSE GAME
-                  =========================================================================
-                */
-                if (displayYesNoBoard) {
-                    // if yes
-                    RECT yesRect = {
-                        yesBtnPos.x,
-                        yesBtnPos.y,
-                        yesBtnPos.x + yesnoSize.x * 4, // Button width
-                        yesBtnPos.y + yesnoSize.y * 4 // Button height
-                    };
-
-                    if (PtInRect(&yesRect, cursorPos)) {
-                        displayYesNoBoard = false;
-                        //IsPlayGame = true;
-                        /*for (int i = 0; i < enemylist.size(); i++) {
-                            enemylist[i].isMove = true;
-                        }*/
-
-                        statePlayingGame = PLAY;
-                    }
-
-                    // if no
-                    RECT noRect = {
-                        noBtnPos.x,
-                        noBtnPos.y,
-                        noBtnPos.x + yesnoSize.x * 4, // Button width
-                        noBtnPos.y + yesnoSize.y * 4 // Button height
-                    };
-                    if (PtInRect(&noRect, cursorPos)) {
-
-                        for (int i = 0; i < enemylist.size(); i++) {
-                            enemylist[i].isMove = false;
-                        }
-
-                        std::vector<saveGame> games = getGameList();
-
-                        saveGame newGame;
-
-                        newGame.gameId = 0;
-                        for (auto game : games) {
-                            if (newGame.gameId <= game.gameId) {
-                                newGame.gameId++;
+                            //IsPlayGame = false;
+                            statePlayingGame = PAUSE;
+                            for (int i = 0; i < enemylist.size(); i++) {
+                                enemylist[i].isMove = false;
                             }
                         }
-                        for (auto enemy : enemylist) {
-                            newGame.listEnemy.push_back({ enemy.getHealth(), enemy.getCurr(), enemy.getPath(), enemy.getIndex() });
+                    }
+                    //}
+
+                    /*=========================================================================
+                        PAUSE GAME
+                      =========================================================================
+                    */
+                    if (displayYesNoBoard) {
+                        // if yes
+                        RECT yesRect = {
+                            yesBtnPos.x,
+                            yesBtnPos.y,
+                            yesBtnPos.x + yesnoSize.x * 4, // Button width
+                            yesBtnPos.y + yesnoSize.y * 4 // Button height
+                        };
+
+                        if (PtInRect(&yesRect, cursorPos)) {
+                            displayYesNoBoard = false;
+                            //IsPlayGame = true;
+                            for (int i = 0; i < enemylist.size(); i++) {
+                                enemylist[i].isMove = true;
+                            }
+
+                            statePlayingGame = PLAY;
                         }
-                        for (auto tower : towerlist) {
-                            newGame.listTower.push_back({ tower.getLocation() });
+
+                        // if no
+                        RECT noRect = {
+                            noBtnPos.x,
+                            noBtnPos.y,
+                            noBtnPos.x + yesnoSize.x * 4, // Button width
+                            noBtnPos.y + yesnoSize.y * 4 // Button height
+                        };
+                        if (PtInRect(&noRect, cursorPos)) {
+
+                            for (int i = 0; i < enemylist.size(); i++) {
+                                enemylist[i].isMove = false;
+                            }
+
+                            //std::vector<saveGame> games = getGameList();
+
+                            //saveGame newGame;
+
+                            //newGame.gameId = 0;
+                            //for (auto game : games) {
+                            //    if (newGame.gameId <= game.gameId) {
+                            //        newGame.gameId++;
+                            //    }
+                            //}
+                            //for (auto enemy : enemylist) {
+                            //    newGame.listEnemy.push_back({ enemy.getHealth(), enemy.getCurr(), enemy.getPath(), enemy.getIndex() });
+                            //}
+                            //for (auto tower : towerlist) {
+                            //    newGame.listTower.push_back({ tower.getLocation() });
+                            //}
+                            //newGame.mapCode = mapCode;
+                            //newGame.UserId = Guess.getId();
+
+
+                            ///*vector<int> gameID = Guess.getListGame();
+                            //gameID.push_back(newGame.gameId);
+                            //Guess.setListGame(gameID);*/
+                            ////OutputDebugStringA(std::to_string(newGame.UserId).c_str());
+
+                            //appendGameToFile(newGame);
+
+
+                            PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                         }
-                        newGame.mapCode = mapCode;
-                        newGame.UserId = Guess.getId();
-
-
-                        /*vector<int> gameID = Guess.getListGame();
-                        gameID.push_back(newGame.gameId);
-                        Guess.setListGame(gameID);*/
-                        //OutputDebugStringA(std::to_string(newGame.UserId).c_str());
-
-                        appendGameToFile(newGame);
-
-
-                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                     }
-                }
 
-                // if click in hamburger display board 
-                RECT hamburgerRect = {
-                    hamburgerPos.x,
-                    hamburgerPos.y,
-                    hamburgerPos.x + buttonSize.x * 1.5, // Button width
-                    hamburgerPos.y + buttonSize.y * 1.5 // Button height
-                };
-                if (PtInRect(&hamburgerRect, cursorPos)) {
-                    displayBoard = !displayBoard;
-                }
-
-
-                /*
-                    CHECK END GAME
-                */
-                // HANDLE INPUT BOARD WIN GAME
-                if (statePlayingGame == WIN)
-                {
-                    // if yes
-                    RECT yesRect = {
-                        yesBtnPos.x,
-                        yesBtnPos.y,
-                        yesBtnPos.x + yesnoSize.x * 4, // Button width
-                        yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    // if click in hamburger display board 
+                    RECT hamburgerRect = {
+                        hamburgerPos.x,
+                        hamburgerPos.y,
+                        hamburgerPos.x + buttonSize.x * 1.5, // Button width
+                        hamburgerPos.y + buttonSize.y * 1.5 // Button height
                     };
-
-                    // GO TO THE NEXT LEVEL 
-                    if (PtInRect(&yesRect, cursorPos)) {
-                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
+                    if (PtInRect(&hamburgerRect, cursorPos)) {
+                        displayBoard = !displayBoard;
                     }
 
-                    // if no
-                    RECT noRect = {
-                        noBtnPos.x,
-                        noBtnPos.y,
-                        noBtnPos.x + yesnoSize.x * 4, // Button width
-                        noBtnPos.y + yesnoSize.y * 4 // Button height
-                    };
 
-                    // back to MAIN SCREEN
-                    if (PtInRect(&noRect, cursorPos)) {
-                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
-                    }
-                }
-                else
-                    // HANDLE INPUT BOARD LOSE GAME
-                    if (statePlayingGame == LOSE)
+                    /*
+                        CHECK END GAME
+                    */
+                    // HANDLE INPUT BOARD WIN GAME
+                    if (statePlayingGame == WIN)
                     {
                         // if yes
                         RECT yesRect = {
@@ -585,38 +560,10 @@ namespace towerdefense
                             yesBtnPos.x + yesnoSize.x * 4, // Button width
                             yesBtnPos.y + yesnoSize.y * 4 // Button height
                         };
-                    }
-            }
-        }
-       
-        bool mouseClicked = (GetAsyncKeyState(VK_LBUTTON) & 0x8000);
 
-        static bool mouseReleased = true; // Trạng thái chuột đã nhả (tránh lặp sự kiện)
-        if (mouseClicked && mouseReleased) {
-            mouseReleased = false; // Đánh dấu chuột đã bấm
-
-            if (!isPicking) {
-                // Người dùng chưa "nhặt tháp", bắt đầu "nhặt tháp"
-                RECT initTowerRect = {
-                    Turretinit.x,
-                    Turretinit.y,
-                    Turretinit.x + towerSize.x * 2, // Chiều rộng nút
-                    Turretinit.y + towerSize.y * 2  // Chiều cao nút
-                };
-
-                if (PtInRect(&initTowerRect, cursorPos)) {
-                    isPicking = true;                // Chuyển sang trạng thái "nhặt tháp"
-                    Tpicking.setLocation(cursorPos); // Đặt vị trí ban đầu theo con trỏ chuột
-                }
-                RECT yesRect = {
-                            yesBtnPos.x,
-                            yesBtnPos.y,
-                            yesBtnPos.x + yesnoSize.x * 4, // Button width
-                            yesBtnPos.y + yesnoSize.y * 4 // Button height
-                };
                         // GO TO THE NEXT LEVEL 
                         if (PtInRect(&yesRect, cursorPos)) {
-                            PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 1, 0);
+                            PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
                         }
 
                         // if no
@@ -631,41 +578,99 @@ namespace towerdefense
                         if (PtInRect(&noRect, cursorPos)) {
                             PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                         }
-                    
-            }
-        
-        }
-
-        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
-            // if hold tower 
-            RECT initTowerRect = {
-                Turretinit.x,
-                Turretinit.y,
-                Turretinit.x + towerSize.x * 2, // Button width
-                Turretinit.y + towerSize.y * 2 // Button height
-            };
-            if (PtInRect(&initTowerRect, cursorPos)) {
-                isPicking = true;
-            }
-            else {
-                if (checkValidPos(Tpicking.getLocation())) {
-                    towerlist.push_back(Tpicking); // Thêm vào danh sách nếu hợp lệ
-                    isPicking = false;            // Kết thúc trạng thái "nhặt tháp"
+                    }
+                    else
+                        // HANDLE INPUT BOARD LOSE GAME
+                        if (statePlayingGame == LOSE)
+                        {
+                            // if yes
+                            RECT yesRect = {
+                                yesBtnPos.x,
+                                yesBtnPos.y,
+                                yesBtnPos.x + yesnoSize.x * 4, // Button width
+                                yesBtnPos.y + yesnoSize.y * 4 // Button height
+                            };
+                        }
                 }
             }
-        }
 
-        if (!mouseClicked) {
-            mouseReleased = true; // Đánh dấu chuột đã nhả
-        }
+            bool mouseClicked = (GetAsyncKeyState(VK_LBUTTON) & 0x8000);
 
-        // Nếu đang "nhặt tháp", cập nhật vị trí theo con trỏ chuột
-        if (isPicking) {
-            Tpicking.setLocation(cursorPos);
-        }
+            static bool mouseReleased = true; // Trạng thái chuột đã nhả (tránh lặp sự kiện)
+            if (mouseClicked && mouseReleased) {
+                mouseReleased = false; // Đánh dấu chuột đã bấm
 
+                if (!isPicking) {
+                    // Người dùng chưa "nhặt tháp", bắt đầu "nhặt tháp"
+                    RECT initTowerRect = {
+                        Turretinit.x,
+                        Turretinit.y,
+                        Turretinit.x + towerSize.x * 2, // Chiều rộng nút
+                        Turretinit.y + towerSize.y * 2  // Chiều cao nút
+                    };
+
+                    if (PtInRect(&initTowerRect, cursorPos)) {
+                        isPicking = true;                // Chuyển sang trạng thái "nhặt tháp"
+                        Tpicking.setLocation(cursorPos); // Đặt vị trí ban đầu theo con trỏ chuột
+                    }
+                    RECT yesRect = {
+                                yesBtnPos.x,
+                                yesBtnPos.y,
+                                yesBtnPos.x + yesnoSize.x * 4, // Button width
+                                yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+                    // GO TO THE NEXT LEVEL 
+                    if (PtInRect(&yesRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 1, 0);
+                    }
+
+                    // if no
+                    RECT noRect = {
+                        noBtnPos.x,
+                        noBtnPos.y,
+                        noBtnPos.x + yesnoSize.x * 4, // Button width
+                        noBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    // back to MAIN SCREEN
+                    if (PtInRect(&noRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                    }
+
+                }
+
+            }
+
+            if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
+                // if hold tower 
+                RECT initTowerRect = {
+                    Turretinit.x,
+                    Turretinit.y,
+                    Turretinit.x + towerSize.x * 2, // Button width
+                    Turretinit.y + towerSize.y * 2 // Button height
+                };
+                if (PtInRect(&initTowerRect, cursorPos)) {
+                    isPicking = true;
+                }
+                else {
+                    if (checkValidPos(Tpicking.getLocation())) {
+                        towerlist.push_back(Tpicking); // Thêm vào danh sách nếu hợp lệ
+                        isPicking = false;            // Kết thúc trạng thái "nhặt tháp"
+                    }
+                }
+            }
+
+            if (!mouseClicked) {
+                mouseReleased = true; // Đánh dấu chuột đã nhả
+            }
+
+            // Nếu đang "nhặt tháp", cập nhật vị trí theo con trỏ chuột
+            if (isPicking) {
+                Tpicking.setLocation(cursorPos);
+            }
+
+        }
     }
-
     void PlayScreen::update(float delta) {
         
         // KIỂM TRA TRẠNG THÁI GAME
@@ -833,14 +838,14 @@ namespace towerdefense
     //========================================================================================================================//
 
     PlayScreen2::PlayScreen2() {
+
+        vector<vector<cpoint>> path;
+        path.push_back(epath);
+
+        manager.setup(path);
+        int nofpath = 1;
         for (int i = 0; i < 10; i++) {
-            cenemy dummy;
-            std::vector<POINT> otherPath = epath;
-
-            otherPath[0].x -= i * (rand() % 300 + 100);
-
-            dummy.setPath(otherPath);
-            enemylist.push_back(dummy);
+            manager.enemyManager.addEnemy(EnemyFactory::createEnemy(1, rand() % nofpath));
         }
 
         Turretinit = { 50, 565 };
@@ -892,7 +897,73 @@ namespace towerdefense
         GetCursorPos(&cursorPos);
         ScreenToClient(GetActiveWindow(), &cursorPos);
 
-        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
+        //if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
+        //    auto now = std::chrono::steady_clock::now();
+        //    if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
+        //        lastMouseClickTime = now;
+        //        // if click the play 
+        //        RECT playRect = {
+        //            posbuttonplay.x,
+        //            posbuttonplay.y,
+        //            posbuttonplay.x + buttonSize.x * 1.8, // Button width
+        //            posbuttonplay.y + buttonSize.y * 1.8 // Button height
+        //        };
+        //        /*
+        //            HANDLE CLICK
+
+        //            PAUSE GAME || PLAY GAME
+        //        */
+        //        if (PtInRect(&playRect, cursorPos)) {
+        //            // if click play 
+
+        //            for (int i = 0; i < enemylist.size(); i++) {
+        //                enemylist[i].isMove = !enemylist[i].isMove;
+        //            }
+        //        }
+
+        //        // if click in hamburger display board 
+        //        RECT hamburgerRect = {
+        //            hamburgerPos.x,
+        //            hamburgerPos.y,
+        //            hamburgerPos.x + buttonSize.x * 1.5, // Button width
+        //            hamburgerPos.y + buttonSize.y * 1.5 // Button height
+        //        };
+        //        if (PtInRect(&hamburgerRect, cursorPos)) {
+        //            displayBoard = !displayBoard;
+        //        }
+        //    }
+        //}
+
+        //if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
+        //    // if hold tower 
+        //    RECT initTowerRect = {
+        //        Turretinit.x,
+        //        Turretinit.y,
+        //        Turretinit.x + towerSize.x * 2, // Button width
+        //        Turretinit.y + towerSize.y * 2 // Button height
+        //    };
+        //    if (PtInRect(&initTowerRect, cursorPos)) {
+        //        isPicking = true;
+        //    }
+        //    else {
+        //        isPicking = false;
+        //    }
+        //}
+
+        //if (isPicking) {
+        //    Tpicking.setLocation(cursorPos);
+        //}
+        //else {
+        //    // neu vi tri thoa dieu kien thi them vao list tower
+        //    if (checkValidPos(TcurrentPick)) {
+        //        //towerlist.push_back(Tpicking);
+        //        cpoint pos = { TcurrentPick.x, TcurrentPick.y };
+        //        manager.towerManager.addTower(TowerFactory::createTower(1, pos));
+        //    }
+        //}
+
+        // Left mouse button pressed
+        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
             auto now = std::chrono::steady_clock::now();
             if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
                 lastMouseClickTime = now;
@@ -910,9 +981,61 @@ namespace towerdefense
                 */
                 if (PtInRect(&playRect, cursorPos)) {
                     // if click play 
+                    if (manageFirstTime) {
+                        IsPlayGame = true;
+                        manageFirstTime = false;
+                        for (int i = 0; i < enemylist.size(); i++) {
+                            enemylist[i].isMove = true;
+                        }
+                    }
+                    else {
+                        if (IsPlayGame) {
+                            displayYesNoBoard = true;
+                            IsPlayGame = false;
+                            /*for (int i = 0; i < enemylist.size(); i++) {
+                                enemylist[i].isMove = false;*/
+                        }
+                    }
+                }
+                //}
 
-                    for (int i = 0; i < enemylist.size(); i++) {
-                        enemylist[i].isMove = !enemylist[i].isMove;
+                /*=========================================================================
+                    PAUSE GAME
+                  =========================================================================
+                */
+                if (displayYesNoBoard) {
+                    // if yes
+                    RECT yesRect = {
+                        yesBtnPos.x,
+                        yesBtnPos.y,
+                        yesBtnPos.x + yesnoSize.x * 4, // Button width
+                        yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    if (PtInRect(&yesRect, cursorPos)) {
+                        displayYesNoBoard = false;
+                        //IsPlayGame = true;
+                        /*for (int i = 0; i < enemylist.size(); i++) {
+                            enemylist[i].isMove = true;
+                        }*/
+
+                        statePlayingGame = PLAY;
+                    }
+
+                    // if no
+                    RECT noRect = {
+                        noBtnPos.x,
+                        noBtnPos.y,
+                        noBtnPos.x + yesnoSize.x * 4, // Button width
+                        noBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+                    if (PtInRect(&noRect, cursorPos)) {
+
+                        for (int i = 0; i < enemylist.size(); i++) {
+                            enemylist[i].isMove = false;
+                        }
+
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                     }
                 }
 
@@ -926,7 +1049,100 @@ namespace towerdefense
                 if (PtInRect(&hamburgerRect, cursorPos)) {
                     displayBoard = !displayBoard;
                 }
+
+
+                /*
+                    CHECK END GAME
+                */
+                // HANDLE INPUT BOARD WIN GAME
+                if (statePlayingGame == WIN)
+                {
+                    // if yes
+                    RECT yesRect = {
+                        yesBtnPos.x,
+                        yesBtnPos.y,
+                        yesBtnPos.x + yesnoSize.x * 4, // Button width
+                        yesBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    // GO TO THE NEXT LEVEL 
+                    if (PtInRect(&yesRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
+                    }
+
+                    // if no
+                    RECT noRect = {
+                        noBtnPos.x,
+                        noBtnPos.y,
+                        noBtnPos.x + yesnoSize.x * 4, // Button width
+                        noBtnPos.y + yesnoSize.y * 4 // Button height
+                    };
+
+                    // back to MAIN SCREEN
+                    if (PtInRect(&noRect, cursorPos)) {
+                        PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                    }
+                }
+                else
+                    // HANDLE INPUT BOARD LOSE GAME
+                    if (statePlayingGame == LOSE)
+                    {
+                        // if yes
+                        RECT yesRect = {
+                            yesBtnPos.x,
+                            yesBtnPos.y,
+                            yesBtnPos.x + yesnoSize.x * 4, // Button width
+                            yesBtnPos.y + yesnoSize.y * 4 // Button height
+                        };
+                    }
             }
+        }
+
+        bool mouseClicked = (GetAsyncKeyState(VK_LBUTTON) & 0x8000);
+
+        static bool mouseReleased = true; // Trạng thái chuột đã nhả (tránh lặp sự kiện)
+        if (mouseClicked && mouseReleased) {
+            mouseReleased = false; // Đánh dấu chuột đã bấm
+
+            if (!isPicking) {
+                // Người dùng chưa "nhặt tháp", bắt đầu "nhặt tháp"
+                RECT initTowerRect = {
+                    Turretinit.x,
+                    Turretinit.y,
+                    Turretinit.x + towerSize.x * 2, // Chiều rộng nút
+                    Turretinit.y + towerSize.y * 2  // Chiều cao nút
+                };
+
+                if (PtInRect(&initTowerRect, cursorPos)) {
+                    isPicking = true;                // Chuyển sang trạng thái "nhặt tháp"
+                    Tpicking.setLocation(cursorPos); // Đặt vị trí ban đầu theo con trỏ chuột
+                }
+                RECT yesRect = {
+                            yesBtnPos.x,
+                            yesBtnPos.y,
+                            yesBtnPos.x + yesnoSize.x * 4, // Button width
+                            yesBtnPos.y + yesnoSize.y * 4 // Button height
+                };
+                // GO TO THE NEXT LEVEL 
+                if (PtInRect(&yesRect, cursorPos)) {
+                    PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 1, 0);
+                }
+
+                // if no
+                RECT noRect = {
+                    noBtnPos.x,
+                    noBtnPos.y,
+                    noBtnPos.x + yesnoSize.x * 4, // Button width
+                    noBtnPos.y + yesnoSize.y * 4 // Button height
+                };
+
+                // back to MAIN SCREEN
+                if (PtInRect(&noRect, cursorPos)) {
+                    PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                }
+
+            }
+
         }
 
         if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
@@ -941,74 +1157,27 @@ namespace towerdefense
                 isPicking = true;
             }
             else {
-                isPicking = false;
+                if (checkValidPos(Tpicking.getLocation())) {
+                    towerlist.push_back(Tpicking); // Thêm vào danh sách nếu hợp lệ
+                    isPicking = false;            // Kết thúc trạng thái "nhặt tháp"
+                }
             }
         }
 
+        if (!mouseClicked) {
+            mouseReleased = true; // Đánh dấu chuột đã nhả
+        }
+
+        // Nếu đang "nhặt tháp", cập nhật vị trí theo con trỏ chuột
         if (isPicking) {
             Tpicking.setLocation(cursorPos);
-        }
-        else {
-            // neu vi tri thoa dieu kien thi them vao list tower
-            if (checkValidPos(TcurrentPick)) {
-                towerlist.push_back(Tpicking);
-            }
         }
     }
 
     void PlayScreen2::update(float delta) {
-        for (auto& enemy : enemylist) {
-            if (enemy.isMove && !enemy.isEnd()) {
-                enemy.update(delta);
-            }
-        }
-
-        enemylist.erase(
-            std::remove_if(enemylist.begin(), enemylist.end(), [](const cenemy& e) {
-                return e.isDead() || e.isEnd();
-                }),
-            enemylist.end()
-        );
-
-        // Towers shoot at the nearest enemy in range and update bullets
-        for (auto& tower : towerlist) {
-            cenemy* nearestEnemy = nullptr;
-            float minDistanceSquared = tower.getRange() * tower.getRange();
-            POINT towerPos = tower.getLocation();
-
-            // Xác định bounding box của phạm vi tower
-            RECT rangeRect = {
-                towerPos.x - static_cast<int>(tower.getRange()),
-                towerPos.y - static_cast<int>(tower.getRange()),
-                towerPos.x + static_cast<int>(tower.getRange()),
-                towerPos.y + static_cast<int>(tower.getRange())
-            };
-
-            for (auto& enemy : enemylist) {
-                if (!enemy.isMove || enemy.isEnd()) continue;
-
-                POINT enemyPos = enemy.getCurr();
-                if (!PtInRect(&rangeRect, enemyPos)) continue; // Bỏ qua nếu ngoài phạm vi
-
-                int dx = enemyPos.x - towerPos.x;
-                int dy = enemyPos.y - towerPos.y;
-                float distanceSquared = static_cast<float>(dx * dx + dy * dy);
-
-                if (distanceSquared < minDistanceSquared) {
-                    minDistanceSquared = distanceSquared;
-                    nearestEnemy = &enemy;
-                }
-            }
-
-            if (nearestEnemy) {
-                // tower.shootAt(nearestEnemy->getCurr());
-                tower.shootAt(nearestEnemy);
-                //POINT pos = tower.getBullet().getCurr();
-                //if (pos.x)
-                //nearestEnemy->takeDamage(tower.getBullet().getDamage());
-            }
-
-            tower.updateBullet();
+        if (manager.gameStatus) return;
+        else {
+            manager.update();
         }
     }
 
@@ -1032,6 +1201,8 @@ namespace towerdefense
                 b.render(hbullet, hdc);
             }
         }
+
+
 
         // ve tower trong box
         Graphic::DrawBitmap(tower, Turretinit, hdc);

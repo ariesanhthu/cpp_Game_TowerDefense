@@ -4,18 +4,19 @@
 
 #include"TowerModel.h"
 #include"TowerBase.h"
+#include"TowerFactory.h"
 
 class TowerManager
 {
 public:
     void addTower(TowerModel* model, cpoint pos);
-    void addTower(TowerBase tower);
+    void addTower(shared_ptr<TowerBase> tower);
     void renderTowers();
 
-    void updateAllTower(std::vector<EnemyBase> &enemies_, std::vector<BulletBase>& bulllets_);
+    void updateAllTower(std::vector<shared_ptr<EnemyBase>>& enemies_);
 
 private:
-    std::vector<TowerBase> towers_;
+    std::vector<shared_ptr<TowerBase>> towers_;
 
 };
 

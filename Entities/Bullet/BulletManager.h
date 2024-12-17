@@ -5,16 +5,16 @@
 #include "BulletModel.h"
 #include "BulletBase.h"
 
-class BulletManager
-{
-public:
-    void addBullet(BulletModel* model, cpoint pos, EnemyBase* target);
-    void addBullet(BulletBase bullet);
-    void renderBullets();
-
-    void update();
-private:
-    std::vector<BulletBase> bulllets_;
-};
+//class BulletManager
+//{
+//public:
+//    void addBullet(BulletModel* model, cpoint pos, shared_ptr<EnemyBase> target);
+//    void addBullet(BulletBase bullet);
+//    void renderBullets();
+//
+//    void update();
+//private:
+//    std::vector<BulletBase> bulllets_;
+//};
 
 #endif

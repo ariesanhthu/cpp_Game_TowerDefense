@@ -12,7 +12,7 @@ class TowerFactory
 {
 public:
     static vector<TowerModel*> Models;
-    static unique_ptr<TowerBase> createEnemy(const int type);
+    static shared_ptr<TowerBase> createTower(const int type, cpoint pos);
     static void createModels();
     static void deleteModels();
 };

@@ -10,6 +10,8 @@ class EnemyModel
 private:
 	int speed;
 	int defaultHealth;
+
+	bool isMoving;
 	// texture
 
 	std::vector< std::vector<cpoint>> pathList;
@@ -21,10 +23,12 @@ public:
 
 	void setSpeed(int nSpeed);
 	void setDefaultHealth(int nHP);
-	
+	void setIsMove(bool b) { isMoving = b; }
+
+
 	int getSpeed();
 	int getDefaultHealth();
-
+	bool getIsMove() { return isMoving; }
 	vector<cpoint> getPath(int n);
 
 	void calculatePath(std::vector< std::vector<cpoint>> pointsList);

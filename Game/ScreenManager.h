@@ -191,6 +191,11 @@ namespace towerdefense
         //
         cplayer guess;
 
+        // buton play or pause 
+        POINT posbuttonplay = { 580, 570 };
+
+        //std::shared_ptr<Button> _playOrPause = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, posbuttonplay);
+
         GameState statePlayingGame = PLAY;
         int countHeart = 0;
 
@@ -230,8 +235,7 @@ namespace towerdefense
         // position init place of box
         POINT towerInitPos = { 25, 520 };
         
-        // buton play or pause 
-        POINT posbuttonplay = { 580, 570 };
+       
 
         // delay hand variable
         std::chrono::steady_clock::time_point lastMouseClickTime;
@@ -246,7 +250,8 @@ namespace towerdefense
         std::vector<ctower> towerlist;
         POINT Turretinit;         // tower position 
 
-
+        // 
+        GamePlayManage manager;
 
         // tower de chon di chuyen
         ctower Tpicking;
@@ -311,7 +316,7 @@ namespace towerdefense
 
     class PlayScreen2 : public MapScreen {
     private:
-        vector<POINT> epath = {
+        vector<cpoint> epath = {
             {-100, 115},
             {435, 115},
             {435, 330},

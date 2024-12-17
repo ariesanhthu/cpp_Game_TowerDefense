@@ -11,8 +11,8 @@ class EnemyFactory
 {
     static vector<EnemyModel*> Models;
 public:
-    static unique_ptr<EnemyBase> createEnemy(const int type, int path);
-    static void createModels();
+    static  shared_ptr<EnemyBase> createEnemy(const int type, int path);
+    static void createModels(vector<vector<cpoint>> path);
     static void deleteModels();
 };
 

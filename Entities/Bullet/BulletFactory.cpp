@@ -2,7 +2,7 @@
 
 vector<BulletModel*> BulletFactory::Models;
 
-unique_ptr<BulletBase> BulletFactory::createEnemy(const string type, cpoint pos, EnemyBase* target) {
+shared_ptr<BulletBase> BulletFactory::createEnemy(const string type = "normal", shared_ptr<EnemyBase> target = NULL, cpoint pos = cpoint(0,0,0)) {
     if (type == "normal") {
         return make_unique<BulletBase>(Models[0],pos, target);
     }

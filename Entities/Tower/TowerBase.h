@@ -3,6 +3,7 @@
 #define __TOWER_BASE_h__
 
 #include <chrono>
+#include <memory>
 
 #include "cpoint.h"
 #include "TowerModel.h"
@@ -21,6 +22,7 @@ protected:
 	cpoint currentPosition;
 	TIME_POINT lastShoot;
 
+	shared_ptr<BulletBase> bullet;
 public:
 	TowerBase() = default;
 	TowerBase(const TowerBase& other);
@@ -29,10 +31,14 @@ public:
 	void setCurrentPosition(const cpoint& pos);
 	cpoint getCurrentPosition();
 
-	bool canShoot();
-	bool canShoot(EnemyBase* target);
+	void setBullet(shared_ptr<BulletBase>);
+	shared_ptr<BulletBase> getBullet();
 
-	virtual BulletBase shoot(EnemyBase* target);
+	bool canShoot();
+	bool canShoot(shared_ptr<EnemyBase> target);
+
+	//virtual BulletBase shoot(shared_ptr<EnemyBase> target);
+	virtual void shoot(shared_ptr<EnemyBase> target);
 
 };
 

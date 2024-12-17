@@ -1,10 +1,11 @@
-#pragma once
+﻿#pragma once
 #ifndef __ENEMY_BASE_h__
 #define __ENEMY_BASE_h__
 
 
 #include "cpoint.h"
 #include "EnemyModel.h"
+#include "Graphic.h"
 
 
 class EnemyBase
@@ -18,6 +19,8 @@ protected:
 	cpoint currentPosition;
 	int health;
 	int index = 0;
+
+	bool isDead;
 
 public:
 	EnemyBase() = default;
@@ -41,8 +44,14 @@ public:
 	void readFile(istream& i);
 
 	//update
-	void update();
+	bool update();
 	void hit( int n);
+
+	void render(HBITMAP element, HDC hdc) {
+		if (!isDead) {  // Chỉ vẽ nếu không chết
+			Graphic::DrawBitmap(element, {currentPosition.getX(), currentPosition.getY()}, hdc);
+		}
+	}
 };
 
 #endif
