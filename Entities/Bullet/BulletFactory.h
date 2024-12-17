@@ -6,16 +6,14 @@
 #include <memory>
 
 #include "BulletBase.h"
-//#include "BulletBase.h"
-//#include "BulletBase.h"
-//#include "BulletBase.h"
+
 
 
 class BulletFactory
 {
 public:
     static vector<BulletModel*> Models;
-    static shared_ptr<BulletBase> createEnemy(const string type, shared_ptr<EnemyBase> target, cpoint pos);
+    static shared_ptr<BulletBase> createBullet(const string type, shared_ptr<EnemyBase> target, cpoint pos);
     static void createModels();
     static void deleteModels();
 };

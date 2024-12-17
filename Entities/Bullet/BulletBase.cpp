@@ -11,6 +11,12 @@ BulletBase::BulletBase(BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nT
 	target = nTarget;
 }
 
+BulletBase::BulletBase(const wchar_t* link, float factor, BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nTarget) : UIElement(link, factor, {pos.getX(), pos.getY()}) {
+	model = nModel;
+	currentPosition = pos;
+	target = nTarget;
+}
+
 void BulletBase::setCurr(const cpoint& p) { 
 	currentPosition = p; 
 }

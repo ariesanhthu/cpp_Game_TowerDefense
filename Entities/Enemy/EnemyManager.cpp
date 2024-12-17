@@ -36,12 +36,12 @@ void EnemyManager::updateAllEnemy(float delta) {
 
     chrono::system_clock::time_point now = chrono::system_clock::now();
 
-    static int nextSpawnDelay = getRandomInterval(5000, 20000);
+    static int nextSpawnDelay = getRandomInterval(50000, 20000000);
 
     if (std::chrono::duration_cast<chrono::milliseconds> (now - lastSpawn) > chrono::milliseconds(1000 * enemySpawnInterval) &&  spawnedEnemy < nOfEnemy) {
         spawnedEnemy++;
         lastSpawn = now;
-
+        nextSpawnDelay = getRandomInterval(50000, 20000000);
     }
 
     ////// update remain e
@@ -54,7 +54,6 @@ void EnemyManager::updateAllEnemy(float delta) {
             enemies_[i]->update(delta);
 
             // random interval
-            nextSpawnDelay = getRandomInterval(5000, 20000);
 
             remainEnemy++;
         }
@@ -62,7 +61,7 @@ void EnemyManager::updateAllEnemy(float delta) {
 }
 
 void EnemyManager::renderEnemies(HDC hdc) {
-    OutputDebugStringA("CCCCCCCCCCCCCCCCCCCCCCCc\n");
+    //OutputDebugStringA("CCCCCCCCCCCCCCCCCCCCCCCc\n");
     if (gameStatus == PLAY) {
         for (auto& enemy : enemies_) {
             enemy->render(hdc);
@@ -79,9 +78,9 @@ void EnemyManager::writeFile(ofstream& o) {
 
 }
 
-void EnemyManager::setup(vector<int> ar) {
-    nOfPhase = ar[0];
-    for (int i = 0; i < nOfPhase; i++) {
-        nOfEnemyEachPhase.push_back(ar[i + 1]);
-    }
-}
+//void EnemyManager::setup(vector<int> ar) {
+//    nOfPhase = ar[0];
+//    for (int i = 0; i < nOfPhase; i++) {
+//        nOfEnemyEachPhase.push_back(ar[i + 1]);
+//    }
+//}

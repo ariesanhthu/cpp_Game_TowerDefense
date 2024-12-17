@@ -41,11 +41,11 @@ public:
 
 	void render(HDC hdc) {
 
-		OutputDebugStringA("BBBBBBBBBBBBBBBBBBBBBbbb\n");
+		//OutputDebugStringA("BBBBBBBBBBBBBBBBBBBBBbbb\n");
 
 		// luon ve
 		enemyManager.renderEnemies(hdc);
-		//towerManager.render(hdc);
+		towerManager.renderTowers(hdc);
 	}
 };
 

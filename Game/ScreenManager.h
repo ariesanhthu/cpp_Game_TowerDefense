@@ -225,6 +225,7 @@ namespace towerdefense
 
         // position init place of box
         POINT towerInitPos = { 25, 520 };
+        POINT Turretinit = { 50, 565 };
         
         // delay hand variable
         std::chrono::steady_clock::time_point lastMouseClickTime;
@@ -240,6 +241,9 @@ namespace towerdefense
         //POINT Turretinit;         // tower position 
 
         GamePlayManage manager;
+
+        std::shared_ptr<TowerBase> pickedTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
+        std::shared_ptr<TowerBase> renderTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
 
         // tower de chon di chuyen
         /*ctower Tpicking;
@@ -261,9 +265,6 @@ namespace towerdefense
 
         ======================================= */
 
-        bool checkValidPos(POINT pos) {
-            return true;
-        }
         bool isInRange(POINT pos, int range) {
             return range < sqrt((pos.x * pos.x + pos.y * pos.y));
         }
@@ -310,6 +311,8 @@ namespace towerdefense
             {265, 515},
             {1200, 515},
         };
+
+        bool checkValidPos(POINT pos);
 
     public:
         PlayScreen2();

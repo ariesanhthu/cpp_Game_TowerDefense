@@ -4,7 +4,7 @@ bool cpoint::operator==(const cpoint& a) {
 	return x == a.x && y == a.y;
 }
 
-int cpoint::distance(const cpoint& a) {
+float cpoint::distance(const cpoint& a) {
 	return sqrt((x - a.x) * (x - a.x) + (y - a.y) * (y - a.y));
 }
 

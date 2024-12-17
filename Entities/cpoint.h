@@ -14,7 +14,7 @@ class cpoint {
             c = nC;
         };
         bool operator==(const cpoint& a);
-        int distance(const cpoint& a);
+        float distance(const cpoint& a);
         int& getX(){return x;}
         int& getY(){return y;}
         int getC(){return c;}

@@ -5,8 +5,9 @@
 #include "cpoint.h"
 #include "BulletModel.h"
 #include "Enemy/EnemyBase.h"
+#include "UIElement.h"
 
-class BulletBase
+class BulletBase : public UIElement
 {
 protected:
     //model
@@ -21,6 +22,8 @@ public:
     BulletBase() = default;
     BulletBase(const BulletBase& other);
     BulletBase(BulletModel* nModel,cpoint pos, shared_ptr<EnemyBase> nTarget);
+
+    BulletBase(const wchar_t* link, float factor, BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nTarget);
 
     void setCurr(const cpoint& p);
     void setTarget(shared_ptr<EnemyBase> nTarget);
@@ -39,6 +42,12 @@ public:
 
     // update position
     virtual void update();
+
+    void render(HDC hdc) {
+        if (image) {
+            Graphic::DrawBitmap(image, { currentPosition.getX(), currentPosition.getY() }, hdc);
+        }
+    }
 
 };
 

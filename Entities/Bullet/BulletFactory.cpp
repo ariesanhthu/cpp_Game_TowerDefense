@@ -2,9 +2,9 @@
 
 vector<BulletModel*> BulletFactory::Models;
 
-shared_ptr<BulletBase> BulletFactory::createEnemy(const string type = "normal", shared_ptr<EnemyBase> target = NULL, cpoint pos = cpoint(0,0,0)) {
+shared_ptr<BulletBase> BulletFactory::createBullet(const string type = "normal", shared_ptr<EnemyBase> target = NULL, cpoint pos = cpoint(0,0,0)) {
     if (type == "normal") {
-        return make_unique<BulletBase>(Models[0],pos, target);
+        return make_unique<BulletBase>(L"Assets/game/bullet2-2.png", 2, Models[0], pos, target);
     }
    /* else if (type == BIG) {
         return make_unique<BulletBase>(Models[1],pos, target);
@@ -18,7 +18,7 @@ shared_ptr<BulletBase> BulletFactory::createEnemy(const string type = "normal", 
 }
 
 void BulletFactory::createModels() {
-    Models.push_back(new BulletModel(1, 10));
+    Models.push_back(new BulletModel(1, 15));
 }
 void BulletFactory::deleteModels() {
     for (auto model : Models)

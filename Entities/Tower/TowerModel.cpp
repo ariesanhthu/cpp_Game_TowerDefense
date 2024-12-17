@@ -1,7 +1,7 @@
 #include "TowerModel.h"
 
 TowerModel::TowerModel(){
-	range = 20;
+	range = 100;
 	rate = 1;
 	bulletModel = nullptr;
 }

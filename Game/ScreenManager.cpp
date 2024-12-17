@@ -855,8 +855,11 @@ namespace towerdefense
         for (int i = 0; i < 10; i++) {
             manager.enemyManager.addEnemy(EnemyFactory::createEnemy(1, rand() % nofpath));
         }
-        vector<int> mapSetup{3,5,4,1};
-        manager.enemyManager.setup(mapSetup);
+
+        
+
+        //vector<int> mapSetup{3,5,4,1};
+        //manager.enemyManager.setup(mapSetup);
 
         //Turretinit = { 50, 565 };
 
@@ -913,113 +916,95 @@ namespace towerdefense
 
     }
 
+    bool PlayScreen2::checkValidPos(POINT cursurPos) {
+        if (_towerInitPlace->isHovered(cursurPos)) {
+            return false;
+        }
+        return true;
+    }
+
     void PlayScreen2::handleInput(HWND hwnd) {
+        // Lấy tọa độ con trỏ chuột
         POINT cursorPos;
         GetCursorPos(&cursorPos);
         ScreenToClient(GetActiveWindow(), &cursorPos);
 
-        //if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { // Left mouse button pressed
-        //    auto now = std::chrono::steady_clock::now();
-        //    if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
-        //        lastMouseClickTime = now;
-        //        // if click the play 
-        //        RECT playRect = {
-        //            posbuttonplay.x,
-        //            posbuttonplay.y,
-        //            posbuttonplay.x + buttonSize.x * 1.8, // Button width
-        //            posbuttonplay.y + buttonSize.y * 1.8 // Button height
-        //        };
-        //        /*
-        //            HANDLE CLICK
+        static bool isMousePressed = false;   // Trạng thái chuột trái được nhấn
+        static bool isPicking = false;        // Tháp đang được nhấc lên
+        static bool isPickedFromInitPos = false; // Tháp nhấc từ initPos
 
-        //            PAUSE GAME || PLAY GAME
-        //        */
-        //        if (PtInRect(&playRect, cursorPos)) {
-        //            // if click play 
+        // Kiểm tra chuột trái được nhấn
+        if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
+            if (!isMousePressed) { // Chỉ xử lý 1 lần khi chuột nhấn xuống
+                isMousePressed = true;
 
-        //            for (int i = 0; i < enemylist.size(); i++) {
-        //                enemylist[i].isMove = !enemylist[i].isMove;
-        //            }
-        //        }
+                // Xử lý nút PLAY/PAUSE
+                if (_playOrPause->isClicked(cursorPos)) {
+                    if (manageFirstTime) {
+                        statePlayingGame = PLAY; // Bắt đầu chơi
+                        manageFirstTime = false;
+                    }
+                }
 
-        //        // if click in hamburger display board 
-        //        RECT hamburgerRect = {
-        //            hamburgerPos.x,
-        //            hamburgerPos.y,
-        //            hamburgerPos.x + buttonSize.x * 1.5, // Button width
-        //            hamburgerPos.y + buttonSize.y * 1.5 // Button height
-        //        };
-        //        if (PtInRect(&hamburgerRect, cursorPos)) {
-        //            displayBoard = !displayBoard;
-        //        }
-        //    }
-        //}
+                // Xử lý nút HAMBURGER để mở/đóng instruction board
+                if (_hamburger->isClicked(cursorPos)) {
+                    bool currentTrigger = _instructionboard->getTriger();
+                    _instructionboard->setTriger(!currentTrigger);
+                }
 
-        //if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
-        //    // if hold tower 
-        //    RECT initTowerRect = {
-        //        Turretinit.x,
-        //        Turretinit.y,
-        //        Turretinit.x + towerSize.x * 2, // Button width
-        //        Turretinit.y + towerSize.y * 2 // Button height
-        //    };
-        //    if (PtInRect(&initTowerRect, cursorPos)) {
-        //        isPicking = true;
-        //    }
-        //    else {
-        //        isPicking = false;
-        //    }
-        //}
-
-        //if (isPicking) {
-        //    Tpicking.setLocation(cursorPos);
-        //}
-        //else {
-        //    // neu vi tri thoa dieu kien thi them vao list tower
-        //    if (checkValidPos(TcurrentPick)) {
-        //        //towerlist.push_back(Tpicking);
-        //        cpoint pos = { TcurrentPick.x, TcurrentPick.y };
-        //        manager.towerManager.addTower(TowerFactory::createTower(1, pos));
-        //    }
-        //}
-
-        if (_playOrPause->isClicked(cursorPos)) {
-            if (manageFirstTime) {
-
-                statePlayingGame = PLAY;
-
-                manageFirstTime = false;
+                // Kiểm tra click vào tháp tại vị trí initPos
+                if (renderTowerType1->isHovered(cursorPos)) {
+                    isPicking = true;          // Bắt đầu nhấc tháp
+                    isPickedFromInitPos = true; // Đánh dấu nhấc từ vị trí initPos
+                }
             }
-            //else {
-            //    _yesnoBoard->setTriger(true);
-            //}
+        }
+        else { // Xử lý khi chuột trái được thả
+            if (isPicking && isPickedFromInitPos) {
+                isPicking = false;       // Kết thúc trạng thái nhấc tháp
+                isPickedFromInitPos = false;
+
+                // Thêm tháp mới vào TowerManager tại vị trí con trỏ chuột
+                if (checkValidPos(cursorPos)) {
+                    manager.towerManager.addTower(
+                        TowerFactory::createTower(1, { cursorPos.x, cursorPos.y, 0 })
+                    );
+                }
+
+                // Đặt tháp được nhấc trở về vị trí ban đầu
+                pickedTowerType1->setCurrentPosition({ Turretinit.x, Turretinit.y, 0 });
+            }
+
+            isMousePressed = false; // Reset trạng thái chuột
         }
 
-        if (_hamburger->isClicked(cursorPos)) {
-            bool t = _instructionboard->getTriger();
-            _instructionboard->setTriger(!t);
+        // Nếu đang nhấc tháp, cập nhật vị trí tháp theo tọa độ chuột
+        if (isPicking) {
+            pickedTowerType1->setCurrentPosition({ cursorPos.x, cursorPos.y, 0 });
         }
     }
 
+
+
     void PlayScreen2::update(float delta) {
-        //if (statePlayingGame != PLAY) return;
+        if (statePlayingGame != PLAY) return;
 
-        //if (manager.gameStatus == WIN) {
-        //    statePlayingGame = WIN;
-        //}
-        //else if (manager.gameStatus == LOSE) {
-        //    statePlayingGame = LOSE;
-        //}
-        //else if (manager.gameStatus == PLAY) {
-        //    manager.update(delta);
-        //    statePlayingGame = PLAY;
-        //}
-        //else if (manager.gameStatus == PAUSE) {
-        //    // ........
-        //}
+        if (manager.gameStatus == WIN) {
+            statePlayingGame = WIN;
+        }
+        else if (manager.gameStatus == LOSE) {
+            statePlayingGame = LOSE;
+        }
+        else if (manager.gameStatus == PLAY) {
+            //OutputDebugStringA("11111111111111111\n");
+            manager.update(delta);
+            statePlayingGame = PLAY;
+        }
+        else if (manager.gameStatus == PAUSE) {
+            // ........
+        }
 
-        OutputDebugStringA("11111111111111111\n");
-        manager.update(delta);
+        //manager.update(delta);
     }
 
     void PlayScreen2::render(HDC hdc) {
@@ -1067,12 +1052,14 @@ namespace towerdefense
         }
         
         // in hết        
-        OutputDebugStringA("AAAAAAAAAAAAAAAAAa\n");
+        //OutputDebugStringA("AAAAAAAAAAAAAAAAAa\n");
+
+        pickedTowerType1->render(hdc);
+        renderTowerType1->render(hdc);
         manager.render(hdc);
 
         
         _playOrPause->render(hdc);
-
     }
 
     //========================================================================================================================//

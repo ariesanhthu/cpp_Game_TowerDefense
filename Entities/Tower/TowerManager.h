@@ -11,7 +11,7 @@ class TowerManager
 public:
     void addTower(TowerModel* model, cpoint pos);
     void addTower(shared_ptr<TowerBase> tower);
-    void renderTowers();
+    void renderTowers(HDC hdc);
 
     void updateAllTower(std::vector<shared_ptr<EnemyBase>>& enemies_);
 

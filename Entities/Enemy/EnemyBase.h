@@ -30,6 +30,10 @@ public:
 
 	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath, int nHealth);
 	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath);
+
+	/*~EnemyBase() {
+		if (model) delete model;
+ 	}*/
 	
 	void setCurrentPosition(const cpoint& p);
 	void setHealth(int hp);
@@ -52,8 +56,8 @@ public:
 
 	void render(HDC hdc) {
 		if (isDead == false) {  // Chỉ vẽ nếu không chết
-			OutputDebugStringA("DDDDDDDDDDDDDDDDDDDDDDDDDDd\n");
-			OutputDebugStringA((std::to_string(currentPosition.getX()) + " " + std::to_string(currentPosition.getY()) + "\n").c_str());
+			//OutputDebugStringA("DDDDDDDDDDDDDDDDDDDDDDDDDDd\n");
+			//OutputDebugStringA((std::to_string(currentPosition.getX()) + " " + std::to_string(currentPosition.getY()) + "\n").c_str());
 			Graphic::DrawBitmap(image, {currentPosition.getX(), currentPosition.getY()}, hdc);
 		}
 	}

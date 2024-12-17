@@ -8,13 +8,15 @@
 #include "cpoint.h"
 #include "TowerModel.h"
 #include "Bullet/BulletBase.h"
+#include "Bullet/BulletFactory.h"
 #include "Enemy/EnemyBase.h"
+#include "UIElement.h"
 
 #define MILI_SEC std::chrono::milliseconds
 #define MILI_SEC_CAST std::chrono::duration_cast<std::chrono::milliseconds>
 #define TIME_POINT std::chrono::system_clock::time_point
 
-class TowerBase
+class TowerBase : public UIElement 
 {
 protected:
 	TowerModel* model;
@@ -23,10 +25,15 @@ protected:
 	TIME_POINT lastShoot;
 
 	shared_ptr<BulletBase> bullet;
+
 public:
 	TowerBase() = default;
 	TowerBase(const TowerBase& other);
 	TowerBase(TowerModel* nModel, cpoint pos);
+	
+	TowerBase(const wchar_t* link, float factor, TowerModel* nModel, cpoint pos);
+
+	TowerBase(const wchar_t* link, float factor, cpoint pos);
 
 	void setCurrentPosition(const cpoint& pos);
 	cpoint getCurrentPosition();
@@ -40,6 +47,9 @@ public:
 	//virtual BulletBase shoot(shared_ptr<EnemyBase> target);
 	virtual void shoot(shared_ptr<EnemyBase> target);
 
+	void render(HDC hdc) {
+		Graphic::DrawBitmap(image, { currentPosition.getX(), currentPosition.getY() }, hdc);
+	}
 };
 
 

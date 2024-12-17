@@ -69,7 +69,7 @@ void EnemyBase::readFile(istream& i) {
 
 //update
 bool EnemyBase::update(float delta) {
-	OutputDebugStringA("4444444444444\n");
+	//OutputDebugStringA("4444444444444\n");
 	if (index < model->getPath(path).size() - 1 - model->getSpeed()) {
 		currentPosition = model->getPath(path)[index += model->getSpeed()];
 
