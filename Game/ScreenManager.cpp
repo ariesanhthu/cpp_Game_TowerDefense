@@ -1,9 +1,9 @@
 ﻿#pragma once
+
 #include "ScreenManager.h"
 #include "Graphic.h"
 #include <vector>
 #include <stdlib.h>
-
 #include <fstream>
 
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
@@ -908,6 +908,7 @@ namespace towerdefense
         play_or_pause = Graphic::LoadBitmapImage(L"Assets/button/btnPlay.png", 1.8);
         hbullet = Graphic::LoadBitmapImage(L"Assets/game/bullet2-2.png", 1);
         tower = Graphic::LoadBitmapImage(L"Assets/game/tured.bmp", 0.8);*/
+
     }
 
     void PlayScreen2::handleInput(HWND hwnd) {
@@ -1000,20 +1001,23 @@ namespace towerdefense
 
     void PlayScreen2::update(float delta) {
         //if (statePlayingGame != PLAY) return;
-        OutputDebugStringA((std::to_string(manager.enemyManager.enemies_[0]->getCurrentPosition().getX()) + "updateeeeeeeeeeeeeee" + "\n").c_str());
 
-        if (manager.gameStatus == WIN) {
-            statePlayingGame = WIN;
-        }
-        else if (manager.gameStatus == LOSE) {
-            statePlayingGame = LOSE;
-        }
-        else if (manager.gameStatus == PLAY) {
-            manager.update(delta);
-        }
-        else if (manager.gameStatus == PAUSE) {
-            // ........
-        }
+        //if (manager.gameStatus == WIN) {
+        //    statePlayingGame = WIN;
+        //}
+        //else if (manager.gameStatus == LOSE) {
+        //    statePlayingGame = LOSE;
+        //}
+        //else if (manager.gameStatus == PLAY) {
+        //    manager.update(delta);
+        //    statePlayingGame = PLAY;
+        //}
+        //else if (manager.gameStatus == PAUSE) {
+        //    // ........
+        //}
+
+        OutputDebugStringA("11111111111111111\n");
+        manager.update(delta);
     }
 
     void PlayScreen2::render(HDC hdc) {
@@ -1045,6 +1049,7 @@ namespace towerdefense
         //    Tpicking.render(tower, hdc);
         //}
 
+
         _background->render(hdc);
         _hamburger->render(hdc);
         _towerInitPlace->render(hdc);
@@ -1059,8 +1064,8 @@ namespace towerdefense
             _yesBtn->render(hdc);
         }
         
-        // in hết
-        
+        // in hết        
+        OutputDebugStringA("AAAAAAAAAAAAAAAAAa\n");
         manager.render(hdc);
 
         

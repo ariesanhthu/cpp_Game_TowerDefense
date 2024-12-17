@@ -12,13 +12,12 @@ void GamePlayManage::startGame() {
 }
 
 void GamePlayManage::update(float delta) {
-	
-
+	OutputDebugStringA("222222222222222222222222222222\n");
 	if (enemyManager.getStatus() != PLAY) {
 		gameStatus = enemyManager.getStatus();
 	}
 	else if (enemyManager.getStatus() == PLAY) {
-		enemyManager.updateAllEnemy();
+		enemyManager.updateAllEnemy(delta);
 		//towerManager.updateAllTower(enemyManager.enemies_);
 	}
 }

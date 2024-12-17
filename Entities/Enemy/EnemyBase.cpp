@@ -66,9 +66,10 @@ void EnemyBase::readFile(istream& i) {
 }
 
 //update
-bool EnemyBase::update(){
-	if (index < model->getPath(path).size() - 1 && model->getIsMove()) {
-		currentPosition = model->getPath(path)[index++];
+bool EnemyBase::update(float delta) {
+	OutputDebugStringA("4444444444444\n");
+	if (index < model->getPath(path).size() - 1) {
+		currentPosition = model->getPath(path)[index += model->getSpeed()];
 		return false;
 	}
 	else {
@@ -78,6 +79,5 @@ bool EnemyBase::update(){
 
 void EnemyBase::hit(int n){
 	if (health < n) isDead = 1;
-	else
-	health -= n;
+	else health -= n;
 }
