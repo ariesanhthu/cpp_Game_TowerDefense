@@ -11,7 +11,7 @@ private:
 	int speed;
 	int defaultHealth = 100;
 
-	bool isMoving;
+	bool isMoving = true;
 	// texture
 
 	std::vector< std::vector<cpoint>> pathList;

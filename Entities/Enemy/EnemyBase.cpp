@@ -29,6 +29,7 @@ EnemyBase::EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int 
 	model = nModel;
 	health = model->getDefaultHealth();
 	path = npath;
+	health = model->getDefaultHealth();
 }
 
 void EnemyBase::setCurrentPosition(const cpoint& p) { 

@@ -78,3 +78,10 @@ void EnemyManager::readFile(ifstream& i) {
 void EnemyManager::writeFile(ofstream& o) {
 
 }
+
+void EnemyManager::setup(vector<int> ar) {
+    nOfPhase = ar[0];
+    for (int i = 0; i < nOfPhase; i++) {
+        nOfEnemyEachPhase.push_back(ar[i + 1]);
+    }
+}
