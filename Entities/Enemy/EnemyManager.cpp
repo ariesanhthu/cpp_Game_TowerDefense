@@ -9,6 +9,9 @@ void EnemyManager::addEnemy(shared_ptr<EnemyBase> e) {
 }
 
 void EnemyManager::updateAllEnemy() {
+
+    
+
     // phase control
     if (remainEnemy == 0 && spawnedEnemy >= nOfEnemy) {
         if (phase < nOfPhase) {
@@ -17,7 +20,7 @@ void EnemyManager::updateAllEnemy() {
         }
         else {
             //game exit
-            gameStatus = 1;
+            gameStatus = WIN;
         }
     }
 
@@ -41,9 +44,12 @@ void EnemyManager::updateAllEnemy() {
     }
 }
 
-void EnemyManager::renderEnemies() {
-    for (auto& enemy : enemies_) {
-        //enemy.render();
+void EnemyManager::renderEnemies(HDC hdc) {
+    if (gameStatus == PLAY) {
+        for (auto& enemy : enemies_) {
+            //OutputDebugStringA((std::to_string(gameStatus) + "renderrrrrrrrrrrrrrrrrrrrrrrr" + "\n").c_str());
+            enemy->render(hdc);
+        }
     }
 }
 

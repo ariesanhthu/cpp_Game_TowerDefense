@@ -8,24 +8,42 @@
 #include <Enemy/EnemyFactory.h>
 #include <Tower/TowerManager.h>
 #include <Tower/TowerFactory.h>
+#include <UIElement.h>
 
-class GamePlayManage
+
+
+class GamePlayManage 
 {
+private: 
+	enum GameState {
+		PLAY = 0,
+		WIN = 1,
+		LOSE = 2,
+		PAUSE = 3,
+	};
+
 public:
 	EnemyManager enemyManager;
 	//BulletManager bulletManager;
 	TowerManager towerManager;
 
 	int gameCode;
-	int gameStatus; // 1 is win, 2 is lose, 0 is game conmtinue
+	int gameStatus = PLAY; 
 
 	GamePlayManage() = default;
-	GamePlayManage(int n) : gameCode(n) {};
+
+	GamePlayManage(int n) : gameCode(n) {}
+
 	void setup(vector<vector<cpoint>> path);
 	void startGame();
-	void update();
+	void update(float delta);
 	void destroy();
 
+	void render(HDC hdc) {
+		// luon ve
+		enemyManager.renderEnemies(hdc);
+		//towerManager.render(hdc);
+	}
 };
 
 

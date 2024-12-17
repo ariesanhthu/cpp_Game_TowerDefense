@@ -18,7 +18,8 @@ namespace towerdefense
         WPARAM wParam,
         LPARAM lParam
     ) {
-        Graphic* graphic = nullptr; 
+        Graphic* graphic = nullptr;
+        
        
         LRESULT result = 0; // Lưu kết quả trả về từ Windows
 
@@ -28,7 +29,6 @@ namespace towerdefense
         switch (message)
         {
         case WM_CREATE: 
-            if (graphic) delete graphic; 
             graphic = new Graphic();
             Game::getInstance().loadInitialScreen(0);
             //createDummyGameDataFile(s);
@@ -38,6 +38,7 @@ namespace towerdefense
         {
             if (graphic) delete graphic; 
             delete Game::getInstance().screenManager;
+
             Game::getInstance().running = false; // Dừng game
             OutputDebugString(L"window close\n");
         } break;
@@ -45,6 +46,7 @@ namespace towerdefense
         {
             if (graphic) delete graphic; 
             delete Game::getInstance().screenManager;
+
             Game::getInstance().running = false; // Dừng game
             OutputDebugString(L"window destroy\n");
         } break;
@@ -240,18 +242,18 @@ namespace towerdefense
         if (x == 0) {
             newscreen = std::make_shared<MainScreen>();
         }
-        else if (x == 1) {
-            newscreen = std::make_shared<PlayScreen>();
-        }
+        //else if (x == 1) {
+        //    newscreen = std::make_shared<PlayScreen>();
+        //}
         else if (x == 2) {
             newscreen = std::make_shared<PlayScreen2>();
         }
-        else if (x == 3) {
-            newscreen = std::make_shared<PlayScreen3>();
-        }
-        else if (x == 4) {
-            newscreen = std::make_shared<PlayScreen4>();
-        }
+        //else if (x == 3) {
+        //    newscreen = std::make_shared<PlayScreen3>();
+        //}
+        //else if (x == 4) {
+        //    newscreen = std::make_shared<PlayScreen4>();
+        //}
         else {
             OutputDebugStringA("Invalid screen index.\n");
             return;  // Exit early for invalid `x`

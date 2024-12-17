@@ -12,8 +12,12 @@ protected:
     mutable std::chrono::steady_clock::time_point lastMouseClickTime;  // mutable to modify in const method
     std::chrono::steady_clock::time_point lastKeyPressTime;
     const int debounceDelayMs = 300; // 200 ms debounce delay
+    bool trigger = false;
 
 public:
+    UIElement() {
+        image = nullptr;
+    }
     UIElement(POINT pos, HBITMAP img)
         : position(pos), image(img), lastMouseClickTime(std::chrono::steady_clock::now()) {
         size = Graphic::GetBitmapSize(image);
@@ -28,6 +32,14 @@ public:
         position = pos; 
         image = Graphic::LoadBitmapImage(link, factor);
         size = Graphic::GetBitmapSize(image);
+    }
+
+    bool getTriger() {
+        return trigger;
+    }
+
+    void setTriger(bool t) {
+        trigger = t;
     }
 
     virtual ~UIElement() {

@@ -10,13 +10,16 @@ void GamePlayManage::setup(vector<vector<cpoint>> path) {
 void GamePlayManage::startGame() {
 
 }
-void GamePlayManage::update() {
-	if (enemyManager.getStatus()) {
+
+void GamePlayManage::update(float delta) {
+	
+
+	if (enemyManager.getStatus() != PLAY) {
 		gameStatus = enemyManager.getStatus();
 	}
-	else {
+	else if (enemyManager.getStatus() == PLAY) {
 		enemyManager.updateAllEnemy();
-		towerManager.updateAllTower(enemyManager.enemies_);
+		//towerManager.updateAllTower(enemyManager.enemies_);
 	}
 }
 
@@ -24,5 +27,4 @@ void GamePlayManage::destroy() {
 	EnemyFactory::deleteModels();
 	BulletFactory::deleteModels();
 	TowerFactory::deleteModels();
-
 }
