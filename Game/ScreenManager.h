@@ -15,6 +15,8 @@
 #include "User/userManager.h"
 #include "User/converted.h"
 
+#include "GameManage/GamePlayManage.h"
+
 using namespace std;
 namespace towerdefense
 {
@@ -171,9 +173,31 @@ namespace towerdefense
         //void resizeContent(int windowWidth, int windowHeight) override;
     };
 
+
+    /*
+    ////////////////////////////////
+            STATE GAME
+    ////////////////////////////////
+    */
+    enum GameState {
+        PLAY = 0,
+        WIN = 1,
+        LOSE = 2,
+        PAUSE = 3,
+    };
+
     class MapScreen : public Screen {
     protected:
+        //
         cplayer guess;
+
+        // buton play or pause 
+        POINT posbuttonplay = { 580, 570 };
+
+        //std::shared_ptr<Button> _playOrPause = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, posbuttonplay);
+
+        GameState statePlayingGame = PLAY;
+        int countHeart = 0;
 
         // hbitmap
         HBITMAP background = nullptr;
@@ -211,8 +235,7 @@ namespace towerdefense
         // position init place of box
         POINT towerInitPos = { 25, 520 };
         
-        // buton play or pause 
-        POINT posbuttonplay = { 580, 570 };
+       
 
         // delay hand variable
         std::chrono::steady_clock::time_point lastMouseClickTime;
@@ -226,6 +249,9 @@ namespace towerdefense
         // tower
         std::vector<ctower> towerlist;
         POINT Turretinit;         // tower position 
+
+        // 
+        GamePlayManage manager;
 
         // tower de chon di chuyen
         ctower Tpicking;
@@ -264,6 +290,8 @@ namespace towerdefense
         virtual void render(HDC hdc) = 0;
     };
 
+
+
     class PlayScreen : public MapScreen {
     private:
         vector<POINT> epath = {
@@ -273,6 +301,8 @@ namespace towerdefense
             {1200, 490},
         };
         int mapCode = 1;
+
+    
 
     public:
         PlayScreen();
@@ -286,7 +316,7 @@ namespace towerdefense
 
     class PlayScreen2 : public MapScreen {
     private:
-        vector<POINT> epath = {
+        vector<cpoint> epath = {
             {-100, 115},
             {435, 115},
             {435, 330},

@@ -71,10 +71,16 @@
 #define DC_MOUSE_X1		3
 #define DC_MOUSE_X2		4
 
-namespace towerdefense
-{
-	class Input
-	{
+#define DC_MAX_MOUSE_BUTTONS 5
+
+#define DC_MOUSE_LEFT	0
+#define DC_MOUSE_RIGHT	1
+#define DC_MOUSE_MIDDLE	2
+#define DC_MOUSE_X1		3
+#define DC_MOUSE_X2		4
+
+namespace towerdefense {
+	class Input {
 		friend LRESULT CALLBACK WindowCallback(
 			HWND windowHandle,
 			UINT message,
@@ -88,8 +94,7 @@ namespace towerdefense
 			bool wasDown, isDown;
 		};
 
-		struct KeyboardInputMap
-		{
+		struct KeyboardInputMap {
 			KeyState keys[DC_MAX_KEYS];
 		};
 
