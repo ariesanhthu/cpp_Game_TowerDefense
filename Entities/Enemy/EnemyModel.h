@@ -9,7 +9,7 @@ class EnemyModel
 {
 private:
 	int speed;
-	int defaultHealth;
+	int defaultHealth = 100;
 
 	bool isMoving;
 	// texture

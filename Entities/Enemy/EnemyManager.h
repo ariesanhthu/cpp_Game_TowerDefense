@@ -5,6 +5,7 @@
 #include "EnemyModel.h"
 #include "EnemyBase.h"
 #include "chrono"
+#include <random>
 
 class EnemyManager
 {
@@ -21,6 +22,8 @@ public:
     void readFile(ifstream& i);
 
     void writeFile(ofstream& o);
+
+    int getRandomInterval(int min, int max);
 
     std::vector<shared_ptr<EnemyBase>> enemies_;
 

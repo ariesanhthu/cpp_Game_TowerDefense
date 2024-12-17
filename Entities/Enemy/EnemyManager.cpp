@@ -4,47 +4,61 @@
 //    enemies_.emplace_back(model, path);
 //}
 
+int EnemyManager::getRandomInterval(int min, int max) {
+    static std::random_device rd;
+    static std::mt19937 rng(rd());
+    std::uniform_int_distribution<int> uni(min, max);
+    return uni(rng);
+}
+
 void EnemyManager::addEnemy(shared_ptr<EnemyBase> e) {
     enemies_.push_back(e);
+    nOfEnemy++;
 }
 
 void EnemyManager::updateAllEnemy(float delta) {
+
+
     // phase control
-    //if (remainEnemy == 0 && spawnedEnemy >= nOfEnemy) {
-    //    if (phase < nOfPhase) {
-    //        phase++;
-    //        nOfEnemy += nOfEnemyEachPhase[phase];
-    //    }
-    //    else {
-    //        //game exit
-    //        gameStatus = WIN;
-    //    }
-    //}
-
-    //// Spawn interval
-    //remainEnemy = 0;
-    //chrono::system_clock::time_point now = chrono::system_clock::now();
-    //if (    std::chrono::duration_cast<chrono::milliseconds> (now - lastSpawn) > chrono::milliseconds(1000 * enemySpawnInterval)
-    //    &&  spawnedEnemy < nOfEnemy
-    //) {
-
-    //    spawnedEnemy++;
-    //    lastSpawn = now;
-    //}
-
-    //// update remain e
-    //for (int i = 0; i < spawnedEnemy; i++) {
-    //    if (enemies_[i]->getHealth() > 0) {
-    //        if(enemies_[i]->update(delta)) gameStatus = 2;
-    //        remainEnemy++;
-    //    }
-    //}
-
-    OutputDebugStringA("33333333333333333333333333333333\n");
-    for (auto e : enemies_) {
-        e->update(delta);
+    if (remainEnemy == 0 && spawnedEnemy >= nOfEnemy) {
+        if (phase < nOfPhase) {
+            phase++;
+            nOfEnemy += nOfEnemyEachPhase[phase];
+        }
+        else {
+            //game exit
+            gameStatus = WIN;
+        }
     }
 
+    ////// Spawn interval
+    remainEnemy = 0;
+
+    chrono::system_clock::time_point now = chrono::system_clock::now();
+
+    static int nextSpawnDelay = getRandomInterval(5000, 20000);
+
+    if (std::chrono::duration_cast<chrono::milliseconds> (now - lastSpawn) > chrono::milliseconds(1000 * enemySpawnInterval) &&  spawnedEnemy < nOfEnemy) {
+        spawnedEnemy++;
+        lastSpawn = now;
+
+    }
+
+    ////// update remain e
+    for (int i = 0; i < spawnedEnemy; i++) {
+        if (enemies_[i]->getHealth() > 0) {
+
+    //        /*if(enemies_[i]->update(delta)) 
+    //            gameStatus = 2;*/
+
+            enemies_[i]->update(delta);
+
+            // random interval
+            nextSpawnDelay = getRandomInterval(5000, 20000);
+
+            remainEnemy++;
+        }
+    }
 }
 
 void EnemyManager::renderEnemies(HDC hdc) {

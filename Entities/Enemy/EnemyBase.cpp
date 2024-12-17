@@ -27,6 +27,7 @@ EnemyBase::EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int 
 
 EnemyBase::EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath) : UIElement(link, factor, { 0, 0 }) {
 	model = nModel;
+	health = model->getDefaultHealth();
 	path = npath;
 }
 
@@ -68,8 +69,15 @@ void EnemyBase::readFile(istream& i) {
 //update
 bool EnemyBase::update(float delta) {
 	OutputDebugStringA("4444444444444\n");
-	if (index < model->getPath(path).size() - 1) {
+	if (index < model->getPath(path).size() - 1 - model->getSpeed()) {
 		currentPosition = model->getPath(path)[index += model->getSpeed()];
+
+		// for test
+		if (index >= model->getPath(path).size() - 5) {
+			index = 0;
+		}
+
+
 		return false;
 	}
 	else {
