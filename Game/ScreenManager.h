@@ -190,33 +190,24 @@ namespace towerdefense
     protected:
         //
         cplayer guess;
+        GameState statePlayingGame = PAUSE;
+        int countHeart = 0;
 
         // buton play or pause 
         POINT posbuttonplay = { 580, 570 };
 
-        //std::shared_ptr<Button> _playOrPause = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, posbuttonplay);
+        std::shared_ptr<Button> _playOrPause;
+        std::shared_ptr<Button> _hamburger; 
+        std::shared_ptr<Item> _background; 
+        std::shared_ptr<Item> _instructionboard; 
+        std::shared_ptr<Item> _towerInitPlace; 
 
-        GameState statePlayingGame = PLAY;
-        int countHeart = 0;
+        // yes no board
+        std::shared_ptr<Item> _yesnoBoard; 
+        std::shared_ptr<Button> _yesBtn; 
+        std::shared_ptr<Button> _noBtn; 
 
-        // hbitmap
-        HBITMAP background = nullptr;
-        HBITMAP tower = nullptr;              // tower
-        HBITMAP towerInitPlace = nullptr;     // Ô chứa tháp
-        HBITMAP instructionBoard = nullptr;   // Bảng hướng dẫn 
-        HBITMAP enemy1 = nullptr;              // enemy
-        HBITMAP enemy2 = nullptr;              // enemy
-        HBITMAP enemy3 = nullptr;              // enemy
-        HBITMAP hamburger = nullptr;          // hamburger button
-        HBITMAP play_or_pause = nullptr;      // nut play hoac pause
-        HBITMAP hbullet = nullptr;            // bullet
-
-        HBITMAP boardYesNo = nullptr;
-        HBITMAP WantToContinue = nullptr;
-        HBITMAP yesBtn = nullptr; 
-        HBITMAP noBtn = nullptr;
-
-        bool IsPlayGame = false;
+        //bool IsPlayGame = false;
         bool manageFirstTime = true;
 
         // Pause handling
@@ -235,34 +226,31 @@ namespace towerdefense
         // position init place of box
         POINT towerInitPos = { 25, 520 };
         
-       
-
         // delay hand variable
         std::chrono::steady_clock::time_point lastMouseClickTime;
         std::chrono::steady_clock::time_point lastKeyPressTime;
         const int debounceDelayMs = 200; // 200 ms debounce delay
 
-        // enemy 
-        std::vector<cenemy> enemylist;
-        POINT Einit;              // enemy position
+        //// enemy 
+        //std::vector<cenemy> enemylist;
+        //POINT Einit;              // enemy position
 
-        // tower
-        std::vector<ctower> towerlist;
-        POINT Turretinit;         // tower position 
+        //// tower
+        //std::vector<ctower> towerlist;
+        //POINT Turretinit;         // tower position 
 
-        // 
         GamePlayManage manager;
 
         // tower de chon di chuyen
-        ctower Tpicking;
+        /*ctower Tpicking;
         POINT TcurrentPick;
         bool isPicking = false;
-        bool isMouseDown = false;
+        bool isMouseDown = false;*/
 
         // size
-        POINT buttonSize = { 26, 29 };
+        /*POINT buttonSize = { 26, 29 };
         POINT boardSize = { 260, 180 };
-        POINT towerSize = { 20, 30 };
+        POINT towerSize = { 20, 30 };*/
 
         // support 
 
@@ -292,27 +280,25 @@ namespace towerdefense
 
 
 
-    class PlayScreen : public MapScreen {
-    private:
-        vector<POINT> epath = {
-            {-100, 150},
-            {390, 150},
-            {390, 490},
-            {1200, 490},
-        };
-        int mapCode = 1;
+    //class PlayScreen : public MapScreen {
+    //private:
+    //    vector<POINT> epath = {
+    //        {-100, 150},
+    //        {390, 150},
+    //        {390, 490},
+    //        {1200, 490},
+    //    };
+    //    int mapCode = 1;
 
-    
+    //public:
+    //    PlayScreen();
+    //    ~PlayScreen();
 
-    public:
-        PlayScreen();
-        ~PlayScreen();
-
-        void loadContent(int width, int height) override;
-        void handleInput(HWND hwnd) override;
-        void update(float delta) override;
-        void render(HDC hdc) override;
-    };
+    //    void loadContent(int width, int height) override;
+    //    void handleInput(HWND hwnd) override;
+    //    void update(float delta) override;
+    //    void render(HDC hdc) override;
+    //};
 
     class PlayScreen2 : public MapScreen {
     private:
@@ -335,52 +321,52 @@ namespace towerdefense
         void render(HDC hdc) override;
     };
 
-    class PlayScreen3 : public MapScreen {
-    private:
-        vector<POINT> epath1 = {
-            {-100, 170},
-            {460, 170},
-            {460, 450},
-            {1200, 450}
-        };
+    //class PlayScreen3 : public MapScreen {
+    //private:
+    //    vector<POINT> epath1 = {
+    //        {-100, 170},
+    //        {460, 170},
+    //        {460, 450},
+    //        {1200, 450}
+    //    };
 
-        vector<POINT> epath2 = {
-            { 280, 800 },
-            { 280, 450 },
-            { 1200, 450 }
-        };
+    //    vector<POINT> epath2 = {
+    //        { 280, 800 },
+    //        { 280, 450 },
+    //        { 1200, 450 }
+    //    };
 
-    public:
-        PlayScreen3();
-        ~PlayScreen3();
+    //public:
+    //    PlayScreen3();
+    //    ~PlayScreen3();
 
-        void loadContent(int width, int height) override;
-        void handleInput(HWND hwnd) override;
-        void update(float delta) override;
-        void render(HDC hdc) override;
-    };
+    //    void loadContent(int width, int height) override;
+    //    void handleInput(HWND hwnd) override;
+    //    void update(float delta) override;
+    //    void render(HDC hdc) override;
+    //};
 
-    class PlayScreen4 : public MapScreen {
-    private:
-        vector<POINT> epath1 = {
-            { -100, 160 },
-            { 660, 160 },
-            { 660, 800 },
-        };
+    //class PlayScreen4 : public MapScreen {
+    //private:
+    //    vector<POINT> epath1 = {
+    //        { -100, 160 },
+    //        { 660, 160 },
+    //        { 660, 800 },
+    //    };
 
-        vector<POINT> epath2 = {
-            { 290, -100 },
-            { 290, 400 },
-            { 1200, 400 }
-        };
+    //    vector<POINT> epath2 = {
+    //        { 290, -100 },
+    //        { 290, 400 },
+    //        { 1200, 400 }
+    //    };
 
-    public:
-        PlayScreen4();
-        ~PlayScreen4();
+    //public:
+    //    PlayScreen4();
+    //    ~PlayScreen4();
 
-        void loadContent(int width, int height) override;
-        void handleInput(HWND hwnd) override;
-        void update(float delta) override;
-        void render(HDC hdc) override;
-    };
+    //    void loadContent(int width, int height) override;
+    //    void handleInput(HWND hwnd) override;
+    //    void update(float delta) override;
+    //    void render(HDC hdc) override;
+    //};
 }

@@ -6,9 +6,9 @@
 #include "cpoint.h"
 #include "EnemyModel.h"
 #include "Graphic.h"
+#include "UIElement.h"
 
-
-class EnemyBase
+class EnemyBase : public UIElement
 {
 protected:
 	//model
@@ -27,6 +27,9 @@ public:
 	EnemyBase(EnemyModel* nModel, int path);
 	EnemyBase(EnemyModel* nModel, int path, int nHealth);
 	EnemyBase(const EnemyBase& other);
+
+	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath, int nHealth);
+	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath);
 	
 	void setCurrentPosition(const cpoint& p);
 	void setHealth(int hp);
@@ -47,9 +50,9 @@ public:
 	bool update();
 	void hit( int n);
 
-	void render(HBITMAP element, HDC hdc) {
+	void render(HDC hdc) {
 		if (!isDead) {  // Chỉ vẽ nếu không chết
-			Graphic::DrawBitmap(element, {currentPosition.getX(), currentPosition.getY()}, hdc);
+			Graphic::DrawBitmap(image, {currentPosition.getX(), currentPosition.getY()}, hdc);
 		}
 	}
 };

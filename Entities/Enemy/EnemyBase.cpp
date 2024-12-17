@@ -19,6 +19,16 @@ EnemyBase::EnemyBase(EnemyModel* nModel, int nPath, int nHealth) {
 	path = nPath;
 }
 //EnemyBase();
+EnemyBase::EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath, int nHealth) : UIElement(link, factor, {0, 0}) {
+	model = nModel;
+	health = nHealth;
+	path = npath;
+}
+
+EnemyBase::EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath) : UIElement(link, factor, { 0, 0 }) {
+	model = nModel;
+	path = npath;
+}
 
 void EnemyBase::setCurrentPosition(const cpoint& p) { 
 	currentPosition = p; 

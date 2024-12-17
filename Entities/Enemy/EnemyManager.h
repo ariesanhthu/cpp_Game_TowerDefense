@@ -16,25 +16,32 @@ public:
 
     int getStatus() { return gameStatus; }
 
-    void renderEnemies(HBITMAP element, HDC hdc);
+    void renderEnemies(HDC hdc);
 
     void readFile(ifstream& i);
 
     void writeFile(ofstream& o);
 
     std::vector<shared_ptr<EnemyBase>> enemies_;
+
 private:
 
-    int nOfPhase; // số lượng phase
-    vector <int> nOfEnemyEachPhase; // số lượng e mỗi phase
-    int phase; // phase hiện tại 
-    int remainEnemy;  // số lượng e còn lại trên màn hình
-    int nOfEnemy = 0; // số lượng e 
-    int spawnedEnemy = 0; // số lượng e đã spawn
-	const int enemySpawnInterval = 1; // tốc độ spawn e
+    int nOfPhase;                       // số lượng phase
+    vector <int> nOfEnemyEachPhase;     // số lượng e mỗi phase
+    int phase;                          // phase hiện tại 
+    int remainEnemy;                    // số lượng e còn lại trên màn hình
+    int nOfEnemy = 0;                   // số lượng e 
+    int spawnedEnemy = 0;               // số lượng e đã spawn
+	const int enemySpawnInterval = 1;   // tốc độ spawn e
 	chrono::system_clock::time_point lastSpawn; 
 
-    int gameStatus = 0; // 1 is no enemy left, 2 is enemy reaches the end
+    enum GameStatus {
+        PLAY = 0,
+        WIN = 1,
+        LOSE = 2
+    };
+
+    int gameStatus = PLAY;                 // 1 is no enemy left, 2 is enemy reaches the end
 };
 
 #endif
