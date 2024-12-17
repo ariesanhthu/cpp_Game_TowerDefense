@@ -847,7 +847,7 @@ namespace towerdefense
         for (int i = 0; i < 10; i++) {
             manager.enemyManager.addEnemy(EnemyFactory::createEnemy(1, rand() % nofpath));
         }
-
+        statePlayingGame = PLAY;
         Turretinit = { 50, 565 };
     }
 
@@ -982,16 +982,15 @@ namespace towerdefense
                 if (PtInRect(&playRect, cursorPos)) {
                     // if click play 
                     if (manageFirstTime) {
-                        IsPlayGame = true;
+                        //IsPlayGame = true;
                         manageFirstTime = false;
-                        for (int i = 0; i < enemylist.size(); i++) {
-                            enemylist[i].isMove = true;
-                        }
+                        statePlayingGame = PLAY;
                     }
                     else {
                         if (IsPlayGame) {
                             displayYesNoBoard = true;
-                            IsPlayGame = false;
+                            //IsPlayGame = false;
+                            statePlayingGame = PAUSE;
                             /*for (int i = 0; i < enemylist.size(); i++) {
                                 enemylist[i].isMove = false;*/
                         }
@@ -1175,8 +1174,10 @@ namespace towerdefense
     }
 
     void PlayScreen2::update(float delta) {
-        if (manager.gameStatus) return;
+        if (statePlayingGame != PLAY) return;
         else {
+            if (manager.gameStatus == 1) statePlayingGame = WIN;
+            else if (manager.gameStatus == 2) statePlayingGame = LOSE;
             manager.update();
         }
     }
@@ -1190,9 +1191,9 @@ namespace towerdefense
         }
         Graphic::DrawBitmap(hamburger, hamburgerPos, hdc);
 
-        for (auto E : enemylist) {
+        /*for (auto E : enemylist) {
             E.render(enemy1, hdc);
-        }
+        }*/
 
         for (auto T : towerlist) {
             T.render(tower, hdc);
@@ -1202,6 +1203,7 @@ namespace towerdefense
             }
         }
 
+        manager.enemyManager.renderEnemies(enemy1, hdc);
 
 
         // ve tower trong box

@@ -41,9 +41,9 @@ void EnemyManager::updateAllEnemy() {
     }
 }
 
-void EnemyManager::renderEnemies() {
+void EnemyManager::renderEnemies(HBITMAP element, HDC hdc) {
     for (auto& enemy : enemies_) {
-        //enemy.render();
+        enemy->render(element, hdc);
     }
 }
 

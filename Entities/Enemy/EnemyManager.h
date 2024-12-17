@@ -16,7 +16,7 @@ public:
 
     int getStatus() { return gameStatus; }
 
-    void renderEnemies();
+    void renderEnemies(HBITMAP element, HDC hdc);
 
     void readFile(ifstream& i);
 
