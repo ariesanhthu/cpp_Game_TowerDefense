@@ -22,5 +22,6 @@ class cpoint {
         cpoint operator+(const cpoint&);
         cpoint operator-(const cpoint&);
         cpoint operator*(const int&);
-        cpoint normalized();
+        //cpoint operator/(const float& scale);
+        cpoint normalized(float lenght, int speed);
 };

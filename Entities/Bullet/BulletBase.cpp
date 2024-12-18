@@ -59,7 +59,8 @@ shared_ptr<EnemyBase> BulletBase::checkCollision() {
 void BulletBase::update() { // cal next position of bullet
 	cpoint e = target->getCurrentPosition();
 
-	cpoint derection = e - currentPosition;
-	cpoint normalizedDirection = derection.normalized();
-	this->currentPosition = this->currentPosition + normalizedDirection * model->getSpeed();
+	cpoint direction = e - currentPosition;
+	float length = std::sqrt(static_cast<float>(direction.getX() * direction.getX() + direction.getY() * direction.getY()));
+	cpoint normalizedDirection = direction.normalized(length , model->getSpeed());
+	this->currentPosition = this->currentPosition + normalizedDirection;
 }

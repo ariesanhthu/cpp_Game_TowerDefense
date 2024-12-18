@@ -23,7 +23,7 @@ shared_ptr<TowerBase> TowerFactory::createTower(const int type, cpoint pos) {
 
 void TowerFactory::createModels() {
     //
-    Models.push_back(new TowerModel(100, 1, BulletFactory::Models[0]));
+    Models.push_back(new TowerModel(250, 1, BulletFactory::Models[0]));
 }
 void TowerFactory::deleteModels() {
     for (auto model : Models)

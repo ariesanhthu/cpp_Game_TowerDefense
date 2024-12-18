@@ -17,10 +17,10 @@ cpoint cpoint::operator-(const cpoint& other) {
 cpoint cpoint::operator*(const int& scale) {
 	return { x*scale, y*scale, 0 };
 }
-cpoint cpoint::normalized() {
+cpoint cpoint::normalized(float lenght, int speed) {
 	int nx = x, ny = y;
-	if (x != 0) nx /= abs(x);
-	if (y != 0) ny /= abs(y);
+	if (x != 0) nx = static_cast<int> (x / lenght * speed);
+	if (y != 0) ny = static_cast<int> (y / lenght * speed);
 
 	return { nx, ny, 0};
 }
