@@ -881,6 +881,9 @@ namespace towerdefense
         _yesnoBoard = std::make_shared<Item>(L"Assets/board/board.bmp", 1.5, boardYesNoPos);
         _yesBtn = std::make_shared<Button>(L"Assets/button/AcceptBtn.png", L"Assets/button/selectbox.bmp", 3, yesBtnPos);
         _noBtn = std::make_shared<Button>(L"Assets/button/RejectBtn.png", L"Assets/button/selectbox.bmp", 3, noBtnPos);
+
+        _loseBoard = std::make_shared<Item>(L"Assets/board/board.bmp", 1.5, boardYesNoPos);
+        _winBoard = std::make_shared<Item>(L"Assets/board/board.bmp", 1.5, boardYesNoPos);
     }
 
     PlayScreen2::~PlayScreen2() {
@@ -991,6 +994,30 @@ namespace towerdefense
         if (isPicking) {
             pickedTowerType1->setCurrentPosition({ cursorPos.x, cursorPos.y, 0 });
         }
+
+        if (statePlayingGame == LOSE) {
+            if (_yesBtn->isClicked(cursorPos)) {
+                PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
+            } 
+            if (_noBtn->isClicked(cursorPos)) {
+                // save game 
+                PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+            }
+        }
+
+        if (statePlayingGame == WIN) {
+            if (_yesBtn->isClicked(cursorPos)) {
+
+                // qua man tiep theo, hien tai de reload map
+
+                PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
+            }
+            if (_noBtn->isClicked(cursorPos)) {
+                // save game 
+                PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+            }
+        }
+
     }
 
 
@@ -1000,9 +1027,14 @@ namespace towerdefense
 
         if (manager.gameStatus == WIN) {
             statePlayingGame = WIN;
+
+            _winBoard->setTriger(true);
         }
         else if (manager.gameStatus == LOSE) {
             statePlayingGame = LOSE;
+
+            _loseBoard->setTriger(true);
+
         }
         else if (manager.gameStatus == PLAY) {
             //OutputDebugStringA("11111111111111111\n");
@@ -1056,6 +1088,18 @@ namespace towerdefense
 
         if (_yesnoBoard->getTriger()) {
             _yesnoBoard->render(hdc);
+            _noBtn->render(hdc);
+            _yesBtn->render(hdc);
+        }
+
+        if (_loseBoard->getTriger()) {
+            _loseBoard->render(hdc);
+            _noBtn->render(hdc);
+            _yesBtn->render(hdc);
+        }
+
+        if (_winBoard->getTriger()) {
+            _winBoard->render(hdc);
             _noBtn->render(hdc);
             _yesBtn->render(hdc);
         }

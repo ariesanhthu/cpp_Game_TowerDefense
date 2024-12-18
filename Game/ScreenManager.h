@@ -207,6 +207,16 @@ namespace towerdefense
         std::shared_ptr<Button> _yesBtn; 
         std::shared_ptr<Button> _noBtn; 
 
+        // lose game 
+        std::shared_ptr<Item> _loseBoard; // hien tai giong pause
+        /*std::shared_ptr<Button> _yesBtn; // xai lai o tren
+        std::shared_ptr<Button> _noBtn;*/
+
+        // win game 
+        std::shared_ptr<Item> _winBoard; // hien tai giong pause
+        /*std::shared_ptr<Button> _yesBtn; // xai lai o tren
+        std::shared_ptr<Button> _noBtn;*/
+
         //bool IsPlayGame = false;
         bool manageFirstTime = true;
 

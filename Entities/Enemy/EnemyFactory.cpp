@@ -7,10 +7,10 @@ vector<EnemyModel*> EnemyFactory::Models;
         return make_shared<EnemyBase>(L"Assets/game/enemy2.bmp", 2, Models[0], path);
     }
     else if (type == 2) {
-        return make_shared<EnemyBase>(L"Assets/game/enemy2.bmp", 4, Models[1], path);
+        return make_shared<EnemyBase>(L"Assets/game/enemy1/enemy1-1.png", 2, Models[1], path);
     }
     else if (type == 3) {
-        return make_shared<EnemyBase>(L"Assets/game/enemy2.bmp", 6, Models[2], path);
+        return make_shared<EnemyBase>(L"Assets/game/enemy3/enemy3-1.png", 2, Models[2], path);
     }
     else {
         throw invalid_argument("Unknown enemy type");

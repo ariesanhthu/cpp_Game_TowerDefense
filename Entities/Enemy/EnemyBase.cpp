@@ -74,9 +74,9 @@ bool EnemyBase::update(float delta) {
 		currentPosition = model->getPath(path)[index += model->getSpeed()];
 
 		// for test
-		if (index >= model->getPath(path).size() - 5) {
+		/*if (index >= model->getPath(path).size() - 5) {
 			index = 0;
-		}
+		}*/
 
 
 		return false;
