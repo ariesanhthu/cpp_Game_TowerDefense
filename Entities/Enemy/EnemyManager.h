@@ -25,6 +25,8 @@ public:
 
     int getRandomInterval(int min, int max);
 
+    void setup(vector<int> ar);
+
     std::vector<shared_ptr<EnemyBase>> enemies_;
 
 private:

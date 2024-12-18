@@ -13,17 +13,16 @@ int EnemyManager::getRandomInterval(int min, int max) {
 
 void EnemyManager::addEnemy(shared_ptr<EnemyBase> e) {
     enemies_.push_back(e);
-    nOfEnemy++;
+    //nOfEnemy++;
 }
 
 void EnemyManager::updateAllEnemy(float delta) {
 
-
     // phase control
     if (remainEnemy == 0 && spawnedEnemy >= nOfEnemy) {
         if (phase < nOfPhase) {
-            phase++;
             nOfEnemy += nOfEnemyEachPhase[phase];
+            phase++;
         }
         else {
             //game exit
@@ -31,7 +30,7 @@ void EnemyManager::updateAllEnemy(float delta) {
         }
     }
 
-    ////// Spawn interval
+    // Spawn interval
     remainEnemy = 0;
 
     chrono::system_clock::time_point now = chrono::system_clock::now();
@@ -44,7 +43,7 @@ void EnemyManager::updateAllEnemy(float delta) {
         nextSpawnDelay = getRandomInterval(50000, 20000000);
     }
 
-    ////// update remain e
+    // update remain e
     for (int i = 0; i < spawnedEnemy; i++) {
         if (enemies_[i]->getHealth() > 0) {
 
@@ -78,9 +77,9 @@ void EnemyManager::writeFile(ofstream& o) {
 
 }
 
-//void EnemyManager::setup(vector<int> ar) {
-//    nOfPhase = ar[0];
-//    for (int i = 0; i < nOfPhase; i++) {
-//        nOfEnemyEachPhase.push_back(ar[i + 1]);
-//    }
-//}
+void EnemyManager::setup(vector<int> ar) {
+    nOfPhase = ar[0];
+    for (int i = 0; i < nOfPhase; i++) {
+        nOfEnemyEachPhase.push_back(ar[i + 1]);
+    }
+}

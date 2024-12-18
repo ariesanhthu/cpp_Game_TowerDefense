@@ -846,20 +846,29 @@ namespace towerdefense
         float scaleY = static_cast<float>(720) / 213.0f;    // 720 là kích thước gốc của ảnh
         float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
 
+        // setup game 
+        // setup path
         vector<vector<cpoint>> path;
         path.push_back(epath);
-
         manager.setup(path);
+        int nofpath = path.size();
 
-        int nofpath = 1;
-        for (int i = 0; i < 10; i++) {
+        //setup phase
+        vector<int> mapSetup{ 3,5,4,1 };
+        manager.enemyManager.setup(mapSetup);
+
+        //setup enemy for each phase
+        for (int i = 0; i < mapSetup[1]; i++) {
             manager.enemyManager.addEnemy(EnemyFactory::createEnemy(1, rand() % nofpath));
+        }
+        for (int i = 0; i < mapSetup[2]; i++) {
+            manager.enemyManager.addEnemy(EnemyFactory::createEnemy(2, rand() % nofpath));
+        }
+        for (int i = 0; i < mapSetup[3]; i++) {
+            manager.enemyManager.addEnemy(EnemyFactory::createEnemy(3, rand() % nofpath));
         }
 
         
-
-        //vector<int> mapSetup{3,5,4,1};
-        //manager.enemyManager.setup(mapSetup);
 
         //Turretinit = { 50, 565 };
 

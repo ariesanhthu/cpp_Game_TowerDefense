@@ -87,6 +87,6 @@ bool EnemyBase::update(float delta) {
 }
 
 void EnemyBase::hit(int n){
-	if (health < n) isDead = 1;
-	else health -= n;
+	if (health < n) isDead = true;
+	health -= n;
 }

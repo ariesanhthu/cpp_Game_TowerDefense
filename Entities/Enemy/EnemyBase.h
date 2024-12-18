@@ -55,7 +55,7 @@ public:
 	void hit(int n);
 
 	void render(HDC hdc) {
-		if (isDead == false) {  // Chỉ vẽ nếu không chết
+		if (health > 0) {  // Chỉ vẽ nếu không chết
 			//OutputDebugStringA("DDDDDDDDDDDDDDDDDDDDDDDDDDd\n");
 			//OutputDebugStringA((std::to_string(currentPosition.getX()) + " " + std::to_string(currentPosition.getY()) + "\n").c_str());
 			Graphic::DrawBitmap(image, {currentPosition.getX(), currentPosition.getY()}, hdc);
