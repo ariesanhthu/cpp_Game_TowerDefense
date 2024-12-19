@@ -18,13 +18,12 @@
 #include "Graphic.h"
 
 #include "Screen/Screen.h"
-#include "Screen/PlayScreen2.h"
-#include "Screen/MainScreen.h"
 #include "Screen/MapScreen.h"
-#include "GameManage/GamePlayManage.h"
 
-//#include "Screen/PlayScreen2.h"
-//#include "Screen/MapScreen.h"
+#include "Screen/MainScreen.h"
+#include "Screen/PlayScreen.h"
+
+#include "GameManage/GamePlayManage.h"
 
 using namespace std;
 

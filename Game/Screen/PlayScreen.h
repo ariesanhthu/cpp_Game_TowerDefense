@@ -36,5 +36,14 @@ namespace towerdefense
         //void update(float delta) override;
         //void render(HDC hdc) override;
     };
+    // -------------------------------------------------------------------------
+    class PlayScreen3 : public MapScreen {
+    public:
+        PlayScreen3();
+        ~PlayScreen3();
+
+        void loadSpecificContent(int width, int height) override;
+    };
+    // -------------------------------------------------------------------------
 }
 

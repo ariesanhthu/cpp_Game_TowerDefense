@@ -19,7 +19,7 @@
 // SCREEN HEADER
 #include "Screen/ScreenManager.h"
 #include "Screen/MainScreen.h"
-#include "Screen/PlayScreen2.h"
+#include "Screen/PlayScreen.h"
 
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
 using namespace std;

@@ -255,9 +255,10 @@ namespace towerdefense
             screenManager->changeScreen(make_shared<PlayScreen2>());
             //newscreen = std::make_shared<PlayScreen2>();
         }
-        //else if (x == 3) {
-        //    newscreen = std::make_shared<PlayScreen3>();
-        //}
+        else if (x == 3) {
+            screenManager->changeScreen(make_shared<PlayScreen3>());
+            //newscreen = std::make_shared<PlayScreen3>();
+        }
         //else if (x == 4) {
         //    newscreen = std::make_shared<PlayScreen4>();
         //}

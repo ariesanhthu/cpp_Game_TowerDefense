@@ -165,7 +165,7 @@
     <ClCompile Include="Entities\Tower\TowerBase.cpp" />
     <ClCompile Include="Game\StateManager.cpp" />
     <ClCompile Include="Game\States\PlayState.cpp" />
-    <ClCompile Include="Game\Screen\PlayScreen2.cpp" />
+    <ClCompile Include="Game\Screen\PlayScreen.cpp" />
     <ClCompile Include="Game\Screen\PlayScreen1.cpp" />
     <ClCompile Include="Game\Screen\PlayScreen3.cpp" />
     <ClCompile Include="Game\Screen\PlayScreen4.cpp" />
@@ -214,7 +214,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Menu\Menu.h" />
     <ClInclude Include="Game\States\PlayState.h" />
-    <ClInclude Include="Game\Screen\PlayScreen2.h" />
+    <ClInclude Include="Game\Screen\PlayScreen.h" />
     <ClInclude Include="Game\Screen\PlayScreen1.h" />
     <ClInclude Include="Game\Screen\PlayScreen3.h" />
     <ClInclude Include="Game\Screen\PlayScreen4.h" />

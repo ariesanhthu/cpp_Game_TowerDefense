@@ -140,7 +140,7 @@ namespace towerdefense
             _hamburger = std::make_shared<Button>(L"Assets/button/aboutBtn.png", L"Assets/button/selectbox.bmp", 2, hamburgerPos);
             _playOrPause = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, posbuttonplay);
 
-            _yesnoBoard = std::make_shared<Item>(L"Assets/board/board.bmp", 1.5, boardYesNoPos);
+            _yesnoBoard = std::make_shared<Item>(L"Assets/game/info/BoardPAUSE.png", 1.2, boardYesNoPos);
             _yesBtn = std::make_shared<Button>(L"Assets/button/AcceptBtn.png", L"Assets/button/selectbox.bmp", 3, yesBtnPos);
             _noBtn = std::make_shared<Button>(L"Assets/button/RejectBtn.png", L"Assets/button/selectbox.bmp", 3, noBtnPos);
 
@@ -331,14 +331,9 @@ namespace towerdefense
             manager.enemyManager.setup(mapSetup);
 
             //setup enemy for each phase
-            for (int i = 0; i < mapSetup[1]; i++)
-                manager.enemyManager.addEnemy(EnemyFactory::createEnemy(1, rand() % nofpath));
-
-            for (int i = 0; i < mapSetup[2]; i++)
-                manager.enemyManager.addEnemy(EnemyFactory::createEnemy(2, rand() % nofpath));
-
-            for (int i = 0; i < mapSetup[3]; i++)
-                manager.enemyManager.addEnemy(EnemyFactory::createEnemy(3, rand() % nofpath));
+            for(size_t e = 1; e <= 3; e++)
+                for (int i = 0; i < mapSetup[e]; i++)
+                    manager.enemyManager.addEnemy(EnemyFactory::createEnemy(e, rand() % nofpath));
         }
         // ------ RENDER -----
         void renderCommonElements(HDC hdc) {

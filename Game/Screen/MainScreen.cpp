@@ -162,6 +162,12 @@ namespace towerdefense
             else if (_map2->isClicked(cursorPos)) {
                 PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
             }
+            else if (_map3->isClicked(cursorPos)) {
+                PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, 3, 0);
+            }
+            else if (_map4->isClicked(cursorPos)) {
+                PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, 4, 0);
+            }
         }
         else if (menu == 2) {
             // if click user 
