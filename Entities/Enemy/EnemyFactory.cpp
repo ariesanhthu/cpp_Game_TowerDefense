@@ -4,7 +4,7 @@ vector<EnemyModel*> EnemyFactory::Models;
 
  shared_ptr<EnemyBase> EnemyFactory::createEnemy(const int type, int path) {
     if (type == 1) {
-        return make_shared<EnemyBase>(L"Assets/game/enemy4/enemy4-0.png", 0.5, Models[0], path);
+        return make_shared<EnemyBase>(L"Assets/game/enemy5/enemy5-0.png", 0.8, Models[0], path);
     }
     else if (type == 2) {
         return make_shared<EnemyBase>(L"Assets/game/enemy2/enemy1-1.png", 2, Models[1], path);
