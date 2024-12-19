@@ -47,8 +47,8 @@ void EnemyManager::updateAllEnemy(float delta) {
     for (int i = 0; i < spawnedEnemy; i++) {
         if (enemies_[i]->getHealth() > 0) {
 
-            if(enemies_[i]->update(delta)) 
-                gameStatus = 2;
+            if (enemies_[i]->update(delta))
+                gameHP--;
 
             enemies_[i]->update(delta);
 

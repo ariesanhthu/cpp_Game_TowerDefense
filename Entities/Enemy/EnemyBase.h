@@ -55,7 +55,7 @@ public:
 	void hit(int n);
 
 	void render(HDC hdc) {
-		if (health > 0) {  // Chỉ vẽ nếu không chết
+		if (health > 0 && index < model->getPath(path).size() - 1 - model->getSpeed()) {  // Chỉ vẽ nếu không chết
 			//OutputDebugStringA("DDDDDDDDDDDDDDDDDDDDDDDDDDd\n");
 			//OutputDebugStringA((std::to_string(currentPosition.getX()) + " " + std::to_string(currentPosition.getY()) + "\n").c_str());
 			Graphic::DrawBitmap(image, {currentPosition.getX(), currentPosition.getY()}, hdc);
