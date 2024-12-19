@@ -13,7 +13,7 @@ namespace towerdefense
         float scaleY = static_cast<float>(720) / 213.0f;    // 720 là kích thước gốc của ảnh
         float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
 
-        _background = std::make_shared<Item>(L"Assets/background/map4.bmp", scale, 0, 0);
+        _background = std::make_shared<Item>(L"Assets/background/mainscreen.png", 1, 0, 0);
         _catfam = std::make_shared<Item>(L"Assets/decor/nameLogo.png", 2, 0, 0);
 
         _play = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[0]);
