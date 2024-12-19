@@ -40,7 +40,7 @@ private:
 	const int enemySpawnInterval = 1;   // tốc độ spawn e
 	chrono::system_clock::time_point lastSpawn; 
 
-    int gameHP = 5;
+    int gameHPDefaul = 5;
 
     enum GameStatus {
         PLAY = 0,

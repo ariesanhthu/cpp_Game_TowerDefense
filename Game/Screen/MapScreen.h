@@ -346,6 +346,14 @@ namespace towerdefense
                 _instructionboard->render(hdc);
             }
 
+
+            pickedTowerType1->render(hdc);
+            renderTowerType1->render(hdc);
+            manager.render(hdc);
+
+            _playOrPause->render(hdc);
+
+            // ---------- BOARD ----------
             if (_yesnoBoard->getTriger()) {
                 _yesnoBoard->render(hdc);
                 _noBtn->render(hdc);
@@ -363,12 +371,6 @@ namespace towerdefense
                 _noBtn->render(hdc);
                 _yesBtn->render(hdc);
             }
-
-            pickedTowerType1->render(hdc);
-            renderTowerType1->render(hdc);
-            manager.render(hdc);
-
-            _playOrPause->render(hdc);
         }
         // ------ END RENDER -----
         bool checkValidPos(POINT cursurPos) {
