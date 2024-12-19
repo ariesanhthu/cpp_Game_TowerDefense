@@ -3,13 +3,26 @@
 #include <windows.h>
 #include <string>
 #include <functional>
-#include "State.h"
-#include <ScreenManager.h>
+#include <chrono>
+#include <thread>
 #include <memory>
+
+//#include "State.h"
+
+#include "input.h"
 #include "User/cFile.h"
 #include "User/userManager.h"
 
+//
+#include "Graphic.h"
+
+// SCREEN HEADER
+#include "Screen/ScreenManager.h"
+#include "Screen/MainScreen.h"
+#include "Screen/PlayScreen2.h"
+
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
+using namespace std;
 
 namespace towerdefense
 {
@@ -17,7 +30,7 @@ namespace towerdefense
 	{
 	private:
 		//std::unique_ptr<GameState> currentState;
-		ScreenManager* screenManager;
+		shared_ptr<ScreenManager> screenManager;
 
 	public:
 		/*void setState(std::unique_ptr<GameState> newState) {
