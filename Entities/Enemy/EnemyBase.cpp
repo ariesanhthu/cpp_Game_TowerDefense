@@ -11,6 +11,7 @@ EnemyBase::EnemyBase(EnemyModel* nModel, int nPath) {
 	model = nModel;
 	health = model->getDefaultHealth();
 	path = nPath;
+	
 }
 
 EnemyBase::EnemyBase(EnemyModel* nModel, int nPath, int nHealth) {

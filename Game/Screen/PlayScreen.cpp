@@ -19,7 +19,7 @@ namespace towerdefense
             {-100, 150},
             {390, 150},
             {390, 490},
-            {1200, 490}, //, Thêm path vào sau đây
+            {1250, 490}, //, Thêm path vào sau đây
             }
         };
 
@@ -56,7 +56,7 @@ namespace towerdefense
             {435, 330},
             {265, 330},
             {265, 515},
-            {1200, 515},
+            {1250, 515},
             } //, Thêm path vào sau đây
         };
 
@@ -87,7 +87,23 @@ namespace towerdefense
     }
 
     PlayScreen3::PlayScreen3() {
-        path =
+        vector<cpoint> 
+            path1 = {
+                {-100, 170},
+                {460, 170},
+                {460, 450},
+                {1250, 450}
+            },
+            path2 = {
+                { 280, 800 },
+                { 280, 450 },
+                { 1250, 450 }
+            };
+
+        path.push_back(path1);
+        path.push_back(path2);
+
+        /*path =
         {
             {
                 {-100, 170},
@@ -100,7 +116,7 @@ namespace towerdefense
                 { 280, 450 },
                 { 1200, 450 }
             }
-        };
+        };*/
         mapSetup = { 3,5,4,1 };
 
         GamePlaySetup();

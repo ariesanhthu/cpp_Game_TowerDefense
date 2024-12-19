@@ -30,11 +30,12 @@ std::vector<cpoint> EnemyModel::getPath(int n) {
 }
 
 void EnemyModel::calculatePath(std::vector< std::vector<cpoint>> pointsList) {
-    vector<int> directionX;
-    vector<int> directionY;
-
+    
     for (std::vector<cpoint> points : pointsList) 
     {
+        vector<int> directionX;
+        vector<int> directionY;
+
         cpoint currentPosition = points[0];
 
         for (int i = 0; i < points.size() - 1; i++) 
@@ -75,7 +76,9 @@ void EnemyModel::calculatePath(std::vector< std::vector<cpoint>> pointsList) {
                 currY += directionY[i - 1];
             }
         }
+
         pathList.push_back(path);
+        
     }
 
 }
