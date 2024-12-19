@@ -3,6 +3,41 @@
 using namespace std;
 namespace towerdefense
 {
+    void PlayScreen1::loadSpecificContent(int width, int height) {
+        float scaleX = static_cast<float>(width) / 395.0f;  // 1280 là kích thước gốc của ảnh
+        float scaleY = static_cast<float>(height) / 213.0f; // 720 là kích thước gốc của ảnh
+        float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
+
+        _background = std::make_shared<Item>(L"Assets/background/map1.bmp", scale, 0, 0);
+        _instructionboard = std::make_shared<Item>(L"Assets/game/info/board1.png", 1.0f, instructionPos);
+    }
+    PlayScreen1::PlayScreen1()
+    {
+        path =
+        {
+            {
+            {-100, 150},
+            {390, 150},
+            {390, 490},
+            {1200, 490}, //, Thêm path vào sau đây
+            }
+        };
+
+        mapSetup = { 3,5,4,1 };
+
+
+        GamePlaySetup();
+        //Turretinit = { 50, 565 };
+
+    }
+    PlayScreen1::~PlayScreen1() {
+
+        path.clear();
+        mapSetup.clear();
+
+        OutputDebugStringA("~PlayScreen1\n");
+    }
+    //========================================================================================================================//
     void PlayScreen2::loadSpecificContent(int width, int height) {
         float scaleX = static_cast<float>(width) / 395.0f;  // 1280 là kích thước gốc của ảnh
         float scaleY = static_cast<float>(height) / 213.0f; // 720 là kích thước gốc của ảnh

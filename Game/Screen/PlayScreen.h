@@ -22,6 +22,14 @@
 using namespace std;
 namespace towerdefense
 {
+    class PlayScreen1 : public MapScreen {
+    public:
+        PlayScreen1();
+        ~PlayScreen1();
+
+        void loadSpecificContent(int width, int height) override;
+    };
+    // -------------------------------------------------------------------------
     class PlayScreen2 : public MapScreen {
     public:
         PlayScreen2();
