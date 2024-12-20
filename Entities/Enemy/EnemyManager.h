@@ -27,6 +27,10 @@ public:
 
     void setup(vector<int> ar);
 
+    int getUserHP();
+
+    void setUserHP(int HP);
+
     std::vector<shared_ptr<EnemyBase>> getAllEnemy() const;
 
     std::vector<shared_ptr<EnemyBase>> enemies_;

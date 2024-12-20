@@ -369,9 +369,10 @@ namespace towerdefense
 
             std::shared_ptr<SaveGame> game_to_save;
 
-            //int point = manager.getPoint();
-            int point = 100; // test
+            //int point = manager.getPoint();            
 
+            int point = 100; // test
+            int userHealth = manager.enemyManager.getUserHP();
             int mapCode = getCurrentMap();
 
             std::string name = currUser->getName(); // mặc định là guess

@@ -89,3 +89,11 @@ void EnemyManager::setup(vector<int> ar) {
 std::vector<shared_ptr<EnemyBase>> EnemyManager::getAllEnemy() const {
 	return enemies_;
 }
+
+int EnemyManager::getUserHP() {
+    return gameHPDefaul;
+}
+
+void EnemyManager::setUserHP(int x) {
+    this->gameHPDefaul = x;
+}
