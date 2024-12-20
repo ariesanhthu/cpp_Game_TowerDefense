@@ -16,10 +16,10 @@ namespace towerdefense
         path =
         {
             {
-            {-100, 150},
-            {390, 150},
-            {390, 490},
-            {1250, 490}, //, Thêm path vào sau đây
+                {-100, 150},
+                {390, 150},
+                {390, 490},
+                {1250, 490}, //, Thêm path vào sau đây
             }
         };
 
@@ -27,11 +27,8 @@ namespace towerdefense
 
 
         GamePlaySetup();
-        //Turretinit = { 50, 565 };
-
     }
     PlayScreen1::~PlayScreen1() {
-
         path.clear();
         mapSetup.clear();
 
@@ -51,12 +48,12 @@ namespace towerdefense
         path =
         {
             {
-            {-100, 115},
-            {435, 115},
-            {435, 330},
-            {265, 330},
-            {265, 515},
-            {1250, 515},
+                {-100, 115},
+                {435, 115},
+                {435, 330},
+                {265, 330},
+                {265, 515},
+                {1250, 515},
             } //, Thêm path vào sau đây
         };
 
@@ -64,9 +61,8 @@ namespace towerdefense
         
 
         GamePlaySetup();
-        //Turretinit = { 50, 565 };
-
     }
+
     PlayScreen2::~PlayScreen2() {
 
         path.clear();

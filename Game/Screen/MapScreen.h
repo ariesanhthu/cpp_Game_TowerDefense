@@ -47,10 +47,10 @@ namespace towerdefense
         std::shared_ptr<Button> _noBtn;
 
         // lose game 
-        std::shared_ptr<Item> _loseBoard; // hien tai giong pause
+        std::shared_ptr<Item> _loseBoard; 
        
         // win game 
-        std::shared_ptr<Item> _winBoard; // hien tai giong pause
+        std::shared_ptr<Item> _winBoard; 
  
 
         // PAUSE BOARD
@@ -71,9 +71,6 @@ namespace towerdefense
         POINT instructionPos = { 800, 50 };
         POINT hamburgerPos = { 1200, 5 };
 
-        // CHECK COI K DÙNG THÌ XÓA
-        bool displayBoard = true;
-
         // position init place of box
         POINT towerInitPos = { 25, 520 };
         POINT Turretinit = { 50, 565 };
@@ -83,43 +80,11 @@ namespace towerdefense
         std::chrono::steady_clock::time_point lastKeyPressTime;
         const int debounceDelayMs = 200; // 200 ms debounce delay
 
-        //// enemy 
-        //std::vector<cenemy> enemylist;
-        //POINT Einit;              // enemy position
-
-        //// tower
-        //std::vector<ctower> towerlist;
-        //POINT Turretinit;         // tower position 
-
         GamePlayManage manager;
 
         std::shared_ptr<TowerBase> pickedTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
         std::shared_ptr<TowerBase> renderTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
 
-        // tower de chon di chuyen
-        /*ctower Tpicking;
-        POINT TcurrentPick;
-        bool isPicking = false;
-        bool isMouseDown = false;*/
-
-        // size
-        /*POINT buttonSize = { 26, 29 };
-        POINT boardSize = { 260, 180 };
-        POINT towerSize = { 20, 30 };*/
-
-        // support 
-
-
-        /* =======================================
-
-        FIXBIG
-        THÊM ĐƯỜNG
-
-        ======================================= */
-
-        bool isInRange(POINT pos, int range) {
-            return range < sqrt((pos.x * pos.x + pos.y * pos.y));
-        }
 
     public:
         //MapScreen();
@@ -227,6 +192,7 @@ namespace towerdefense
             /*
                 GIỐNG NHAU GIỮA CÁC SCREEN -> STATE
             */
+
             /*if (statePlayingGame == PLAY)
             {
                 
@@ -265,7 +231,11 @@ namespace towerdefense
                     _yesBtn->setTriger(false);
                 }
                 if (_noBtn->isClicked(cursorPos)) {
+
                     // save game 
+                     
+                    
+                    
                     // trở về home
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                 }
