@@ -132,9 +132,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Graphics\Animation.cpp" />
     <ClCompile Include="Entities\Bullet\BulletFactory.cpp" />
     <ClCompile Include="Entities\Bullet\BulletManager.cpp" />
-    <ClCompile Include="Entities\Enemy\EnemyClass\Small.cpp" />
     <ClCompile Include="Entities\Enemy\EnemyFactory.cpp" />
     <ClCompile Include="Entities\Bullet\BulletBase.cpp" />
     <ClCompile Include="Entities\Bullet\BulletModel.cpp" />
@@ -168,9 +168,10 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\ResourceManager.h" />
+    <ClInclude Include="Graphics\Animation.h" />
     <ClInclude Include="Entities\Bullet\BulletFactory.h" />
     <ClInclude Include="Entities\Bullet\BulletManager.h" />
-    <ClInclude Include="Entities\Enemy\EnemyClass\Small.h" />
     <ClInclude Include="Entities\Enemy\EnemyFactory.h" />
     <ClInclude Include="Entities\Bullet\BulletBase.h" />
     <ClInclude Include="Entities\Bullet\BulletModel.h" />

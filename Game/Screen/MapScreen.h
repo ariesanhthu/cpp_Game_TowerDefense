@@ -86,10 +86,8 @@ namespace towerdefense
 
 
     public:
-        //MapScreen();
-        virtual ~MapScreen() {
-            GameDestroy();
-        }
+        MapScreen() { manager.destroy(); };
+        virtual ~MapScreen() {}
 
         /* --------------------------------------------------
                         TEMPLATE METHOD
@@ -141,10 +139,10 @@ namespace towerdefense
                         // --------------------------------- PAUSE GAME ---------------------------------
                         else
                         {
-                            if (manager.gameStatus == PAUSE)
-                                manager.gameStatus = PLAY;
+                            if (manager.getGameStatus() == PAUSE)
+                                manager.setGameStatus(PLAY);
                             else
-                                manager.gameStatus = PAUSE;
+                                manager.setGameStatus(PAUSE);
                         }
                     }
 
@@ -200,8 +198,9 @@ namespace towerdefense
             }*/
 
             if (statePlayingGame == LOSE) {
+
                 if (_yesBtn->isClicked(cursorPos)) {
-                    PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
+                    PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, getCurrentMap(), 0);
                 }
                 if (_noBtn->isClicked(cursorPos)) {
                     // save game 
@@ -210,11 +209,13 @@ namespace towerdefense
             }
 
             if (statePlayingGame == WIN) {
+
                 if (_yesBtn->isClicked(cursorPos)) {
 
-					int mapCode = getCurrentMap();
-					int nextMap = mapCode + 1;
-					if (nextMap == 5) nextMap = 1;
+                    // qua man tiep theo, hien tai de reload map
+                    int nextMap = getCurrentMap() + 1;
+                    if(nextMap > 4)
+						nextMap = 0;
 
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, nextMap, 0);
                 }
@@ -227,7 +228,7 @@ namespace towerdefense
             if (statePlayingGame == PAUSE)
             {
                 if (_yesBtn->isClicked(cursorPos)) {
-                    manager.gameStatus = PLAY;
+                    manager.setGameStatus(PLAY);
                     statePlayingGame = PLAY;
                     _yesnoBoard->setTriger(false);
                     _noBtn->setTriger(false);
@@ -253,26 +254,26 @@ namespace towerdefense
             if (statePlayingGame != PLAY) return;
 
             //----------- WIN GAME -----------
-            if (manager.gameStatus == WIN) {
+            if (manager.getGameStatus() == WIN) {
                 statePlayingGame = WIN;
 
                 _winBoard->setTriger(true);
             }
             //----------- LOSE GAME -----------
-            else if (manager.gameStatus == LOSE) {
+            else if (manager.getGameStatus() == LOSE) {
                 statePlayingGame = LOSE;
 
                 _loseBoard->setTriger(true);
 
             }
             //----------- PLAY GAME -----------
-            else if (manager.gameStatus == PLAY) {
+            else if (manager.getGameStatus() == PLAY) {
                 //OutputDebugStringA("11111111111111111\n");
                 manager.update(delta);
                 statePlayingGame = PLAY;
             }
             //----------- PAUSE GAME -----------
-            else if (manager.gameStatus == PAUSE) {
+            else if (manager.getGameStatus() == PAUSE) {
                 statePlayingGame = PAUSE;
 
                 _yesnoBoard->setTriger(true);
@@ -306,13 +307,17 @@ namespace towerdefense
             manager.enemyManager.setup(mapSetup);
 
             //setup enemy for each phase
-            for(size_t e = 1; e <= 3; e++)
-                for (int i = 0; i < mapSetup[e]; i++)
-                    manager.enemyManager.addEnemy(EnemyFactory::createEnemy(e, rand() % nofpath));
-        }
+            for (size_t e = 1; e <= 3; e++)
+            {
+                int typeEnemy = e;
 
-        void GameDestroy() {
-            manager.destroy();
+                // Đổi style enemy Goblin đi bộ thành Goblin bơi
+                if(e == 1 && getCurrentMap() == 4) 
+					typeEnemy = 4;
+
+                for (int i = 0; i < mapSetup[e]; i++)
+                    manager.enemyManager.addEnemy(EnemyFactory::createEnemy(typeEnemy, rand() % nofpath));
+            }
         }
         // ------ RENDER -----
         void renderCommonElements(HDC hdc) {

@@ -32,7 +32,20 @@ EnemyBase::EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int 
 	path = npath;
 	health = model->getDefaultHealth();
 }
+//----------------- animation ------------------------
+EnemyBase::EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, EnemyModel* nModel, int npath)
+	:UIElement(imagePaths, factor, { 0, 0 })
+{
+	model = nModel;
+	health = model->getDefaultHealth();
+	path = npath;
+	health = model->getDefaultHealth();
+}
 
+EnemyBase::EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, shared_ptr<EnemyModel> nModel, int npath)
+	: EnemyBase::EnemyBase(imagePaths, factor, nModel.get(), npath) {}
+
+// ---------------------------------------------------
 void EnemyBase::setCurrentPosition(const cpoint& p) { 
 	currentPosition = p; 
 }
@@ -74,6 +87,7 @@ void EnemyBase::readFile(istream& i) {
 
 //update
 bool EnemyBase::update(float delta) {
+	updateUI(delta);
 	//OutputDebugStringA("4444444444444\n");
 	if (index < model->getPath(path).size() - model->getSpeed()) {
 		currentPosition = model->getPath(path)[index += model->getSpeed()];

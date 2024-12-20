@@ -6,12 +6,14 @@
 
 #include "EnemyBase.h"
 
+#include "ResourceManager.h"
+
 
 class EnemyFactory
 {
-    static vector<EnemyModel*> Models;
+    static vector <shared_ptr<EnemyModel>> Models;
 public:
-    static  shared_ptr<EnemyBase> createEnemy(const int type, int path);
+    static shared_ptr<EnemyBase> createEnemy(const int type, int path);
     static void createModels(vector<vector<cpoint>> path);
     static void deleteModels();
 };
