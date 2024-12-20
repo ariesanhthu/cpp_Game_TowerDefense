@@ -23,4 +23,5 @@ void BulletFactory::createModels() {
 void BulletFactory::deleteModels() {
     for (auto model : Models)
         delete model;
+    Models.clear();
 }

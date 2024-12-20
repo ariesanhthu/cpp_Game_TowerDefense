@@ -29,4 +29,5 @@ void EnemyFactory::createModels(vector<vector<cpoint>> path) {
 void EnemyFactory::deleteModels() {
     for (auto model : Models)
         delete model;
+    Models.clear();
 }

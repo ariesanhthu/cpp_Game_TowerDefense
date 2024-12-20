@@ -51,9 +51,9 @@ void EnemyManager::updateAllEnemy(float delta) {
             if (enemies_[i]->update(delta))
                 gameHP--;
 
-            enemies_[i]->update(delta);
-
-            remainEnemy++;
+            //enemies_[i]->update(delta);
+            else
+                remainEnemy++;
         }
 
     }
