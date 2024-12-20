@@ -35,6 +35,7 @@ namespace towerdefense
         path.clear();
         mapSetup.clear();
 
+        OutputDebugStringA(to_string(manager.getPoint()).c_str());
         OutputDebugStringA("~PlayScreen1\n");
     }
     //========================================================================================================================//

@@ -175,10 +175,10 @@ namespace towerdefense
                         // --------------------------------- PAUSE GAME ---------------------------------
                         else
                         {
-                            if (manager.gameStatus == PAUSE)
-                                manager.gameStatus = PLAY;
+                            if (manager.getGameStatus() == PAUSE)
+                                manager.setGameStatus(PLAY);
                             else
-                                manager.gameStatus = PAUSE;
+                                manager.setGameStatus(PAUSE);
                         }
                     }
 
@@ -263,7 +263,7 @@ namespace towerdefense
             if (statePlayingGame == PAUSE)
             {
                 if (_yesBtn->isClicked(cursorPos)) {
-                    manager.gameStatus = PLAY;
+                    manager.setGameStatus(PLAY);
                     statePlayingGame = PLAY;
                     _yesnoBoard->setTriger(false);
                     _noBtn->setTriger(false);
@@ -286,26 +286,26 @@ namespace towerdefense
             if (statePlayingGame != PLAY) return;
 
             //----------- WIN GAME -----------
-            if (manager.gameStatus == WIN) {
+            if (manager.getGameStatus() == WIN) {
                 statePlayingGame = WIN;
 
                 _winBoard->setTriger(true);
             }
             //----------- LOSE GAME -----------
-            else if (manager.gameStatus == LOSE) {
+            else if (manager.getGameStatus() == LOSE) {
                 statePlayingGame = LOSE;
 
                 _loseBoard->setTriger(true);
 
             }
             //----------- PLAY GAME -----------
-            else if (manager.gameStatus == PLAY) {
+            else if (manager.getGameStatus() == PLAY) {
                 //OutputDebugStringA("11111111111111111\n");
                 manager.update(delta);
                 statePlayingGame = PLAY;
             }
             //----------- PAUSE GAME -----------
-            else if (manager.gameStatus == PAUSE) {
+            else if (manager.getGameStatus() == PAUSE) {
                 statePlayingGame = PAUSE;
 
                 _yesnoBoard->setTriger(true);

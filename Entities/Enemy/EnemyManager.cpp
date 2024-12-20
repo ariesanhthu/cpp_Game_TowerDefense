@@ -85,3 +85,7 @@ void EnemyManager::setup(vector<int> ar) {
         nOfEnemyEachPhase.push_back(ar[i + 1]);
     }
 }
+
+std::vector<shared_ptr<EnemyBase>>& EnemyManager::getEnemy() {
+    return enemies_;
+}
