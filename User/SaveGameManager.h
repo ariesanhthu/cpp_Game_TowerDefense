@@ -5,6 +5,7 @@
 #include "SaveGame.h"
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 

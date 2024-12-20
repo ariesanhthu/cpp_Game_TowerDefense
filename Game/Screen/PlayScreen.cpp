@@ -11,6 +11,10 @@ namespace towerdefense
         _background = std::make_shared<Item>(L"Assets/background/map1.bmp", scale, 0, 0);
         _instructionboard = std::make_shared<Item>(L"Assets/game/info/board1.png", 1.0f, instructionPos);
     }
+    int PlayScreen1::getCurrentMap() {
+		return 1;
+    }
+    
     PlayScreen1::PlayScreen1()
     {
         path =
@@ -42,6 +46,9 @@ namespace towerdefense
 
         _background = std::make_shared<Item>(L"Assets/background/map2.bmp", scale, 0, 0);
         _instructionboard = std::make_shared<Item>(L"Assets/game/info/board2.png", 1.0f, instructionPos);
+    }
+    int PlayScreen2::getCurrentMap() {
+        return 2;
     }
     PlayScreen2::PlayScreen2() 
     {
@@ -80,6 +87,9 @@ namespace towerdefense
 
         _background = std::make_shared<Item>(L"Assets/background/map3.bmp", scale, 0, 0);
         _instructionboard = std::make_shared<Item>(L"Assets/game/info/board3.png", 1.0f, instructionPos);
+    }
+    int PlayScreen3::getCurrentMap() {
+        return 3;
     }
 
     PlayScreen3::PlayScreen3() {

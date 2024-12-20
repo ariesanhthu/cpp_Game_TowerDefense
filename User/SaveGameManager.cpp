@@ -1,10 +1,7 @@
 #include "SaveGameManager.h"
-#include <fstream>
-#include <iostream>
 #include <algorithm>
 
 SaveGameManager::SaveGameManager() {
-    saveGames = {};
     GET_ALL_SAVE_GAME();
 }
 
@@ -13,96 +10,125 @@ SaveGameManager::~SaveGameManager() {
 }
 
 void SaveGameManager::GET_ALL_SAVE_GAME() {
-    // Load all save games from file
-    std::ifstream file("Storage/savegames.catfam", std::ios::binary);
-    if (file.is_open()) {
+    //std::ifstream file("Storage/savegames.catfam", std::ios::binary);
+    //if (file.is_open()) {
+    //    while (file.peek() != EOF) {
+    //        string userName;
+    //        int point, mapCode, userHealth;
+    //        size_t enemyCount, towerCount, bulletCount, healthCount, pathCount;
 
-        if (file.peek() == EOF) {
-            file.close();
-            return;
-        }
+    //        // Read userName
+    //        size_t nameLength;
+    //        file.read(reinterpret_cast<char*>(&nameLength), sizeof(size_t));
+    //        userName.resize(nameLength);
+    //        file.read(&userName[0], nameLength);
 
-        //while (file.peek() != EOF) {
-            /*int userName, point, mapCode;
-            size_t enemyCount, towerCount, bulletCount;*/
+    //        // Read point, mapCode and userHealth
+    //        file.read(reinterpret_cast<char*>(&point), sizeof(int));
+    //        file.read(reinterpret_cast<char*>(&mapCode), sizeof(int));
+    //        file.read(reinterpret_cast<char*>(&userHealth), sizeof(int));
 
-        //    // Read userName and point and mapCode
-        //    file.read((char*)&userName, sizeof(int));
-        //    file.read((char*)&point, sizeof(int));
-        //    file.read((char*)&mapCode, sizeof(int));
+    //        // Read enemy positions
+    //        file.read(reinterpret_cast<char*>(&enemyCount), sizeof(size_t));
+    //        std::vector<cpoint> enemyPos(enemyCount);
+    //        file.read(reinterpret_cast<char*>(enemyPos.data()), enemyCount * sizeof(cpoint));
 
-        //    // Read enemy positions
-        //    file.read((char*)&enemyCount, sizeof(size_t));
-        //    std::vector<cpoint> enemyPos(enemyCount);
-        //    file.read((char*)enemyPos.data(), enemyCount * sizeof(cpoint));
+    //        // Read enemy health
+    //        file.read(reinterpret_cast<char*>(&healthCount), sizeof(size_t));
+    //        std::vector<int> enemyHealth(healthCount);
+    //        file.read(reinterpret_cast<char*>(enemyHealth.data()), healthCount * sizeof(int));
 
-        //    // Read tower positions
-        //    file.read((char*)&towerCount, sizeof(size_t));
-        //    std::vector<cpoint> towerPos(towerCount);
-        //    file.read((char*)towerPos.data(), towerCount * sizeof(cpoint));
+    //        // Read enemy path numbers
+    //        file.read(reinterpret_cast<char*>(&pathCount), sizeof(size_t));
+    //        std::vector<int> enemyPathNumber(pathCount);
+    //        file.read(reinterpret_cast<char*>(enemyPathNumber.data()), pathCount * sizeof(int));
 
-        //    // Read bullet positions
-        //    file.read((char*)&bulletCount, sizeof(size_t));
-        //    std::vector<cpoint> bulletPos(bulletCount);
-        //    file.read((char*)bulletPos.data(), bulletCount * sizeof(cpoint));
+    //        // Read tower positions
+    //        file.read(reinterpret_cast<char*>(&towerCount), sizeof(size_t));
+    //        std::vector<cpoint> towerPos(towerCount);
+    //        file.read(reinterpret_cast<char*>(towerPos.data()), towerCount * sizeof(cpoint));
 
-        //    // Create SaveGame object and add it to the list
-        //    std::shared_ptr<SaveGame> saveGame = std::make_shared<SaveGame>(
-        //        userName, enemyPos, towerPos, bulletPos, point, mapCode
-        //    );
-        //    saveGames.push_back(saveGame);
-        //}
-        file.close();
-    }
+    //        // Read bullet positions
+    //        file.read(reinterpret_cast<char*>(&bulletCount), sizeof(size_t));
+    //        std::vector<cpoint> bulletPos(bulletCount);
+    //        file.read(reinterpret_cast<char*>(bulletPos.data()), bulletCount * sizeof(cpoint));
+
+    //        auto saveGame = std::make_shared<SaveGame>(userName, enemyPos, enemyHealth, enemyPathNumber, towerPos, bulletPos, point, mapCode, userHealth);
+    //        saveGames.push_back(saveGame);
+    //    }
+    //    file.close();
+    //}
 }
 
 void SaveGameManager::POST_ALL_SAVE_GAME() {
-    // Save all save games to the file
     std::ofstream file("Storage/savegames.catfam", std::ios::binary | std::ios::trunc);
     if (file.is_open()) {
         for (const auto& saveGame : saveGames) {
-            int userName = saveGame->getUserName();
+            string userName = saveGame->getUserName();
             int point = saveGame->getPoint();
             int mapCode = saveGame->getMapCode();
-            const std::vector<cpoint>& enemyPos = saveGame->getEnemyPos();
-            const std::vector<cpoint>& towerPos = saveGame->getTowerPos();
-            const std::vector<cpoint>& bulletPos = saveGame->getBulletPos();
+            int userHealth = saveGame->getUserHealth();
+            const auto& enemyPos = saveGame->getEnemyPos();
+            const auto& enemyHealth = saveGame->getEnemyHealth();
+            const auto& enemyPathNumber = saveGame->getEnemyPathNumber();
+            const auto& towerPos = saveGame->getTowerPos();
+            const auto& bulletPos = saveGame->getBulletPos();
 
+            size_t nameLength = userName.size();
             size_t enemyCount = enemyPos.size();
+            size_t healthCount = enemyHealth.size();
+            size_t pathCount = enemyPathNumber.size();
             size_t towerCount = towerPos.size();
             size_t bulletCount = bulletPos.size();
 
-            // Write data
-            file.write((char*)&userName, sizeof(int));
-            file.write((char*)&point, sizeof(int));
-            file.write((char*)&mapCode, sizeof(int));
-            file.write((char*)&enemyCount, sizeof(size_t));
-            file.write((char*)enemyPos.data(), enemyCount * sizeof(cpoint));
-            file.write((char*)&towerCount, sizeof(size_t));
-            file.write((char*)towerPos.data(), towerCount * sizeof(cpoint));
-            file.write((char*)&bulletCount, sizeof(size_t));
-            file.write((char*)bulletPos.data(), bulletCount * sizeof(cpoint));
+            // Write userName
+            file.write(reinterpret_cast<const char*>(&nameLength), sizeof(size_t));
+            file.write(userName.data(), nameLength);
+
+            // Write point, mapCode and userHealth
+            file.write(reinterpret_cast<const char*>(&point), sizeof(int));
+            file.write(reinterpret_cast<const char*>(&mapCode), sizeof(int));
+            file.write(reinterpret_cast<const char*>(&userHealth), sizeof(int));
+
+            // Write enemy positions
+            file.write(reinterpret_cast<const char*>(&enemyCount), sizeof(size_t));
+            file.write(reinterpret_cast<const char*>(enemyPos.data()), enemyCount * sizeof(cpoint));
+
+            // Write enemy health
+            file.write(reinterpret_cast<const char*>(&healthCount), sizeof(size_t));
+            file.write(reinterpret_cast<const char*>(enemyHealth.data()), healthCount * sizeof(int));
+
+            // Write enemy path numbers
+            file.write(reinterpret_cast<const char*>(&pathCount), sizeof(size_t));
+            file.write(reinterpret_cast<const char*>(enemyPathNumber.data()), pathCount * sizeof(int));
+
+            // Write tower positions
+            file.write(reinterpret_cast<const char*>(&towerCount), sizeof(size_t));
+            file.write(reinterpret_cast<const char*>(towerPos.data()), towerCount * sizeof(cpoint));
+
+            // Write bullet positions
+            file.write(reinterpret_cast<const char*>(&bulletCount), sizeof(size_t));
+            file.write(reinterpret_cast<const char*>(bulletPos.data()), bulletCount * sizeof(cpoint));
+
+            // push_back saveGame
+            // auto saveGame = std::make_shared<SaveGame>(userName, enemyPos, enemyHealth, enemyPathNumber, towerPos, bulletPos, point, mapCode);
+            // saveGames.push_back(saveGame);
         }
+
         file.close();
     }
 }
 
 void SaveGameManager::POST_NEW_SAVE_GAME(std::shared_ptr<SaveGame> saveGame) {
-    // Add the new save game to the list
     saveGames.push_back(saveGame);
-
-    // Save all save games to file
     POST_ALL_SAVE_GAME();
 }
 
 void SaveGameManager::DELETE_SAVE_GAME(std::shared_ptr<SaveGame> saveGame) {
-    // Remove the save game from the list
     saveGames.erase(
         std::remove(saveGames.begin(), saveGames.end(), saveGame),
         saveGames.end()
     );
-
-    // Save all save games to file
     POST_ALL_SAVE_GAME();
 }
 
@@ -111,25 +137,40 @@ std::vector<std::shared_ptr<SaveGame>> SaveGameManager::getSaveGameList() {
 }
 
 void SaveGameManager::printListSaveGameForTest() {
-    // print all save games include pos
     for (const auto& saveGame : saveGames) {
-        std::cout << "SaveGame: " << std::endl;
-        std::cout << "userName: " << saveGame->getUserName() << std::endl;
-        std::cout << "point: " << saveGame->getPoint() << std::endl;
-        std::cout << "mapCode: " << saveGame->getMapCode() << std::endl;
-        std::cout << "enemyPos: " << std::endl;
+        std::cout << "UserName: " << saveGame->getUserName() << std::endl;
+        std::cout << "Points: " << saveGame->getPoint() << std::endl;
+        std::cout << "Map Code: " << saveGame->getMapCode() << std::endl;
+        std::cout << "User Health: " << saveGame->getUserHealth() << std::endl;
+
+        std::cout << "Enemy Positions: ";
         for (auto& pos : saveGame->getEnemyPos()) {
-            std::cout << pos.getX() << " " << pos.getY() << std::endl;
+            std::cout << "(" << pos.getX() << ", " << pos.getY() << ") ";
         }
-        std::cout << "towerPos: " << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "Enemy Health: ";
+        for (const auto& health : saveGame->getEnemyHealth()) {
+            std::cout << health << " ";
+        }
+        std::cout << std::endl;
+
+        std::cout << "Enemy Path Numbers: ";
+        for (const auto& path : saveGame->getEnemyPathNumber()) {
+            std::cout << path << " ";
+        }
+        std::cout << std::endl;
+
+        std::cout << "Tower Positions: ";
         for (auto& pos : saveGame->getTowerPos()) {
-            std::cout << pos.getX() << " " << pos.getY() << std::endl;
+            std::cout << "(" << pos.getX() << ", " << pos.getY() << ") ";
         }
-        std::cout << "bulletPos: " << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "Bullet Positions: ";
         for (auto& pos : saveGame->getBulletPos()) {
-            std::cout << pos.getX() << " " << pos.getY() << std::endl;
+            std::cout << "(" << pos.getX() << ", " << pos.getY() << ") ";
         }
         std::cout << std::endl;
     }
 }
-

@@ -2,6 +2,7 @@
 #include <windows.h>
 #include "User/SaveGameManager.h"
 #include "User/UserManager.h"
+#include "Utils.h"
 
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
 
@@ -11,6 +12,7 @@ namespace towerdefense
     public:
         UserManager userManager; // list user
         SaveGameManager saveGameManager; // list save game
+		Utils utils;
 
         //virtual ~Screen();
         virtual void loadContent(int width, int height) = 0;

@@ -165,6 +165,7 @@
     <ClCompile Include="Entities\Tower\TowerManager.cpp" />
     <ClCompile Include="User\User.cpp" />
     <ClCompile Include="User\UserManager.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Bullet\BulletFactory.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="Entities\Tower\TowerFactory.h" />
     <ClInclude Include="User\User.h" />
     <ClInclude Include="User\UserManager.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

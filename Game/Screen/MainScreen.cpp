@@ -210,13 +210,16 @@ namespace towerdefense
                     lastMouseClickTime = now;
 
                      //login
-			        /*std::string name = wstringToString(_inputName->getText());
-			        std::string password = wstringToString(_inputPassword->getText());
-                    
-			        if (userManager.login(name, password) {
-			   	    
-			        }*/
+					std::string name = utils.wstringToString(_inputName->getText());
+					std::string password = utils.wstringToString(_inputPassword->getText());
 
+                    if (userManager.login(name, password)) {
+						// token bây giờ sẽ khác nullptr
+						// show mess thành công
+                    }
+                    else {
+                        // show mess thất bại
+                    }
                 }
             }
         }

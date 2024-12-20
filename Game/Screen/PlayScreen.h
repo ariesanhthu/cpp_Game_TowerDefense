@@ -21,6 +21,7 @@ namespace towerdefense
         PlayScreen1();
         ~PlayScreen1();
 
+        int getCurrentMap() override;
         void loadSpecificContent(int width, int height) override;
     };
     // -------------------------------------------------------------------------
@@ -29,6 +30,7 @@ namespace towerdefense
         PlayScreen2();
         ~PlayScreen2();
 
+        int getCurrentMap() override;
         void loadSpecificContent(int width, int height) override;
         //void loadContent(int width, int height) override;
         /*void handleSpecificInput(HWND hwnd) override;
@@ -44,6 +46,7 @@ namespace towerdefense
         PlayScreen3();
         ~PlayScreen3();
 
+        int getCurrentMap() override;
         void loadSpecificContent(int width, int height) override;
     };
     // -------------------------------------------------------------------------

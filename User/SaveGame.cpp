@@ -1,9 +1,9 @@
 #include "SaveGame.h"
 
-void SaveGame::setUserName(int userName) {
+void SaveGame::setUserName(string userName) {
 	this->userName = userName;
 }
-int SaveGame::getUserName() {
+string SaveGame::getUserName() {
 	return userName;
 }
 void SaveGame::setEnemyPos(vector<cpoint> enemyPos) {
@@ -11,6 +11,18 @@ void SaveGame::setEnemyPos(vector<cpoint> enemyPos) {
 }
 vector<cpoint> SaveGame::getEnemyPos() {
 	return enemyPos;
+}
+void SaveGame::setEnemyHealth(vector<int> enemyHealth) {
+	this->enemyHealth = enemyHealth;
+}
+vector<int> SaveGame::getEnemyHealth() {
+	return enemyHealth;
+}
+void SaveGame::setEnemyPathNumber(vector<int> enemyPathNumber) {
+	this->enemyPathNumber = enemyPathNumber;
+}
+vector<int> SaveGame::getEnemyPathNumber() {
+	return enemyPathNumber;
 }
 void SaveGame::setTowerPos(vector<cpoint> towerPos) {
 	this->towerPos = towerPos;
@@ -36,19 +48,32 @@ void SaveGame::setMapCode(int mapCode) {
 int SaveGame::getMapCode() {
 	return mapCode;
 }
-SaveGame::SaveGame(int userName, vector<cpoint> enemyPos, vector<cpoint> towerPos, vector<cpoint> bulletPos, int point, int mapCode) {
+int SaveGame::getUserHealth() {
+	return userHealth;
+}
+void SaveGame::setUserHealth(int userHealth) {
+	this->userHealth = userHealth;
+}
+SaveGame::SaveGame(string userName,
+	vector<cpoint> enemyPos,
+	vector<int> enemyHealth,
+	vector<int> enemyPathNumber,
+	vector<cpoint> towerPos,
+	vector<cpoint> bulletPos,
+	int point,
+	int mapCode,
+	int userHealth) {
 	this->userName = userName;
 	this->enemyPos = enemyPos;
+	this->enemyHealth = enemyHealth;
+	this->enemyPathNumber = enemyPathNumber;
 	this->towerPos = towerPos;
 	this->bulletPos = bulletPos;
 	this->point = point;
 	this->mapCode = mapCode;
+	this->userHealth = userHealth;
 }
 SaveGame::SaveGame() {
-	this->mapCode = 0;
-	this->userName = 0;
+	this->userName = "guess";
 	this->point = 0;
-	enemyPos = vector<cpoint>();
-	towerPos = vector<cpoint>();
-	bulletPos = vector<cpoint>();
 }

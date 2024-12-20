@@ -27,6 +27,8 @@ public:
 
     void setup(vector<int> ar);
 
+    std::vector<shared_ptr<EnemyBase>> getAllEnemy() const;
+
     std::vector<shared_ptr<EnemyBase>> enemies_;
 
 private:

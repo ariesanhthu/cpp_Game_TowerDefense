@@ -212,9 +212,11 @@ namespace towerdefense
             if (statePlayingGame == WIN) {
                 if (_yesBtn->isClicked(cursorPos)) {
 
-                    // qua man tiep theo, hien tai de reload map
+					int mapCode = getCurrentMap();
+					int nextMap = mapCode + 1;
+					if (nextMap == 5) nextMap = 1;
 
-                    PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
+                    PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, nextMap, 0);
                 }
                 if (_noBtn->isClicked(cursorPos)) {
                     // save game 
@@ -233,8 +235,8 @@ namespace towerdefense
                 }
                 if (_noBtn->isClicked(cursorPos)) {
 
-                    // save game 
-                    
+                    // save game
+                    saveNewGame();
                     
                     
                     // trở về home
@@ -282,9 +284,11 @@ namespace towerdefense
             renderCommonElements(hdc);
         }
 
+
         // ------- ABSTRACT FUNCTION --------
 
         virtual void loadSpecificContent(int width, int height) = 0;
+        virtual int getCurrentMap() = 0;
 
         // ====================================================================================
 
@@ -354,5 +358,55 @@ namespace towerdefense
             }
             return true;
         }
+		// ------ save game ----- 
+        void saveNewGame() {
+            // save game 
+            std::shared_ptr<User> currUser = userManager.getUserToken();
+
+            if (currUser == nullptr) {
+                currUser->setName("guess");
+            }
+
+            std::shared_ptr<SaveGame> game_to_save;
+
+            //int point = manager.getPoint();
+            int point = 100; // test
+
+            int mapCode = getCurrentMap();
+
+            std::string name = currUser->getName(); // mặc định là guess
+
+            vector<cpoint> enemyPos;
+            vector<int> enemyHealth;
+            vector<int> enemtPathNumber;
+            vector<cpoint> towerPos;
+            vector<cpoint> bulletPos;
+
+            for (auto& tower : manager.towerManager.getAllTower()) {
+                towerPos.push_back({ tower->getCurrentPosition().getX(), tower->getCurrentPosition().getY() });
+            }
+
+            for (auto& enemy : manager.enemyManager.getAllEnemy()) {
+                enemyPos.push_back({ enemy->getCurrentPosition().getX(), enemy->getCurrentPosition().getY() });
+                enemyHealth.push_back(enemy->getHealth()); 
+                enemtPathNumber.push_back(enemy->getPath());
+            }
+
+            for (auto& bullet : manager.towerManager.getAllBullet()) {
+                bulletPos.push_back({ bullet->getCurr().getX(), bullet->getCurr().getY() });
+            }
+
+            game_to_save->setUserName(name);
+            game_to_save->setMapCode(mapCode);
+            game_to_save->setPoint(point);  
+            game_to_save->setEnemyPos(enemyPos);
+            game_to_save->setEnemyHealth(enemyHealth);
+            game_to_save->setEnemyPathNumber(enemtPathNumber);
+            game_to_save->setTowerPos(towerPos);
+            game_to_save->setBulletPos(bulletPos);
+
+            saveGameManager.POST_NEW_SAVE_GAME(game_to_save);
+        }
+
     }; // END CLASS
 } // END NAMESPACE

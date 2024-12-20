@@ -42,6 +42,8 @@ public:
 	int getSpeed();
 	//getTexture();
 
+	int getPath();
+
 	//get private attribute
 	cpoint getCurrentPosition();
 	int getHealth();

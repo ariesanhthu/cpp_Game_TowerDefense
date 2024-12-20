@@ -14,6 +14,8 @@ public:
     void renderTowers(HDC hdc);
 
     void updateAllTower(std::vector<shared_ptr<EnemyBase>>& enemies_);
+	std::vector<shared_ptr<TowerBase>> getAllTower() const;
+	std::vector<shared_ptr<BulletBase>> getAllBullet() const;
 
 private:
     std::vector<shared_ptr<TowerBase>> towers_;

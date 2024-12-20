@@ -40,6 +40,10 @@ void EnemyBase::setHealth(int hp) {
 	health = hp; 
 }
 
+int EnemyBase::getPath() {
+	return this->path;
+}
+
 // get model attribute
 int EnemyBase::getSpeed() {
 	return model->getSpeed();

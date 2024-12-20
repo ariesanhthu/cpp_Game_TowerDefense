@@ -8,22 +8,41 @@ using namespace std;
 
 class SaveGame {
 private:
-	int userName; // primary key
+	string userName; // primary key
+
 	vector<cpoint> enemyPos;
+	vector<int> enemyHealth;
+	vector<int> enemyPathNumber;
+
 	vector<cpoint> towerPos;
 	vector<cpoint> bulletPos;
+
+	int userHealth;
 	int point;
 	int mapCode;
 
 public:
-	SaveGame(int userName, vector<cpoint> enemyPos, vector<cpoint> towerPos, vector<cpoint> bulletPos, int point, int mapCode);
+	SaveGame(string userName,
+		vector<cpoint> enemyPos,
+		vector<int> enemyHealth,
+		vector<int> enemyPathNumber,
+		vector<cpoint> towerPos,
+		vector<cpoint> bulletPos,
+		int point,
+		int mapCode,
+		int userHealth
+	);
 	SaveGame();
 
 	// get set
-	void setUserName(int userName);
-	int getUserName();
+	void setUserName(string userName);
+	string getUserName();
 	void setEnemyPos(vector<cpoint> enemyPos);
 	vector<cpoint> getEnemyPos();
+	void setEnemyHealth(vector<int> enemyHealth);
+	vector<int> getEnemyHealth();
+	void setEnemyPathNumber(vector<int> enemyPathNumber);
+	vector<int> getEnemyPathNumber();
 	void setTowerPos(vector<cpoint> towerPos);
 	vector<cpoint> getTowerPos();
 	void setBulletPos(vector<cpoint> bulletPos);
@@ -32,5 +51,6 @@ public:
 	int getPoint();
 	void setMapCode(int mapCode);
 	int getMapCode();
+	void setUserHealth(int userHealth);
+	int getUserHealth();
 };
-
