@@ -124,9 +124,9 @@ namespace towerdefense
             GetCursorPos(&cursorPos);
             ScreenToClient(GetActiveWindow(), &cursorPos);
 
-            static bool isMousePressed = false;   // Trạng thái chuột trái được nhấn
-            static bool isPicking = false;        // Tháp đang được nhấc lên
-            static bool isPickedFromInitPos = false; // Tháp nhấc từ initPos
+            static bool isMousePressed = false;         // Trạng thái chuột trái được nhấn
+            static bool isPicking = false;              // Tháp đang được nhấc lên
+            static bool isPickedFromInitPos = false;    // Tháp nhấc từ initPos
 
             // Kiểm tra chuột trái được nhấn
             if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
@@ -235,7 +235,7 @@ namespace towerdefense
                 if (_noBtn->isClicked(cursorPos)) {
 
                     // save game 
-                     
+                    
                     
                     
                     // trở về home
