@@ -4,8 +4,8 @@
 #include "Graphic.h"
 #include <string>
 #include "cplayer.h"
-#include "cenemy.h"
-#include "ctower.h"
+//#include "cenemy.h"
+//#include "ctower.h"
 #include <chrono>
 #include <mmsystem.h> 
 #include <UIElement.h>

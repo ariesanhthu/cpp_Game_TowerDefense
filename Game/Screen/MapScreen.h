@@ -122,7 +122,7 @@ namespace towerdefense
         }
 
     public:
-        //MapScreen();
+        MapScreen() { manager.destroy(); };
         virtual ~MapScreen() {}
 
         /* --------------------------------------------------
@@ -234,8 +234,6 @@ namespace towerdefense
 
             if (statePlayingGame == LOSE) {
 
-                manager.destroy(); // destroy when gameover
-
                 if (_yesBtn->isClicked(cursorPos)) {
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, getCurrentMap(), 0);
                 }
@@ -246,8 +244,6 @@ namespace towerdefense
             }
 
             if (statePlayingGame == WIN) {
-
-                manager.destroy(); // destroy when gameover
 
                 if (_yesBtn->isClicked(cursorPos)) {
 
@@ -274,8 +270,6 @@ namespace towerdefense
                     _yesBtn->setTriger(false);
                 }
                 if (_noBtn->isClicked(cursorPos)) {
-
-                    manager.destroy(); // destroy when gameover
 
                     // save game 
                     // trở về home

@@ -6,8 +6,6 @@
 #include <mmsystem.h> 
 
 #include "cplayer.h"
-#include "cenemy.h"
-#include "ctower.h"
 
 #include "User/cFile.h"
 #include "User/userManager.h"

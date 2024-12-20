@@ -11,7 +11,7 @@
 class TowerFactory
 {
 public:
-    static vector<TowerModel*> Models;
+    static vector <shared_ptr<TowerModel>> Models;
     static std::shared_ptr<TowerBase> createTower(const int type, cpoint pos);
     static void createModels();
     static void deleteModels();

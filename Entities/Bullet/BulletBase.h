@@ -24,6 +24,7 @@ public:
     BulletBase(BulletModel* nModel,cpoint pos, shared_ptr<EnemyBase> nTarget);
 
     BulletBase(const wchar_t* link, float factor, BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nTarget);
+    BulletBase(const wchar_t* link, float factor, shared_ptr<BulletModel> nModel, cpoint pos, shared_ptr<EnemyBase> nTarget) : BulletBase(link, factor, nModel.get(), pos, nTarget) {};
 
     void setCurr(const cpoint& p);
     void setTarget(shared_ptr<EnemyBase> nTarget);
