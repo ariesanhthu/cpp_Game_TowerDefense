@@ -30,7 +30,7 @@ std::vector<cpoint> EnemyModel::getPath(int n) {
 }
 
 void EnemyModel::calculatePath(std::vector< std::vector<cpoint>> pointsList) {
-    
+    pathList.clear();
     for (std::vector<cpoint> points : pointsList) 
     {
         vector<int> directionX;
