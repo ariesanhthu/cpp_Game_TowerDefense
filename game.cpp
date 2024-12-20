@@ -16,23 +16,17 @@ namespace towerdefense
        
         LRESULT result = 0; // Lưu kết quả trả về từ Windows
 
-        //std::vector<saveUser> s = { {0, "guess", "", vector<int>{}} };
-        //std::vector<saveGame> s = { {0, vector<saveEnemy> {}, vector<saveTower> {}, 0, 0} };
-
         switch (message)
         {
         case WM_CREATE: 
             graphic = new Graphic();
 
             Game::getInstance().loadInitialScreen(0);
-            //createDummyGameDataFile(s);
-            //createDummyUserDataFile(s);
         break;
         
         // Sự kiện đóng cửa sổ
         case WM_CLOSE: 
         {
-
             if (graphic) delete graphic;
 
             Game::getInstance().running = false; // Dừng game
@@ -89,7 +83,7 @@ namespace towerdefense
         windowWidth = 1280;
         windowHeight = 720;
 
-        screenManager = std::make_shared<ScreenManager>();
+        screenManager = std::make_shared<ScreenManager>(); 
 
         // Lấy kích thước cửa sổ hiện tại (nếu có)
         /*RECT rect;

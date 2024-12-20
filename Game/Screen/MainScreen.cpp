@@ -203,12 +203,19 @@ namespace towerdefense
                 _inputPassword->setEdit(false);
             }
 
+            // Nếu nhấn enter
             if (GetAsyncKeyState(VK_RETURN) & 0x8000) {
                 auto now = std::chrono::steady_clock::now();
                 if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
                     lastMouseClickTime = now;
 
-                    // login
+                     //login
+			        /*std::string name = wstringToString(_inputName->getText());
+			        std::string password = wstringToString(_inputPassword->getText());
+                    
+			        if (userManager.login(name, password) {
+			   	    
+			        }*/
 
                 }
             }

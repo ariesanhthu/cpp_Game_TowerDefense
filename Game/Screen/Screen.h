@@ -1,16 +1,16 @@
 #pragma once
 #include <windows.h>
+#include "User/SaveGameManager.h"
+#include "User/UserManager.h"
+
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
 
 namespace towerdefense
 {
     class Screen {
     public:
-
-        // 1 nguoi choi ton tai qua tat ca cac man hinh choi
-
-
-        // user
+        //UserManager userManager; // list user
+        //SaveGameManager saveGameManager; // list save game
 
         //virtual ~Screen();
         virtual void loadContent(int width, int height) = 0;

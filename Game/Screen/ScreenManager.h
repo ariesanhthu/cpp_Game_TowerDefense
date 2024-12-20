@@ -68,7 +68,7 @@ namespace towerdefense
             //        currentScreen = std::move(std::make_shared<MainScreen>());
             //    break;
             //}
-            currentScreen = newScreen;
+            currentScreen = std::move(newScreen);
         }
 
         void loadContent(int width, int height) {

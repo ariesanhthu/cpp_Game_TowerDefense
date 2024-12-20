@@ -15,6 +15,7 @@
 #include "Screen/MainScreen.h"
 #include "Screen/PlayScreen.h"
 
+
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
 using namespace std;
 
@@ -25,6 +26,7 @@ namespace towerdefense
 	private:
 		//std::unique_ptr<GameState> currentState;
 		shared_ptr<ScreenManager> screenManager;
+		
 
 	public:
 		/*void setState(std::unique_ptr<GameState> newState) {
