@@ -9,6 +9,7 @@ public:
     Item() = default;
     Item(POINT pos, HBITMAP background) : UIElement(pos, background) {}
     Item(const wchar_t* link, float scale, int x, int y) : UIElement(link, scale, x, y) {}
+    Item(const wchar_t* link, float scale, POINT pos) : UIElement(link, scale, pos) {}
 };
 
 class Button : public UIElement {
@@ -75,13 +76,12 @@ private:
     POINT endPosition;
     bool isAnimating;
     float animationSpeed;
-    bool trigger = false;
 
 public:
     Popup(POINT start, POINT end, HBITMAP img, float speed = 1.0f)
-        : UIElement(start, img), endPosition(end), isAnimating(false), trigger(false), animationSpeed(speed) {}
+        : UIElement(start, img), endPosition(end), isAnimating(false), animationSpeed(speed) {}
     Popup(const wchar_t* link, float scale, POINT start, POINT end, float speed = 1.0f) 
-        : UIElement(link, scale, start), endPosition(end), isAnimating(false), trigger(false), animationSpeed(speed) {}
+        : UIElement(link, scale, start), endPosition(end), isAnimating(false), animationSpeed(speed) {}
 
     void startAnimation() { isAnimating = true; }
 
@@ -99,17 +99,7 @@ public:
     }
 
     void render(HDC hdc) {
-
         Graphic::DrawBitmap(image, position, hdc);
-        
-    }
-
-    bool getTriger() {
-        return trigger;
-    }
-
-    void setTriger(bool t) {
-        trigger = t;
     }
     
     bool isFinished() const { return !isAnimating; }

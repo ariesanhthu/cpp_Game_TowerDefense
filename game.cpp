@@ -1,10 +1,4 @@
 ﻿#include "game.h"
-#include "input.h"
-#include "ScreenManager.h"
-#include "Graphic.h"
-#include <chrono>
-#include <thread>
-
 
 namespace towerdefense
 {
@@ -18,7 +12,7 @@ namespace towerdefense
         WPARAM wParam,
         LPARAM lParam
     ) {
-        Graphic* graphic = nullptr; 
+        Graphic* graphic = nullptr;
        
         LRESULT result = 0; // Lưu kết quả trả về từ Windows
 
@@ -28,24 +22,31 @@ namespace towerdefense
         switch (message)
         {
         case WM_CREATE: 
-            if (graphic) delete graphic; 
             graphic = new Graphic();
+
             Game::getInstance().loadInitialScreen(0);
             //createDummyGameDataFile(s);
             //createDummyUserDataFile(s);
         break;
-        case WM_CLOSE: // Sự kiện đóng cửa sổ
+        
+        // Sự kiện đóng cửa sổ
+        case WM_CLOSE: 
         {
-            if (graphic) delete graphic; 
-            delete Game::getInstance().screenManager;
+
+            if (graphic) delete graphic;
+
             Game::getInstance().running = false; // Dừng game
             OutputDebugString(L"window close\n");
         } break;
-        case WM_DESTROY: // Sự kiện hủy cửa sổ
+        
+        // Sự kiện hủy cửa sổ
+        case WM_DESTROY:
         {
-            if (graphic) delete graphic; 
-            delete Game::getInstance().screenManager;
-            Game::getInstance().running = false; // Dừng game
+
+            if (graphic) delete graphic;
+
+            // Dừng game
+            Game::getInstance().running = false; 
             OutputDebugString(L"window destroy\n");
         } break;
         case WM_SIZE:
@@ -88,7 +89,7 @@ namespace towerdefense
         windowWidth = 1280;
         windowHeight = 720;
 
-        screenManager = new ScreenManager();
+        screenManager = std::make_shared<ScreenManager>();
 
         // Lấy kích thước cửa sổ hiện tại (nếu có)
         /*RECT rect;
@@ -126,8 +127,8 @@ namespace towerdefense
             className,
             windowTitle.c_str(),
             WS_OVERLAPPEDWINDOW | WS_VISIBLE, // Kiểu cửa sổ
-            CW_USEDEFAULT,                   // Vị trí mặc định
-            CW_USEDEFAULT,                   // Vị trí mặc định
+            CW_USEDEFAULT,                    // Vị trí mặc định
+            CW_USEDEFAULT,                    // Vị trí mặc định
             windowWidth,
             windowHeight,
             nullptr,
@@ -139,8 +140,8 @@ namespace towerdefense
         HBITMAP hBitmap = Graphic::LoadBitmapImage(L"Assets/mouse/mouse1.png", 2);
 
         ICONINFO iconInfo = { 0 };
-        iconInfo.fIcon = FALSE; // Set to FALSE to indicate a cursor
-        iconInfo.xHotspot = 0; // Adjust based on your desired hotspot
+        iconInfo.fIcon = FALSE;      // Set to FALSE to indicate a cursor
+        iconInfo.xHotspot = 0;       // Adjust based on your desired hotspot
         iconInfo.yHotspot = 0;
         iconInfo.hbmMask = hBitmap;  // Use the same bitmap as a mask for simplicity
         iconInfo.hbmColor = hBitmap;
@@ -235,29 +236,32 @@ namespace towerdefense
     // Tách phần load screen
     //==========================================================
     void Game::loadInitialScreen(int x) {
-        std::shared_ptr<Screen> newscreen;
 
         if (x == 0) {
-            newscreen = std::make_shared<MainScreen>();
+            try {
+                screenManager->changeScreen(make_shared<MainScreen>());
+            }
+            catch (const std::exception& e) {
+                std::cerr << "Exception: " << e.what() << std::endl;
+            }
         }
+
         else if (x == 1) {
-            newscreen = std::make_shared<PlayScreen>();
+            screenManager->changeScreen(make_shared<PlayScreen1>());
         }
         else if (x == 2) {
-            newscreen = std::make_shared<PlayScreen2>();
+            screenManager->changeScreen(make_shared<PlayScreen2>());
         }
         else if (x == 3) {
-            newscreen = std::make_shared<PlayScreen3>();
+            screenManager->changeScreen(make_shared<PlayScreen3>());
         }
-        else if (x == 4) {
-            newscreen = std::make_shared<PlayScreen4>();
-        }
+        //else if (x == 4) {
+            //screenManager->changeScreen(make_shared<PlayScreen4>());
+        //}
         else {
             OutputDebugStringA("Invalid screen index.\n");
             return;  // Exit early for invalid `x`
         }
-
-        screenManager->changeScreen(std::move(newscreen));
         screenManager->loadContent(windowWidth, windowHeight);
     }
 }

@@ -234,7 +234,10 @@ void Graphic::RenderText(const wchar_t* text, HDC hdc, POINT pos, HFONT hFont, C
 
 void Graphic::ReleaseBitmap(HBITMAP& hBitmap) {
     if (hBitmap) {
-        DeleteObject(hBitmap);
+        if (!DeleteObject(hBitmap)) {
+            // Log an error or throw an exception
+            OutputDebugString(L"Failed to delete HBITMAP.\n");
+        }
         hBitmap = nullptr;
     }
 }

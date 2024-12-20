@@ -9,22 +9,15 @@
 #include "ctower.h"
 #include <chrono>
 #include <mmsystem.h> 
-#include <UIElement.h>
-#include <menuitem.h>
-#include "User/cFile.h"
-#include "User/userManager.h"
-#include "User/converted.h"
 
 using namespace std;
 namespace towerdefense
 {
     class Screen {
     public:
-        
-        // 1 nguoi choi ton tai qua tat ca cac man hinh choi
-        User Guess;
 
-        //virtual ~Screen() {}
+        // Dòng này làm MainScreen không destruct được
+        //virtual ~Screen() = 0;
         virtual void loadContent(int width, int height) = 0;
         virtual void handleInput(HWND hwnd) = 0;
         virtual void update(float delta) = 0;
@@ -35,7 +28,6 @@ namespace towerdefense
     class ScreenManager {
     private:
         std::shared_ptr<Screen> currentScreen = nullptr;
-        
 
     public:
         ~ScreenManager() {
@@ -62,38 +54,69 @@ namespace towerdefense
 
     class MainScreen : public Screen {
     private:
-        std::vector<std::shared_ptr<UIElement>> uiElements;
-        HFONT customfont;
-
-        std::shared_ptr<Item> _background; 
-        std::shared_ptr<Item> _catfam;
-        std::shared_ptr<Button> _play;
-        std::shared_ptr<Button> _cont;
-        std::shared_ptr<Button> _lead;
-        std::shared_ptr<Button> _sett;
-        std::shared_ptr<Button> _exit;
-        std::shared_ptr<Button> _about;
-        std::shared_ptr<Popup> popup;
-
-        std::shared_ptr<Option> _map1;
-        std::shared_ptr<Option> _map2;
-        std::shared_ptr<Option> _map3;
-        std::shared_ptr<Option> _map4;
-
-        std::shared_ptr<Button> _login;
-        std::shared_ptr<InputElement> _inputName;
-        std::shared_ptr<InputElement> _inputPassword;
-
-        std::shared_ptr<Button> _register;
-        std::shared_ptr<InputElement> _inputNameReg;
-        std::shared_ptr<InputElement> _inputPasswordReg;
-
-        std::shared_ptr<TextElement> _gotoPage;
+        // dung chung trong cac menu
+        HBITMAP background       = nullptr;               // Hình nền
+        HBITMAP catfam           = nullptr;
+        
+        // dung trong default menu
+        //HBITMAP button = nullptr;                 // Danh sách các nút bấm
+        //HBITMAP button_down = nullptr;
 
 
+        // button  
+        HBITMAP play             = nullptr;             // play
+        HBITMAP cont             = nullptr;             // continue 
+        HBITMAP lead             = nullptr;             // leaderboard
+        HBITMAP setting          = nullptr;             // setting 
+        HBITMAP exit             = nullptr;             // exit
+        HBITMAP about            = nullptr;             // about us
+        HBITMAP button_hover     = nullptr;
+
+        // popup
+        HBITMAP board = nullptr;
+
+        // choose map
+        HBITMAP map1opt          = nullptr; 
+        HBITMAP map2opt          = nullptr; 
+        HBITMAP map3opt          = nullptr; 
+        HBITMAP map4opt          = nullptr; 
+        HBITMAP opt_hover        = nullptr;
+
+
+        // login
+        HBITMAP login            = nullptr;
+        HBITMAP login_down       = nullptr;
+        HBITMAP login_hover      = nullptr;
+        HBITMAP input            = nullptr;
+        HBITMAP loginText        = nullptr;
+        HBITMAP nameText         = nullptr;
+        HBITMAP passwordText     = nullptr;
+
+        // continue
+        HBITMAP continueTitle    = nullptr;
+        HBITMAP arrow            = nullptr;
+
+        // continue with dummydata
+        vector<cplayer> dummyData = { {"duck", 10}, {"thu", 12}, {"Hung", 44} };
+        vector<HBITMAP> dummyDataName = { nullptr };
+        vector<HBITMAP> dummyDataPoint = { nullptr };
         POINT firstplayerCoverPos = { 420, 200 };
         POINT titleContinuePos = { 390, 130 };
-        POINT backgroundPos = { 0, 0 };
+
+        // leaderboard 
+
+        // setting 
+        bool soundCheck          = false;
+        HBITMAP TitleSetting     = nullptr;
+
+        HBITMAP switchOff        = nullptr;
+        HBITMAP switchOn         = nullptr;
+
+        HBITMAP insVolBtn = nullptr;
+        HBITMAP desVolBtn = nullptr;
+
+        HBITMAP backgroundVol = nullptr; 
+        HBITMAP foregroundVol = nullptr;
 
         POINT titlePos = { 400, 100 };
         POINT soundPos = { 270, 200 };
@@ -106,22 +129,37 @@ namespace towerdefense
         int currentVolume = 50;
         int percent = currentVolume / volumeSize;
 
-        vector<POINT> buttonPositions;                  // Vị trí các nút bấm
-        vector<POINT> optionPositionsStart;            // Vi tri cac lua chon map
-        vector<POINT> optionPositionsEnd;
+
+        vector<POINT> buttonPositions;           // Vị trí các nút bấm
+        vector<POINT> optionPositions;            // Vi tri cac lua chon map
+
         // Vẽ input box
         POINT loginPosition;
         POINT inputNamePosition = { 480, 250 };
         POINT inputPasswordPosition = { 480, 350 };
+        POINT loginTextPos = { 480, 150 };
         POINT nameTextPos = { 270, 260 };
         POINT passwordTextPos = { 270, 360 };
-        POINT loginTextPos = { 480, 150 };
-        POINT registerPosition = { 480, 200 };
-        POINT linkPos = { 270, 460 };
 
         // Thiết lập 3 vị trí để popup board
-        POINT initpoint, endpoint; 
-     
+        POINT initpoint, currentpoint, endpoint; 
+        bool isChoosemapPopup = false;
+        bool isPopupEffect = false;
+
+        // string nhap tu input
+        HBITMAP inputtextbitmap = nullptr;
+        bool start_to_input = false;
+        string inputtext = "YOURNAME";
+
+        // index = 0 -> choose map menu 
+        // index = 1 -> continue menu
+        // index = 2 -> leaderboard menu 
+        // index = 3 -> setting menu
+        // index = 4 -> exit handling
+        // index = 5 -> about us menu 
+        // index = 101 -> login 
+        static int index;
+        static int hover;
         // menu = 0 -> default
         // menu = 1 -> choose map
         // menu = 2 -> continue
@@ -131,7 +169,6 @@ namespace towerdefense
         // menu = 6 -> about us
         // menu = 101 -> login
         static int menu; 
-        bool loginMenu = true;
 
         //size doi tuong
         POINT buttonSize = { 26, 29 };
@@ -143,10 +180,11 @@ namespace towerdefense
         POINT sizeVolBtn = { 14, 21 };
         POINT sizeEdit = { 7, 12 };
 
+
         // avoid double click
-        mutable std::chrono::steady_clock::time_point lastMouseClickTime;  // mutable to modify in const method
+        std::chrono::steady_clock::time_point lastMouseClickTime;
         std::chrono::steady_clock::time_point lastKeyPressTime;
-        const int debounceDelayMs = 300; // 200 ms debounce delay
+        const int debounceDelayMs = 200; // 200 ms debounce delay
 
         // support
         void SetVolume(int volumePercentage) {
@@ -171,57 +209,20 @@ namespace towerdefense
         //void resizeContent(int windowWidth, int windowHeight) override;
     };
 
-
-    /*
-    ////////////////////////////////
-            STATE GAME
-    ////////////////////////////////
-    */
-    enum GameState {
-        PLAY = 0,
-        WIN = 1,
-        LOSE = 2,
-        PAUSE = 3,
-    };
-
     class MapScreen : public Screen {
     protected:
-        //
-        cplayer guess;
-
-        GameState statePlayingGame = PLAY;
-        int countHeart = 0;
-
         // hbitmap
         HBITMAP background = nullptr;
         HBITMAP tower = nullptr;              // tower
         HBITMAP towerInitPlace = nullptr;     // Ô chứa tháp
         HBITMAP instructionBoard = nullptr;   // Bảng hướng dẫn 
-        HBITMAP enemy1 = nullptr;              // enemy
-        HBITMAP enemy2 = nullptr;              // enemy
-        HBITMAP enemy3 = nullptr;              // enemy
+        HBITMAP enemy = nullptr;              // enemy
         HBITMAP hamburger = nullptr;          // hamburger button
         HBITMAP play_or_pause = nullptr;      // nut play hoac pause
         HBITMAP hbullet = nullptr;            // bullet
 
-        HBITMAP boardYesNo = nullptr;
-        HBITMAP WantToContinue = nullptr;
-        HBITMAP yesBtn = nullptr; 
-        HBITMAP noBtn = nullptr;
-
-        bool IsPlayGame = false;
-        bool manageFirstTime = true;
-
-        // Pause handling
-        bool displayYesNoBoard = false;
-        POINT WantToContinuePos = { 500, 250 };
-        POINT boardYesNoPos = {450, 200 };
-        POINT yesBtnPos = { 525, 350 };
-        POINT noBtnPos = { 700, 350 };
-        POINT yesnoSize = { 18, 20 };
-
         // instruction pos
-        POINT instructionPos = { 800, 50 };
+        POINT instructionPos = { 730, 50 };
         POINT hamburgerPos = { 1200, 5 };
         bool displayBoard = true;
 
@@ -248,7 +249,6 @@ namespace towerdefense
         ctower Tpicking;
         POINT TcurrentPick;
         bool isPicking = false;
-        bool isMouseDown = false;
 
         // size
         POINT buttonSize = { 26, 29 };
@@ -256,7 +256,7 @@ namespace towerdefense
         POINT towerSize = { 20, 30 };
 
         // support 
-
+        int NOfTower = 0;
 
         /* =======================================
 
@@ -265,7 +265,7 @@ namespace towerdefense
         ======================================= */
 
         bool checkValidPos(POINT pos) {
-            return true;
+            return (true);
         }
         bool isInRange(POINT pos, int range) {
             return range < sqrt((pos.x * pos.x + pos.y * pos.y));
@@ -281,8 +281,6 @@ namespace towerdefense
         virtual void render(HDC hdc) = 0;
     };
 
-
-
     class PlayScreen : public MapScreen {
     private:
         vector<POINT> epath = {
@@ -291,9 +289,6 @@ namespace towerdefense
             {390, 490},
             {1200, 490},
         };
-        int mapCode = 1;
-
-    
 
     public:
         PlayScreen();

@@ -6,7 +6,7 @@
 
 class cmap {
     private:
-        vector<vector<int>> map;
+        //vector<vector<int>> map;
         vector<cpoint> tPlaces;
         vector<vector<cpoint>> ePath;
         int nEnemy[4]{0,0,0,0};
