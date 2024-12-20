@@ -205,6 +205,9 @@ namespace towerdefense
                     DeleteObject(brush);
 
                     // Vẽ vào bộ đệm
+                    // inputHadle
+                    // update
+                    // render
                     screenManager->handleInput(windowHandle);
                     screenManager->update(delta);  // Cập nhật logic của màn hình
                     screenManager->render(bufferDC); // Vẽ màn hình vào DC bộ đệm
@@ -220,9 +223,6 @@ namespace towerdefense
 
                     auto end = std::chrono::high_resolution_clock::now();
                     std::this_thread::sleep_for(std::chrono::milliseconds(16) - (end - start));
-                    // inputHadle
-                    // update
-                    // render
                 }
             }
         }
@@ -255,9 +255,9 @@ namespace towerdefense
         else if (x == 3) {
             screenManager->changeScreen(make_shared<PlayScreen3>());
         }
-        //else if (x == 4) {
-            //screenManager->changeScreen(make_shared<PlayScreen4>());
-        //}
+        else if (x == 4) {
+            screenManager->changeScreen(make_shared<PlayScreen4>());
+        }
         else {
             OutputDebugStringA("Invalid screen index.\n");
             return;  // Exit early for invalid `x`

@@ -62,5 +62,15 @@ namespace towerdefense
         }
     };
     // -------------------------------------------------------------------------
+    class PlayScreen4 : public MapScreen {
+    public:
+        PlayScreen4();
+        ~PlayScreen4();
+
+        void loadSpecificContent(int width, int height) override;
+        int getCurrentMap() override {
+            return 4;
+        }
+    };
 }
 

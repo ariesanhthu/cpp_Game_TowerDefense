@@ -46,36 +46,8 @@ namespace towerdefense
             OutputDebugStringA("~ScreenManager\n");
         }
 
-        //void changeScreen(int num) 
         void changeScreen(shared_ptr<Screen> newScreen) 
         {
-            //switch (num)
-            //{
-            //    case MAP_1:
-            //    {
-            //        //currentScreen = move(make_shared<PlayScreen1>());
-
-            //    break;
-            //    }
-            //    case MAP_2:
-            //    {
-            //        currentScreen = std::move(std::make_shared<PlayScreen2>());
-            //        break;
-            //    }
-            //    case MAP_3:
-            //    {
-            //        //currentScreen = move(make_shared<PlayScreen3>());
-            //        break;
-            //    }
-            //    case MAP_4:
-            //    {
-            //        //currentScreen = move(make_shared<PlayScreen4>());
-            //    }
-            //case MAIN_SCREEN:
-            //default:
-            //        currentScreen = std::move(std::make_shared<MainScreen>());
-            //    break;
-            //}
             currentScreen = newScreen;
         }
 
