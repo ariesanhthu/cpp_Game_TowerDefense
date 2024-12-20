@@ -335,9 +335,17 @@ namespace towerdefense
             manager.enemyManager.setup(mapSetup);
 
             //setup enemy for each phase
-            for(size_t e = 1; e <= 3; e++)
+            for (size_t e = 1; e <= 3; e++)
+            {
+                int typeEnemy = e;
+
+                // Đổi style enemy Goblin đi bộ thành Goblin bơi
+                if(e == 1 && getCurrentMap() == 4) 
+					typeEnemy = 4;
+
                 for (int i = 0; i < mapSetup[e]; i++)
-                    manager.enemyManager.addEnemy(EnemyFactory::createEnemy(e, rand() % nofpath));
+                    manager.enemyManager.addEnemy(EnemyFactory::createEnemy(typeEnemy, rand() % nofpath));
+            }
         }
         // ------ RENDER -----
         void renderCommonElements(HDC hdc) {

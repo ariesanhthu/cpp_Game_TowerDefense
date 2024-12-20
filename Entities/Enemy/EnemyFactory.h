@@ -6,6 +6,8 @@
 
 #include "EnemyBase.h"
 
+#include "ResourceManager.h"
+
 
 class EnemyFactory
 {
