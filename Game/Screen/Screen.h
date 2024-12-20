@@ -9,8 +9,8 @@ namespace towerdefense
 {
     class Screen {
     public:
-        //UserManager userManager; // list user
-        //SaveGameManager saveGameManager; // list save game
+        UserManager userManager; // list user
+        SaveGameManager saveGameManager; // list save game
 
         //virtual ~Screen();
         virtual void loadContent(int width, int height) = 0;

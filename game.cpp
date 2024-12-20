@@ -244,7 +244,9 @@ namespace towerdefense
             screenManager->changeScreen(make_shared<PlayScreen1>());
         }
         else if (x == 2) {
+
             screenManager->changeScreen(make_shared<PlayScreen2>());
+
         }
         else if (x == 3) {
             screenManager->changeScreen(make_shared<PlayScreen3>());
