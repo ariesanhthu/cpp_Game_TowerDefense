@@ -28,7 +28,7 @@ namespace towerdefense
 
         GamePlaySetup();
         //Turretinit = { 50, 565 };
-
+        OutputDebugStringA("PlayScreen1\n");
     }
     PlayScreen1::~PlayScreen1() {
 
@@ -71,7 +71,7 @@ namespace towerdefense
 
         path.clear();
         mapSetup.clear();
-
+        
         OutputDebugStringA("~PlayScreen2\n");
     }
     //========================================================================================================================//

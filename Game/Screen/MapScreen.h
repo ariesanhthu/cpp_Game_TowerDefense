@@ -233,6 +233,9 @@ namespace towerdefense
             }*/
 
             if (statePlayingGame == LOSE) {
+
+                manager.destroy(); // destroy when gameover
+
                 if (_yesBtn->isClicked(cursorPos)) {
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, getCurrentMap(), 0);
                 }
@@ -243,6 +246,9 @@ namespace towerdefense
             }
 
             if (statePlayingGame == WIN) {
+
+                manager.destroy(); // destroy when gameover
+
                 if (_yesBtn->isClicked(cursorPos)) {
 
                     // qua man tiep theo, hien tai de reload map
@@ -268,6 +274,9 @@ namespace towerdefense
                     _yesBtn->setTriger(false);
                 }
                 if (_noBtn->isClicked(cursorPos)) {
+
+                    manager.destroy(); // destroy when gameover
+
                     // save game 
                     // trở về home
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
