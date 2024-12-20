@@ -28,7 +28,6 @@ namespace towerdefense
         vector<int> mapSetup;
         // -------------
 
-        cplayer guess;
         GameState statePlayingGame = PAUSE;
         int countHeart = 0;
 

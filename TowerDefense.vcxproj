@@ -145,23 +145,10 @@
     <ClCompile Include="Game\States\GameState.cpp" />
     <ClCompile Include="Game\Screen\MapScreen.cpp" />
     <ClCompile Include="Game\Screen\MainScreen.cpp" />
-    <ClCompile Include="Menu\Button.cpp" />
-    <ClCompile Include="constant.cpp" />
-    <ClCompile Include="Entities\cplayer.cpp" />
-    <ClCompile Include="Entities\cbullet.cpp" />
-    <ClCompile Include="Entities\cenemy.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Game\cgame.cpp" />
-    <ClCompile Include="Entities\cmap.cpp" />
     <ClCompile Include="Entities\cpoint.cpp" />
-    <ClCompile Include="Game\ctool.cpp" />
-    <ClCompile Include="Entities\ctower.cpp" />
-    <ClCompile Include="genSetUP.cpp" />
     <ClCompile Include="Graphics\Graphic.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="MainPrg.cpp" />
-    <ClCompile Include="Graphics\renderer.cpp" />
-    <ClCompile Include="Menu\Menu.cpp" />
     <ClCompile Include="Entities\Tower\TowerBase.cpp" />
     <ClCompile Include="Game\StateManager.cpp" />
     <ClCompile Include="Game\States\PlayState.cpp" />
@@ -175,8 +162,6 @@
     <ClCompile Include="Entities\Tower\TowerModel.cpp" />
     <ClCompile Include="Entities\Tower\TowerFactory.cpp" />
     <ClCompile Include="Entities\Tower\TowerManager.cpp" />
-    <ClCompile Include="User\cFile.h" />
-    <ClCompile Include="Utils\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Bullet\BulletFactory.h" />
@@ -193,33 +178,19 @@
     <ClInclude Include="Game\States\GameState.h" />
     <ClInclude Include="Game\Screen\MapScreen.h" />
     <ClInclude Include="Game\Screen\MainScreen.h" />
-    <ClInclude Include="Menu\Button.h" />
-    <ClInclude Include="constant.h" />
-    <ClInclude Include="Entities\cbullet.h" />
-    <ClInclude Include="Entities\cenemy.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="Game\InputManager.h" />
     <ClInclude Include="Game\menuitem.h" />
     <ClInclude Include="Game\ThreadManager.h" />
     <ClInclude Include="Graphics\Graphic.h" />
     <ClInclude Include="Game\Screen\ScreenManager.h" />
     <ClInclude Include="Game\Screen\Screen.h" />
     <ClInclude Include="Game\cgame.h" />
-    <ClInclude Include="Entities\cmap.h" />
-    <ClInclude Include="Entities\cplayer.h" />
     <ClInclude Include="Entities\cpoint.h" />
-    <ClInclude Include="Game\ctool.h" />
-    <ClInclude Include="Entities\ctower.h" />
-    <ClInclude Include="genSetUP.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="Menu\Menu.h" />
     <ClInclude Include="Game\States\PlayState.h" />
     <ClInclude Include="Game\Screen\PlayScreen.h" />
     <ClInclude Include="Game\Screen\PlayScreen1.h" />
     <ClInclude Include="Game\Screen\PlayScreen3.h" />
     <ClInclude Include="Game\Screen\PlayScreen4.h" />
-    <ClInclude Include="PrecompiledHeader.h" />
-    <ClInclude Include="Graphics\renderer.h" />
     <ClInclude Include="Entities\Tower\TowerBase.h" />
     <ClInclude Include="Game\StateManager.h" />
     <ClInclude Include="TowerDefense.h" />
@@ -227,16 +198,6 @@
     <ClInclude Include="Game\UIManager.h" />
     <ClInclude Include="Entities\Tower\TowerModel.h" />
     <ClInclude Include="Entities\Tower\TowerFactory.h" />
-    <ClInclude Include="User\converted.h" />
-    <ClInclude Include="User\userManager.h" />
-    <ClInclude Include="Utils\utility.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="nhap.txt" />
-    <Text Include="SetupMap\map1.txt" />
-    <Text Include="SetupMap\map2.txt" />
-    <Text Include="SetupMap\map3.txt" />
-    <Text Include="SetupMap\map4.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

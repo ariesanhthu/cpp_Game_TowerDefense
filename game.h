@@ -8,12 +8,6 @@
 #include <memory>
 
 //#include "State.h"
-
-#include "input.h"
-#include "User/cFile.h"
-#include "User/userManager.h"
-
-//
 #include "Graphic.h"
 
 // SCREEN HEADER

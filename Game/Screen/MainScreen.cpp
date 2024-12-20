@@ -208,28 +208,7 @@ namespace towerdefense
                 if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
                     lastMouseClickTime = now;
 
-                    std::string name = wstringToString(_inputName->getText());
-                    for (int i = 0; i < name.length(); i++) {
-                        name[i] = tolower(name[i]);
-                    }
-                    Guess.setName(name);
-
-                    std::string password = wstringToString(_inputPassword->getText());
-                    for (int i = 0; i < name.length(); i++) {
-                        password[i] = tolower(password[i]);
-                    }
-                    Guess.setPassword(password);
-
-                    if (Guess.hlogin()) {
-                        Guess.authenticated = true;
-                        _inputName->setText(L"");
-                        _inputPassword->setText(L"");
-                        OutputDebugStringW(_inputName->getText().c_str());
-                        OutputDebugStringW(_inputPassword->getText().c_str());
-                    }
-                    else {
-                        OutputDebugStringW(L"Fail");
-                    }
+                    // login
 
                 }
             }

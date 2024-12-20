@@ -1,5 +1,0 @@
-color: [107, 75, 91]
-
-size: 
-M, W, X, Y: 5x5
-remain: 4x5

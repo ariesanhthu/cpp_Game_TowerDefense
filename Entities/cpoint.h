@@ -1,7 +1,13 @@
 #pragma once
-#include "ctool.h"
 #include <cmath>
 #include <vector>
+
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <fstream>
+
+using namespace std;
 
 class cpoint {
     private:

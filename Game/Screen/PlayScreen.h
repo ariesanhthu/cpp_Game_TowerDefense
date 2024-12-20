@@ -3,16 +3,10 @@
 #include <memory>
 #include "Graphic.h"
 #include <string>
-#include "cplayer.h"
-#include "cenemy.h"
-#include "ctower.h"
 #include <chrono>
 #include <mmsystem.h> 
 #include <UIElement.h>
 #include <menuitem.h>
-#include "User/cFile.h"
-#include "User/userManager.h"
-#include "User/converted.h"
 
 #include "Screen/Screen.h"
 #include "GameManage/GamePlayManage.h"

@@ -5,14 +5,6 @@
 #include <chrono>
 #include <mmsystem.h> 
 
-#include "cplayer.h"
-#include "cenemy.h"
-#include "ctower.h"
-
-#include "User/cFile.h"
-#include "User/userManager.h"
-#include "User/converted.h"
-
 #include <UIElement.h>
 #include <menuitem.h>
 #include "Graphic.h"
