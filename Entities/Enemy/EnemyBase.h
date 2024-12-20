@@ -33,6 +33,7 @@ public:
 
 	// CONSTRUCTOR WITH FRAME ANIMATION
 	EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, EnemyModel* nModel, int npath);
+	EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, shared_ptr<EnemyModel> nModel, int npath);
 	/*~EnemyBase() {
 		if (model) delete model;
  	}*/

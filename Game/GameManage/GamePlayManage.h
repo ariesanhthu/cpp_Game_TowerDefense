@@ -22,13 +22,15 @@ private:
 		PAUSE = 3,
 	};
 
+
+	int gameCode;
+	int gameStatus = PLAY;
+	int point = 0;
+
 public:
 	EnemyManager enemyManager;
 	//BulletManager bulletManager;
 	TowerManager towerManager;
-
-	int gameCode;
-	int gameStatus = PLAY; 
 
 	GamePlayManage() = default;
 
@@ -47,6 +49,15 @@ public:
 		enemyManager.renderEnemies(hdc);
 		towerManager.renderTowers(hdc);
 	}
+
+	//setter
+	void setGameCode(int );
+	void setGameStatus(int );
+	void setPoint(int );
+	//getter
+	int getGameCode();
+	int getGameStatus();
+	int getPoint();
 };
 
 

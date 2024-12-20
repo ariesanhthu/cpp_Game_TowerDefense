@@ -27,9 +27,11 @@ public:
 
     void setup(vector<int> ar);
 
-    std::vector<shared_ptr<EnemyBase>> enemies_;
+    std::vector<shared_ptr<EnemyBase>>& getEnemy();
 
 private:
+
+    std::vector<shared_ptr<EnemyBase>> enemies_;
 
     int nOfPhase = 3;                       // số lượng phase
     vector <int> nOfEnemyEachPhase;     // số lượng e mỗi phase
