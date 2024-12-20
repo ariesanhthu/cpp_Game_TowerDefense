@@ -28,4 +28,5 @@ void TowerFactory::createModels() {
 void TowerFactory::deleteModels() {
     for (auto model : Models)
         delete model;
+    Models.clear();
 }

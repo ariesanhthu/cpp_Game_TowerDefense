@@ -124,7 +124,7 @@ namespace towerdefense
     public:
         //MapScreen();
         virtual ~MapScreen() {
-            
+            GameDestroy();
         }
 
         /* --------------------------------------------------
@@ -336,6 +336,10 @@ namespace towerdefense
             for(size_t e = 1; e <= 3; e++)
                 for (int i = 0; i < mapSetup[e]; i++)
                     manager.enemyManager.addEnemy(EnemyFactory::createEnemy(e, rand() % nofpath));
+        }
+
+        void GameDestroy() {
+            manager.destroy();
         }
         // ------ RENDER -----
         void renderCommonElements(HDC hdc) {
