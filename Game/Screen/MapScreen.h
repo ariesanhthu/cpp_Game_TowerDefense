@@ -88,7 +88,9 @@ namespace towerdefense
 
     public:
         //MapScreen();
-        virtual ~MapScreen() {}
+        virtual ~MapScreen() {
+            
+        }
 
         /* --------------------------------------------------
                         TEMPLATE METHOD

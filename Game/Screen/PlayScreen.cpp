@@ -122,7 +122,7 @@ namespace towerdefense
 
         path.clear();
         mapSetup.clear();
-
+        
         OutputDebugStringA("~PlayScreen3\n");
     }
 }
