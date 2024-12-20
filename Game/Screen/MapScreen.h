@@ -123,9 +123,7 @@ namespace towerdefense
 
     public:
         //MapScreen();
-        virtual ~MapScreen() {
-            GameDestroy();
-        }
+        virtual ~MapScreen() {}
 
         /* --------------------------------------------------
                         TEMPLATE METHOD
@@ -236,7 +234,7 @@ namespace towerdefense
 
             if (statePlayingGame == LOSE) {
                 if (_yesBtn->isClicked(cursorPos)) {
-                    PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
+                    PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, getCurrentMap(), 0);
                 }
                 if (_noBtn->isClicked(cursorPos)) {
                     // save game 
@@ -248,8 +246,11 @@ namespace towerdefense
                 if (_yesBtn->isClicked(cursorPos)) {
 
                     // qua man tiep theo, hien tai de reload map
+                    int nextMap = getCurrentMap() + 1;
+                    if(nextMap > 4)
+						nextMap = 0;
 
-                    PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 2, 0);
+                    PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, nextMap, 0);
                 }
                 if (_noBtn->isClicked(cursorPos)) {
                     // save game 
@@ -316,6 +317,7 @@ namespace towerdefense
         // ------- ABSTRACT FUNCTION --------
 
         virtual void loadSpecificContent(int width, int height) = 0;
+        virtual int getCurrentMap() = 0;
 
         // ====================================================================================
 
@@ -336,10 +338,6 @@ namespace towerdefense
             for(size_t e = 1; e <= 3; e++)
                 for (int i = 0; i < mapSetup[e]; i++)
                     manager.enemyManager.addEnemy(EnemyFactory::createEnemy(e, rand() % nofpath));
-        }
-
-        void GameDestroy() {
-            manager.destroy();
         }
         // ------ RENDER -----
         void renderCommonElements(HDC hdc) {
