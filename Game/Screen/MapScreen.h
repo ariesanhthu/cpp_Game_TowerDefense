@@ -5,6 +5,8 @@
 #include "GameManage/GamePlayManage.h"
 #include "Screen/ScreenManager.h"
 
+#include "User/SaveGameManager.h"
+
 using namespace std;
 
 namespace towerdefense
@@ -367,15 +369,16 @@ namespace towerdefense
 		// ------ save game ----- 
         void saveNewGame() {
 
-
+            auto save = SaveGameManager::getInstance();
+            
             //// save game 
             //std::shared_ptr<User> currUser = userManager->getUserToken();
 
-            /*if (currUser == nullptr) {
-                currUser->setName("guess");
-            }*/
+            //if (currUser == nullptr) {
+            //    currUser->setName("guess");
+            //}
 
-            //OutputDebugStringA(   (    currUser->getName()  ).c_str()   );
+            //OutputDebugStringA("TRAN HAI DUC PHIEN VAI!!!!");
 
             //std::shared_ptr<SaveGame> game_to_save;
 

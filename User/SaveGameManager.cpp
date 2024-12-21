@@ -1,18 +1,28 @@
-#include "SaveGameManager.h"
-#include <algorithm>
+﻿#include "SaveGameManager.h"
 
-SaveGameManager::SaveGameManager() {
-    GET_ALL_SAVE_GAME();
-}
+// Khởi tạo instance duy nhất là nullptr
+std::shared_ptr<SaveGameManager> SaveGameManager::instance = nullptr;
 
-SaveGameManager::~SaveGameManager() {
-    saveGames.clear();
-}
+// Truy cập instance duy nhất
+//std::shared_ptr<SaveGameManager> SaveGameManager::getInstance() {
+//    if (instance == nullptr) {
+//        instance = std::shared_ptr<SaveGameManager>(new SaveGameManager());
+//    }
+//    return instance;
+//}
+//
+//// Constructor
+//SaveGameManager::SaveGameManager() {
+//    GET_ALL_SAVE_GAME();
+//}
+//
+//// Destructor
+//SaveGameManager::~SaveGameManager() {
+//    saveGames.clear();
+//}
 
+// Đọc tất cả save game từ file
 void SaveGameManager::GET_ALL_SAVE_GAME() {
-    
-    //OutputDebugStringA("adasdsad");
-
     std::ifstream file("Storage/savegames.catfam", std::ios::binary);
     if (file.is_open()) {
         while (file.peek() != EOF) {
@@ -20,49 +30,53 @@ void SaveGameManager::GET_ALL_SAVE_GAME() {
             int point, mapCode, userHealth;
             size_t enemyCount, towerCount, bulletCount, healthCount, pathCount;
 
-            // Read userName
+            // Đọc dữ liệu userName
             size_t nameLength;
             file.read(reinterpret_cast<char*>(&nameLength), sizeof(size_t));
             userName.resize(nameLength);
             file.read(&userName[0], nameLength);
 
-            // Read point, mapCode and userHealth
+            // Đọc point, mapCode và userHealth
             file.read(reinterpret_cast<char*>(&point), sizeof(int));
             file.read(reinterpret_cast<char*>(&mapCode), sizeof(int));
             file.read(reinterpret_cast<char*>(&userHealth), sizeof(int));
 
-            // Read enemy positions
+            // Đọc vị trí enemy
             file.read(reinterpret_cast<char*>(&enemyCount), sizeof(size_t));
             std::vector<cpoint> enemyPos(enemyCount);
             file.read(reinterpret_cast<char*>(enemyPos.data()), enemyCount * sizeof(cpoint));
 
-            // Read enemy health
+            // Đọc health của enemy
             file.read(reinterpret_cast<char*>(&healthCount), sizeof(size_t));
             std::vector<int> enemyHealth(healthCount);
             file.read(reinterpret_cast<char*>(enemyHealth.data()), healthCount * sizeof(int));
 
-            // Read enemy path numbers
+            // Đọc đường đi của enemy
             file.read(reinterpret_cast<char*>(&pathCount), sizeof(size_t));
             std::vector<int> enemyPathNumber(pathCount);
             file.read(reinterpret_cast<char*>(enemyPathNumber.data()), pathCount * sizeof(int));
 
-            // Read tower positions
+            // Đọc vị trí tower
             file.read(reinterpret_cast<char*>(&towerCount), sizeof(size_t));
             std::vector<cpoint> towerPos(towerCount);
             file.read(reinterpret_cast<char*>(towerPos.data()), towerCount * sizeof(cpoint));
 
-            // Read bullet positions
+            // Đọc vị trí bullet
             file.read(reinterpret_cast<char*>(&bulletCount), sizeof(size_t));
             std::vector<cpoint> bulletPos(bulletCount);
             file.read(reinterpret_cast<char*>(bulletPos.data()), bulletCount * sizeof(cpoint));
 
-            std::shared_ptr<SaveGame> saveGame = std::make_shared<SaveGame>(userName, enemyPos, enemyHealth, enemyPathNumber, towerPos, bulletPos, point, mapCode, userHealth);
+            // Tạo SaveGame và thêm vào danh sách
+            std::shared_ptr<SaveGame> saveGame = std::make_shared<SaveGame>(
+                userName, enemyPos, enemyHealth, enemyPathNumber, towerPos, bulletPos, point, mapCode, userHealth
+            );
             saveGames.push_back(saveGame);
         }
         file.close();
     }
 }
 
+// Ghi tất cả save game ra file
 void SaveGameManager::POST_ALL_SAVE_GAME() {
     std::ofstream file("Storage/savegames.catfam", std::ios::binary | std::ios::trunc);
     if (file.is_open()) {
@@ -84,44 +98,40 @@ void SaveGameManager::POST_ALL_SAVE_GAME() {
             size_t towerCount = towerPos.size();
             size_t bulletCount = bulletPos.size();
 
-            // Write userName
+            // Ghi userName
             file.write(reinterpret_cast<const char*>(&nameLength), sizeof(size_t));
             file.write(userName.data(), nameLength);
 
-            // Write point, mapCode and userHealth
+            // Ghi point, mapCode và userHealth
             file.write(reinterpret_cast<const char*>(&point), sizeof(int));
             file.write(reinterpret_cast<const char*>(&mapCode), sizeof(int));
             file.write(reinterpret_cast<const char*>(&userHealth), sizeof(int));
 
-            // Write enemy positions
+            // Ghi enemy positions
             file.write(reinterpret_cast<const char*>(&enemyCount), sizeof(size_t));
             file.write(reinterpret_cast<const char*>(enemyPos.data()), enemyCount * sizeof(cpoint));
 
-            // Write enemy health
+            // Ghi enemy health
             file.write(reinterpret_cast<const char*>(&healthCount), sizeof(size_t));
             file.write(reinterpret_cast<const char*>(enemyHealth.data()), healthCount * sizeof(int));
 
-            // Write enemy path numbers
+            // Ghi enemy path numbers
             file.write(reinterpret_cast<const char*>(&pathCount), sizeof(size_t));
             file.write(reinterpret_cast<const char*>(enemyPathNumber.data()), pathCount * sizeof(int));
 
-            // Write tower positions
+            // Ghi tower positions
             file.write(reinterpret_cast<const char*>(&towerCount), sizeof(size_t));
             file.write(reinterpret_cast<const char*>(towerPos.data()), towerCount * sizeof(cpoint));
 
-            // Write bullet positions
+            // Ghi bullet positions
             file.write(reinterpret_cast<const char*>(&bulletCount), sizeof(size_t));
             file.write(reinterpret_cast<const char*>(bulletPos.data()), bulletCount * sizeof(cpoint));
-
-            // push_back saveGame
-            /* auto saveGame = std::make_shared<SaveGame>(userName, enemyPos, enemyHealth, enemyPathNumber, towerPos, bulletPos, point, mapCode);
-             saveGames.push_back(saveGame);*/
         }
-
         file.close();
     }
 }
 
+// Thêm save game mới
 void SaveGameManager::POST_NEW_SAVE_GAME(std::shared_ptr<SaveGame> saveGame) {
     saveGames.push_back(saveGame);
     POST_ALL_SAVE_GAME();
