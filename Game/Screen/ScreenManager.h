@@ -34,6 +34,8 @@ namespace towerdefense
         std::shared_ptr<Screen> currentScreen = nullptr;
 
     public:
+        
+
         ~ScreenManager() {
             OutputDebugStringA("~ScreenManager\n");
         }

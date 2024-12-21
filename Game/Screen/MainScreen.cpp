@@ -39,6 +39,8 @@ namespace towerdefense
         _inputPasswordReg = std::make_shared<InputElement>(L"Password", inputPasswordPosition, customfont, RGB(255, 255, 255), L"Assets/button/input.bmp", 5);
 
         _gotoPage = std::make_shared<TextElement>(L"Goto Register Form", customfont, RGB(255, 255, 255), linkPos);
+
+        _VolumeButton = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, VolumeButtonPos);
     }
 
     // Destructor
@@ -178,6 +180,10 @@ namespace towerdefense
 
         }
         else if (menu == 4) {
+            // setting 
+            if (_VolumeButton->isClicked(cursorPos)) {
+                //Audio::PlaySound(filename); 
+            }
 
         }
         else if (menu == 5) {
@@ -210,16 +216,15 @@ namespace towerdefense
                     lastMouseClickTime = now;
 
                      //login
-					std::string name = utils.wstringToString(_inputName->getText());
-					std::string password = utils.wstringToString(_inputPassword->getText());
+					/*std::string name = utils->wstringToString(_inputName->getText());
+					std::string password = utils->wstringToString(_inputPassword->getText());*/
 
-                    if (userManager.login(name, password)) {
-						// token bây giờ sẽ khác nullptr
-						// show mess thành công
-                    }
-                    else {
-                        // show mess thất bại
-                    }
+                    //if (userManager->login(name, password)) {
+
+                    //}
+                    //else {
+                    //    // show mess thất bại
+                    //}
                 }
             }
         }
@@ -291,6 +296,8 @@ namespace towerdefense
 
         }
         else if (menu == 4) {
+
+            _VolumeButton->render(hdc);
 
         }
         else if (menu == 5) {

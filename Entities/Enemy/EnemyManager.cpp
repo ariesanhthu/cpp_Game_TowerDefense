@@ -97,7 +97,7 @@ int EnemyManager::getUserHP() {
 void EnemyManager::setUserHP(int x) {
     this->gameHPDefaul = x;
 }
-}
+
 
 std::vector<shared_ptr<EnemyBase>>& EnemyManager::getEnemy() {
     return enemies_;

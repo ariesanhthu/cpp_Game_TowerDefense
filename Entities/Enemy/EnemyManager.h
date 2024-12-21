@@ -33,7 +33,6 @@ public:
 
     std::vector<shared_ptr<EnemyBase>> getAllEnemy() const;
 
-    std::vector<shared_ptr<EnemyBase>> enemies_;
     std::vector<shared_ptr<EnemyBase>>& getEnemy();
 
 private:

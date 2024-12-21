@@ -47,6 +47,8 @@ namespace towerdefense
         std::shared_ptr<InputElement> _inputPasswordReg;
 
         std::shared_ptr<TextElement> _gotoPage;
+        
+        std::shared_ptr<Button> _VolumeButton;
 
 
         POINT firstplayerCoverPos = { 420, 200 };
@@ -77,6 +79,8 @@ namespace towerdefense
         POINT registerPosition = { 480, 200 };
         POINT linkPos = { 270, 460 };
 
+        POINT VolumeButtonPos = { 0, 0 };
+
         // Thiết lập 3 vị trí để popup board
         POINT initpoint, endpoint;
 
@@ -91,32 +95,14 @@ namespace towerdefense
         static int menu;
         bool loginMenu = true;
 
-        //size doi tuong
-        POINT buttonSize = { 26, 29 };
-        POINT sizeBoard = { 693, 447 };
-        POINT optionSize = { 75, 42 };
-        POINT loginSize = { 99, 43 };
-        POINT inputSize = { 60, 11 };
-        POINT sizeSound = { 25, 29 };
-        POINT sizeVolBtn = { 14, 21 };
-        POINT sizeEdit = { 7, 12 };
+        
 
         // avoid double click
         mutable std::chrono::steady_clock::time_point lastMouseClickTime;  // mutable to modify in const method
         std::chrono::steady_clock::time_point lastKeyPressTime;
         const int debounceDelayMs = 300; // 200 ms debounce delay
 
-        // support
-        void SetVolume(int volumePercentage) {
-            if (volumePercentage < 0) volumePercentage = 0;
-            if (volumePercentage > 99) volumePercentage = 0;
-
-            DWORD volume = (DWORD)(0xFFFF * (volumePercentage / 100.0f));
-            DWORD volumeSetting = (volume & 0xFFFF) | (volume << 16);
-
-            waveOutSetVolume(0, volumeSetting);
-            currentVolume = volumePercentage;
-        }
+        
 
     public:
         MainScreen();

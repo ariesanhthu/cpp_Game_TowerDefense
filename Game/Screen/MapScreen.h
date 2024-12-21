@@ -87,7 +87,8 @@ namespace towerdefense
 
     public:
         MapScreen() { manager.destroy(); };
-        virtual ~MapScreen() {}
+        virtual ~MapScreen() {
+        }
 
         /* --------------------------------------------------
                         TEMPLATE METHOD
@@ -365,53 +366,57 @@ namespace towerdefense
         }
 		// ------ save game ----- 
         void saveNewGame() {
-            // save game 
-            std::shared_ptr<User> currUser = userManager.getUserToken();
 
-            if (currUser == nullptr) {
+
+            //// save game 
+            //std::shared_ptr<User> currUser = userManager->getUserToken();
+
+            /*if (currUser == nullptr) {
                 currUser->setName("guess");
-            }
+            }*/
 
-            std::shared_ptr<SaveGame> game_to_save;
+            //OutputDebugStringA(   (    currUser->getName()  ).c_str()   );
 
-            //int point = manager.getPoint();            
+            //std::shared_ptr<SaveGame> game_to_save;
 
-            int point = 100; // test
-            int userHealth = manager.enemyManager.getUserHP();
-            int mapCode = getCurrentMap();
+            ////int point = manager.getPoint();            
 
-            std::string name = currUser->getName(); // mặc định là guess
+            //int point = 100; // test
+            //int userHealth = manager.enemyManager.getUserHP();
+            //int mapCode = getCurrentMap();
 
-            vector<cpoint> enemyPos;
-            vector<int> enemyHealth;
-            vector<int> enemtPathNumber;
-            vector<cpoint> towerPos;
-            vector<cpoint> bulletPos;
+            //std::string name = currUser->getName(); // mặc định là guess
 
-            for (auto& tower : manager.towerManager.getAllTower()) {
-                towerPos.push_back({ tower->getCurrentPosition().getX(), tower->getCurrentPosition().getY() });
-            }
+            //vector<cpoint> enemyPos;
+            //vector<int> enemyHealth;
+            //vector<int> enemtPathNumber;
+            //vector<cpoint> towerPos;
+            //vector<cpoint> bulletPos;
 
-            for (auto& enemy : manager.enemyManager.getAllEnemy()) {
-                enemyPos.push_back({ enemy->getCurrentPosition().getX(), enemy->getCurrentPosition().getY() });
-                enemyHealth.push_back(enemy->getHealth()); 
-                enemtPathNumber.push_back(enemy->getPath());
-            }
+            //for (auto& tower : manager.towerManager.getAllTower()) {
+            //    towerPos.push_back({ tower->getCurrentPosition().getX(), tower->getCurrentPosition().getY() });
+            //}
 
-            for (auto& bullet : manager.towerManager.getAllBullet()) {
-                bulletPos.push_back({ bullet->getCurr().getX(), bullet->getCurr().getY() });
-            }
+            //for (auto& enemy : manager.enemyManager.getAllEnemy()) {
+            //    enemyPos.push_back({ enemy->getCurrentPosition().getX(), enemy->getCurrentPosition().getY() });
+            //    enemyHealth.push_back(enemy->getHealth()); 
+            //    enemtPathNumber.push_back(enemy->getPath());
+            //}
 
-            game_to_save->setUserName(name);
-            game_to_save->setMapCode(mapCode);
-            game_to_save->setPoint(point);  
-            game_to_save->setEnemyPos(enemyPos);
-            game_to_save->setEnemyHealth(enemyHealth);
-            game_to_save->setEnemyPathNumber(enemtPathNumber);
-            game_to_save->setTowerPos(towerPos);
-            game_to_save->setBulletPos(bulletPos);
+            //for (auto& bullet : manager.towerManager.getAllBullet()) {
+            //    bulletPos.push_back({ bullet->getCurr().getX(), bullet->getCurr().getY() });
+            //}
 
-            saveGameManager.POST_NEW_SAVE_GAME(game_to_save);
+            //game_to_save->setUserName(name);
+            //game_to_save->setMapCode(mapCode);
+            //game_to_save->setPoint(point);  
+            //game_to_save->setEnemyPos(enemyPos);
+            //game_to_save->setEnemyHealth(enemyHealth);
+            //game_to_save->setEnemyPathNumber(enemtPathNumber);
+            //game_to_save->setTowerPos(towerPos);
+            //game_to_save->setBulletPos(bulletPos);
+
+            //saveGameManager->POST_NEW_SAVE_GAME(game_to_save);
         }
 
     }; // END CLASS
