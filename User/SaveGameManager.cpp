@@ -3,24 +3,6 @@
 // Khởi tạo instance duy nhất là nullptr
 std::shared_ptr<SaveGameManager> SaveGameManager::instance = nullptr;
 
-// Truy cập instance duy nhất
-//std::shared_ptr<SaveGameManager> SaveGameManager::getInstance() {
-//    if (instance == nullptr) {
-//        instance = std::shared_ptr<SaveGameManager>(new SaveGameManager());
-//    }
-//    return instance;
-//}
-//
-//// Constructor
-//SaveGameManager::SaveGameManager() {
-//    GET_ALL_SAVE_GAME();
-//}
-//
-//// Destructor
-//SaveGameManager::~SaveGameManager() {
-//    saveGames.clear();
-//}
-
 // Đọc tất cả save game từ file
 void SaveGameManager::GET_ALL_SAVE_GAME() {
     std::ifstream file("Storage/savegames.catfam", std::ios::binary);

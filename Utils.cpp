@@ -1,5 +1,7 @@
 #include "Utils.h"
 
+std::shared_ptr<Utils> Utils::instance = nullptr;
+
 std::string Utils::wstringToString(std::wstring wstr) {
 	int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), (int)wstr.length(), NULL, 0, NULL, NULL);
 	std::string str(size_needed, 0);

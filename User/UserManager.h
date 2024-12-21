@@ -8,12 +8,21 @@
 
 class UserManager {
 private:
+	static std::shared_ptr<UserManager> instance;
+
 	std::vector<std::shared_ptr<User>> users;
 	std::shared_ptr<User> token;
 
-public:
 	UserManager();
+public:
 	~UserManager();
+
+	static std::shared_ptr<UserManager> getInstance() {
+		if (instance == nullptr) {
+			instance = std::shared_ptr<UserManager>(new UserManager());
+		}
+		return instance;
+	}
 
 	bool login(string username, string password);
 	bool logout();

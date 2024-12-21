@@ -1,5 +1,7 @@
 #include "UserManager.h"
 
+std::shared_ptr<UserManager> UserManager::instance = nullptr;
+
 void UserManager::GET_ALL_USER() {
     // Read all users from file and populate the users vector
     std::ifstream file("Storage/users.catfam", std::ios::binary);
