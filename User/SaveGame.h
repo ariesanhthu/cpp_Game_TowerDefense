@@ -3,6 +3,8 @@
 #include <string>
 #include "cpoint.h"
 #include <vector>
+#include <fstream>
+#include <windows.h>
 
 using namespace std;
 
@@ -15,7 +17,7 @@ private:
 	vector<int> enemyPathNumber;
 
 	vector<cpoint> towerPos;
-	vector<cpoint> bulletPos;
+	//vector<cpoint> bulletPos;
 
 	int userHealth;
 	int point;
@@ -27,7 +29,7 @@ public:
 		vector<int> enemyHealth,
 		vector<int> enemyPathNumber,
 		vector<cpoint> towerPos,
-		vector<cpoint> bulletPos,
+		//vector<cpoint> bulletPos,
 		int point,
 		int mapCode,
 		int userHealth
@@ -45,12 +47,21 @@ public:
 	vector<int> getEnemyPathNumber();
 	void setTowerPos(vector<cpoint> towerPos);
 	vector<cpoint> getTowerPos();
-	void setBulletPos(vector<cpoint> bulletPos);
-	vector<cpoint> getBulletPos();
+	//void setBulletPos(vector<cpoint> bulletPos);
+	//vector<cpoint> getBulletPos();
 	void setPoint(int point);
 	int getPoint();
 	void setMapCode(int mapCode);
 	int getMapCode();
 	void setUserHealth(int userHealth);
 	int getUserHealth();
+
+	void writefile();
+	SaveGame readfile();
+};
+
+class SaveGameSupport {
+public:
+	void writefile();
+	std::vector<SaveGame> readfile();
 };

@@ -11,7 +11,7 @@ namespace towerdefense
 
         float scaleX = static_cast<float>(1280) / 395.0f;   // 1280 là kích thước gốc của ảnh
         float scaleY = static_cast<float>(720) / 213.0f;    // 720 là kích thước gốc của ảnh
-        float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh
+        float scale = min(scaleX, scaleY);                  // Lấy tỉ lệ nhỏ hơn để tránh méo ảnh 
 
         _background = std::make_shared<Item>(L"Assets/background/mainscreen.png", 1, 0, 0);
         _catfam = std::make_shared<Item>(L"Assets/decor/nameLogo.png", 2, 0, 0);
@@ -40,7 +40,19 @@ namespace towerdefense
 
         _gotoPage = std::make_shared<TextElement>(L"Goto Register Form", customfont, RGB(255, 255, 255), linkPos);
 
-        _VolumeButton = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, VolumeButtonPos);
+        _VolumeButton = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 5, VolumeButtonPos);
+
+        for (int i = 0; i < listGame.size(); i++) {
+           
+            wstring name = Utils::stringToWstring(listGame[i].getUserName());
+            wstring point = Utils::stringToWstring(std::to_string(listGame[i].getPoint()));
+            wstring level = Utils::stringToWstring(std::to_string(listGame[i].getMapCode()));
+
+            POINT pos = FirstContinueItem; 
+            pos.y += i * 80;
+
+            _ListContinueItem[i] = std::make_shared<ContinueElement>(name, point, level, pos, customfont, RGB(255, 255, 255), L"Assets/button/input.bmp", 5);
+        }
     }
 
     // Destructor
@@ -81,6 +93,11 @@ namespace towerdefense
             {endpoint.x + 80, endpoint.y + 320},
             {endpoint.x + 450, endpoint.y + 320},
         };
+
+
+        listGame = supSaveGame->readfile();
+        _ListContinueItem.resize(listGame.size());
+
     }
 
     void MainScreen::handleInput(HWND hwnd) {
@@ -172,10 +189,18 @@ namespace towerdefense
             }
         }
         else if (menu == 2) {
+            
+            for (int i = 0; i < listGame.size(); i++) {
+
+                if (_ListContinueItem[i]->isClicked(cursorPos)) {
+                    PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, listGame[i].getMapCode(), 0);
+                }
+
+            }
+
             // if click user 
 
             // loadgame 
-
         }
         else if (menu == 3) {
 
@@ -291,6 +316,9 @@ namespace towerdefense
         else if (menu == 2) {
 
             // render user item
+            for (auto i : _ListContinueItem) {
+                i->render(hdc);
+            }
 
         }
         else if (menu == 3) {

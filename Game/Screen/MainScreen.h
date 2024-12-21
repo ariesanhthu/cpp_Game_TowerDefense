@@ -13,6 +13,10 @@
 #include "Screen/Screen.h"
 #include "GameManage/GamePlayManage.h"
 
+#include "User/User.h";
+#include "User/SaveGame.h"
+#include "Utils.h"
+
 // --------------------------------------------------
 //#include "User/SaveGameManager.h"
 
@@ -53,6 +57,10 @@ namespace towerdefense
         
         std::shared_ptr<Button> _VolumeButton;
 
+        std::vector<shared_ptr<ContinueElement>> _ListContinueItem;
+        
+        std::vector<SaveGame> listGame; 
+        std::shared_ptr<SaveGameSupport> supSaveGame;
 
         POINT firstplayerCoverPos = { 420, 200 };
         POINT titleContinuePos = { 390, 130 };
@@ -83,6 +91,7 @@ namespace towerdefense
         POINT linkPos = { 270, 460 };
 
         POINT VolumeButtonPos = { 0, 0 };
+        POINT FirstContinueItem = { 300, 120 };
 
         // Thiết lập 3 vị trí để popup board
         POINT initpoint, endpoint;

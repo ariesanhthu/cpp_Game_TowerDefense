@@ -59,6 +59,11 @@ public:
         return frames.empty() ? nullptr : frames[currentFrame];
     }
 
+    int getNumberFrame()
+    {
+        return frames.size();
+    }
+
     ~Animation()
     {
         for (auto& frame : frames)

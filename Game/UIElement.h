@@ -153,7 +153,7 @@ public:
 
     // Update the element (including animation)
     virtual void updateUI(float deltaTime) {
-        animation.update(deltaTime);
+        animation.update(deltaTime * animation.getNumberFrame());
         image = animation.getCurrentFrame(); 
     }
 

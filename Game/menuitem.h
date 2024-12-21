@@ -225,7 +225,6 @@ public:
     }
 };
 
-
 class InputElement : public UIElement {
 private:
     std::wstring text = L"input";   // Current text in the input box
@@ -328,6 +327,42 @@ public:
     // Set the text programmatically
     void setLabel(std::wstring newText) {
         text = newText;
+    }
+};
+
+class ContinueElement : public UIElement {
+private: 
+    std::wstring name;
+    std::wstring point; 
+    std::wstring level;
+    HFONT font;
+    COLORREF textColor;
+
+public: 
+    ContinueElement(wstring name, wstring point, wstring level, POINT position, HFONT font, COLORREF textColor, const wchar_t* link, float factor)
+        : UIElement(link, factor, position), name(name), point(point), level(level), font(font), textColor(textColor) {}
+
+    wstring getName() { return name; }
+    void setName(wstring _name) { name = _name; }
+    wstring getPoint() { return point; }
+    void setPoint(wstring _point) { point = _point; }
+    wstring getLevel() { return level; }
+    void setLevel(wstring _level) { level = _level; }
+
+    void render(HDC hdc) override {
+        Graphic::DrawBitmap(image, position, hdc);
+        POINT namePos = position;
+        namePos.x += 20;
+        namePos.y += 15;
+        Graphic::RenderText(name.c_str(), hdc, namePos, font, textColor);
+        POINT pointPos = position;
+        pointPos.x += 120;
+        pointPos.y += 15;
+        Graphic::RenderText(point.c_str(), hdc, pointPos, font, textColor);
+        POINT levelPos = position;
+        levelPos.x += 200;
+        levelPos.y += 15;
+        Graphic::RenderText(level.c_str(), hdc, levelPos, font, textColor);
     }
 };
 

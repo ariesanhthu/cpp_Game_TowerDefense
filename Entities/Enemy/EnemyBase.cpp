@@ -1,4 +1,4 @@
-#include "EnemyBase.h"
+﻿#include "EnemyBase.h"
 
 EnemyBase::EnemyBase(const EnemyBase& other) {
 	model = other.model;
@@ -60,6 +60,14 @@ int EnemyBase::getPath() {
 // get model attribute
 int EnemyBase::getSpeed() {
 	return model->getSpeed();
+}
+
+int EnemyBase::getIndex() {
+	return index;
+}
+
+void EnemyBase::setIndex(int x) {
+	index = x;
 }
 //getTexture();
 

@@ -14,9 +14,6 @@
 #include "Screen/ScreenManager.h"
 #include "Screen/MainScreen.h"
 #include "Screen/PlayScreen.h"
-
-#include "User/SaveGameManager.h"
-#include "User/UserManager.h"
 #include "Utils.h"
 
 
@@ -31,10 +28,7 @@ namespace towerdefense
 	private:
 		//std::unique_ptr<GameState> currentState;
 		shared_ptr<ScreenManager> screenManager;
-		
-		std::shared_ptr<UserManager> userManager;         // list user
-		std::shared_ptr<SaveGameManager> saveGameManager; // list save game
-		std::shared_ptr<Utils> utils;                     // Utils
+		Utils utils;
 		
 
 	public:

@@ -4,8 +4,12 @@
 #include "Screen/Screen.h"
 #include "GameManage/GamePlayManage.h"
 #include "Screen/ScreenManager.h"
+#include <fstream>
 
 #include "User/SaveGameManager.h"
+#include "User/UserManager.h"
+#include "User/SaveGame.h"
+#include "User/User.h"
 
 using namespace std;
 
@@ -240,7 +244,7 @@ namespace towerdefense
                 if (_noBtn->isClicked(cursorPos)) {
 
                     // save game
-                    saveNewGame();
+                    saveToLoadGame();
                     
                     
                     // trở về home
@@ -367,59 +371,34 @@ namespace towerdefense
             return true;
         }
 		// ------ save game ----- 
-        void saveNewGame() {
+        void saveToLoadGame() {
+            std::string name = "guess";
 
-            auto save = SaveGameManager::getInstance();
-            
-            //// save game 
-            //std::shared_ptr<User> currUser = userManager->getUserToken();
+            int point = manager.getPoint();
+            int health = manager.enemyManager.getUserHP();
+            int mapCode = getCurrentMap();
 
-            //if (currUser == nullptr) {
-            //    currUser->setName("guess");
-            //}
+            OutputDebugStringA((std::to_string(mapCode) + "hahaha\n").c_str());
+            OutputDebugStringA((std::to_string(health) + "kakaka\n").c_str());
 
-            //OutputDebugStringA("TRAN HAI DUC PHIEN VAI!!!!");
 
-            //std::shared_ptr<SaveGame> game_to_save;
+            std::vector<cpoint> enemyPos;
+            std::vector<int> enemyHealth;
+            std::vector<int> enemyPathNumber;
+            std::vector<cpoint> towerPos;
 
-            ////int point = manager.getPoint();            
+            for (auto& tower : manager.towerManager.getAllTower()) {
+                towerPos.push_back({ tower->getCurrentPosition().getX(), tower->getCurrentPosition().getY(), 0 });
+            }
 
-            //int point = 100; // test
-            //int userHealth = manager.enemyManager.getUserHP();
-            //int mapCode = getCurrentMap();
+            for (auto& enemy : manager.enemyManager.getAllEnemy()) {
+                enemyPos.push_back({ enemy->getCurrentPosition().getX(), enemy->getCurrentPosition().getY(), 0 });
+                enemyHealth.push_back(enemy->getHealth());
+                enemyPathNumber.push_back(enemy->getPath());
+            }
 
-            //std::string name = currUser->getName(); // mặc định là guess
-
-            //vector<cpoint> enemyPos;
-            //vector<int> enemyHealth;
-            //vector<int> enemtPathNumber;
-            //vector<cpoint> towerPos;
-            //vector<cpoint> bulletPos;
-
-            //for (auto& tower : manager.towerManager.getAllTower()) {
-            //    towerPos.push_back({ tower->getCurrentPosition().getX(), tower->getCurrentPosition().getY() });
-            //}
-
-            //for (auto& enemy : manager.enemyManager.getAllEnemy()) {
-            //    enemyPos.push_back({ enemy->getCurrentPosition().getX(), enemy->getCurrentPosition().getY() });
-            //    enemyHealth.push_back(enemy->getHealth()); 
-            //    enemtPathNumber.push_back(enemy->getPath());
-            //}
-
-            //for (auto& bullet : manager.towerManager.getAllBullet()) {
-            //    bulletPos.push_back({ bullet->getCurr().getX(), bullet->getCurr().getY() });
-            //}
-
-            //game_to_save->setUserName(name);
-            //game_to_save->setMapCode(mapCode);
-            //game_to_save->setPoint(point);  
-            //game_to_save->setEnemyPos(enemyPos);
-            //game_to_save->setEnemyHealth(enemyHealth);
-            //game_to_save->setEnemyPathNumber(enemtPathNumber);
-            //game_to_save->setTowerPos(towerPos);
-            //game_to_save->setBulletPos(bulletPos);
-
-            //saveGameManager->POST_NEW_SAVE_GAME(game_to_save);
+            SaveGame game_to_save(name, enemyPos, enemyHealth, enemyPathNumber, towerPos, point, mapCode, health); 
+            game_to_save.writefile();   
         }
 
     }; // END CLASS

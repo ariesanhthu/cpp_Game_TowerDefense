@@ -147,7 +147,7 @@ namespace towerdefense
 	        }
         };
 
-        mapSetup = { 3,5,4,2};
+        mapSetup = {3, 100, 100, 100 };
 
         GamePlaySetup();
     }

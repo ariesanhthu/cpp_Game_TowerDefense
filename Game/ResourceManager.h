@@ -16,6 +16,19 @@ public:
             L"Assets/game/enemy5/enemy5-2.png",
             L"Assets/game/enemy5/enemy5-3.png"
         };
+
+        resources["enemy1"] = {
+            L"Assets/game/enemy1/pixil-frame-0.png",
+            L"Assets/game/enemy1/pixil-frame-1.png",
+            L"Assets/game/enemy1/pixil-frame-2.png",
+            L"Assets/game/enemy1/pixil-frame-3.png",
+            L"Assets/game/enemy1/pixil-frame-4.png",
+            L"Assets/game/enemy1/pixil-frame-5.png",
+            L"Assets/game/enemy1/pixil-frame-6.png",
+            L"Assets/game/enemy1/pixil-frame-7.png",
+            L"Assets/game/enemy1/pixil-frame-8.png",
+            L"Assets/game/enemy1/pixil-frame-9.png",
+        };
         
         resources["enemy2"] = {
             L"Assets/game/enemy2/enemy1-1.png",

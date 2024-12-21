@@ -1,8 +1,8 @@
 #include "TowerModel.h"
 
 TowerModel::TowerModel(){
-	range = 100;
-	rate = 1;
+	range = 30;
+	rate = 1000;
 	bulletModel = nullptr;
 }
 TowerModel::TowerModel(const TowerModel& other) {

@@ -1,8 +1,7 @@
 #include "TowerManager.h"
 
 void TowerManager::addTower(TowerModel* model, cpoint pos) {
-	//shared_ptr<TowerBase> tower = TowerFactory::createTower(1);
-	//towers_.emplace_back(model, pos);
+
 }
 void TowerManager::addTower(shared_ptr<TowerBase> tower) {
 	towers_.push_back(tower);
@@ -18,7 +17,6 @@ void TowerManager::renderTowers(HDC hdc) {
 }
 
 void TowerManager::updateAllTower(std::vector<shared_ptr<EnemyBase>>& enemies_, float delta) {
-	//OutputDebugStringA("33333333333333333333\n");
 	for (auto& tower : towers_) {
 
 		if (tower->canShoot() && !tower->getBullet()->getVisible()) {

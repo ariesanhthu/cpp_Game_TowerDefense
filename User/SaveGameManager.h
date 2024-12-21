@@ -1,4 +1,4 @@
-﻿
+﻿/*
 #pragma once
 
 #include <vector>
@@ -47,3 +47,4 @@ public:
     std::vector<std::shared_ptr<SaveGame>> getSaveGameList();
     void printListSaveGameForTest();
 };
+*/
