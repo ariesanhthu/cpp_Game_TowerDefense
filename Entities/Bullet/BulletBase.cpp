@@ -65,7 +65,6 @@ shared_ptr<EnemyBase> BulletBase::checkCollision() {
 //virtual method
 // update position
 void BulletBase::update(float delta) { // cal next position of bullet
-
 	//  -------------------- animation -------------------
 	updateUI(delta);
 	// ---------------------------------------------------

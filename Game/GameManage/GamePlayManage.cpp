@@ -1,12 +1,22 @@
 #include "GamePlayManage.h"
 
-void GamePlayManage::setup(vector<vector<cpoint>> path) {
+void GamePlayManage::setupEnemy(vector<vector<cpoint>> path) {
 	//create Models
 	EnemyFactory::createModels( path );
 	BulletFactory::createModels();
 	TowerFactory::createModels();
 
 }
+
+void GamePlayManage::setupTower() {
+	//create Models
+	//EnemyFactory::createModels(path);
+	BulletFactory::createModels();
+	TowerFactory::createModels();
+
+}
+
+
 void GamePlayManage::startGame() {
 
 }

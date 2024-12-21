@@ -1,20 +1,20 @@
 #include "TowerBase.h"
 
 TowerBase::TowerBase(const TowerBase& other){
-	bullet = BulletFactory::createBullet("normal", NULL, cpoint(0, 0, 0));
+	bullet = BulletFactory::createBullet(0, NULL, cpoint(0, 0, 0));
 	model = other.model;
 	currentPosition = other.currentPosition;
 	lastShoot = std::chrono::system_clock::now();
 }
 TowerBase::TowerBase(TowerModel* nModel, cpoint pos){
-	bullet = BulletFactory::createBullet("normal", NULL, cpoint(0, 0, 0));
+	bullet = BulletFactory::createBullet(0, NULL, cpoint(0, 0, 0));
 	model = nModel;
 	currentPosition = pos;
 	lastShoot = std::chrono::system_clock::now();
 }
 
-TowerBase::TowerBase(const wchar_t* link, float factor, TowerModel* nModel, cpoint pos) : UIElement(link, factor, {100, 100}) {
-	bullet = BulletFactory::createBullet("normal", NULL, cpoint(0, 0, 0));
+TowerBase::TowerBase(const wchar_t* link, float factor, TowerModel* nModel, cpoint pos, int type) : UIElement(link, factor, { pos.getX(), pos.getY()}) {
+	bullet = BulletFactory::createBullet(type, NULL, cpoint(0, 0, 0));
 	model = nModel;
 	currentPosition = pos;
 	lastShoot = std::chrono::system_clock::now();

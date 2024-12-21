@@ -79,6 +79,15 @@ int EnemyBase::getHealth() {
 	return health;
 }
 
+int EnemyBase::getIndex() {
+	return index;
+}
+
+bool EnemyBase::isOnRoad() {
+	return onRoad;
+}
+
+
 // file
 void EnemyBase::writeFile(ostream& o) {
 	o.write((char*)&health, sizeof(int));
@@ -95,8 +104,9 @@ void EnemyBase::readFile(istream& i) {
 
 //update
 bool EnemyBase::update(float delta) {
-	updateUI(delta);
-	//OutputDebugStringA("4444444444444\n");
+	updateUI(delta); // update animation texture
+	
+	// update position
 	if (index < model->getPath(path).size() - model->getSpeed()) {
 		currentPosition = model->getPath(path)[index += model->getSpeed()];
 
@@ -105,7 +115,6 @@ bool EnemyBase::update(float delta) {
 			index = 0;
 		}*/
 
-
 		return false;
 	}
 	else {
@@ -113,7 +122,26 @@ bool EnemyBase::update(float delta) {
 	}
 }
 
+void EnemyBase::render(HDC hdc) {
+	/* DON'T PUT update onroad in update func because it won't work*/
+	// update onroad
+	if (health > 0
+		&& index < model->getPath(path).size() - model->getSpeed()
+		&& index > 0
+		) {
+		onRoad = true;
+	}
+	else {
+		onRoad = false;
+	}
+
+
+	if (onRoad) {
+		Graphic::DrawBitmap(image, { currentPosition.getX(), currentPosition.getY() }, hdc);
+	}
+}
+
 void EnemyBase::hit(int n){
-	if (health < n) isDead = true;
+	if (health < n) onRoad = false;
 	health -= n;
 }
