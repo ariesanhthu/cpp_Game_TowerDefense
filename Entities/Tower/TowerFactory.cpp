@@ -5,6 +5,7 @@ vector<shared_ptr<TowerModel>> TowerFactory::Models;
 shared_ptr<TowerBase> TowerFactory::createTower(const int type, cpoint pos) {
     if (type == 0) {
         return make_shared<TowerBase>(L"Assets/game/tower.bmp", 2, Models[0], pos, type);
+        //return make_shared<TowerBase>(L"Assets/game/tured.bmp", 1, pos);
     }
     else if (type == 1) {
         return make_unique<TowerBase>(L"Assets/game/tower3.png", 1.4, Models[1], pos, type);
