@@ -20,7 +20,7 @@ protected:
 	int health;
 	int index = 0;
 
-	bool isDead = false;
+	bool onRoad = false;
 
 public:
 	EnemyBase() = default;
@@ -31,7 +31,6 @@ public:
 	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath, int nHealth);
 	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath);
 
-	int getIndex();
 	void setIndex(int x);
 
 	// CONSTRUCTOR WITH FRAME ANIMATION
@@ -49,6 +48,9 @@ public:
 	//getTexture();
 
 	int getPath();
+	int getIndex();
+	bool isOnRoad();
+
 
 	//get private attribute
 	cpoint getCurrentPosition();
@@ -62,16 +64,7 @@ public:
 	bool update(float delta);
 	void hit(int n);
 
-	void render(HDC hdc) {
-		if (health > 0	// Chỉ vẽ nếu không chết
-		&& index < model->getPath(path).size() - model->getSpeed() // vẽ nến e chưa đi đến điểm cuối
-		&& index > 0 // vẽ nếu e bắt đầu di chuyển
-		) {  
-			//OutputDebugStringA("DDDDDDDDDDDDDDDDDDDDDDDDDDd\n");
-			//OutputDebugStringA((std::to_string(currentPosition.getX()) + " " + std::to_string(currentPosition.getY()) + "\n").c_str());
-			Graphic::DrawBitmap(image, {currentPosition.getX(), currentPosition.getY()}, hdc);
-		}
-	}
+	void render(HDC hdc);
 };
 
 #endif

@@ -36,7 +36,8 @@ public:
 
 	GamePlayManage(int n) : gameCode(n) {}
 
-	void setup(vector<vector<cpoint>> path);
+	void setupEnemy(vector<vector<cpoint>> path);
+	void setupTower();
 	void startGame();
 	void update(float delta);
 	void destroy();
