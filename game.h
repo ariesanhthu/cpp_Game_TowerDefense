@@ -16,6 +16,7 @@
 #include "Screen/PlayScreen.h"
 #include "Utils.h"
 
+#include "AudioManager.h"
 
 
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)

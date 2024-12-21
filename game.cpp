@@ -2,6 +2,7 @@
 
 namespace towerdefense
 {
+	auto& audioManager = AudioManager::getInstance();
     //==========================================================
     // CALLBACK
     //==========================================================
@@ -22,6 +23,8 @@ namespace towerdefense
             graphic = new Graphic();
 
             Game::getInstance().loadInitialScreen(0);
+
+			audioManager.getInstance().playBackgroundMusic();
         break;
         
         // Sự kiện đóng cửa sổ
