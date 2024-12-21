@@ -18,7 +18,7 @@ void GamePlayManage::update(float delta) {
 	}
 	else if (enemyManager.getStatus() == PLAY) {
 		enemyManager.updateAllEnemy(delta);
-		towerManager.updateAllTower(enemyManager.getEnemy());
+		towerManager.updateAllTower(enemyManager.getEnemy(), delta);
 
 		point = 0;
 		for (auto e : enemyManager.getEnemy()) {

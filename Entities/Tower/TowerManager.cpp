@@ -17,7 +17,7 @@ void TowerManager::renderTowers(HDC hdc) {
 	}
 }
 
-void TowerManager::updateAllTower(std::vector<shared_ptr<EnemyBase>>& enemies_) {
+void TowerManager::updateAllTower(std::vector<shared_ptr<EnemyBase>>& enemies_, float delta) {
 	//OutputDebugStringA("33333333333333333333\n");
 	for (auto& tower : towers_) {
 
@@ -44,7 +44,7 @@ void TowerManager::updateAllTower(std::vector<shared_ptr<EnemyBase>>& enemies_) 
 		// update bullet of tower
 		if (tower->getBullet()->getVisible()) {
 			shared_ptr<BulletBase> bullet = tower->getBullet();
-			bullet->update();
+			bullet->update(delta);
 
 			shared_ptr<EnemyBase> e = bullet->checkCollision();
 			if (e != NULL) {

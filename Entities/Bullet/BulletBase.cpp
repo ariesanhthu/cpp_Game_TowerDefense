@@ -11,12 +11,20 @@ BulletBase::BulletBase(BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nT
 	target = nTarget;
 }
 
-BulletBase::BulletBase(const wchar_t* link, float factor, BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nTarget) : UIElement(link, factor, {pos.getX(), pos.getY()}) {
+BulletBase::BulletBase(const wchar_t* link, float factor, BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nTarget) : UIElement(link, factor, {pos.getX(), pos.getY()}) 
+{
 	model = nModel;
 	currentPosition = pos;
 	target = nTarget;
 }
-
+//--------- animation constructor -------
+BulletBase::BulletBase(const std::vector<std::wstring>& imagePaths, float factor, BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nTarget) : UIElement(imagePaths, factor, { pos.getX(), pos.getY() })
+{
+	model = nModel;
+	currentPosition = pos;
+	target = nTarget;
+}
+//---------------------------------------
 void BulletBase::setCurr(const cpoint& p) { 
 	currentPosition = p; 
 }
@@ -56,7 +64,12 @@ shared_ptr<EnemyBase> BulletBase::checkCollision() {
 
 //virtual method
 // update position
-void BulletBase::update() { // cal next position of bullet
+void BulletBase::update(float delta) { // cal next position of bullet
+
+	//  -------------------- animation -------------------
+	updateUI(delta);
+	// ---------------------------------------------------
+
 	cpoint e = target->getCurrentPosition();
 
 	cpoint direction = e - currentPosition;

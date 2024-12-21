@@ -27,7 +27,8 @@ public:
     BulletBase(const wchar_t* link, float factor, shared_ptr<BulletModel> nModel, cpoint pos, shared_ptr<EnemyBase> nTarget) : BulletBase(link, factor, nModel.get(), pos, nTarget) {};
 
     //--------- animation constructor -------
-    //EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, EnemyModel* nModel, int npath);
+    BulletBase(const std::vector<std::wstring>& imagePaths, float factor, BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nTarget);
+    BulletBase(const std::vector<std::wstring>& imagePaths, float factor, shared_ptr<BulletModel> nModel, cpoint pos, shared_ptr<EnemyBase> nTarget) : BulletBase(imagePaths, factor, nModel.get(), pos, nTarget) {};
     //---------------------------------------
     void setCurr(const cpoint& p);
     void setTarget(shared_ptr<EnemyBase> nTarget);
@@ -45,7 +46,7 @@ public:
     shared_ptr<EnemyBase> checkCollision();
 
     // update position
-    virtual void update();
+    virtual void update(float delta);
 
     void render(HDC hdc) {
         if (image) {

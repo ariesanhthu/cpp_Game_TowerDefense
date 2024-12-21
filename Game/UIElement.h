@@ -142,6 +142,7 @@ public:
     // -------------------------------------------
 	//  ANIMATION
 	// -------------------------------------------
+
     void playAnimation() {
         animation.play();
     }
@@ -149,23 +150,29 @@ public:
     void stopAnimation() {
         animation.stop();
     }
+
     // Update the element (including animation)
     virtual void updateUI(float deltaTime) {
         animation.update(deltaTime);
         image = animation.getCurrentFrame(); 
     }
+
     // Animation Setup
-    void setAnimation(const std::vector<std::wstring>& framePaths, float speed, float factor) {
+    void setAnimation(const std::vector<std::wstring>& framePaths, float speed, float factor) 
+    {
         animation.setFrames(framePaths, speed, factor);
-        if (!framePaths.empty()) {
+        if (!framePaths.empty()) 
             image = animation.getCurrentFrame(); // Set initial frame
-        }
+
     }
+
 	// khởi tạo animation
-    UIElement(const std::vector<std::wstring>& imagePaths, float factor, POINT pos) {
+    //
+    UIElement(const std::vector<std::wstring>& imagePaths, float factor, POINT pos) 
+    {
         position = pos;
         image = Graphic::LoadBitmapImage(imagePaths[0].c_str(), factor);
         size = Graphic::GetBitmapSize(image);
-        setAnimation(imagePaths, 0.1f, factor);
+        setAnimation(imagePaths, 0.5f, factor);
     }
 };
