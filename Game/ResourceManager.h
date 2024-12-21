@@ -9,7 +9,7 @@ private:
     // Private constructor để ngăn việc tạo nhiều đối tượng
     ResourceManager() {}
 public:
-    void loadResources() {
+    void loadEnemyResources() {
         resources["enemy5"] = {
             L"Assets/game/enemy5/enemy5-0.png",
             L"Assets/game/enemy5/enemy5-1.png",

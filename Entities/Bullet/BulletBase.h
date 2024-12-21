@@ -25,6 +25,9 @@ public:
 
     BulletBase(const wchar_t* link, float factor, BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nTarget);
 
+    //--------- animation constructor -------
+    //EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, EnemyModel* nModel, int npath);
+    //---------------------------------------
     void setCurr(const cpoint& p);
     void setTarget(shared_ptr<EnemyBase> nTarget);
     void setVisible(bool vis);
