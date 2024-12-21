@@ -31,8 +31,8 @@ public:
 	TowerBase(const TowerBase& other);
 	TowerBase(TowerModel* nModel, cpoint pos);
 	
-	TowerBase(const wchar_t* link, float factor, TowerModel* nModel, cpoint pos);
-	TowerBase(const wchar_t* link, float factor, shared_ptr<TowerModel> nModel, cpoint pos) : TowerBase(link, factor, nModel.get(), pos) {};
+	TowerBase(const wchar_t* link, float factor, TowerModel* nModel, cpoint pos, int type);
+	TowerBase(const wchar_t* link, float factor, shared_ptr<TowerModel> nModel, cpoint pos, int type) : TowerBase(link, factor, nModel.get(), pos, type) {};
 
 	TowerBase(const wchar_t* link, float factor, cpoint pos);
 

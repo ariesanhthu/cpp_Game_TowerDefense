@@ -75,6 +75,9 @@ namespace towerdefense
         // position init place of box
         POINT towerInitPos = { 25, 520 };
         POINT Turretinit = { 50, 565 };
+        POINT Turretinit1 = { 52, 568 };
+        POINT Turretinit2 = { 120, 563 };
+        POINT Turretinit3 = { 192, 565 };
 
         // delay hand variable
         std::chrono::steady_clock::time_point lastMouseClickTime;
@@ -83,12 +86,27 @@ namespace towerdefense
 
         GamePlayManage manager;
 
-        std::shared_ptr<TowerBase> pickedTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
-        std::shared_ptr<TowerBase> renderTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
-
+        //std::shared_ptr<TowerBase> pickedTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
+        //std::shared_ptr<TowerBase> renderTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
+        std::shared_ptr<TowerBase> pickedTowerType1;
+        std::shared_ptr<TowerBase> renderTowerType1;
+        std::shared_ptr<TowerBase> pickedTowerType2;
+        std::shared_ptr<TowerBase> renderTowerType2;
+        std::shared_ptr<TowerBase> pickedTowerType3;
+        std::shared_ptr<TowerBase> renderTowerType3;
 
     public:
-        MapScreen() { manager.destroy(); };
+        MapScreen() { 
+            manager.destroy(); 
+            manager.setupTower();
+
+            pickedTowerType1 = TowerFactory::createTower(0, { Turretinit1.x, Turretinit1.y, 0 });
+            renderTowerType1 = TowerFactory::createTower(0, { Turretinit1.x, Turretinit1.y, 0 });
+            pickedTowerType2 = TowerFactory::createTower(1, { Turretinit2.x, Turretinit2.y, 0 });
+            renderTowerType2 = TowerFactory::createTower(1, { Turretinit2.x, Turretinit2.y, 0 });
+            pickedTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
+            renderTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
+        };
         virtual ~MapScreen() {
         }
 
@@ -132,7 +150,6 @@ namespace towerdefense
             if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
                 if (!isMousePressed) { // Chỉ xử lý 1 lần khi chuột nhấn xuống
                     isMousePressed = true;
-
                     // Xử lý nút PLAY/PAUSE
                     if (_playOrPause->isClicked(cursorPos)) {
                         if (manageFirstTime) {
@@ -157,6 +174,7 @@ namespace towerdefense
 
                     // Kiểm tra click vào tháp tại vị trí initPos
                     if (renderTowerType1->isHovered(cursorPos)) {
+                        OutputDebugStringA("L click \n");
                         isPicking = true;          // Bắt đầu nhấc tháp
                         isPickedFromInitPos = true; // Đánh dấu nhấc từ vị trí initPos
                     }
@@ -174,12 +192,12 @@ namespace towerdefense
                     // Thêm tháp mới vào TowerManager tại vị trí con trỏ chuột
                     if (checkValidPos(cursorPos)) {
                         manager.towerManager.addTower(
-                            TowerFactory::createTower(1, { cursorPos.x, cursorPos.y, 0 })
+                            TowerFactory::createTower(0, { cursorPos.x, cursorPos.y, 0 })
                         );
                     }
 
                     // Đặt tháp được nhấc trở về vị trí ban đầu
-                    pickedTowerType1->setCurrentPosition({ Turretinit.x, Turretinit.y, 0 });
+                    pickedTowerType1->setCurrentPosition({ Turretinit1.x, Turretinit1.y, 0 });
                 }
 
                 isMousePressed = false; // Reset trạng thái chuột
@@ -302,7 +320,7 @@ namespace towerdefense
         // ------ SETUPGAME -----
         void GamePlaySetup()
         {
-            manager.setup(path);
+            manager.setupEnemy(path);
 
             //----------------
             int nofpath = path.size();
@@ -336,6 +354,10 @@ namespace towerdefense
 
             pickedTowerType1->render(hdc);
             renderTowerType1->render(hdc);
+            pickedTowerType2->render(hdc);
+            renderTowerType2->render(hdc);
+            pickedTowerType3->render(hdc);
+            renderTowerType3->render(hdc);
             manager.render(hdc);
 
             _playOrPause->render(hdc);

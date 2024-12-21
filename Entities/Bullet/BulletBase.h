@@ -49,6 +49,7 @@ public:
     virtual void update(float delta);
 
     void render(HDC hdc) {
+
         if (image) {
             Graphic::DrawBitmap(image, { currentPosition.getX(), currentPosition.getY() }, hdc);
         }
