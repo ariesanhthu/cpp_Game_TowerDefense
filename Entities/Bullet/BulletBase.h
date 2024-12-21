@@ -24,6 +24,7 @@ public:
     BulletBase(BulletModel* nModel,cpoint pos, shared_ptr<EnemyBase> nTarget);
 
     BulletBase(const wchar_t* link, float factor, BulletModel* nModel, cpoint pos, shared_ptr<EnemyBase> nTarget);
+    BulletBase(const wchar_t* link, float factor, shared_ptr<BulletModel> nModel, cpoint pos, shared_ptr<EnemyBase> nTarget) : BulletBase(link, factor, nModel.get(), pos, nTarget) {};
 
     //--------- animation constructor -------
     //EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, EnemyModel* nModel, int npath);

@@ -3,16 +3,10 @@
 #include <memory>
 #include "Graphic.h"
 #include <string>
-#include "cplayer.h"
-#include "cenemy.h"
-#include "ctower.h"
 #include <chrono>
 #include <mmsystem.h> 
 #include <UIElement.h>
 #include <menuitem.h>
-#include "User/cFile.h"
-#include "User/userManager.h"
-#include "User/converted.h"
 
 #include "Screen/Screen.h"
 #include "GameManage/GamePlayManage.h"
@@ -27,10 +21,8 @@ namespace towerdefense
         PlayScreen1();
         ~PlayScreen1();
 
+        int getCurrentMap() override;
         void loadSpecificContent(int width, int height) override;
-        int getCurrentMap() override{
-            return 1;
-        }
     };
     // -------------------------------------------------------------------------
     class PlayScreen2 : public MapScreen {
@@ -38,6 +30,7 @@ namespace towerdefense
         PlayScreen2();
         ~PlayScreen2();
 
+        int getCurrentMap() override;
         void loadSpecificContent(int width, int height) override;
         //void loadContent(int width, int height) override;
         /*void handleSpecificInput(HWND hwnd) override;
@@ -46,9 +39,6 @@ namespace towerdefense
         //void handleInput(HWND hwnd) override = 0;
         //void update(float delta) override;
         //void render(HDC hdc) override;
-        int getCurrentMap() override {
-            return 2;
-        }
     };
     // -------------------------------------------------------------------------
     class PlayScreen3 : public MapScreen {
@@ -56,10 +46,8 @@ namespace towerdefense
         PlayScreen3();
         ~PlayScreen3();
 
+        int getCurrentMap() override;
         void loadSpecificContent(int width, int height) override;
-        int getCurrentMap() override {
-            return 3;
-        }
     };
     // -------------------------------------------------------------------------
     class PlayScreen4 : public MapScreen {

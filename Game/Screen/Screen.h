@@ -1,6 +1,8 @@
 #pragma once
 #include <windows.h>
-#include "User/userManager.h"
+
+
+
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
 
 namespace towerdefense
@@ -8,10 +10,11 @@ namespace towerdefense
     class Screen {
     public:
 
-        // 1 nguoi choi ton tai qua tat ca cac man hinh choi
-        User Guess;
+        
 
-        //virtual ~Screen();
+        //virtual ~Screen() { }
+        //Screen() {}
+
         virtual void loadContent(int width, int height) = 0;
         virtual void handleInput(HWND hwnd) = 0;
         virtual void update(float delta) = 0;

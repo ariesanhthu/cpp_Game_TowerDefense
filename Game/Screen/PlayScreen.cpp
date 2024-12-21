@@ -11,15 +11,19 @@ namespace towerdefense
         _background = std::make_shared<Item>(L"Assets/background/map1.bmp", scale, 0, 0);
         _instructionboard = std::make_shared<Item>(L"Assets/game/info/board1.png", 1.0f, instructionPos);
     }
+    int PlayScreen1::getCurrentMap() {
+		return 1;
+    }
+    
     PlayScreen1::PlayScreen1()
     {
         path =
         {
             {
-            {-100, 150},
-            {390, 150},
-            {390, 490},
-            {1200, 490}, //, Thêm path vào sau đây
+                {-100, 150},
+                {390, 150},
+                {390, 490},
+                {1250, 490}, //, Thêm path vào sau đây
             }
         };
 
@@ -27,14 +31,12 @@ namespace towerdefense
 
 
         GamePlaySetup();
-        //Turretinit = { 50, 565 };
-
     }
     PlayScreen1::~PlayScreen1() {
-
         path.clear();
         mapSetup.clear();
 
+        OutputDebugStringA(to_string(manager.getPoint()).c_str());
         OutputDebugStringA("~PlayScreen1\n");
     }
     //========================================================================================================================//
@@ -46,17 +48,20 @@ namespace towerdefense
         _background = std::make_shared<Item>(L"Assets/background/map2.bmp", scale, 0, 0);
         _instructionboard = std::make_shared<Item>(L"Assets/game/info/board2.png", 1.0f, instructionPos);
     }
+    int PlayScreen2::getCurrentMap() {
+        return 2;
+    }
     PlayScreen2::PlayScreen2() 
     {
         path =
         {
             {
-            {-100, 115},
-            {435, 115},
-            {435, 330},
-            {265, 330},
-            {265, 515},
-            {1200, 515},
+                {-100, 115},
+                {435, 115},
+                {435, 330},
+                {265, 330},
+                {265, 515},
+                {1250, 515},
             } //, Thêm path vào sau đây
         };
 
@@ -64,14 +69,13 @@ namespace towerdefense
         
 
         GamePlaySetup();
-        //Turretinit = { 50, 565 };
-
     }
+
     PlayScreen2::~PlayScreen2() {
 
         path.clear();
         mapSetup.clear();
-
+        
         OutputDebugStringA("~PlayScreen2\n");
     }
     //========================================================================================================================//
@@ -84,6 +88,9 @@ namespace towerdefense
 
         _background = std::make_shared<Item>(L"Assets/background/map3.bmp", scale, 0, 0);
         _instructionboard = std::make_shared<Item>(L"Assets/game/info/board3.png", 1.0f, instructionPos);
+    }
+    int PlayScreen3::getCurrentMap() {
+        return 3;
     }
 
     PlayScreen3::PlayScreen3() {

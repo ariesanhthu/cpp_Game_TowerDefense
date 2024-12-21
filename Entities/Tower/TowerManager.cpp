@@ -56,3 +56,16 @@ void TowerManager::updateAllTower(std::vector<shared_ptr<EnemyBase>>& enemies_) 
 		}
 	}
 }
+
+std::vector<std::shared_ptr<TowerBase>> TowerManager::getAllTower() const {
+	return towers_;
+}
+
+std::vector<std::shared_ptr<BulletBase>> TowerManager::getAllBullet() const {
+	std::vector<std::shared_ptr<BulletBase>> bullets;
+	for (auto& t : towers_) {
+		std::shared_ptr<BulletBase> bullet = t->getBullet();
+		bullets.push_back(bullet);
+	}
+	return bullets;
+}

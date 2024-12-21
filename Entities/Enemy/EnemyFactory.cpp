@@ -1,6 +1,6 @@
 ﻿#include "EnemyFactory.h"
 
-vector<EnemyModel*> EnemyFactory::Models;
+vector<shared_ptr<EnemyModel>> EnemyFactory::Models;
 
  shared_ptr<EnemyBase> EnemyFactory::createEnemy(const int type, int path) {
     auto& resource = ResourceManager::getInstance();
@@ -25,15 +25,16 @@ vector<EnemyModel*> EnemyFactory::Models;
 }
  // TINH CHỈNH THÔNG SỐ SPEED VÀ HP
 void EnemyFactory::createModels(vector<vector<cpoint>> path) {
-    Models.push_back(new EnemyModel(4, 5));  // small 
-    Models.push_back(new EnemyModel(5, 10)); // big
-    Models.push_back(new EnemyModel(4, 30)); // boss
+    Models.push_back(make_shared<EnemyModel>(4, 5));  // small 
+    Models.push_back(make_shared<EnemyModel>(5, 10)); // big
+    Models.push_back(make_shared<EnemyModel>(4, 30)); // boss
     Models[0]->calculatePath(path);
     Models[1]->calculatePath(path);
     Models[2]->calculatePath(path);
 }
 
 void EnemyFactory::deleteModels() {
-    for (auto model : Models)
-        delete model;
+    /*for (auto model : Models)
+        delete model;*/
+    Models.clear();
 }

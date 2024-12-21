@@ -85,3 +85,20 @@ void EnemyManager::setup(vector<int> ar) {
         nOfEnemyEachPhase.push_back(ar[i + 1]);
     }
 }
+
+std::vector<shared_ptr<EnemyBase>> EnemyManager::getAllEnemy() const {
+	return enemies_;
+}
+
+int EnemyManager::getUserHP() {
+    return gameHPDefaul;
+}
+
+void EnemyManager::setUserHP(int x) {
+    this->gameHPDefaul = x;
+}
+
+
+std::vector<shared_ptr<EnemyBase>>& EnemyManager::getEnemy() {
+    return enemies_;
+}

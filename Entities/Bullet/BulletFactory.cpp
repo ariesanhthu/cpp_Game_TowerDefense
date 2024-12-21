@@ -1,6 +1,6 @@
 #include "BulletFactory.h"
 
-vector<BulletModel*> BulletFactory::Models;
+vector<shared_ptr< BulletModel>> BulletFactory::Models;
 
 shared_ptr<BulletBase> BulletFactory::createBullet(const string type = "normal", shared_ptr<EnemyBase> target = NULL, cpoint pos = cpoint(0,0,0)) {
     if (type == "normal") {
@@ -18,10 +18,10 @@ shared_ptr<BulletBase> BulletFactory::createBullet(const string type = "normal",
 }
 
 void BulletFactory::createModels() {
-    Models.push_back(new BulletModel(1, 15));
+    Models.push_back(make_shared<BulletModel>(1, 15));
 }
 void BulletFactory::deleteModels() {
-    for (auto model : Models)
-        delete model;
+    //for (auto model : Models)
+        //delete model;
     Models.clear();
 }

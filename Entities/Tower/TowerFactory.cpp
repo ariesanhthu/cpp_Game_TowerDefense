@@ -1,6 +1,6 @@
 #include "TowerFactory.h"
 
-vector<TowerModel*> TowerFactory::Models;
+vector<shared_ptr<TowerModel>> TowerFactory::Models;
 
 shared_ptr<TowerBase> TowerFactory::createTower(const int type, cpoint pos) {
     if (type == 0) {
@@ -23,10 +23,10 @@ shared_ptr<TowerBase> TowerFactory::createTower(const int type, cpoint pos) {
 
 void TowerFactory::createModels() {
     //
-    Models.push_back(new TowerModel(250, 1, BulletFactory::Models[0]));
+    Models.push_back(make_shared<TowerModel>(250, 1, BulletFactory::Models[0].get()));
 }
 void TowerFactory::deleteModels() {
-    for (auto model : Models)
-        delete model;
+    //for (auto model : Models)
+        //delete model;
     Models.clear();
 }

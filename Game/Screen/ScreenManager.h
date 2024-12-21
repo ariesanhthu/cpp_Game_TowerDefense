@@ -5,14 +5,6 @@
 #include <chrono>
 #include <mmsystem.h> 
 
-#include "cplayer.h"
-#include "cenemy.h"
-#include "ctower.h"
-
-#include "User/cFile.h"
-#include "User/userManager.h"
-#include "User/converted.h"
-
 #include <UIElement.h>
 #include <menuitem.h>
 #include "Graphic.h"
@@ -42,6 +34,8 @@ namespace towerdefense
         std::shared_ptr<Screen> currentScreen = nullptr;
 
     public:
+        
+
         ~ScreenManager() {
             OutputDebugStringA("~ScreenManager\n");
         }

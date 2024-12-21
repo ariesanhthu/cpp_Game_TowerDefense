@@ -1,9 +1,0 @@
-size-big: 231x148
-size-small: 140x96
-
-+ color:
-viền nổi: [144, 98, 93]
-viền chìm: [107, 75, 91]
-phần lồi phía dưới: [170, 121, 89]
-nền trung tâm: [196, 154, 108] 
-nền trong: [182, 137, 98]

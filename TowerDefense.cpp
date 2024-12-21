@@ -20,12 +20,12 @@ app_entry_point
 {
 	srand(time(0));
 	towerdefense::Game::start();
-	_CrtDumpMemoryLeaks();
-	long lBreakAlloc = 0;
-	if (lBreakAlloc > 0)
-	{
-		_CrtSetBreakAlloc(lBreakAlloc);
-	}
+	//_CrtDumpMemoryLeaks();
+	//long lBreakAlloc = 0;
+	//if (lBreakAlloc > 0)
+	//{
+	//	_CrtSetBreakAlloc(lBreakAlloc);
+	//}
 	// game destroy code
 
 	return 0;

@@ -39,6 +39,8 @@ namespace towerdefense
         _inputPasswordReg = std::make_shared<InputElement>(L"Password", inputPasswordPosition, customfont, RGB(255, 255, 255), L"Assets/button/input.bmp", 5);
 
         _gotoPage = std::make_shared<TextElement>(L"Goto Register Form", customfont, RGB(255, 255, 255), linkPos);
+
+        _VolumeButton = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, VolumeButtonPos);
     }
 
     // Destructor
@@ -178,6 +180,10 @@ namespace towerdefense
 
         }
         else if (menu == 4) {
+            // setting 
+            if (_VolumeButton->isClicked(cursorPos)) {
+                //Audio::PlaySound(filename); 
+            }
 
         }
         else if (menu == 5) {
@@ -203,34 +209,22 @@ namespace towerdefense
                 _inputPassword->setEdit(false);
             }
 
+            // Nếu nhấn enter
             if (GetAsyncKeyState(VK_RETURN) & 0x8000) {
                 auto now = std::chrono::steady_clock::now();
                 if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
                     lastMouseClickTime = now;
 
-                    std::string name = wstringToString(_inputName->getText());
-                    for (int i = 0; i < name.length(); i++) {
-                        name[i] = tolower(name[i]);
-                    }
-                    Guess.setName(name);
+                     //login
+					/*std::string name = utils->wstringToString(_inputName->getText());
+					std::string password = utils->wstringToString(_inputPassword->getText());*/
 
-                    std::string password = wstringToString(_inputPassword->getText());
-                    for (int i = 0; i < name.length(); i++) {
-                        password[i] = tolower(password[i]);
-                    }
-                    Guess.setPassword(password);
+                    //if (userManager->login(name, password)) {
 
-                    if (Guess.hlogin()) {
-                        Guess.authenticated = true;
-                        _inputName->setText(L"");
-                        _inputPassword->setText(L"");
-                        OutputDebugStringW(_inputName->getText().c_str());
-                        OutputDebugStringW(_inputPassword->getText().c_str());
-                    }
-                    else {
-                        OutputDebugStringW(L"Fail");
-                    }
-
+                    //}
+                    //else {
+                    //    // show mess thất bại
+                    //}
                 }
             }
         }
@@ -302,6 +296,8 @@ namespace towerdefense
 
         }
         else if (menu == 4) {
+
+            _VolumeButton->render(hdc);
 
         }
         else if (menu == 5) {

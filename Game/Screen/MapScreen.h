@@ -28,7 +28,6 @@ namespace towerdefense
         vector<int> mapSetup;
         // -------------
 
-        cplayer guess;
         GameState statePlayingGame = PAUSE;
         int countHeart = 0;
 
@@ -47,10 +46,10 @@ namespace towerdefense
         std::shared_ptr<Button> _noBtn;
 
         // lose game 
-        std::shared_ptr<Item> _loseBoard; // hien tai giong pause
+        std::shared_ptr<Item> _loseBoard; 
        
         // win game 
-        std::shared_ptr<Item> _winBoard; // hien tai giong pause
+        std::shared_ptr<Item> _winBoard; 
  
 
         // PAUSE BOARD
@@ -71,9 +70,6 @@ namespace towerdefense
         POINT instructionPos = { 800, 50 };
         POINT hamburgerPos = { 1200, 5 };
 
-        // CHECK COI K DÙNG THÌ XÓA
-        bool displayBoard = true;
-
         // position init place of box
         POINT towerInitPos = { 25, 520 };
         POINT Turretinit = { 50, 565 };
@@ -83,47 +79,16 @@ namespace towerdefense
         std::chrono::steady_clock::time_point lastKeyPressTime;
         const int debounceDelayMs = 200; // 200 ms debounce delay
 
-        //// enemy 
-        //std::vector<cenemy> enemylist;
-        //POINT Einit;              // enemy position
-
-        //// tower
-        //std::vector<ctower> towerlist;
-        //POINT Turretinit;         // tower position 
-
         GamePlayManage manager;
 
         std::shared_ptr<TowerBase> pickedTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
         std::shared_ptr<TowerBase> renderTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
 
-        // tower de chon di chuyen
-        /*ctower Tpicking;
-        POINT TcurrentPick;
-        bool isPicking = false;
-        bool isMouseDown = false;*/
-
-        // size
-        /*POINT buttonSize = { 26, 29 };
-        POINT boardSize = { 260, 180 };
-        POINT towerSize = { 20, 30 };*/
-
-        // support 
-
-
-        /* =======================================
-
-        FIXBIG
-        THÊM ĐƯỜNG
-
-        ======================================= */
-
-        bool isInRange(POINT pos, int range) {
-            return range < sqrt((pos.x * pos.x + pos.y * pos.y));
-        }
 
     public:
-        //MapScreen();
-        virtual ~MapScreen() {}
+        MapScreen() { manager.destroy(); };
+        virtual ~MapScreen() {
+        }
 
         /* --------------------------------------------------
                         TEMPLATE METHOD
@@ -157,9 +122,9 @@ namespace towerdefense
             GetCursorPos(&cursorPos);
             ScreenToClient(GetActiveWindow(), &cursorPos);
 
-            static bool isMousePressed = false;   // Trạng thái chuột trái được nhấn
-            static bool isPicking = false;        // Tháp đang được nhấc lên
-            static bool isPickedFromInitPos = false; // Tháp nhấc từ initPos
+            static bool isMousePressed = false;         // Trạng thái chuột trái được nhấn
+            static bool isPicking = false;              // Tháp đang được nhấc lên
+            static bool isPickedFromInitPos = false;    // Tháp nhấc từ initPos
 
             // Kiểm tra chuột trái được nhấn
             if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
@@ -175,10 +140,10 @@ namespace towerdefense
                         // --------------------------------- PAUSE GAME ---------------------------------
                         else
                         {
-                            if (manager.gameStatus == PAUSE)
-                                manager.gameStatus = PLAY;
+                            if (manager.getGameStatus() == PAUSE)
+                                manager.setGameStatus(PLAY);
                             else
-                                manager.gameStatus = PAUSE;
+                                manager.setGameStatus(PAUSE);
                         }
                     }
 
@@ -227,12 +192,14 @@ namespace towerdefense
             /*
                 GIỐNG NHAU GIỮA CÁC SCREEN -> STATE
             */
+
             /*if (statePlayingGame == PLAY)
             {
                 
             }*/
 
             if (statePlayingGame == LOSE) {
+
                 if (_yesBtn->isClicked(cursorPos)) {
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, getCurrentMap(), 0);
                 }
@@ -243,6 +210,7 @@ namespace towerdefense
             }
 
             if (statePlayingGame == WIN) {
+
                 if (_yesBtn->isClicked(cursorPos)) {
 
                     // qua man tiep theo, hien tai de reload map
@@ -261,14 +229,18 @@ namespace towerdefense
             if (statePlayingGame == PAUSE)
             {
                 if (_yesBtn->isClicked(cursorPos)) {
-                    manager.gameStatus = PLAY;
+                    manager.setGameStatus(PLAY);
                     statePlayingGame = PLAY;
                     _yesnoBoard->setTriger(false);
                     _noBtn->setTriger(false);
                     _yesBtn->setTriger(false);
                 }
                 if (_noBtn->isClicked(cursorPos)) {
-                    // save game 
+
+                    // save game
+                    saveNewGame();
+                    
+                    
                     // trở về home
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                 }
@@ -283,26 +255,26 @@ namespace towerdefense
             if (statePlayingGame != PLAY) return;
 
             //----------- WIN GAME -----------
-            if (manager.gameStatus == WIN) {
+            if (manager.getGameStatus() == WIN) {
                 statePlayingGame = WIN;
 
                 _winBoard->setTriger(true);
             }
             //----------- LOSE GAME -----------
-            else if (manager.gameStatus == LOSE) {
+            else if (manager.getGameStatus() == LOSE) {
                 statePlayingGame = LOSE;
 
                 _loseBoard->setTriger(true);
 
             }
             //----------- PLAY GAME -----------
-            else if (manager.gameStatus == PLAY) {
+            else if (manager.getGameStatus() == PLAY) {
                 //OutputDebugStringA("11111111111111111\n");
                 manager.update(delta);
                 statePlayingGame = PLAY;
             }
             //----------- PAUSE GAME -----------
-            else if (manager.gameStatus == PAUSE) {
+            else if (manager.getGameStatus() == PAUSE) {
                 statePlayingGame = PAUSE;
 
                 _yesnoBoard->setTriger(true);
@@ -313,6 +285,7 @@ namespace towerdefense
         {
             renderCommonElements(hdc);
         }
+
 
         // ------- ABSTRACT FUNCTION --------
 
@@ -391,5 +364,60 @@ namespace towerdefense
             }
             return true;
         }
+		// ------ save game ----- 
+        void saveNewGame() {
+
+
+            //// save game 
+            //std::shared_ptr<User> currUser = userManager->getUserToken();
+
+            /*if (currUser == nullptr) {
+                currUser->setName("guess");
+            }*/
+
+            //OutputDebugStringA(   (    currUser->getName()  ).c_str()   );
+
+            //std::shared_ptr<SaveGame> game_to_save;
+
+            ////int point = manager.getPoint();            
+
+            //int point = 100; // test
+            //int userHealth = manager.enemyManager.getUserHP();
+            //int mapCode = getCurrentMap();
+
+            //std::string name = currUser->getName(); // mặc định là guess
+
+            //vector<cpoint> enemyPos;
+            //vector<int> enemyHealth;
+            //vector<int> enemtPathNumber;
+            //vector<cpoint> towerPos;
+            //vector<cpoint> bulletPos;
+
+            //for (auto& tower : manager.towerManager.getAllTower()) {
+            //    towerPos.push_back({ tower->getCurrentPosition().getX(), tower->getCurrentPosition().getY() });
+            //}
+
+            //for (auto& enemy : manager.enemyManager.getAllEnemy()) {
+            //    enemyPos.push_back({ enemy->getCurrentPosition().getX(), enemy->getCurrentPosition().getY() });
+            //    enemyHealth.push_back(enemy->getHealth()); 
+            //    enemtPathNumber.push_back(enemy->getPath());
+            //}
+
+            //for (auto& bullet : manager.towerManager.getAllBullet()) {
+            //    bulletPos.push_back({ bullet->getCurr().getX(), bullet->getCurr().getY() });
+            //}
+
+            //game_to_save->setUserName(name);
+            //game_to_save->setMapCode(mapCode);
+            //game_to_save->setPoint(point);  
+            //game_to_save->setEnemyPos(enemyPos);
+            //game_to_save->setEnemyHealth(enemyHealth);
+            //game_to_save->setEnemyPathNumber(enemtPathNumber);
+            //game_to_save->setTowerPos(towerPos);
+            //game_to_save->setBulletPos(bulletPos);
+
+            //saveGameManager->POST_NEW_SAVE_GAME(game_to_save);
+        }
+
     }; // END CLASS
 } // END NAMESPACE

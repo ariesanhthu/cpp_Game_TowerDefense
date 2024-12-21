@@ -2,6 +2,11 @@
 
 #include <UIElement.h>
 #include <memory>
+#include <string>
+#include "Graphic.h"
+
+using namespace std;
+
 
 
 class Item : public UIElement {

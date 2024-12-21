@@ -41,12 +41,20 @@ EnemyBase::EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, 
 	path = npath;
 	health = model->getDefaultHealth();
 }
+
+EnemyBase::EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, shared_ptr<EnemyModel> nModel, int npath)
+	: EnemyBase::EnemyBase(imagePaths, factor, nModel.get(), npath) {}
+
 // ---------------------------------------------------
 void EnemyBase::setCurrentPosition(const cpoint& p) { 
 	currentPosition = p; 
 }
 void EnemyBase::setHealth(int hp) { 
 	health = hp; 
+}
+
+int EnemyBase::getPath() {
+	return this->path;
 }
 
 // get model attribute
