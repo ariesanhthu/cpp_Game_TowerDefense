@@ -1,5 +1,7 @@
 ﻿#include "Graphic.h"
-
+// --------------------------------------------------
+// FONT INSTANCE
+// --------------------------------------------------
 Graphic::Graphic() {
     InitGdiPlus();
 }
@@ -210,7 +212,7 @@ HFONT Graphic::CreateCustomFont(int fontSize, const wchar_t* fontName) {
         CLIP_DEFAULT_PRECIS,    // Default clipping precision
         DEFAULT_QUALITY,        // Default quality
         DEFAULT_PITCH | FF_SWISS, // Default pitch and family
-        fontName                // Font name
+        L"pixelFont-7-8x14-sproutLands.ttf"
     );
 }
 
@@ -234,7 +236,10 @@ void Graphic::RenderText(const wchar_t* text, HDC hdc, POINT pos, HFONT hFont, C
 
 void Graphic::ReleaseBitmap(HBITMAP& hBitmap) {
     if (hBitmap) {
-        DeleteObject(hBitmap);
+        if (!DeleteObject(hBitmap)) {
+            // Log an error or throw an exception
+            OutputDebugString(L"Failed to delete HBITMAP.\n");
+        }
         hBitmap = nullptr;
     }
 }

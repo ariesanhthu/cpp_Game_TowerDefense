@@ -1,13 +1,24 @@
-#pragma once
+﻿#pragma once
 
 #include <windows.h>
 #include <string>
 #include <functional>
-#include "State.h"
-#include <ScreenManager.h>
+#include <chrono>
+#include <thread>
 #include <memory>
-#include "User/cFile.h"
-#include "User/userManager.h"
+
+//#include "State.h"
+#include "Graphic.h"
+
+// SCREEN HEADER
+#include "Screen/ScreenManager.h"
+#include "Screen/MainScreen.h"
+#include "Screen/PlayScreen.h"
+#include "Utils.h"
+
+#include "AudioManager.h"
+#include "FontManager.h"
+
 
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
 using namespace std;
@@ -18,7 +29,9 @@ namespace towerdefense
 	{
 	private:
 		//std::unique_ptr<GameState> currentState;
-		ScreenManager* screenManager;
+		shared_ptr<ScreenManager> screenManager;
+		Utils utils;
+		
 
 	public:
 		/*void setState(std::unique_ptr<GameState> newState) {
@@ -51,6 +64,12 @@ namespace towerdefense
 		Game(const Game&) = delete;
 		Game& operator= (const Game&) = delete;
 		~Game() {
+			// Cleanup FontManager sau cùng
+			//// Đảm bảo các màn hình được hủy trước
+			//screenManager.reset();
+			//// Cleanup FontManager sau cùng
+			FontManager::getInstance().cleanupFonts();
+
 			OutputDebugStringA("~Game\n");
 		}
 		

@@ -3,17 +3,27 @@
 #include <windows.h>
 #include <Graphic.h>
 #include <chrono>
+#include <vector>
+
+#include "Animation.h"
 
 class UIElement {
 protected:
     POINT position;  // Position of the UI element
     POINT size;      // Size of the UI element
     HBITMAP image;   // Default image for the element
+
     mutable std::chrono::steady_clock::time_point lastMouseClickTime;  // mutable to modify in const method
     std::chrono::steady_clock::time_point lastKeyPressTime;
     const int debounceDelayMs = 300; // 200 ms debounce delay
+    bool trigger = false;
+
+    Animation animation;
 
 public:
+    UIElement() {
+        image = nullptr;
+    }
     UIElement(POINT pos, HBITMAP img)
         : position(pos), image(img), lastMouseClickTime(std::chrono::steady_clock::now()) {
         size = Graphic::GetBitmapSize(image);
@@ -28,6 +38,14 @@ public:
         position = pos; 
         image = Graphic::LoadBitmapImage(link, factor);
         size = Graphic::GetBitmapSize(image);
+    }
+
+    bool getTriger() {
+        return trigger;
+    }
+
+    void setTriger(bool t) {
+        trigger = t;
     }
 
     virtual ~UIElement() {
@@ -120,4 +138,41 @@ public:
 
     // Handle click event on the element
     virtual void handleClick(POINT mousePos) {}
+
+    // -------------------------------------------
+	//  ANIMATION
+	// -------------------------------------------
+
+    void playAnimation() {
+        animation.play();
+    }
+
+    void stopAnimation() {
+        animation.stop();
+    }
+
+    // Update the element (including animation)
+    virtual void updateUI(float deltaTime) {
+        animation.update(deltaTime * animation.getNumberFrame());
+        image = animation.getCurrentFrame(); 
+    }
+
+    // Animation Setup
+    void setAnimation(const std::vector<std::wstring>& framePaths, float speed, float factor) 
+    {
+        animation.setFrames(framePaths, speed, factor);
+        if (!framePaths.empty()) 
+            image = animation.getCurrentFrame(); // Set initial frame
+
+    }
+
+	// khởi tạo animation
+    //
+    UIElement(const std::vector<std::wstring>& imagePaths, float factor, POINT pos) 
+    {
+        position = pos;
+        image = Graphic::LoadBitmapImage(imagePaths[0].c_str(), factor);
+        size = Graphic::GetBitmapSize(image);
+        setAnimation(imagePaths, 0.5f, factor);
+    }
 };

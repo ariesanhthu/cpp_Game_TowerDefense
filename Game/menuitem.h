@@ -2,6 +2,11 @@
 
 #include <UIElement.h>
 #include <memory>
+#include <string>
+#include "Graphic.h"
+
+using namespace std;
+
 
 
 class Item : public UIElement {
@@ -9,12 +14,13 @@ public:
     Item() = default;
     Item(POINT pos, HBITMAP background) : UIElement(pos, background) {}
     Item(const wchar_t* link, float scale, int x, int y) : UIElement(link, scale, x, y) {}
+    Item(const wchar_t* link, float scale, POINT pos) : UIElement(link, scale, pos) {}
 };
 
 class Button : public UIElement {
 private: 
     HBITMAP hover;
-    HBITMAP clicked = nullptr; 
+    HBITMAP clicked = nullptr;  //?
     bool isClicking;
 
 public: 
@@ -75,13 +81,12 @@ private:
     POINT endPosition;
     bool isAnimating;
     float animationSpeed;
-    bool trigger = false;
 
 public:
     Popup(POINT start, POINT end, HBITMAP img, float speed = 1.0f)
-        : UIElement(start, img), endPosition(end), isAnimating(false), trigger(false), animationSpeed(speed) {}
+        : UIElement(start, img), endPosition(end), isAnimating(false), animationSpeed(speed) {}
     Popup(const wchar_t* link, float scale, POINT start, POINT end, float speed = 1.0f) 
-        : UIElement(link, scale, start), endPosition(end), isAnimating(false), trigger(false), animationSpeed(speed) {}
+        : UIElement(link, scale, start), endPosition(end), isAnimating(false), animationSpeed(speed) {}
 
     void startAnimation() { isAnimating = true; }
 
@@ -99,17 +104,7 @@ public:
     }
 
     void render(HDC hdc) {
-
         Graphic::DrawBitmap(image, position, hdc);
-        
-    }
-
-    bool getTriger() {
-        return trigger;
-    }
-
-    void setTriger(bool t) {
-        trigger = t;
     }
     
     bool isFinished() const { return !isAnimating; }
@@ -230,7 +225,6 @@ public:
     }
 };
 
-
 class InputElement : public UIElement {
 private:
     std::wstring text = L"input";   // Current text in the input box
@@ -333,6 +327,42 @@ public:
     // Set the text programmatically
     void setLabel(std::wstring newText) {
         text = newText;
+    }
+};
+
+class ContinueElement : public UIElement {
+private: 
+    std::wstring name;
+    std::wstring point; 
+    std::wstring level;
+    HFONT font;
+    COLORREF textColor;
+
+public: 
+    ContinueElement(wstring name, wstring point, wstring level, POINT position, HFONT font, COLORREF textColor, const wchar_t* link, float factor)
+        : UIElement(link, factor, position), name(name), point(point), level(level), font(font), textColor(textColor) {}
+
+    wstring getName() { return name; }
+    void setName(wstring _name) { name = _name; }
+    wstring getPoint() { return point; }
+    void setPoint(wstring _point) { point = _point; }
+    wstring getLevel() { return level; }
+    void setLevel(wstring _level) { level = _level; }
+
+    void render(HDC hdc) override {
+        Graphic::DrawBitmap(image, position, hdc);
+        POINT namePos = position;
+        namePos.x += 20;
+        namePos.y += 15;
+        Graphic::RenderText(name.c_str(), hdc, namePos, font, textColor);
+        POINT pointPos = position;
+        pointPos.x += 120;
+        pointPos.y += 15;
+        Graphic::RenderText(point.c_str(), hdc, pointPos, font, textColor);
+        POINT levelPos = position;
+        levelPos.x += 200;
+        levelPos.y += 15;
+        Graphic::RenderText(level.c_str(), hdc, levelPos, font, textColor);
     }
 };
 
