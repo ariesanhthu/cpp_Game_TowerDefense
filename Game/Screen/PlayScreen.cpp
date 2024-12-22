@@ -28,7 +28,7 @@ namespace towerdefense
         };
 
         mapSetup = { 3,5,4,1 };
-        nOfTower = 5;
+        nOfTower = 5; // setup number of tower can place
 
         GamePlaySetup();
     }
