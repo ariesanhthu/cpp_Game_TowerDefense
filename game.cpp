@@ -2,10 +2,14 @@
 
 namespace towerdefense
 {
+	auto& audioManager = AudioManager::getInstance();
+	auto& fontManager = FontManager::getInstance();
+
     //==========================================================
     // CALLBACK
-    //==========================================================
     // Hàm xử lý các sự kiện của cửa sổ (Windows message)
+    //==========================================================
+    
     LRESULT CALLBACK WindowCallback(
         HWND windowHandle,
         UINT message,
@@ -21,13 +25,27 @@ namespace towerdefense
         case WM_CREATE: 
             graphic = new Graphic();
 
+            // ----------------- Load audio --------------------
+
+			audioManager.getInstance().playBackgroundMusic();
+
+
+            // ----------------- Load font --------------------
+            fontManager.getInstance().loadFontForGame(L"Assets/pixelFont-7-8x14-sproutLands.ttf");
+
+
             Game::getInstance().loadInitialScreen(0);
+
+            // load font
+			//graphic->LoadCustomFont(L"Assets/catfarmFont.ttf", 24);
         break;
-        
+		// =============================== STOP GAME =============================================
+        // ---------------------------------------------------------------------------------------
         // Sự kiện đóng cửa sổ
         case WM_CLOSE: 
         {
             if (graphic) delete graphic;
+            
 
             Game::getInstance().running = false; // Dừng game
             OutputDebugString(L"window close\n");
@@ -43,6 +61,7 @@ namespace towerdefense
             Game::getInstance().running = false; 
             OutputDebugString(L"window destroy\n");
         } break;
+        // ---------------------------------------------------------------------------------------
         case WM_SIZE:
         {
             RECT rect;
@@ -134,6 +153,8 @@ namespace towerdefense
 
         HBITMAP hBitmap = Graphic::LoadBitmapImage(L"Assets/mouse/mouse1.png", 2);
 
+        
+        
         ICONINFO iconInfo = { 0 };
         iconInfo.fIcon = FALSE;      // Set to FALSE to indicate a cursor
         iconInfo.xHotspot = 0;       // Adjust based on your desired hotspot

@@ -35,8 +35,8 @@ namespace towerdefense
 
     public:
         
-
         ~ScreenManager() {
+            //currentScreen.reset();
             OutputDebugStringA("~ScreenManager\n");
         }
 

@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Manager;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,7 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Manager;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -106,7 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Manager;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Entities;$(ProjectDir)Game;$(ProjectDir)Utils;$(ProjectDir)Manager;$(ProjectDir)Graphics;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,7 +132,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Audio\Audio.cpp" />
+    <ClCompile Include="Manager\EventManager.cpp" />
+    <ClCompile Include="Manager\AudioManager.cpp" />
     <ClCompile Include="Graphics\Animation.cpp" />
     <ClCompile Include="Entities\Bullet\BulletFactory.cpp" />
     <ClCompile Include="Entities\Bullet\BulletManager.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Game\Screen\PlayScreen1.cpp" />
     <ClCompile Include="Game\Screen\PlayScreen3.cpp" />
     <ClCompile Include="Game\Screen\PlayScreen4.cpp" />
+    <ClCompile Include="Manager\FontManager.cpp" />
     <ClCompile Include="User\SaveGameManager.cpp" />
     <ClCompile Include="User\SaveGame.cpp" />
     <ClCompile Include="TowerDefense.cpp" />
@@ -169,8 +171,10 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Audio\Audio.h" />
-    <ClInclude Include="Game\ResourceManager.h" />
+    <ClInclude Include="Manager\EventManager.h" />
+    <ClInclude Include="Manager\AudioManager.h" />
+    <ClInclude Include="Manager\FontManager.h" />
+    <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Graphics\Animation.h" />
     <ClInclude Include="Entities\Bullet\BulletFactory.h" />
     <ClInclude Include="Entities\Bullet\BulletManager.h" />

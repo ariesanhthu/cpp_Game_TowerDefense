@@ -33,7 +33,6 @@ public:
 	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath, int nHealth);
 	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath);
 
-	int getIndex();
 	void setIndex(int x);
 
 	// CONSTRUCTOR WITH FRAME ANIMATION

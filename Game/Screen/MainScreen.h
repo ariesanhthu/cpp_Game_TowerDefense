@@ -17,6 +17,8 @@
 #include "User/SaveGame.h"
 #include "Utils.h"
 
+#include "AudioManager.h"
+#include "FontManager.h"
 // --------------------------------------------------
 //#include "User/SaveGameManager.h"
 
@@ -29,6 +31,7 @@ namespace towerdefense
     private:
         std::vector<std::shared_ptr<UIElement>> uiElements;
         HFONT customfont;
+        HFONT Titlefont;
 
         std::shared_ptr<Item> _background;
         std::shared_ptr<Item> _catfam;
@@ -54,8 +57,6 @@ namespace towerdefense
         std::shared_ptr<InputElement> _inputPasswordReg;
 
         std::shared_ptr<TextElement> _gotoPage;
-        
-        std::shared_ptr<Button> _VolumeButton;
 
         //std::vector<shared_ptr<ContinueElement>> _ListContinueItem;
         std::vector<std::shared_ptr<ContinueElement>> _FourContinueItem;
@@ -95,7 +96,53 @@ namespace towerdefense
         POINT registerPosition = { 480, 200 };
         POINT linkPos = { 270, 460 };
 
-        POINT VolumeButtonPos = { 0, 0 };
+        // ----------------- SETTING --------------------
+
+        shared_ptr<TextElement> TitleSetting;
+        //POINT titlePos = { 400, 100 };/ dùng chung
+
+        // ----------------- audio --------------------
+        // loa 
+        shared_ptr<Item> _audioItem;
+        shared_ptr<Item> _audioOffItem;
+        POINT audioItemPos = { 300, 250 };
+
+        // nút
+        //shared_ptr<Button> _switchAudio;
+        shared_ptr<Item> _switchOffAudio;
+        shared_ptr<Item> _switchOnAudio;
+        POINT switchAudioPos = { 650, 250 };
+        //shared_ptr<Button> _switchOn = nullptr;
+
+        // ----------------- volume --------------------
+        // thanh volume
+        shared_ptr<Item> _VolumeBar;
+        shared_ptr<Item> _VolumeBarOn;
+        POINT VolumeBarPos = { 300, 350 };
+        POINT VolumeBarOnPos = { 300, 350 };
+
+        shared_ptr<Item> _foregroundVol;
+
+        // nút
+        shared_ptr<Button> _arrowUpButton;
+        shared_ptr<Button> _arrowDownButton;
+        POINT arrowUpPos = { 750, 350 };
+        POINT arrowDownPos = { 650, 350 };
+
+        // ==================================================================
+
+
+
+		// --------------------------------------------------
+       /* std::shared_ptr<Button> _VolumeButton;
+		std::shared_ptr<Button> _AudioButton;
+
+        std::shared_ptr<Item> _VolBar;
+
+        POINT VolumeButtonPos = { 500, 500 };
+        POINT AudioButtonPos = { 0, 0 };*/
+
+		// --------------------------------------------------
         POINT FirstContinueItem = { 300, 120 };
 
         // Thiết lập 3 vị trí để popup board
@@ -111,8 +158,6 @@ namespace towerdefense
         // menu = 101 -> login
         static int menu;
         bool loginMenu = true;
-
-        
 
         // avoid double click
         mutable std::chrono::steady_clock::time_point lastMouseClickTime;  // mutable to modify in const method

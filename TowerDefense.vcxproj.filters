@@ -35,7 +35,9 @@
     <ClCompile Include="User\User.cpp" />
     <ClCompile Include="User\UserManager.cpp" />
     <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="Audio\Audio.cpp" />
+    <ClCompile Include="Manager\AudioManager.cpp" />
+    <ClCompile Include="Manager\EventManager.cpp" />
+    <ClCompile Include="Manager\FontManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Bullet\BulletFactory.h" />
@@ -71,12 +73,14 @@
     <ClInclude Include="Game\Screen\PlayScreen3.h" />
     <ClInclude Include="Game\Screen\PlayScreen4.h" />
     <ClInclude Include="Game\StateManager.h" />
-    <ClInclude Include="Game\ResourceManager.h" />
+    <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Graphics\Animation.h" />
     <ClInclude Include="User\SaveGameManager.h" />
     <ClInclude Include="User\SaveGame.h" />
     <ClInclude Include="User\User.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="Audio\Audio.h" />
+    <ClInclude Include="Manager\AudioManager.h" />
+    <ClInclude Include="Manager\EventManager.h" />
+    <ClInclude Include="Manager\FontManager.h" />
   </ItemGroup>
 </Project>

@@ -60,7 +60,13 @@ bool TowerBase::canShoot(shared_ptr<EnemyBase> target) {
 	float dis = currentPosition.distance(target->getCurrentPosition());
 	int range = model->getRange();
 
+	/*OutputDebugStringA( ( std::to_string(dis) + "disssssssssssssssss\n" +
+						  std::to_string(range) + "\n" ).c_str());*/
+
+
+	//if (target->getHealth() > 0 && dis <= range) {
 	if (target->isOnRoad() && dis <= range) {
+		//OutputDebugStringA("true shoot\n");
 		return true;
 	}
 
