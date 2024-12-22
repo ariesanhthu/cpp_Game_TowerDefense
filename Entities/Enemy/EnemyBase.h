@@ -33,8 +33,6 @@ public:
 	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath, int nHealth);
 	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath);
 
-	void setIndex(int x);
-
 	// CONSTRUCTOR WITH FRAME ANIMATION
 	EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, EnemyModel* nModel, int npath);
 	EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, shared_ptr<EnemyModel> nModel, int npath);
@@ -56,6 +54,8 @@ public:
 	void setType(const int x);
 	int getType();
 
+	int getIndex();
+	void setIndex(int x);
 
 	//get private attribute
 	cpoint getCurrentPosition();
