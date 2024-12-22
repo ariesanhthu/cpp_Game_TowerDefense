@@ -25,6 +25,7 @@ namespace towerdefense
         ~AudioManager();
 
     public:
+		bool isBackgroundMusicPlaying = false; // Trạng thái phát nhạc nền
         // Singleton instance
         static AudioManager& getInstance();
 

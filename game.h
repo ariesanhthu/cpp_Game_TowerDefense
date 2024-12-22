@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <windows.h>
 #include <string>
@@ -17,6 +17,7 @@
 #include "Utils.h"
 
 #include "AudioManager.h"
+#include "FontManager.h"
 
 
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
@@ -63,6 +64,12 @@ namespace towerdefense
 		Game(const Game&) = delete;
 		Game& operator= (const Game&) = delete;
 		~Game() {
+			// Cleanup FontManager sau cùng
+			//// Đảm bảo các màn hình được hủy trước
+			//screenManager.reset();
+			//// Cleanup FontManager sau cùng
+			FontManager::getInstance().cleanupFonts();
+
 			OutputDebugStringA("~Game\n");
 		}
 		

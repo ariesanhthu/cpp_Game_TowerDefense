@@ -37,6 +37,7 @@
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Manager\AudioManager.cpp" />
     <ClCompile Include="Manager\EventManager.cpp" />
+    <ClCompile Include="Manager\FontManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entities\Bullet\BulletFactory.h" />
@@ -80,5 +81,6 @@
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Manager\AudioManager.h" />
     <ClInclude Include="Manager\EventManager.h" />
+    <ClInclude Include="Manager\FontManager.h" />
   </ItemGroup>
 </Project>

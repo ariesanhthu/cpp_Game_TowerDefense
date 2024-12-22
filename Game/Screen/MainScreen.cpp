@@ -4,10 +4,17 @@ using namespace std;
 
 namespace towerdefense
 {
+	// --------------------------------------------------
+    //auto& audioManager = 
+	// --------------------------------------------------
+    
     // Constructor
     MainScreen::MainScreen() {
         loadContent(1280, 720);
-        customfont = Graphic::CreateCustomFont(24, L"pixelFont-7-8x14-sproutLands");
+
+        customfont = FontManager::getInstance().getFont("normal");
+        Titlefont = FontManager::getInstance().getFont("title");
+
 
         float scaleX = static_cast<float>(1280) / 395.0f;   // 1280 là kích thước gốc của ảnh
         float scaleY = static_cast<float>(720) / 213.0f;    // 720 là kích thước gốc của ảnh
@@ -40,7 +47,25 @@ namespace towerdefense
 
         _gotoPage = std::make_shared<TextElement>(L"Goto Register Form", customfont, RGB(255, 255, 255), linkPos);
 
-        _VolumeButton = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 5, VolumeButtonPos);
+        //  ----------- setting -----------
+
+		// Thanh âm lượng
+        _VolumeBar = std::make_shared<Item>(L"Assets/setting/volumn.png", 5, VolumeBarPos);
+
+        // Loa
+        _audioItem = std::make_shared<Item>(L"Assets/setting/sound_on.png", 5, audioItemPos);
+
+		// BẬT TẮT ÂM THANH
+        _switchAudio = std::make_shared<Button>(L"Assets/setting/switchOff.png", L"Assets/setting/switchOn.png", 5, switchAudioPos);
+
+        TitleSetting = std::make_shared<TextElement>(L"SETTING", Titlefont, RGB(255, 255, 255), titlePos);
+
+        _arrowUpButton = std::make_shared<Button>(L"Assets/setting/arrowUp.png", L"Assets/setting/arrowUp.png", 5, arrowUpPos);
+        _arrowDownButton = std::make_shared<Button>(L"Assets/setting/arrowDown.png", L"Assets/setting/arrowDown.png", 5, arrowDownPos);
+
+
+		// -------------------------------------------
+
 
         for (int i = 0; i < listGame.size(); i++) {
            
@@ -58,8 +83,9 @@ namespace towerdefense
     // Destructor
     MainScreen::~MainScreen() {
         // Giải phóng tài nguyên
-        DeleteObject(customfont);
-
+        //DeleteObject(customfont);
+        //DeleteObject(Titlefont);
+		/*TitleSetting.reset();*/
         OutputDebugStringA("~MainScreen\n");
     }
     int MainScreen::menu = 0;
@@ -207,8 +233,17 @@ namespace towerdefense
         }
         else if (menu == 4) {
             // setting 
-            if (_VolumeButton->isClicked(cursorPos)) {
-                //Audio::PlaySound(filename); 
+            if (_switchAudio->isClicked(cursorPos)) {
+                // stop 
+				if (AudioManager::getInstance().isBackgroundMusicPlaying) {
+                    AudioManager::getInstance().stopBackgroundMusic();
+                    AudioManager::getInstance().isBackgroundMusicPlaying = false;
+				}
+                // play
+				else {
+                    AudioManager::getInstance().playBackgroundMusic();
+                    AudioManager::getInstance().isBackgroundMusicPlaying = true;
+				}
             }
 
         }
@@ -326,7 +361,17 @@ namespace towerdefense
         }
         else if (menu == 4) {
 
-            _VolumeButton->render(hdc);
+            //_VolumeButton->render(hdc);
+			TitleSetting->render(hdc);
+
+			_audioItem->render(hdc);
+			_switchAudio->render(hdc);
+            
+
+            _VolumeBar->render(hdc);
+			_arrowUpButton->render(hdc);
+			_arrowDownButton->render(hdc);
+
 
         }
         else if (menu == 5) {
