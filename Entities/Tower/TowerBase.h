@@ -29,7 +29,7 @@ protected:
 	int type;
 
 public:
-	TowerBase() = default;
+	TowerBase();
 	TowerBase(const TowerBase& other);
 	TowerBase(TowerModel* nModel, cpoint pos);
 	

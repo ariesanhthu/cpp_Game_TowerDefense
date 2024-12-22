@@ -395,7 +395,7 @@ namespace towerdefense
                     (
                         "LOADDINGGGGGGGG........................ " + std::to_string(getCurrentMap()) + " " + std::to_string(loadstatus) + "\n"
                      ).c_str()
-                                    );
+                );
 
                 manager.setupEnemy(path);
                 manager.enemyManager.setup(mapSetup);
@@ -411,33 +411,33 @@ namespace towerdefense
                 vector<int> enemyIndex = game_saving.getEnemyIndex();
                 int enemyCount = enemyPos.size();
 
-                for (int i = 0; i < enemyCount; ++i) {
-                    // Tạo chuỗi debug cho từng enemy
-                    std::string message = "Enemy " + std::to_string(i) + ": " +
-                        "Pos (" + std::to_string(enemyPos[i].getX()) + ", " + std::to_string(enemyPos[i].getY()) + ") " +
-                        "Health: " + std::to_string(enemyHealth[i]) + " " +
-                        "Path: " + std::to_string(enemyPathNumber[i]) + " " +
-                        "Type: " + std::to_string(enemyType[i]) + " " +
-                        "Index: " + std::to_string(enemyIndex[i]) + "\n";
+                //for (int i = 0; i < enemyCount; ++i) {
+                //    // Tạo chuỗi debug cho từng enemy
+                //    std::string message = "Enemy " + std::to_string(i) + ": " +
+                //        "Pos (" + std::to_string(enemyPos[i].getX()) + ", " + std::to_string(enemyPos[i].getY()) + ") " +
+                //        "Health: " + std::to_string(enemyHealth[i]) + " " +
+                //        "Path: " + std::to_string(enemyPathNumber[i]) + " " +
+                //        "Type: " + std::to_string(enemyType[i]) + " " +
+                //        "Index: " + std::to_string(enemyIndex[i]) + "\n";
 
-                    // In chuỗi ra OutputDebugStringA
-                    OutputDebugStringA(message.c_str());
-                }
+                //    // In chuỗi ra OutputDebugStringA
+                //    OutputDebugStringA(message.c_str());
+                //}
                 
                 // get all tower element 
                 vector<cpoint> towerPos = game_saving.getTowerPos();
                 vector<int> towerType = game_saving.getTowerType();
                 int towerCount = towerPos.size();
                
-                for (int i = 0; i < towerCount; ++i) {
-                    // Tạo chuỗi debug cho từng tháp
-                    std::string message = "Tower " + std::to_string(i) + ": " +
-                        "Pos (" + std::to_string(towerPos[i].getX()) + ", " + std::to_string(towerPos[i].getY()) + ") " +
-                        "Type: " + std::to_string(towerType[i]) + "\n";
+                //for (int i = 0; i < towerCount; ++i) {
+                //    // Tạo chuỗi debug cho từng tháp
+                //    std::string message = "Tower " + std::to_string(i) + ": " +
+                //        "Pos (" + std::to_string(towerPos[i].getX()) + ", " + std::to_string(towerPos[i].getY()) + ") " +
+                //        "Type: " + std::to_string(towerType[i]) + "\n";
 
-                    // In chuỗi ra OutputDebugStringA
-                    OutputDebugStringA(message.c_str());
-                }
+                //    // In chuỗi ra OutputDebugStringA
+                //    OutputDebugStringA(message.c_str());
+                //}
 
                 //for (int i = 0; i < towerCount; i++) {
                 //    store_tower[i]->setCurrentPosition(towerPos[i]);
@@ -457,7 +457,10 @@ namespace towerdefense
                         manager.enemyManager.addEnemy(EnemyFactory::createEnemy(e, 0));
                     }
                 }
-                vector<shared_ptr<EnemyBase>> listEnemy(enemyCount, make_shared<EnemyBase>());
+                vector<shared_ptr<EnemyBase>> listEnemy(enemyCount);
+                for (int i = 0; i < enemyCount; i++) {
+                    listEnemy[i] = EnemyFactory::createEnemy(towerType[i], 0);
+                }
                 for (int i = 0; i < enemyCount; i++) {
                     listEnemy[i]->setCurrentPosition(enemyPos[i]);
                     listEnemy[i]->setIndex(enemyIndex[i]);
@@ -469,8 +472,10 @@ namespace towerdefense
                 for (int i = 0; i < towerCount; i++) {
                     manager.towerManager.addTower(TowerFactory::createTower(towerType[i], towerPos[i]));
                 }
-
-                vector<shared_ptr<TowerBase>> listTower(towerCount, make_shared<TowerBase>());
+                vector<shared_ptr<TowerBase>> listTower(towerCount);
+                for (int i = 0; i < towerCount; i++) {
+                    listTower[i] = TowerFactory::createTower(towerType[i], towerPos[i]);
+                }
                 for (int i = 0; i < towerCount; i++) {
                     listTower[i]->setCurrentPosition(towerPos[i]);
                 }

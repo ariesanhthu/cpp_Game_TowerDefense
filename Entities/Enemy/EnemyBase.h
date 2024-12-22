@@ -19,10 +19,10 @@ protected:
 	cpoint currentPosition;
 	int health;
 	int index = 0;
+	int type;
 
 	bool onRoad = false;
 	
-	int type;
 
 public:
 	EnemyBase() = default;

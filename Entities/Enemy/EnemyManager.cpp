@@ -108,6 +108,7 @@ void EnemyManager::setLoadEnemy(std::vector<shared_ptr<EnemyBase>> enemylist) {
     for (int i = 0; i < enemies_.size(); i++) {
         enemies_[i]->setCurrentPosition(enemylist[i]->getCurrentPosition());
         enemies_[i]->setHealth(enemylist[i]->getHealth());
+        enemies_[i]->setIndex(enemylist[i]->getIndex());
         enemies_[i]->setPath(enemylist[i]->getPath());
     }
 }
