@@ -311,7 +311,6 @@ namespace towerdefense
             }
             //----------- PLAY GAME -----------
             else if (manager.getGameStatus() == PLAY) {
-                //OutputDebugStringA("11111111111111111\n");
                 manager.update(delta);
                 statePlayingGame = PLAY;
             }
@@ -348,6 +347,7 @@ namespace towerdefense
             int nofpath = path.size();
 
             manager.enemyManager.setup(mapSetup);
+            manager.towerManager.setNumberOfTower(6); // default is 5
 
             //setup enemy for each phase
             for (size_t e = 1; e <= 3; e++)

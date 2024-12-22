@@ -22,8 +22,8 @@ shared_ptr<TowerBase> TowerFactory::createTower(const int type, cpoint pos) {
 void TowerFactory::createModels() {
     //
     Models.push_back(make_shared<TowerModel>(250, 1, BulletFactory::Models[0].get()));
-    Models.push_back(make_shared<TowerModel>(250, 2, BulletFactory::Models[1].get()));
-    Models.push_back(make_shared<TowerModel>(250, 3, BulletFactory::Models[2].get()));
+    Models.push_back(make_shared<TowerModel>(200, 2, BulletFactory::Models[1].get()));
+    Models.push_back(make_shared<TowerModel>(150, 3, BulletFactory::Models[2].get()));
 }
 void TowerFactory::deleteModels() {
     //for (auto model : Models)
