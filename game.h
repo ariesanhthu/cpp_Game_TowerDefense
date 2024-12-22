@@ -10,6 +10,7 @@
 #include "User/userManager.h"
 
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
+using namespace std;
 
 namespace towerdefense
 {
