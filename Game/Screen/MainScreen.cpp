@@ -48,20 +48,31 @@ namespace towerdefense
         _gotoPage = std::make_shared<TextElement>(L"Goto Register Form", customfont, RGB(255, 255, 255), linkPos);
 
         //  ----------- setting -----------
-
-		// Thanh âm lượng
-        _VolumeBar = std::make_shared<Item>(L"Assets/setting/volumn.png", 5, VolumeBarPos);
-
-        // Loa
-        _audioItem = std::make_shared<Item>(L"Assets/setting/sound_on.png", 5, audioItemPos);
-
-		// BẬT TẮT ÂM THANH
-        _switchAudio = std::make_shared<Button>(L"Assets/setting/switchOff.png", L"Assets/setting/switchOn.png", 5, switchAudioPos);
-
         TitleSetting = std::make_shared<TextElement>(L"SETTING", Titlefont, RGB(255, 255, 255), titlePos);
 
-        _arrowUpButton = std::make_shared<Button>(L"Assets/setting/arrowUp.png", L"Assets/setting/arrowUp.png", 5, arrowUpPos);
-        _arrowDownButton = std::make_shared<Button>(L"Assets/setting/arrowDown.png", L"Assets/setting/arrowDown.png", 5, arrowDownPos);
+        // Thanh âm lượng
+        _VolumeBar = std::make_shared<Item>(L"Assets/setting/volumn.png", 6, VolumeBarPos);
+        _VolumeBarOn = std::make_shared<Item>(L"Assets/setting/volumnOn.png", 6, VolumeBarOnPos);
+
+        // Loa
+        _audioOffItem = std::make_shared<Item>(L"Assets/setting/sound_off.png", 2, audioItemPos);
+        _audioItem = std::make_shared<Item>(L"Assets/setting/sound_on.png", 2, audioItemPos);
+
+        // BẬT TẮT ÂM THANH
+        //_switchAudio = std::make_shared<Button>(L"Assets/setting/switchOff.png", L"Assets/setting/switchOff.png", L"Assets/setting/switchOn.png", 3, switchAudioPos);
+        _switchOffAudio = std::make_shared<Item>(L"Assets/setting/switchOff.png", 3, switchAudioPos);
+        _switchOnAudio = std::make_shared<Item>(L"Assets/setting/switchOn.png", 3, switchAudioPos);
+
+
+        /*
+            TẠO CLASS xử lý riêng các button
+
+            hoặc thêm trạng thái enableHover (có hiệu ứng hover hay không)
+
+        */
+        _arrowUpButton = std::make_shared<Button>(L"Assets/setting/arrowUp.png", L"Assets/button/select.bmp", 5, arrowUpPos);
+        _arrowDownButton = std::make_shared<Button>(L"Assets/setting/arrowDown.png", L"Assets/button/select.bmp", 5, arrowDownPos);
+
 
 
 		// -------------------------------------------
@@ -231,21 +242,28 @@ namespace towerdefense
         else if (menu == 3) {
 
         }
+        // -------------------------- setting --------------------------
         else if (menu == 4) {
-            // setting 
-            if (_switchAudio->isClicked(cursorPos)) {
+            if (_switchOffAudio->isClicked(cursorPos)) {
                 // stop 
-				if (AudioManager::getInstance().isBackgroundMusicPlaying) {
+                if (AudioManager::getInstance().isBackgroundMusicPlaying) {
                     AudioManager::getInstance().stopBackgroundMusic();
                     AudioManager::getInstance().isBackgroundMusicPlaying = false;
-				}
+                }
                 // play
-				else {
+                else {
                     AudioManager::getInstance().playBackgroundMusic();
                     AudioManager::getInstance().isBackgroundMusicPlaying = true;
-				}
+                }
             }
 
+            if (_arrowDownButton->isClicked(cursorPos)) {
+                AudioManager::getInstance().adjustMusicVolume(-0.1f);
+            }
+
+            if (_arrowUpButton->isClicked(cursorPos)) {
+                AudioManager::getInstance().adjustMusicVolume(0.1f);
+            }
         }
         else if (menu == 5) {
             PostQuitMessage(0);
@@ -331,6 +349,26 @@ namespace towerdefense
         _login->render(hdc);
         popup->render(hdc);
 
+        // -------------------------------------------------------------
+        // ĐỂ TẠM THỜI
+        if (AudioManager::getInstance().isBackgroundMusicPlaying)
+        {
+            _audioItem->setTriger(true);
+            _audioOffItem->setTriger(false);
+
+            _switchOnAudio->setTriger(true);
+            _switchOffAudio->setTriger(false);
+        }
+        else
+        {
+            _audioOffItem->setTriger(true);
+            _audioItem->setTriger(false);
+
+            _switchOnAudio->setTriger(false);
+            _switchOffAudio->setTriger(true);
+        }
+        // -----------------------------------------------------------------
+
         if (menu == 0) {
 
         }
@@ -362,16 +400,36 @@ namespace towerdefense
         else if (menu == 4) {
 
             //_VolumeButton->render(hdc);
-			TitleSetting->render(hdc);
+            TitleSetting->render(hdc);
 
-			_audioItem->render(hdc);
-			_switchAudio->render(hdc);
-            
+            if (_audioItem->getTriger())
+                _audioItem->render(hdc);
+
+            if (_audioOffItem->getTriger())
+                _audioOffItem->render(hdc);
+
+            //_switchAudio->render(hdc);
+            if (_switchOnAudio->getTriger())
+                _switchOnAudio->render(hdc);
+
+            if (_switchOffAudio->getTriger())
+                _switchOffAudio->render(hdc);
 
             _VolumeBar->render(hdc);
-			_arrowUpButton->render(hdc);
-			_arrowDownButton->render(hdc);
+            _arrowUpButton->render(hdc);
+            _arrowDownButton->render(hdc);
 
+            // bar volume
+            // Số thanh trạng thái bật (từ 0 đến 9)
+            int activeBars = static_cast<int>(AudioManager::getInstance().getMusicVolume() * 10);
+            shared_ptr<Item> volumeOn = make_shared<Item>(L"Assets/setting/volumnOn.png", 6, VolumeBarOnPos);
+            for (int i = 0; i < activeBars; ++i)
+            {
+                // Điều chỉnh vị trí từng thanh (giả định thanh cách nhau 20px theo trục x)
+                volumeOn->setPosition({ VolumeBarOnPos.x + i * 30, VolumeBarOnPos.y });
+
+                volumeOn->render(hdc);
+            }
 
         }
         else if (menu == 5) {

@@ -32,6 +32,14 @@ public:
     Button(const wchar_t* linkDefault, const wchar_t* linkHover, float scale, POINT pos) : UIElement(linkDefault, scale, pos) {
         hover = Graphic::LoadBitmapImage(linkHover, scale);
     }
+
+	// --------- click button ------------
+    Button(const wchar_t* linkDefault, const wchar_t* linkHover, const wchar_t* linkClicked, float scale, POINT pos) : UIElement(linkDefault, scale, pos) {
+        hover = Graphic::LoadBitmapImage(linkHover, scale);
+        clicked = Graphic::LoadBitmapImage(linkClicked, scale);
+    }
+	//----------------------------------
+
     Button() = default;
     ~Button() override {
         if (hover) {

@@ -92,32 +92,40 @@ namespace towerdefense
         POINT linkPos = { 270, 460 };
 
         // ----------------- SETTING --------------------
-        
+
         shared_ptr<TextElement> TitleSetting;
-        //POINT titlePos = { 400, 100 };
-        
-		// ----------------- audio --------------------
-		// loa 
+        //POINT titlePos = { 400, 100 };/ dùng chung
+
+        // ----------------- audio --------------------
+        // loa 
         shared_ptr<Item> _audioItem;
-        POINT audioItemPos = { 400, 200 };
-        
+        shared_ptr<Item> _audioOffItem;
+        POINT audioItemPos = { 300, 250 };
+
         // nút
-        shared_ptr<Button> _switchAudio;
-        POINT switchAudioPos = { 270, 200 };
+        //shared_ptr<Button> _switchAudio;
+        shared_ptr<Item> _switchOffAudio;
+        shared_ptr<Item> _switchOnAudio;
+        POINT switchAudioPos = { 650, 250 };
         //shared_ptr<Button> _switchOn = nullptr;
 
-		// ----------------- volume --------------------
-		// thanh volume
+        // ----------------- volume --------------------
+        // thanh volume
         shared_ptr<Item> _VolumeBar;
-        POINT VolumeBarPos = { 400, 300 };
-        
+        shared_ptr<Item> _VolumeBarOn;
+        POINT VolumeBarPos = { 300, 350 };
+        POINT VolumeBarOnPos = { 300, 350 };
+
         shared_ptr<Item> _foregroundVol;
 
         // nút
         shared_ptr<Button> _arrowUpButton;
         shared_ptr<Button> _arrowDownButton;
-        POINT arrowUpPos = { 270, 300 };
-        POINT arrowDownPos = { 370, 300 };
+        POINT arrowUpPos = { 750, 350 };
+        POINT arrowDownPos = { 650, 350 };
+
+        // ==================================================================
+
 
 
 		// --------------------------------------------------

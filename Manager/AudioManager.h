@@ -25,7 +25,7 @@ namespace towerdefense
         ~AudioManager();
 
     public:
-		bool isBackgroundMusicPlaying = false; // Trạng thái phát nhạc nền
+		bool isBackgroundMusicPlaying = true; // Trạng thái phát nhạc nền
         // Singleton instance
         static AudioManager& getInstance();
 
@@ -55,7 +55,21 @@ namespace towerdefense
             // Đặt nhạc nền
             audio.setBackgroundMusic(L"sounds/background.wav");
         }
+        // ======================================================
+        float getMusicVolume() const { return musicVolume; } // Lấy âm lượng nhạc nền
 
+        void adjustMusicVolume(float delta)
+        {
+            musicVolume += delta;
+            if (musicVolume > 1.0f)
+            {
+                musicVolume = 1.0f; // Giới hạn tối đa
+            }
+            else if (musicVolume < 0.0f)
+            {
+                musicVolume = 0.0f; // Giới hạn tối thiểu
+            }
+        }
 		// ======================================================
 
         //void setupAudioListeners();
