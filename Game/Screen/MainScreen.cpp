@@ -78,11 +78,23 @@ namespace towerdefense
 		// -------------------------------------------
 
 
-        for (int i = 0; i < listGame.size(); i++) {
-           
-            wstring name = Utils::stringToWstring(listGame[i].getUserName());
-            wstring point = Utils::stringToWstring(std::to_string(listGame[i].getPoint()));
-            wstring level = Utils::stringToWstring(std::to_string(listGame[i].getMapCode()));
+        for (int i = 0; i < _FourContinueItem.size(); i++) {
+
+            wstring name = Utils::stringToWstring(LoadList[i].getUserName());
+            wstring point = Utils::stringToWstring(std::to_string(LoadList[i].getPoint()));
+            wstring level = Utils::stringToWstring(std::to_string(LoadList[i].getMapCode()));
+
+            /*std::wstring allias = L"Assets/map_resize/map" + to_wstring(i) + L"_scaleDown.bmp";
+            const wchar_t* mapLink = Utils::wstringToWchar_t(allias);*/
+
+            _FourContinueItem[i] = std::make_shared<ContinueElement>(name, point, level, optionPositionsEnd[i], customfont, RGB(255, 255, 255), maplink[LoadList[i].getMapCode()], 3);
+        }
+
+        for (int i = 0; i < _FourLeaderBoardItem.size(); i++) {
+
+            wstring name = Utils::stringToWstring(LeaderboardList[i].getUserName());
+            wstring point = Utils::stringToWstring(std::to_string(LeaderboardList[i].getPoint()));
+            wstring level = Utils::stringToWstring(std::to_string(LeaderboardList[i].getMapCode()));
 
             /*std::wstring allias = L"Assets/map_resize/map" + to_wstring(i) + L"_scaleDown.bmp";
             const wchar_t* mapLink = Utils::wstringToWchar_t(allias);*/
