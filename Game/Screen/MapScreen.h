@@ -457,7 +457,7 @@ namespace towerdefense
                         manager.enemyManager.addEnemy(EnemyFactory::createEnemy(e, 0));
                     }
                 }
-                vector<shared_ptr<EnemyBase>> listEnemy(enemyCount);
+                /*vector<shared_ptr<EnemyBase>> listEnemy(enemyCount);
                 for (int i = 0; i < enemyCount; i++) {
                     listEnemy[i] = EnemyFactory::createEnemy(towerType[i], 0);
                 }
@@ -467,7 +467,7 @@ namespace towerdefense
                     listEnemy[i]->setHealth(enemyHealth[i]);
                     listEnemy[i]->setPath(enemyPathNumber[i]);
                 }
-                manager.enemyManager.setLoadEnemy(listEnemy);
+                manager.enemyManager.setLoadEnemy(listEnemy);*/
 
                 for (int i = 0; i < towerCount; i++) {
                     manager.towerManager.addTower(TowerFactory::createTower(towerType[i], towerPos[i]));
