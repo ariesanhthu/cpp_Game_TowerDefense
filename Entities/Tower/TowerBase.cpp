@@ -1,5 +1,9 @@
 #include "TowerBase.h"
 
+TowerBase::TowerBase() {
+	bullet = BulletFactory::createBullet(0, NULL, cpoint(0, 0, 0));
+	lastShoot = std::chrono::system_clock::now();
+}
 TowerBase::TowerBase(const TowerBase& other){
 	bullet = BulletFactory::createBullet(0, NULL, cpoint(0, 0, 0));
 	model = other.model;
@@ -89,3 +93,5 @@ void TowerBase::shoot(shared_ptr<EnemyBase> target) {
 	bullet.get()->setTarget(target);
 	bullet.get()->setVisible(true);
 }
+
+

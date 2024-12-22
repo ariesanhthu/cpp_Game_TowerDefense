@@ -238,7 +238,9 @@ namespace towerdefense
             for (int i = 0; i < LoadList.size(); i++) {
                 if (_FourContinueItem[i]->isClicked(cursorPos)) {
                     PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, LoadList[i].getMapCode() + 4, 0);
+                    OutputDebugStringA(("map code: " + to_string(LoadList[i].getMapCode() + 4) + "\n").c_str());
                 }
+
             }
 
             // if click user 

@@ -260,24 +260,18 @@ namespace towerdefense
             }
             else if (x >= 1 && x <= 4) {
                 switch (x) {
-                case 1: screen = std::make_shared<PlayScreen1>(); break;
-                case 2: screen = std::make_shared<PlayScreen2>(); break;
-                case 3: screen = std::make_shared<PlayScreen3>(); break;
-                case 4: screen = std::make_shared<PlayScreen4>(); break;
+                case 1: screen = std::make_shared<PlayScreen1>(false); break;
+                case 2: screen = std::make_shared<PlayScreen2>(false); break;
+                case 3: screen = std::make_shared<PlayScreen3>(false); break;
+                case 4: screen = std::make_shared<PlayScreen4>(false); break;
                 }
             }
             else if (x >= 5 && x <= 8) {
-                // Load game screens with setLoadStatus(true)
-                std::shared_ptr<MapScreen> gameScreen = nullptr;
                 switch (x) {
-                case 5: gameScreen = std::make_shared<PlayScreen1>(); break;
-                case 6: gameScreen = std::make_shared<PlayScreen2>(); break;
-                case 7: gameScreen = std::make_shared<PlayScreen3>(); break;
-                case 8: gameScreen = std::make_shared<PlayScreen4>(); break;
-                }
-                if (gameScreen) {
-                    gameScreen->setLoadStatus(true);
-                    screen = gameScreen;
+                case 5: screen = std::make_shared<PlayScreen1>(true); break;
+                case 6: screen = std::make_shared<PlayScreen2>(true); break;
+                case 7: screen = std::make_shared<PlayScreen3>(true); break;
+                case 8: screen = std::make_shared<PlayScreen4>(true); break;
                 }
             }
             else {

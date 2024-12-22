@@ -10,8 +10,6 @@
 #include <Tower/TowerFactory.h>
 #include <UIElement.h>
 
-
-
 class GamePlayManage 
 {
 private: 

@@ -29,7 +29,7 @@ protected:
 	int type;
 
 public:
-	TowerBase() = default;
+	TowerBase();
 	TowerBase(const TowerBase& other);
 	TowerBase(TowerModel* nModel, cpoint pos);
 	
@@ -56,6 +56,9 @@ public:
 	void render(HDC hdc) {
 		Graphic::DrawBitmap(image, { currentPosition.getX(), currentPosition.getY() }, hdc);
 	}
+
+
+	
 };
 
 

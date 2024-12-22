@@ -104,17 +104,11 @@ std::vector<shared_ptr<EnemyBase>>& EnemyManager::getEnemy() {
     return enemies_;
 }
 
-void EnemyManager::setEnemyFactor(SaveGame s) {
-    vector<int> health = s.getEnemyHealth();
-    vector<int> index = s.getEnemyIndex();
-    vector<int> pathNumber = s.getEnemyPathNumber();
-    vector<int> type = s.getEnemyType();
-    vector<cpoint> pos = s.getEnemyPos();
+void EnemyManager::setLoadEnemy(std::vector<shared_ptr<EnemyBase>> enemylist) {
     for (int i = 0; i < enemies_.size(); i++) {
-        enemies_[i]->setIndex(index[i]);
-        enemies_[i]->setType(type[i]);
-        enemies_[i]->setPath(pathNumber[i]);
-        enemies_[i]->setCurrentPosition(pos[i]);
-        enemies_[i]->setHealth(health[i]);
+        enemies_[i]->setCurrentPosition(enemylist[i]->getCurrentPosition());
+        enemies_[i]->setHealth(enemylist[i]->getHealth());
+        enemies_[i]->setIndex(enemylist[i]->getIndex());
+        enemies_[i]->setPath(enemylist[i]->getPath());
     }
 }

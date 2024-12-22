@@ -15,7 +15,7 @@ namespace towerdefense
 		return 1;
     }
     
-    PlayScreen1::PlayScreen1()
+    PlayScreen1::PlayScreen1(bool _loadstatus)
     {
         path =
         {
@@ -28,6 +28,8 @@ namespace towerdefense
         };
 
         mapSetup = { 3,5,4,1 };
+
+        loadstatus = _loadstatus;
 
 
         GamePlaySetup();
@@ -51,7 +53,7 @@ namespace towerdefense
     int PlayScreen2::getCurrentMap() {
         return 2;
     }
-    PlayScreen2::PlayScreen2() 
+    PlayScreen2::PlayScreen2(bool _loadstatus) 
     {
         path =
         {
@@ -67,6 +69,7 @@ namespace towerdefense
 
         mapSetup = { 3,5,4,1 };
         
+        loadstatus = _loadstatus;
 
         GamePlaySetup();
     }
@@ -92,7 +95,7 @@ namespace towerdefense
         return 3;
     }
 
-    PlayScreen3::PlayScreen3() {
+    PlayScreen3::PlayScreen3(bool _loadstatus) {
         path =
         {
             {
@@ -108,6 +111,8 @@ namespace towerdefense
             }
         };
         mapSetup = { 3,5,4,1 };
+
+        loadstatus = _loadstatus;
 
         GamePlaySetup();
     }
@@ -134,7 +139,7 @@ namespace towerdefense
         return 4;
     }
 
-    PlayScreen4::PlayScreen4() {
+    PlayScreen4::PlayScreen4(bool _loadstatus) {
         path =
         {
             {
@@ -150,6 +155,8 @@ namespace towerdefense
         };
 
         mapSetup = {3, 10, 10, 10};
+
+        loadstatus = _loadstatus;
 
         GamePlaySetup();
     }

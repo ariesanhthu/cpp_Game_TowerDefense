@@ -37,7 +37,7 @@ namespace towerdefense
         GameState statePlayingGame = PAUSE;
         int countHeart = 0;
 
-        bool loadstatus = true;
+        bool loadstatus = false;
 
         // buton play or pause 
         POINT posbuttonplay = { 580, 570 };
@@ -101,7 +101,20 @@ namespace towerdefense
         std::shared_ptr<TowerBase> renderTowerType3;
 
     public:
-        MapScreen() { 
+        MapScreen() {
+            manager.destroy();
+            manager.setupTower();
+
+            pickedTowerType1 = TowerFactory::createTower(0, { Turretinit1.x, Turretinit1.y, 0 });
+            renderTowerType1 = TowerFactory::createTower(0, { Turretinit1.x, Turretinit1.y, 0 });
+            pickedTowerType2 = TowerFactory::createTower(1, { Turretinit2.x, Turretinit2.y, 0 });
+            renderTowerType2 = TowerFactory::createTower(1, { Turretinit2.x, Turretinit2.y, 0 });
+            pickedTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
+            renderTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
+
+            loadstatus = false;
+        }
+        MapScreen(bool _loadstatus) { 
             manager.destroy(); 
             manager.setupTower();
 
@@ -111,8 +124,11 @@ namespace towerdefense
             renderTowerType2 = TowerFactory::createTower(1, { Turretinit2.x, Turretinit2.y, 0 });
             pickedTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
             renderTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
+
+            loadstatus = _loadstatus;   
         };
         virtual ~MapScreen() {
+
         }
 
         /* --------------------------------------------------
@@ -313,7 +329,6 @@ namespace towerdefense
             }
             //----------- PLAY GAME -----------
             else if (manager.getGameStatus() == PLAY) {
-                //OutputDebugStringA("11111111111111111\n");
                 manager.update(delta);
                 statePlayingGame = PLAY;
             }
@@ -349,7 +364,7 @@ namespace towerdefense
 
                 OutputDebugStringA(
                     (
-                        "NEW GAMEEE........................\n" + std::to_string(getCurrentMap()) + " " + std::to_string(loadstatus)
+                        "NEW GAMEEE........................ " + std::to_string(getCurrentMap()) + " " + std::to_string(loadstatus) + "\n"
                         ).c_str()
                 );
 
@@ -378,9 +393,9 @@ namespace towerdefense
             else {
                 OutputDebugStringA(
                     (
-                        "LOADDINGGGGGGGG........................\n" + std::to_string(getCurrentMap()) + " " + std::to_string(loadstatus)
+                        "LOADDINGGGGGGGG........................ " + std::to_string(getCurrentMap()) + " " + std::to_string(loadstatus) + "\n"
                      ).c_str()
-                                    );
+                );
 
                 manager.setupEnemy(path);
                 manager.enemyManager.setup(mapSetup);
@@ -388,30 +403,83 @@ namespace towerdefense
                 std::shared_ptr<SaveGameSupport> supsave;
                 SaveGame game_saving = supsave->readMapInfo(getCurrentMap());
                 
-                //setup enemy for each phase
+                // get all enemy element 
+                vector<cpoint> enemyPos = game_saving.getEnemyPos();
+                vector<int> enemyHealth = game_saving.getEnemyHealth();
+                vector<int> enemyPathNumber = game_saving.getEnemyPathNumber();
+                vector<int> enemyType = game_saving.getEnemyType();
+                vector<int> enemyIndex = game_saving.getEnemyIndex();
+                int enemyCount = enemyPos.size();
+
+                //for (int i = 0; i < enemyCount; ++i) {
+                //    // Tạo chuỗi debug cho từng enemy
+                //    std::string message = "Enemy " + std::to_string(i) + ": " +
+                //        "Pos (" + std::to_string(enemyPos[i].getX()) + ", " + std::to_string(enemyPos[i].getY()) + ") " +
+                //        "Health: " + std::to_string(enemyHealth[i]) + " " +
+                //        "Path: " + std::to_string(enemyPathNumber[i]) + " " +
+                //        "Type: " + std::to_string(enemyType[i]) + " " +
+                //        "Index: " + std::to_string(enemyIndex[i]) + "\n";
+
+                //    // In chuỗi ra OutputDebugStringA
+                //    OutputDebugStringA(message.c_str());
+                //}
+                
+                // get all tower element 
+                vector<cpoint> towerPos = game_saving.getTowerPos();
+                vector<int> towerType = game_saving.getTowerType();
+                int towerCount = towerPos.size();
+               
+                //for (int i = 0; i < towerCount; ++i) {
+                //    // Tạo chuỗi debug cho từng tháp
+                //    std::string message = "Tower " + std::to_string(i) + ": " +
+                //        "Pos (" + std::to_string(towerPos[i].getX()) + ", " + std::to_string(towerPos[i].getY()) + ") " +
+                //        "Type: " + std::to_string(towerType[i]) + "\n";
+
+                //    // In chuỗi ra OutputDebugStringA
+                //    OutputDebugStringA(message.c_str());
+                //}
+
+                //for (int i = 0; i < towerCount; i++) {
+                //    store_tower[i]->setCurrentPosition(towerPos[i]);
+                //    store_tower[i]->setType(towerType[i]);
+                //}
+
+                /*for (size_t e = 1; e <= 3; e++) {
+                    for (int i = 0; i < mapSetup[e]; i++) {
+                        manager.enemyManager.addEnemy(EnemyFactory::createEnemy(enemyType[i], enemyPathNumber[i]));
+                    }
+                }*/
+
+
                 for (size_t e = 1; e <= 3; e++)
                 {
-                    int typeEnemy = e;
-
-                    // Đổi style enemy Goblin đi bộ thành Goblin bơi
-                    if (e == 1 && getCurrentMap() == 4)
-                        typeEnemy = 4;
-
                     for (int i = 0; i < mapSetup[e]; i++) {
-                        manager.enemyManager.addEnemy(EnemyFactory::createEnemy(1, 0));
+                        manager.enemyManager.addEnemy(EnemyFactory::createEnemy(e, 0));
                     }
                 }
-
-                //load enemy
-                //manager.enemyManager.setEnemyFactor(game_saving);
-
-                int towerCount = game_saving.getTowerPos().size();
-                vector<int> type = game_saving.getTowerType();
-                vector<cpoint> towerPos = game_saving.getTowerPos();
-                
-                for (int i = 0; i < towerCount; i++) {
-                    manager.towerManager.addTower(TowerFactory::createTower(type[i], towerPos[i]));
+                vector<shared_ptr<EnemyBase>> listEnemy(enemyCount);
+                for (int i = 0; i < enemyCount; i++) {
+                    listEnemy[i] = EnemyFactory::createEnemy(towerType[i], 0);
                 }
+                for (int i = 0; i < enemyCount; i++) {
+                    listEnemy[i]->setCurrentPosition(enemyPos[i]);
+                    listEnemy[i]->setIndex(enemyIndex[i]);
+                    listEnemy[i]->setHealth(enemyHealth[i]);
+                    listEnemy[i]->setPath(enemyPathNumber[i]);
+                }
+                manager.enemyManager.setLoadEnemy(listEnemy);
+
+                for (int i = 0; i < towerCount; i++) {
+                    manager.towerManager.addTower(TowerFactory::createTower(towerType[i], towerPos[i]));
+                }
+                vector<shared_ptr<TowerBase>> listTower(towerCount);
+                for (int i = 0; i < towerCount; i++) {
+                    listTower[i] = TowerFactory::createTower(towerType[i], towerPos[i]);
+                }
+                for (int i = 0; i < towerCount; i++) {
+                    listTower[i]->setCurrentPosition(towerPos[i]);
+                }
+                manager.towerManager.setLoadTower(listTower);
             }
         }
         // ------ RENDER -----
