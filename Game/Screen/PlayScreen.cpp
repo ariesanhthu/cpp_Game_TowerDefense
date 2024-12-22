@@ -29,6 +29,8 @@ namespace towerdefense
 
         mapSetup = { 3,5,4,1 };
 
+        loadstatus = _loadstatus;
+
 
         GamePlaySetup();
     }

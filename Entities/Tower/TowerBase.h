@@ -56,6 +56,9 @@ public:
 	void render(HDC hdc) {
 		Graphic::DrawBitmap(image, { currentPosition.getX(), currentPosition.getY() }, hdc);
 	}
+
+
+	
 };
 
 

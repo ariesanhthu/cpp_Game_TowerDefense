@@ -83,3 +83,5 @@ void TowerBase::shoot(shared_ptr<EnemyBase> target) {
 	bullet.get()->setTarget(target);
 	bullet.get()->setVisible(true);
 }
+
+

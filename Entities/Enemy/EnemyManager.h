@@ -32,7 +32,7 @@ public:
 
     void setUserHP(int HP);
 
-    void setEnemyFactor(SaveGame s);
+    void setLoadEnemy(std::vector<shared_ptr<EnemyBase>>);
 
     std::vector<shared_ptr<EnemyBase>> getAllEnemy() const;
 
