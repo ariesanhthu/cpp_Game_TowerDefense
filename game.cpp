@@ -231,34 +231,47 @@ namespace towerdefense
     // Tách phần load screen
     //==========================================================
     void Game::loadInitialScreen(int x) {
+        try {
+            std::shared_ptr<Screen> screen = nullptr;
 
-        if (x == 0) {
-            try {
-                screenManager->changeScreen(make_shared<MainScreen>());
+            if (x == 0) {
+                screen = std::make_shared<MainScreen>();
             }
-            catch (const std::exception& e) {
-                std::cerr << "Exception: " << e.what() << std::endl;
+            else if (x >= 1 && x <= 4) {
+                switch (x) {
+                case 1: screen = std::make_shared<PlayScreen1>(); break;
+                case 2: screen = std::make_shared<PlayScreen2>(); break;
+                case 3: screen = std::make_shared<PlayScreen3>(); break;
+                case 4: screen = std::make_shared<PlayScreen4>(); break;
+                }
+            }
+            else if (x >= 5 && x <= 8) {
+                // Load game screens with setLoadStatus(true)
+                std::shared_ptr<MapScreen> gameScreen = nullptr;
+                switch (x) {
+                case 5: gameScreen = std::make_shared<PlayScreen1>(); break;
+                case 6: gameScreen = std::make_shared<PlayScreen2>(); break;
+                case 7: gameScreen = std::make_shared<PlayScreen3>(); break;
+                case 8: gameScreen = std::make_shared<PlayScreen4>(); break;
+                }
+                if (gameScreen) {
+                    gameScreen->setLoadStatus(true);
+                    screen = gameScreen;
+                }
+            }
+            else {
+                OutputDebugStringA("Invalid screen index.\n");
+                return;
+            }
+
+            if (screen) {
+                screenManager->changeScreen(screen);
+                screenManager->loadContent(windowWidth, windowHeight);
             }
         }
-
-        else if (x == 1) {
-            screenManager->changeScreen(make_shared<PlayScreen1>());
+        catch (const std::exception& e) {
+            std::cerr << "Exception: " << e.what() << std::endl;
         }
-        else if (x == 2) {
-
-            screenManager->changeScreen(make_shared<PlayScreen2>());
-
-        }
-        else if (x == 3) {
-            screenManager->changeScreen(make_shared<PlayScreen3>());
-        }
-        else if (x == 4) {
-            screenManager->changeScreen(make_shared<PlayScreen4>());
-        }
-        else {
-            OutputDebugStringA("Invalid screen index.\n");
-            return;  // Exit early for invalid `x`
-        }
-        screenManager->loadContent(windowWidth, windowHeight);
     }
+
 }

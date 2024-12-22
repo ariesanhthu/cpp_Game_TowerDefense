@@ -103,3 +103,18 @@ void EnemyManager::setUserHP(int x) {
 std::vector<shared_ptr<EnemyBase>>& EnemyManager::getEnemy() {
     return enemies_;
 }
+
+void EnemyManager::setEnemyFactor(SaveGame s) {
+    vector<int> health = s.getEnemyHealth();
+    vector<int> index = s.getEnemyIndex();
+    vector<int> pathNumber = s.getEnemyPathNumber();
+    vector<int> type = s.getEnemyType();
+    vector<cpoint> pos = s.getEnemyPos();
+    for (int i = 0; i < enemies_.size(); i++) {
+        enemies_[i]->setIndex(index[i]);
+        enemies_[i]->setType(type[i]);
+        enemies_[i]->setPath(pathNumber[i]);
+        enemies_[i]->setCurrentPosition(pos[i]);
+        enemies_[i]->setHealth(health[i]);
+    }
+}

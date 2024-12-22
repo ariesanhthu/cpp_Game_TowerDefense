@@ -56,9 +56,7 @@ namespace towerdefense
         ~PlayScreen4();
 
         void loadSpecificContent(int width, int height) override;
-        int getCurrentMap() override {
-            return 4;
-        }
+        int getCurrentMap() override;
     };
 }
 

@@ -65,3 +65,4 @@ int GamePlayManage::getGameStatus() {
 int GamePlayManage::getPoint() {
 	return point;
 }
+

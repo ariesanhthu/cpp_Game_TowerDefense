@@ -6,6 +6,7 @@
 #include "EnemyBase.h"
 #include "chrono"
 #include <random>
+#include "User/SaveGame.h"
 
 class EnemyManager
 {
@@ -30,6 +31,8 @@ public:
     int getUserHP();
 
     void setUserHP(int HP);
+
+    void setEnemyFactor(SaveGame s);
 
     std::vector<shared_ptr<EnemyBase>> getAllEnemy() const;
 

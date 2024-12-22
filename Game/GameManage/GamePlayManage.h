@@ -59,6 +59,8 @@ public:
 	int getGameCode();
 	int getGameStatus();
 	int getPoint();
+
+	
 };
 
 

@@ -42,16 +42,28 @@ namespace towerdefense
 
         _VolumeButton = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 5, VolumeButtonPos);
 
-        for (int i = 0; i < listGame.size(); i++) {
+        for (int i = 0; i < _FourContinueItem.size(); i++) {
            
-            wstring name = Utils::stringToWstring(listGame[i].getUserName());
-            wstring point = Utils::stringToWstring(std::to_string(listGame[i].getPoint()));
-            wstring level = Utils::stringToWstring(std::to_string(listGame[i].getMapCode()));
+            wstring name = Utils::stringToWstring(LoadList[i].getUserName());
+            wstring point = Utils::stringToWstring(std::to_string(LoadList[i].getPoint()));
+            wstring level = Utils::stringToWstring(std::to_string(LoadList[i].getMapCode()));
 
-            POINT pos = FirstContinueItem; 
-            pos.y += i * 80;
+            /*std::wstring allias = L"Assets/map_resize/map" + to_wstring(i) + L"_scaleDown.bmp";
+            const wchar_t* mapLink = Utils::wstringToWchar_t(allias);*/
 
-            _ListContinueItem[i] = std::make_shared<ContinueElement>(name, point, level, pos, customfont, RGB(255, 255, 255), L"Assets/button/input.bmp", 5);
+            _FourContinueItem[i] = std::make_shared<ContinueElement>(name, point, level, optionPositionsEnd[i], customfont, RGB(255, 255, 255), maplink[LoadList[i].getMapCode()], 3);
+        }
+
+        for (int i = 0; i < _FourLeaderBoardItem.size(); i++) {
+
+            wstring name = Utils::stringToWstring(LeaderboardList[i].getUserName());
+            wstring point = Utils::stringToWstring(std::to_string(LeaderboardList[i].getPoint()));
+            wstring level = Utils::stringToWstring(std::to_string(LeaderboardList[i].getMapCode()));
+
+            /*std::wstring allias = L"Assets/map_resize/map" + to_wstring(i) + L"_scaleDown.bmp";
+            const wchar_t* mapLink = Utils::wstringToWchar_t(allias);*/
+
+            _FourLeaderBoardItem[i] = std::make_shared<ContinueElement>(name, point, level, optionPositionsEnd[i], customfont, RGB(255, 255, 255), maplink[LeaderboardList[i].getMapCode()], 3);
         }
     }
 
@@ -59,6 +71,7 @@ namespace towerdefense
     MainScreen::~MainScreen() {
         // Giải phóng tài nguyên
         DeleteObject(customfont);
+        _FourContinueItem.clear();
 
         OutputDebugStringA("~MainScreen\n");
     }
@@ -96,8 +109,16 @@ namespace towerdefense
 
 
         listGame = supSaveGame->readfile();
-        _ListContinueItem.resize(listGame.size());
+        LoadList = supSaveGame->loadFourLastestMapGame();
 
+        //OutputDebugStringA((to_string(LoadList.size()) + "load list size\n").c_str());
+
+        LeaderboardList = supSaveGame->loadFourLastestMapGame();
+
+        //OutputDebugStringA((to_string(LoadList.size()) + "leaderboard size\n").c_str());
+
+        _FourContinueItem.resize(LoadList.size());
+        _FourLeaderBoardItem.resize(LeaderboardList.size());
     }
 
     void MainScreen::handleInput(HWND hwnd) {
@@ -190,12 +211,10 @@ namespace towerdefense
         }
         else if (menu == 2) {
             
-            for (int i = 0; i < listGame.size(); i++) {
-
-                if (_ListContinueItem[i]->isClicked(cursorPos)) {
-                    PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, listGame[i].getMapCode(), 0);
+            for (int i = 0; i < LoadList.size(); i++) {
+                if (_FourContinueItem[i]->isClicked(cursorPos)) {
+                    PostMessage(hwnd, WM_CUSTOM_LOAD_SCREEN, LoadList[i].getMapCode() + 4, 0);
                 }
-
             }
 
             // if click user 
@@ -316,13 +335,15 @@ namespace towerdefense
         else if (menu == 2) {
 
             // render user item
-            for (auto i : _ListContinueItem) {
+            for (auto i : _FourContinueItem) {
                 i->render(hdc);
-            }
+           }
 
         }
         else if (menu == 3) {
-
+            for (auto i : _FourLeaderBoardItem) {
+                i->render(hdc);
+            }
         }
         else if (menu == 4) {
 

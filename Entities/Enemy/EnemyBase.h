@@ -21,6 +21,8 @@ protected:
 	int index = 0;
 
 	bool onRoad = false;
+	
+	int type;
 
 public:
 	EnemyBase() = default;
@@ -49,8 +51,11 @@ public:
 	//getTexture();
 
 	int getPath();
-	int getIndex();
+	void setPath(int x);
 	bool isOnRoad();
+
+	void setType(const int x);
+	int getType();
 
 
 	//get private attribute

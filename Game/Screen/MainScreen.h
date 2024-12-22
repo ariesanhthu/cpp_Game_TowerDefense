@@ -57,10 +57,15 @@ namespace towerdefense
         
         std::shared_ptr<Button> _VolumeButton;
 
-        std::vector<shared_ptr<ContinueElement>> _ListContinueItem;
+        //std::vector<shared_ptr<ContinueElement>> _ListContinueItem;
+        std::vector<std::shared_ptr<ContinueElement>> _FourContinueItem;
+        std::vector<std::shared_ptr<ContinueElement>> _FourLeaderBoardItem;
+
         
-        std::vector<SaveGame> listGame; 
         std::shared_ptr<SaveGameSupport> supSaveGame;
+        std::vector<SaveGame> listGame = {};
+        std::vector<SaveGame> LoadList = {};
+        std::vector<SaveGame> LeaderboardList = {};
 
         POINT firstplayerCoverPos = { 420, 200 };
         POINT titleContinuePos = { 390, 130 };
@@ -114,7 +119,13 @@ namespace towerdefense
         std::chrono::steady_clock::time_point lastKeyPressTime;
         const int debounceDelayMs = 300; // 200 ms debounce delay
 
-        
+        const wchar_t* maplink[5] = {
+            L"",
+            L"Assets/map_resize/map1_scaleDown.bmp",
+            L"Assets/map_resize/map2_scaleDown.bmp",
+            L"Assets/map_resize/map3_scaleDown.bmp",
+            L"Assets/map_resize/map4_scaleDown.bmp",
+        };
 
     public:
         MainScreen();

@@ -13,6 +13,7 @@ public:
 
 	static std::string wstringToString(std::wstring wstr);
 	static std::wstring stringToWstring(std::string str);
+	static const wchar_t* wstringToWchar_t(std::wstring wstr);
 	static char* stringToChar(std::string str);
 
 	static void createFile(std::string path);
