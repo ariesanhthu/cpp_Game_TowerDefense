@@ -37,7 +37,7 @@ namespace towerdefense
         GameState statePlayingGame = PAUSE;
         int countHeart = 0;
 
-        bool loadstatus = true;
+        bool loadstatus = false;
 
         // buton play or pause 
         POINT posbuttonplay = { 580, 570 };
@@ -101,7 +101,20 @@ namespace towerdefense
         std::shared_ptr<TowerBase> renderTowerType3;
 
     public:
-        MapScreen() { 
+        MapScreen() {
+            manager.destroy();
+            manager.setupTower();
+
+            pickedTowerType1 = TowerFactory::createTower(0, { Turretinit1.x, Turretinit1.y, 0 });
+            renderTowerType1 = TowerFactory::createTower(0, { Turretinit1.x, Turretinit1.y, 0 });
+            pickedTowerType2 = TowerFactory::createTower(1, { Turretinit2.x, Turretinit2.y, 0 });
+            renderTowerType2 = TowerFactory::createTower(1, { Turretinit2.x, Turretinit2.y, 0 });
+            pickedTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
+            renderTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
+
+            loadstatus = false;
+        }
+        MapScreen(bool _loadstatus) { 
             manager.destroy(); 
             manager.setupTower();
 
@@ -111,8 +124,11 @@ namespace towerdefense
             renderTowerType2 = TowerFactory::createTower(1, { Turretinit2.x, Turretinit2.y, 0 });
             pickedTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
             renderTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
+
+            loadstatus = _loadstatus;
         };
         virtual ~MapScreen() {
+
         }
 
         /* --------------------------------------------------
