@@ -10,8 +10,6 @@ namespace towerdefense
     class Screen {
     public:
 
-        
-
         //virtual ~Screen() { }
         //Screen() {}
 

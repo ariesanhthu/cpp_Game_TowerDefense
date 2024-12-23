@@ -26,8 +26,10 @@ protected:
 
 	shared_ptr<BulletBase> bullet;
 
+	int type;
+
 public:
-	TowerBase() = default;
+	TowerBase();
 	TowerBase(const TowerBase& other);
 	TowerBase(TowerModel* nModel, cpoint pos);
 	
@@ -48,9 +50,15 @@ public:
 	//virtual BulletBase shoot(shared_ptr<EnemyBase> target);
 	virtual void shoot(shared_ptr<EnemyBase> target);
 
+	int getType();
+	void setType(const int x);
+
 	void render(HDC hdc) {
 		Graphic::DrawBitmap(image, { currentPosition.getX(), currentPosition.getY() }, hdc);
 	}
+
+
+	
 };
 
 

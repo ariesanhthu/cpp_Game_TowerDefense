@@ -1,5 +1,9 @@
 #include "TowerBase.h"
 
+TowerBase::TowerBase() {
+	bullet = BulletFactory::createBullet(0, NULL, cpoint(0, 0, 0));
+	lastShoot = std::chrono::system_clock::now();
+}
 TowerBase::TowerBase(const TowerBase& other){
 	bullet = BulletFactory::createBullet(0, NULL, cpoint(0, 0, 0));
 	model = other.model;
@@ -40,6 +44,13 @@ shared_ptr<BulletBase> TowerBase::getBullet() {
 	return bullet;
 }
 
+void TowerBase::setType(const int x) {
+	type = x;
+}
+int TowerBase::getType() {
+	return type;
+}
+
 bool TowerBase::canShoot() {
 	TIME_POINT now = chrono::system_clock::now();
 	if (MILI_SEC(1000 / model->getRate()) < MILI_SEC_CAST(now - lastShoot)) {
@@ -56,6 +67,7 @@ bool TowerBase::canShoot(shared_ptr<EnemyBase> target) {
 	if (target->isOnRoad() && dis <= range) {
 		return true;
 	}
+
 	return false;
 }
 
@@ -72,3 +84,5 @@ void TowerBase::shoot(shared_ptr<EnemyBase> target) {
 	bullet.get()->setTarget(target);
 	bullet.get()->setVisible(true);
 }
+
+

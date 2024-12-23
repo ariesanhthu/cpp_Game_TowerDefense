@@ -18,6 +18,10 @@ char* Utils::stringToChar(std::string str) {
 	return cstr;
 }
 
+const wchar_t* Utils::wstringToWchar_t(std::wstring wstr) {
+	return wstr.c_str();
+}
+
 void Utils::createFile(std::string path) {
 	std::ofstream file(path);
 	file.close();

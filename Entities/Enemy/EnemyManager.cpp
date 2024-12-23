@@ -103,3 +103,69 @@ void EnemyManager::setUserHP(int x) {
 std::vector<shared_ptr<EnemyBase>>& EnemyManager::getEnemy() {
     return enemies_;
 }
+
+void EnemyManager::setLoadEnemy(std::vector<shared_ptr<EnemyBase>> enemylist) {
+    /*for (int i = 0; i < enemies_.size(); i++) {
+        enemies_[i]->setCurrentPosition(enemylist[i]->getCurrentPosition());
+        enemies_[i]->setHealth(enemylist[i]->getHealth());
+        enemies_[i]->setIndex(enemylist[i]->getIndex());
+    }*/
+
+    for (auto i : enemylist) {
+        addEnemy(i);
+    }
+}
+
+// Getter and Setter for nOfPhase
+int EnemyManager::getNOfPhase() {
+    return nOfPhase;
+}
+
+void EnemyManager::setNOfPhase(int value) {
+    nOfPhase = value;
+}
+
+// Getter and Setter for nOfEnemyEachPhase
+std::vector<int> EnemyManager::getNOfEnemyEachPhase() {
+    return nOfEnemyEachPhase;
+}
+
+void EnemyManager::setNOfEnemyEachPhase(std::vector<int> value) {
+    nOfEnemyEachPhase = value;
+}
+
+// Getter and Setter for phase
+int EnemyManager::getPhase() {
+    return phase;
+}
+
+void EnemyManager::setPhase(int value) {
+    phase = value;
+}
+
+// Getter and Setter for remainEnemy
+int EnemyManager::getRemainEnemy() {
+    return remainEnemy;
+}
+
+void EnemyManager::setRemainEnemy(int value) {
+    remainEnemy = value;
+}
+
+// Getter and Setter for nOfEnemy
+int EnemyManager::getNOfEnemy() {
+    return nOfEnemy;
+}
+
+void EnemyManager::setNOfEnemy(int value) {
+    nOfEnemy = value;
+}
+
+// Getter and Setter for spawnedEnemy
+int EnemyManager::getSpawnedEnemy() {
+    return spawnedEnemy;
+}
+
+void EnemyManager::setSpawnedEnemy(int value) {
+    spawnedEnemy = value;
+}

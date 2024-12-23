@@ -17,8 +17,7 @@ public:
 	std::vector<shared_ptr<TowerBase>> getAllTower() const;
 	std::vector<shared_ptr<BulletBase>> getAllBullet() const;
 
-    //setter for setup
-    void setNumberOfTower(int n);
+    void setLoadTower(std::vector<shared_ptr<TowerBase>>);
 
 private:
     std::vector<shared_ptr<TowerBase>> towers_;

@@ -56,6 +56,9 @@ void EnemyBase::setHealth(int hp) {
 int EnemyBase::getPath() {
 	return this->path;
 }
+void EnemyBase::setPath(int x) {
+	path = x;
+}
 
 // get model attribute
 int EnemyBase::getSpeed() {
@@ -71,6 +74,14 @@ void EnemyBase::setIndex(int x) {
 }
 //getTexture();
 
+void EnemyBase::setType(const int x) {
+	type = x;
+}
+
+int EnemyBase::getType() {
+	return type;
+}
+
 //get private attribute
 cpoint EnemyBase::getCurrentPosition() {
 	return currentPosition;
@@ -82,6 +93,8 @@ int EnemyBase::getHealth() {
 bool EnemyBase::isOnRoad() {
 	return onRoad;
 }
+
+
 
 
 // file

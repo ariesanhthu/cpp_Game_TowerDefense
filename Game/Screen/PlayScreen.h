@@ -18,7 +18,7 @@ namespace towerdefense
 {
     class PlayScreen1 : public MapScreen {
     public:
-        PlayScreen1();
+        PlayScreen1(bool _loadstatus);
         ~PlayScreen1();
 
         int getCurrentMap() override;
@@ -27,7 +27,7 @@ namespace towerdefense
     // -------------------------------------------------------------------------
     class PlayScreen2 : public MapScreen {
     public:
-        PlayScreen2();
+        PlayScreen2(bool _loadstatus);
         ~PlayScreen2();
 
         int getCurrentMap() override;
@@ -43,7 +43,7 @@ namespace towerdefense
     // -------------------------------------------------------------------------
     class PlayScreen3 : public MapScreen {
     public:
-        PlayScreen3();
+        PlayScreen3(bool _loadstatus);
         ~PlayScreen3();
 
         int getCurrentMap() override;
@@ -52,13 +52,11 @@ namespace towerdefense
     // -------------------------------------------------------------------------
     class PlayScreen4 : public MapScreen {
     public:
-        PlayScreen4();
+        PlayScreen4(bool _loadstatus);
         ~PlayScreen4();
 
         void loadSpecificContent(int width, int height) override;
-        int getCurrentMap() override {
-            return 4;
-        }
+        int getCurrentMap() override;
     };
 }
 

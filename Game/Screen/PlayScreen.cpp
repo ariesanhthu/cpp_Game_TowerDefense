@@ -15,7 +15,7 @@ namespace towerdefense
 		return 1;
     }
     
-    PlayScreen1::PlayScreen1()
+    PlayScreen1::PlayScreen1(bool _loadstatus)
     {
         path =
         {
@@ -28,7 +28,9 @@ namespace towerdefense
         };
 
         mapSetup = { 3,5,4,1 };
-        nOfTower = 5; // setup number of tower can place
+
+        loadstatus = _loadstatus;
+
 
         GamePlaySetup();
     }
@@ -52,7 +54,7 @@ namespace towerdefense
     int PlayScreen2::getCurrentMap() {
         return 2;
     }
-    PlayScreen2::PlayScreen2() 
+    PlayScreen2::PlayScreen2(bool _loadstatus) 
     {
         path =
         {
@@ -68,10 +70,10 @@ namespace towerdefense
 
         mapSetup = { 3,5,4,1 };
         
+        loadstatus = _loadstatus;
 
         GamePlaySetup();
     }
-
     PlayScreen2::~PlayScreen2() {
 
         path.clear();
@@ -94,7 +96,7 @@ namespace towerdefense
         return 3;
     }
 
-    PlayScreen3::PlayScreen3() {
+    PlayScreen3::PlayScreen3(bool _loadstatus) {
         path =
         {
             {
@@ -110,6 +112,8 @@ namespace towerdefense
             }
         };
         mapSetup = { 3,5,4,1 };
+
+        loadstatus = _loadstatus;
 
         GamePlaySetup();
     }
@@ -132,8 +136,11 @@ namespace towerdefense
         _background = std::make_shared<Item>(L"Assets/background/map4.bmp", scale, 0, 0);
         _instructionboard = std::make_shared<Item>(L"Assets/game/info/board4.png", 1.0f, instructionPos);
     }
+    int PlayScreen4::getCurrentMap() {
+        return 4;
+    }
 
-    PlayScreen4::PlayScreen4() {
+    PlayScreen4::PlayScreen4(bool _loadstatus) {
         path =
         {
             {
@@ -148,7 +155,9 @@ namespace towerdefense
 	        }
         };
 
-        mapSetup = {3, 100, 100, 100 };
+        mapSetup = {3, 10, 10, 10};
+
+        loadstatus = _loadstatus;
 
         GamePlaySetup();
     }
@@ -158,7 +167,7 @@ namespace towerdefense
         path.clear();
         mapSetup.clear();
 
-        OutputDebugStringA("~PlayScreen3\n");
+        OutputDebugStringA("~PlayScreen4\n");
     }
 }
 

@@ -61,7 +61,9 @@ std::vector<std::shared_ptr<BulletBase>> TowerManager::getAllBullet() const {
 	return bullets;
 }
 
-void TowerManager::setNumberOfTower(int n) {
-	if (n > 0)
-		nOfTower = n;
+void TowerManager::setLoadTower(std::vector<shared_ptr<TowerBase>> listtower) {
+	for (int i = 0; i < towers_.size(); i++) {
+		towers_[i]->setCurrentPosition(listtower[i]->getCurrentPosition());
+	}
 }
+

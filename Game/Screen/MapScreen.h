@@ -38,6 +38,8 @@ namespace towerdefense
         GameState statePlayingGame = PAUSE;
         int countHeart = 0;
 
+        bool loadstatus = false;
+
         // buton play or pause 
         POINT posbuttonplay = { 580, 570 };
 
@@ -92,8 +94,6 @@ namespace towerdefense
 
         GamePlayManage manager;
 
-        //std::shared_ptr<TowerBase> pickedTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
-        //std::shared_ptr<TowerBase> renderTowerType1 = TowerFactory::createTower(0, { Turretinit.x, Turretinit.y, 0 });
         std::shared_ptr<TowerBase> pickedTowerType1;
         std::shared_ptr<TowerBase> renderTowerType1;
         std::shared_ptr<TowerBase> pickedTowerType2;
@@ -102,7 +102,20 @@ namespace towerdefense
         std::shared_ptr<TowerBase> renderTowerType3;
 
     public:
-        MapScreen() { 
+        MapScreen() {
+            manager.destroy();
+            manager.setupTower();
+
+            pickedTowerType1 = TowerFactory::createTower(0, { Turretinit1.x, Turretinit1.y, 0 });
+            renderTowerType1 = TowerFactory::createTower(0, { Turretinit1.x, Turretinit1.y, 0 });
+            pickedTowerType2 = TowerFactory::createTower(1, { Turretinit2.x, Turretinit2.y, 0 });
+            renderTowerType2 = TowerFactory::createTower(1, { Turretinit2.x, Turretinit2.y, 0 });
+            pickedTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
+            renderTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
+
+            loadstatus = false;
+        }
+        MapScreen(bool _loadstatus) { 
             manager.destroy(); 
             manager.setupTower();
 
@@ -112,8 +125,11 @@ namespace towerdefense
             renderTowerType2 = TowerFactory::createTower(1, { Turretinit2.x, Turretinit2.y, 0 });
             pickedTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
             renderTowerType3 = TowerFactory::createTower(2, { Turretinit3.x, Turretinit3.y, 0 });
+
+            loadstatus = _loadstatus;   
         };
         virtual ~MapScreen() {
+
         }
 
         /* --------------------------------------------------
@@ -261,10 +277,15 @@ namespace towerdefense
                     if(nextMap > 4)
 						nextMap = 0;
 
+                    saveToLoadGame();
+
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, nextMap, 0);
                 }
                 if (_noBtn->isClicked(cursorPos)) {
                     // save game 
+
+                    saveToLoadGame();
+
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                 }
             }
@@ -281,8 +302,10 @@ namespace towerdefense
                 if (_noBtn->isClicked(cursorPos)) {
 
                     // save game
+
+                    int mapCode = getCurrentMap();
+
                     saveToLoadGame();
-                    
                     
                     // trở về home
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
@@ -342,26 +365,145 @@ namespace towerdefense
         // ------ SETUPGAME -----
         void GamePlaySetup()
         {
-            manager.setupEnemy(path);
+            // nếu là game mới 
+            if (loadstatus == false) {
 
-            //----------------
-            int nofpath = path.size();
+                OutputDebugStringA(
+                    (
+                        "NEW GAMEEE........................ " + std::to_string(getCurrentMap()) + " " + std::to_string(loadstatus) + "\n"
+                        ).c_str()
+                );
 
-            manager.enemyManager.setup(mapSetup);
-            manager.towerManager.setNumberOfTower(nOfTower); // default is 5
+                manager.setupEnemy(path);
 
-            //setup enemy for each phase
-            for (size_t e = 1; e <= 3; e++)
-            {
-                int typeEnemy = e;
+                //----------------
+                int nofpath = path.size();
 
-                // Đổi style enemy Goblin đi bộ thành Goblin bơi
-                if(e == 1 && getCurrentMap() == 4) 
-					typeEnemy = 4;
+                manager.enemyManager.setup(mapSetup);
 
-                for (int i = 0; i < mapSetup[e]; i++)
-                    manager.enemyManager.addEnemy(EnemyFactory::createEnemy(typeEnemy, rand() % nofpath));
+                //setup enemy for each phase
+                for (size_t e = 1; e <= 3; e++)
+                {
+                    int typeEnemy = e;
+
+                    // Đổi style enemy Goblin đi bộ thành Goblin bơi
+                    if(e == 1 && getCurrentMap() == 4) 
+					    typeEnemy = 4;
+
+                    for (int i = 0; i < mapSetup[e]; i++) {                    
+                        manager.enemyManager.addEnemy(EnemyFactory::createEnemy(typeEnemy, rand() % nofpath));
+                    }
+                }
             }
+            // nếu là load game
+            else {
+                OutputDebugStringA(
+                    (
+                        "LOADDINGGGGGGGG........................ " + std::to_string(getCurrentMap()) + " " + std::to_string(loadstatus) + "\n"
+                     ).c_str()
+                );
+
+                manager.setupEnemy(path);
+                manager.enemyManager.setup(mapSetup);
+
+                std::shared_ptr<SaveGameSupport> supsave;
+                SaveGame game_saving = supsave->readMapInfo(getCurrentMap());
+                
+                // get all enemy element 
+                vector<cpoint> enemyPos = game_saving.getEnemyPos();
+                vector<int> enemyHealth = game_saving.getEnemyHealth();
+                vector<int> enemyPathNumber = game_saving.getEnemyPathNumber();
+                vector<int> enemyType = game_saving.getEnemyType();
+                vector<int> enemyIndex = game_saving.getEnemyIndex();
+                int enemyCount = enemyPos.size();
+
+                // get enemy element
+                int nOfPhase = game_saving.getNOfPhase();
+                vector<int> nOfEnemyEachPhase = game_saving.getNOfEnemyEachPhase();
+                int remainEnemy = game_saving.getRemainEnemy();
+                int nOfEnemy = game_saving.getNOfEnemy();
+                int phase = game_saving.getPhase();
+                int spawnedEnemy = game_saving.getSpawnedEnemy();
+                
+                // get all tower element 
+                vector<cpoint> towerPos = game_saving.getTowerPos();
+                vector<int> towerType = game_saving.getTowerType();
+                int towerCount = towerPos.size();
+              
+                // set all manager element 
+                manager.enemyManager.setNOfPhase(nOfPhase);
+                manager.enemyManager.setNOfEnemyEachPhase(nOfEnemyEachPhase);
+                manager.enemyManager.setRemainEnemy(remainEnemy);
+                manager.enemyManager.setNOfEnemy(nOfEnemy);
+                manager.enemyManager.setPhase(phase); 
+                manager.enemyManager.setSpawnedEnemy(spawnedEnemy);
+
+                // update enemy state
+                vector<shared_ptr<EnemyBase>> listEnemy(enemyCount);
+                for (int i = 0; i < enemyCount; i++) {
+                    listEnemy[i] = EnemyFactory::createEnemy(enemyType[i], enemyPathNumber[i]);
+                }
+                for (int i = 0; i < enemyCount; i++) {
+                    listEnemy[i]->setCurrentPosition(enemyPos[i]);
+                    listEnemy[i]->setIndex(enemyIndex[i]);
+                    listEnemy[i]->setHealth(enemyHealth[i]);
+                }
+                manager.enemyManager.setLoadEnemy(listEnemy);
+
+
+                // update tower state
+                for (int i = 0; i < towerCount; i++) {
+                    manager.towerManager.addTower(TowerFactory::createTower(towerType[i], towerPos[i]));
+                }
+                vector<shared_ptr<TowerBase>> listTower(towerCount);
+                for (int i = 0; i < towerCount; i++) {
+                    listTower[i] = TowerFactory::createTower(towerType[i], towerPos[i]);
+                }
+                for (int i = 0; i < towerCount; i++) {
+                    listTower[i]->setCurrentPosition(towerPos[i]);
+                }
+                manager.towerManager.setLoadTower(listTower);
+
+                int point = game_saving.getPoint();
+                int health = game_saving.getUserHealth();
+
+                manager.setPoint(point);
+                manager.enemyManager.setUserHP(health); 
+
+                // Debug output
+                /*std::ostringstream debugMessage;
+                debugMessage << "File reddddddddddddddddđ: " << "filename" << "\n"
+                    << "2. Points: " << point << "\n"
+                    << "3. User Health: " << health << "\n"
+                    << "5. Enemy Count: " << enemyCount << "\n"
+                    << "6. Enemy Health: [ ";
+                for (const auto& health : enemyHealth) debugMessage << health << " ";
+                debugMessage << "]\n"
+                    << "7. Enemy Path: [ ";
+                for (const auto& path : enemyPathNumber) debugMessage << path << " ";
+                debugMessage << "]\n"
+                    << "8. Enemy Index: [ ";
+                for (const auto& index : enemyIndex) debugMessage << index << " ";
+                debugMessage << "]\n"
+                    << "9. Enemy Type: [ ";
+                for (const auto& type : enemyType) debugMessage << type << " ";
+                debugMessage << "]\n"
+                    << "10. Tower Count: " << towerCount << "\n"
+                    << "11. Tower Type: [ ";
+                for (const auto& type : towerType) debugMessage << type << " ";
+                debugMessage << "]\n"
+                    << "12. Number of Phases: " << nOfPhase << "\n"
+                    << "13. Enemies Each Phase: [ ";
+                for (const auto& count : nOfEnemyEachPhase) debugMessage << count << " ";
+                debugMessage << "]\n"
+                    << "14. Current Phase: " << phase << "\n"
+                    << "15. Remaining Enemies: " << remainEnemy << "\n"
+                    << "16. Total Enemies: " << nOfEnemy << "\n"
+                    << "17. Spawned Enemies: " << spawnedEnemy << "\n";
+
+                OutputDebugStringA(debugMessage.str().c_str());*/
+            }
+            
         }
         // ------ RENDER -----
         void renderCommonElements(HDC hdc) {
@@ -409,37 +551,92 @@ namespace towerdefense
             if (_towerInitPlace->isHovered(cursurPos)) {
                 return false;
             }
+            if (_playOrPause->isHovered(cursurPos)) {
+                return false;
+            }
+            if (_hamburger->isHovered(cursurPos)) {
+                return false;
+            }
+            if (_instructionboard->getTriger()) {
+                if (_instructionboard->isHovered(cursurPos)) {
+                    return false;
+                }
+            }
+
+
             return true;
         }
 		// ------ save game ----- 
         void saveToLoadGame() {
+
             std::string name = "guess";
 
             int point = manager.getPoint();
             int health = manager.enemyManager.getUserHP();
             int mapCode = getCurrentMap();
-
-            OutputDebugStringA((std::to_string(mapCode) + "hahaha\n").c_str());
-            OutputDebugStringA((std::to_string(health) + "kakaka\n").c_str());
-
+            
+            int nOfPhase = manager.enemyManager.getNOfPhase();
+            vector<int> nOfEnemyEachPhase = manager.enemyManager.getNOfEnemyEachPhase();
+            int remainEnemy = manager.enemyManager.getRemainEnemy();
+            int nOfEnemy = manager.enemyManager.getNOfEnemy();
+            int phase = manager.enemyManager.getPhase();
+            int spawnedEnemy = manager.enemyManager.getSpawnedEnemy();
 
             std::vector<cpoint> enemyPos;
             std::vector<int> enemyHealth;
             std::vector<int> enemyPathNumber;
-            std::vector<cpoint> towerPos;
+            std::vector<int> enemyIndex;
+            std::vector<int> enemyType;
 
-            for (auto& tower : manager.towerManager.getAllTower()) {
-                towerPos.push_back({ tower->getCurrentPosition().getX(), tower->getCurrentPosition().getY(), 0 });
-            }
+            std::vector<cpoint> towerPos;
+            std::vector<int> towerType;
 
             for (auto& enemy : manager.enemyManager.getAllEnemy()) {
-                enemyPos.push_back({ enemy->getCurrentPosition().getX(), enemy->getCurrentPosition().getY(), 0 });
+                enemyPos.push_back(enemy->getCurrentPosition());
                 enemyHealth.push_back(enemy->getHealth());
                 enemyPathNumber.push_back(enemy->getPath());
+                enemyIndex.push_back(enemy->getIndex());
+                enemyType.push_back(enemy->getType());
             }
 
-            SaveGame game_to_save(name, enemyPos, enemyHealth, enemyPathNumber, towerPos, point, mapCode, health); 
-            game_to_save.writefile();   
+            for (auto& tower : manager.towerManager.getAllTower()) {
+                towerPos.push_back(tower->getCurrentPosition());
+                towerType.push_back(tower->getType());
+            }
+
+            SaveGame game_to_save
+            (
+                name,
+
+                enemyPos,
+                enemyHealth,
+                enemyPathNumber,
+                enemyIndex,
+                enemyType,
+
+                towerPos,
+                towerType,
+
+                nOfPhase,
+                nOfEnemyEachPhase,
+                phase,
+                remainEnemy,
+                nOfEnemy,
+                spawnedEnemy,
+
+                point,
+                mapCode,
+                health
+            ); 
+
+
+            game_to_save.writefile(mapCode);   
+        }
+        bool getLoadStatus() {
+            return loadstatus;
+        }
+        void setLoadStatus(bool t) {
+            loadstatus = t;
         }
 
     }; // END CLASS

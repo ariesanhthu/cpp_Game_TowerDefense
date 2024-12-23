@@ -19,8 +19,10 @@ protected:
 	cpoint currentPosition;
 	int health;
 	int index = 0;
+	int type;
 
 	bool onRoad = false;
+	
 
 public:
 	EnemyBase() = default;
@@ -30,8 +32,6 @@ public:
 
 	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath, int nHealth);
 	EnemyBase(const wchar_t* link, float factor, EnemyModel* nModel, int npath);
-
-	void setIndex(int x);
 
 	// CONSTRUCTOR WITH FRAME ANIMATION
 	EnemyBase(const std::vector<std::wstring>& imagePaths, float factor, EnemyModel* nModel, int npath);
@@ -48,9 +48,14 @@ public:
 	//getTexture();
 
 	int getPath();
-	int getIndex();
+	void setPath(int x);
 	bool isOnRoad();
 
+	void setType(const int x);
+	int getType();
+
+	int getIndex();
+	void setIndex(int x);
 
 	//get private attribute
 	cpoint getCurrentPosition();

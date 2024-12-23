@@ -42,6 +42,7 @@ namespace towerdefense
 
         void changeScreen(shared_ptr<Screen> newScreen) 
         {
+            currentScreen = nullptr;
             currentScreen = newScreen;
         }
 
