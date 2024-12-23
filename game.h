@@ -60,6 +60,9 @@ namespace towerdefense
 		int windowWidth, windowHeight;
 	
 	public:
+
+		bool firstStart = false;
+
 		Game();
 		Game(const Game&) = delete;
 		Game& operator= (const Game&) = delete;

@@ -21,6 +21,9 @@
 #include "FontManager.h"
 // --------------------------------------------------
 //#include "User/SaveGameManager.h"
+//#include "game.h"
+
+#include "GameManager.h"
 
 using namespace std;
 
@@ -33,6 +36,12 @@ namespace towerdefense
         HFONT customfont;
         HFONT Titlefont;
 
+        // --------------- HOW TO PLAY -------------------
+        //std::shared_ptr<Item> _boardHowToPlay;
+        std::shared_ptr<Popup> _boardHowToPlay;
+        POINT boardHowtoPlayPos = { 400, 100 };
+
+        // -----------------------------------------------
         std::shared_ptr<Item> _background;
         std::shared_ptr<Item> _catfam;
         std::shared_ptr<Button> _play;

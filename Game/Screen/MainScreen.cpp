@@ -12,6 +12,19 @@ namespace towerdefense
     MainScreen::MainScreen() {
         loadContent(1280, 720);
 
+        // ------------- HOW TO PLAY ---------------------- 
+        //_boardHowToPlay = std::make_shared<Item>(L"Assets/game/info/howtoplay.png", 2, boardHowtoPlayPos);
+        _boardHowToPlay = std::make_shared<Popup>(L"Assets/game/info/howtoplay.png", 1, initpoint, endpoint);
+        
+        auto& gameManager = GameManager::getInstance();
+
+        if (!gameManager.isFirstStartGame())
+        {
+            _boardHowToPlay->setTriger(true);
+            gameManager.setFirstStartGame(true);
+        }
+        // -----------------------------------------------
+
         customfont = FontManager::getInstance().getFont("normal");
         Titlefont = FontManager::getInstance().getFont("title");
 
@@ -147,7 +160,16 @@ namespace towerdefense
             auto now = std::chrono::steady_clock::now();
             if (std::chrono::duration_cast<std::chrono::milliseconds>(now - lastMouseClickTime).count() >= debounceDelayMs) {
                 lastMouseClickTime = now;
-
+                
+                // ----------------------------------------------------
+                if (_boardHowToPlay->getTriger()) {
+                    if (!_boardHowToPlay->isHoverInside(cursorPos)) {
+                        menu = 0;
+                        _boardHowToPlay->setTriger(false);
+                    }
+                }
+                // ----------------------------------------------------
+                
                 if (popup->getTriger()) {
                     if (!popup->isHoverInside(cursorPos)) {
                         menu = 0;
@@ -181,7 +203,7 @@ namespace towerdefense
                     }
                     else if (_about && _about->isHoverInside(cursorPos)) {
                         menu = 6;
-                        popup->setTriger(true);
+                        _boardHowToPlay->setTriger(true);
                     }
                     else if (_login && _login->isHoverInside(cursorPos)) {
                         menu = 101;
@@ -191,7 +213,13 @@ namespace towerdefense
             }
         }
 
+        // ===============================================================================
         // nếu bật cờ popup thì popup
+        
+        // ------------------------------------------------------------------------
+        if (_boardHowToPlay->getTriger() == true) _boardHowToPlay->startAnimation();
+        else _boardHowToPlay->setPosition(initpoint);
+        // ------------------------------------------------------------------------
         if (popup->getTriger() == true) popup->startAnimation();
         else popup->setPosition(initpoint);
 
@@ -207,6 +235,7 @@ namespace towerdefense
         if (_map4->getTriger() == true) _map4->startAnimation();
         else _map4->setPosition(optionPositionsStart[3]);
 
+        // ===============================================================================
 
         if (menu == 0) {
 
@@ -319,6 +348,14 @@ namespace towerdefense
 
     // Update logic (nếu có animation hoặc logic khác)
     void MainScreen::update(float delta) {
+
+        // ---------------------------------------------------------
+        if (_boardHowToPlay && !_boardHowToPlay->isFinished())
+        {
+            _boardHowToPlay->update(delta);
+        }
+        // ---------------------------------------------------------
+
         if (popup && !popup->isFinished()) {
             popup->update(delta);
         }
@@ -337,6 +374,8 @@ namespace towerdefense
     }
 
     void MainScreen::render(HDC hdc) {
+
+
         _background->render(hdc);
         _catfam->render(hdc);
 
@@ -443,5 +482,16 @@ namespace towerdefense
             _inputName->render(hdc);
             _inputPassword->render(hdc);
         }
-    }
-}
+
+        // HOW TO PLAY
+        auto& gameManager = GameManager::getInstance();
+        if (!gameManager.isFirstStartGame() || _boardHowToPlay->getTriger())
+        {
+
+            //gameManager.setFirstStartGame(true);
+            _boardHowToPlay->render(hdc);
+
+        }
+        // ---------------------------
+    }//
+}//
