@@ -13,30 +13,57 @@ class SaveGame {
 private:
 	string userName; // primary key
 
+	// enemy struct
 	vector<cpoint> enemyPos;
 	vector<int> enemyHealth;
 	vector<int> enemyPathNumber;
 	vector<int> enemyIndex;
 	vector<int> enemyType;
 
+	// manager
+	int nOfPhase;
+	vector<int> nOfEnemyEachPhase;
+	int phase;
+	int remainEnemy;
+	int nOfEnemy;
+	int spawnedEnemy;
+
+	// tower struct
 	vector<cpoint> towerPos;
 	vector<int> towerType;
+
+
+	// optional
 	//vector<cpoint> bulletPos;
 
+
+	// other
 	int userHealth;
 	int point;
 	int mapCode;
 
 public:
-	SaveGame(string userName,
+	SaveGame(
+		string userName,
+
 		vector<cpoint> enemyPos,
 		vector<int> enemyHealth,
 		vector<int> enemyPathNumber,
 		vector<int> enemyIndex,
 		vector<int> enemyType,
+
+
 		vector<cpoint> towerPos,
 		vector<int> towerType,
 		//vector<cpoint> bulletPos,
+
+		int nOfPhase,
+		vector<int> nOfEnemyEachPhase,
+		int phase,
+		int remainEnemy,
+		int nOfEnemy,
+		int spawnedEnemy,
+
 		int point,
 		int mapCode,
 		int userHealth
@@ -70,8 +97,24 @@ public:
 	void setEnemyType(vector<int> type);
 	vector<int> getEnemyType();
 
+
+	// manager
+	int getNOfPhase();
+	void setNOfPhase(int vae);
+	std::vector<int> getNOfEnemyEachPhase();
+	void setNOfEnemyEachPhase(std::vector<int> value);
+	int getPhase();
+	void setPhase(int value);
+	int getRemainEnemy();
+	void setRemainEnemy(int value);
+	int getNOfEnemy();
+	void setNOfEnemy(int value);
+	int getSpawnedEnemy();
+	void setSpawnedEnemy(int value);
+
 	void writefile(int mapCode);
 	void supportWriteFile(std::string filename);
+
 	void debugSaving();
 	SaveGame readfile();
 };

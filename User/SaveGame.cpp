@@ -72,7 +72,66 @@ void SaveGame::setEnemyType(vector<int> type) {
 vector<int> SaveGame::getEnemyType() {
     return this->enemyType;
 }
-SaveGame::SaveGame(string userName,
+
+// Getter and Setter for nOfPhase
+int SaveGame::getNOfPhase()  {
+    return nOfPhase;
+}
+
+void SaveGame::setNOfPhase(int value) {
+    nOfPhase = value;
+}
+
+// Getter and Setter for nOfEnemyEachPhase
+ std::vector<int> SaveGame::getNOfEnemyEachPhase()  {
+    return nOfEnemyEachPhase;
+}
+
+void SaveGame::setNOfEnemyEachPhase( std::vector<int> value) {
+    nOfEnemyEachPhase = value;
+}
+
+// Getter and Setter for phase
+int SaveGame::getPhase()  {
+    return phase;
+}
+
+void SaveGame::setPhase(int value) {
+    phase = value;
+}
+
+// Getter and Setter for remainEnemy
+int SaveGame::getRemainEnemy()  {
+    return remainEnemy;
+}
+
+void SaveGame::setRemainEnemy(int value) {
+    remainEnemy = value;
+}
+
+// Getter and Setter for nOfEnemy
+int SaveGame::getNOfEnemy()  {
+    return nOfEnemy;
+}
+
+void SaveGame::setNOfEnemy(int value) {
+    nOfEnemy = value;
+}
+
+// Getter and Setter for spawnedEnemy
+int SaveGame::getSpawnedEnemy()  {
+    return spawnedEnemy;
+}
+
+void SaveGame::setSpawnedEnemy(int value) {
+    spawnedEnemy = value;
+}
+
+
+
+SaveGame::SaveGame
+(
+    string userName,
     vector<cpoint> enemyPos,
     vector<int> enemyHealth,
     vector<int> enemyPathNumber,
@@ -81,18 +140,37 @@ SaveGame::SaveGame(string userName,
 	vector<cpoint> towerPos,
     vector<int> towerType,
 	//vector<cpoint> bulletPos,
+
+    int nOfPhase,
+    vector<int> nOfEnemyEachPhase,
+    int phase,
+    int remainEnemy,
+    int nOfEnemy,
+    int spawnedEnemy,
+
 	int point,
 	int mapCode,
-	int userHealth) {
+	int userHealth) 
+{
 	this->userName = userName;
+
 	this->enemyPos = enemyPos;
 	this->enemyHealth = enemyHealth;
 	this->enemyPathNumber = enemyPathNumber;
     this->enemyType = enemyType;
     this->enemyIndex = enemyIndex;
+
 	this->towerPos = towerPos;
     this->towerType = towerType;
 	//this->bulletPos = bulletPos;
+
+    this->nOfPhase = nOfPhase;
+    this->nOfEnemyEachPhase = nOfEnemyEachPhase;
+    this->phase = phase;
+    this->remainEnemy = remainEnemy;
+    this->nOfEnemy = nOfEnemy;
+    this->spawnedEnemy = spawnedEnemy;
+
 	this->point = point;
 	this->mapCode = mapCode;
 	this->userHealth = userHealth;
@@ -136,7 +214,8 @@ void SaveGame::supportWriteFile(std::string filename) {
 
     if (filename == "Storage/AllSaveGame.catfam") {
         outFile.open(filename.c_str(), std::ios::binary | std::ios::app);
-    } else {
+    }
+    else {
         outFile.open(filename.c_str(), std::ios::binary | std::ios::out);
     }
 
@@ -145,17 +224,37 @@ void SaveGame::supportWriteFile(std::string filename) {
         return;
     }
 
-    // Write name
+    /*thứ tự ghi
+    name 
+    point
+    user health 
+    map Code
+    
+    enemyPos
+    enemyHealth
+    enemyPath 
+    enemy index
+    enemy type
+    towerpos
+    towertype 
+
+    no of phase
+    nOfEnemyEachPhase
+    phase,
+    remainEnemy,
+    nOfEnemy, 
+    spawnedEnemy*/
+
+
+
+    // Ghi các trường đã có
     size_t nameLength = userName.size();
     outFile.write(reinterpret_cast<char*>(&nameLength), sizeof(nameLength));
     outFile.write(userName.c_str(), nameLength);
-
-    // Write point and user health and mapCode
     outFile.write(reinterpret_cast<char*>(&point), sizeof(point));
     outFile.write(reinterpret_cast<char*>(&userHealth), sizeof(userHealth));
     outFile.write(reinterpret_cast<char*>(&mapCode), sizeof(mapCode));
 
-    // Write enemy positions
     size_t enemyCount = enemyPos.size();
     outFile.write(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount));
     for (auto& pos : enemyPos) {
@@ -165,31 +264,26 @@ void SaveGame::supportWriteFile(std::string filename) {
         outFile.write(reinterpret_cast<char*>(&c), sizeof(c));
     }
 
-    // Write enemy health
     outFile.write(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount));
     for (auto& health : enemyHealth) {
         outFile.write(reinterpret_cast<char*>(&health), sizeof(health));
     }
 
-    // Write enemy path number
     outFile.write(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount));
-    for (auto& path : enemyIndex) {
+    for (auto& path : enemyPathNumber) {
         outFile.write(reinterpret_cast<char*>(&path), sizeof(path));
     }
 
-    // Write enemy index
     outFile.write(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount));
     for (auto& index : enemyIndex) {
         outFile.write(reinterpret_cast<char*>(&index), sizeof(index));
     }
 
-    // Write enemy type 
     outFile.write(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount));
     for (auto& type : enemyType) {
         outFile.write(reinterpret_cast<char*>(&type), sizeof(type));
     }
 
-    // Write tower positions
     size_t towerCount = towerPos.size();
     outFile.write(reinterpret_cast<char*>(&towerCount), sizeof(towerCount));
     for (auto& pos : towerPos) {
@@ -199,73 +293,26 @@ void SaveGame::supportWriteFile(std::string filename) {
         outFile.write(reinterpret_cast<char*>(&c), sizeof(c));
     }
 
-    // Write tower type 
     outFile.write(reinterpret_cast<char*>(&towerCount), sizeof(towerCount));
     for (auto& type : towerType) {
         outFile.write(reinterpret_cast<char*>(&type), sizeof(type));
     }
 
-    //// Debug userName
-    OutputDebugStringA(("Writing userName: " + userName + "\n").c_str());
+    // Ghi nOfPhase
+    outFile.write(reinterpret_cast<char*>(&nOfPhase), sizeof(nOfPhase));
 
-    // Debug point, userHealth, mapCode
-    OutputDebugStringA(("Writing point: " + std::to_string(point) + "\n").c_str());
-    OutputDebugStringA(("Writing userHealth: " + std::to_string(userHealth) + "\n").c_str());
-    OutputDebugStringA(("Writing mapCode: " + std::to_string(mapCode) + "\n").c_str());
-
-    // Debug enemy positions
-    OutputDebugStringA(("Enemy count: " + std::to_string(enemyCount) + "\n").c_str());
-    for ( auto& pos : enemyPos) {
-        OutputDebugStringA(("Enemy position - x: " + std::to_string(pos.getX()) +
-            ", y: " + std::to_string(pos.getY()) +
-            ", c: " + std::to_string(pos.getC()) + "\n")
-            .c_str());
+    // Ghi nOfEnemyEachPhase
+    size_t phaseCount = nOfEnemyEachPhase.size();
+    outFile.write(reinterpret_cast<char*>(&phaseCount), sizeof(phaseCount));
+    for (auto& count : nOfEnemyEachPhase) {
+        outFile.write(reinterpret_cast<char*>(&count), sizeof(count));
     }
 
-    // Debug enemy health
-    for (size_t i = 0; i < enemyHealth.size(); ++i) {
-        OutputDebugStringA(("Enemy health [" + std::to_string(i) + "]: " +
-            std::to_string(enemyHealth[i]) + "\n")
-            .c_str());
-    }
-
-    // Debug enemy path number
-    for (size_t i = 0; i < enemyPathNumber.size(); ++i) {
-        OutputDebugStringA(("Enemy path [" + std::to_string(i) + "]: " +
-            std::to_string(enemyPathNumber[i]) + "\n")
-            .c_str());
-    }
-
-    // Debug enemy index
-    for (size_t i = 0; i < enemyIndex.size(); ++i) {
-        OutputDebugStringA(("Enemy index [" + std::to_string(i) + "]: " +
-            std::to_string(enemyIndex[i]) + "\n")
-            .c_str());
-    }
-
-    // Debug enemy type
-    for (size_t i = 0; i < enemyType.size(); ++i) {
-        OutputDebugStringA(("Enemy type [" + std::to_string(i) + "]: " +
-            std::to_string(enemyType[i]) + "\n")
-            .c_str());
-    }
-
-    // Debug tower positions
-    OutputDebugStringA(("Tower count: " + std::to_string(towerCount) + "\n").c_str());
-    for ( auto& pos : towerPos) {
-        OutputDebugStringA(("Tower position - x: " + std::to_string(pos.getX()) +
-            ", y: " + std::to_string(pos.getY()) +
-            ", c: " + std::to_string(pos.getC()) + "\n")
-            .c_str());
-    }
-
-    // Debug tower type
-    for (size_t i = 0; i < towerType.size(); ++i) {
-        OutputDebugStringA(("Tower type [" + std::to_string(i) + "]: " +
-            std::to_string(towerType[i]) + "\n")
-            .c_str());
-    }
-
+    // Ghi phase, remainEnemy, nOfEnemy, spawnedEnemy
+    outFile.write(reinterpret_cast<char*>(&phase), sizeof(phase));
+    outFile.write(reinterpret_cast<char*>(&remainEnemy), sizeof(remainEnemy));
+    outFile.write(reinterpret_cast<char*>(&nOfEnemy), sizeof(nOfEnemy));
+    outFile.write(reinterpret_cast<char*>(&spawnedEnemy), sizeof(spawnedEnemy));
 
     outFile.close();
 }
@@ -275,37 +322,41 @@ SaveGameSupport::SaveGameSupport() {
 }
 
 std::vector<SaveGame> SaveGameSupport::readfile() {
-
     std::ifstream inFile("Storage/AllSaveGame.catfam", std::ios::binary);
     if (!inFile) {
         std::cerr << "Error opening save file for reading!\n";
         return {};
     }
 
-    std::vector<SaveGame> savedGames = {};
+    std::vector<SaveGame> savedGames;
 
     while (true) {
         SaveGame game;
 
-        // Read name
+        // 1. Read name
         size_t nameLength;
         if (!inFile.read(reinterpret_cast<char*>(&nameLength), sizeof(nameLength))) break;
 
-        std::string name;
-        name.resize(nameLength);
+        std::string name(nameLength, '\0');
         if (!inFile.read(&name[0], nameLength)) break;
-        game.setUserName(name); // Set the name using the setter
+        game.setUserName(name);
 
-        // Read point and user health and mapCode
-        int point, health, mapCode;
+        // 2. Read point
+        int point;
         if (!inFile.read(reinterpret_cast<char*>(&point), sizeof(point))) break;
+        game.setPoint(point);
+
+        // 3. Read user health
+        int health;
         if (!inFile.read(reinterpret_cast<char*>(&health), sizeof(health))) break;
+        game.setUserHealth(health);
+
+        // 4. Read map code
+        int mapCode;
         if (!inFile.read(reinterpret_cast<char*>(&mapCode), sizeof(mapCode))) break;
-        game.setPoint(point); // Use setter
-        game.setUserHealth(health); // Use setter
         game.setMapCode(mapCode);
 
-        // Read enemy positions
+        // 5. Read enemy positions
         size_t enemyCount;
         if (!inFile.read(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount))) break;
 
@@ -317,55 +368,84 @@ std::vector<SaveGame> SaveGameSupport::readfile() {
             if (!inFile.read(reinterpret_cast<char*>(&c), sizeof(c))) break;
             enemyPos[i] = cpoint(x, y, c);
         }
-        game.setEnemyPos(enemyPos); // Set using the setter
+        game.setEnemyPos(enemyPos);
 
-        // Read enemy health
+        // 6. Read enemy health
         if (!inFile.read(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount))) break;
         std::vector<int> enemyHealth(enemyCount);
         if (!inFile.read(reinterpret_cast<char*>(enemyHealth.data()), enemyCount * sizeof(int))) break;
-        game.setEnemyHealth(enemyHealth); // Use setter
+        game.setEnemyHealth(enemyHealth);
 
-        // Read enemy path numbers
+        // 7. Read enemy path numbers
         if (!inFile.read(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount))) break;
         std::vector<int> enemyPathNumbers(enemyCount);
         if (!inFile.read(reinterpret_cast<char*>(enemyPathNumbers.data()), enemyCount * sizeof(int))) break;
-        game.setEnemyPathNumber(enemyPathNumbers); // Use setter
+        game.setEnemyPathNumber(enemyPathNumbers);
 
-        // Read enemy index
+        // 8. Read enemy indices
         if (!inFile.read(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount))) break;
         std::vector<int> enemyIndex(enemyCount);
         if (!inFile.read(reinterpret_cast<char*>(enemyIndex.data()), enemyCount * sizeof(int))) break;
-        game.setEnemyIndex(enemyIndex); // Use setter
+        game.setEnemyIndex(enemyIndex);
 
-        // Read enemy type
+        // 9. Read enemy types
         if (!inFile.read(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount))) break;
         std::vector<int> enemyType(enemyCount);
         if (!inFile.read(reinterpret_cast<char*>(enemyType.data()), enemyCount * sizeof(int))) break;
-        game.setEnemyType(enemyType); // Use setter
+        game.setEnemyType(enemyType);
 
-        // Read tower positions
+        // 10. Read tower positions
         size_t towerCount;
         if (!inFile.read(reinterpret_cast<char*>(&towerCount), sizeof(towerCount))) break;
 
-        std::vector<cpoint> towerPositions(towerCount);
+        std::vector<cpoint> towerPos(towerCount);
         for (size_t i = 0; i < towerCount; ++i) {
             int x, y, c;
             if (!inFile.read(reinterpret_cast<char*>(&x), sizeof(x))) break;
             if (!inFile.read(reinterpret_cast<char*>(&y), sizeof(y))) break;
             if (!inFile.read(reinterpret_cast<char*>(&c), sizeof(c))) break;
-            towerPositions[i] = cpoint(x, y, c);
+            towerPos[i] = cpoint(x, y, c);
         }
-        game.setTowerPos(towerPositions); // Use setter
+        game.setTowerPos(towerPos);
 
-
-        // Read tower type
+        // 11. Read tower types
         if (!inFile.read(reinterpret_cast<char*>(&towerCount), sizeof(towerCount))) break;
         std::vector<int> towerType(towerCount);
         if (!inFile.read(reinterpret_cast<char*>(towerType.data()), towerCount * sizeof(int))) break;
-        game.setTowerType(towerType); // Use setter
-        
+        game.setTowerType(towerType);
 
+        // 12. Read number of phases
+        int nOfPhase;
+        if (!inFile.read(reinterpret_cast<char*>(&nOfPhase), sizeof(nOfPhase))) break;
+        game.setNOfPhase(nOfPhase);
 
+        // 13. Read enemies per phase
+        size_t phaseCount;
+        if (!inFile.read(reinterpret_cast<char*>(&phaseCount), sizeof(phaseCount))) break;
+
+        std::vector<int> nOfEnemyEachPhase(phaseCount);
+        if (!inFile.read(reinterpret_cast<char*>(nOfEnemyEachPhase.data()), phaseCount * sizeof(int))) break;
+        game.setNOfEnemyEachPhase(nOfEnemyEachPhase);
+
+        // 14. Read current phase
+        int phase;
+        if (!inFile.read(reinterpret_cast<char*>(&phase), sizeof(phase))) break;
+        game.setPhase(phase);
+
+        // 15. Read remaining enemies
+        int remainEnemy;
+        if (!inFile.read(reinterpret_cast<char*>(&remainEnemy), sizeof(remainEnemy))) break;
+        game.setRemainEnemy(remainEnemy);
+
+        // 16. Read number of enemies
+        int nOfEnemy;
+        if (!inFile.read(reinterpret_cast<char*>(&nOfEnemy), sizeof(nOfEnemy))) break;
+        game.setNOfEnemy(nOfEnemy);
+
+        // 17. Read spawned enemies
+        int spawnedEnemy;
+        if (!inFile.read(reinterpret_cast<char*>(&spawnedEnemy), sizeof(spawnedEnemy))) break;
+        game.setSpawnedEnemy(spawnedEnemy);
 
         savedGames.push_back(game);
     }
@@ -385,7 +465,7 @@ SaveGame SaveGameSupport::readMapInfo(int x) {
 }
 
 // Debug helper function to print messages
-void debugOutput(const std::string& message) {
+void debugOutput( std::string& message) {
     OutputDebugStringA(message.c_str());
 }
 
@@ -399,122 +479,135 @@ SaveGame SaveGameSupport::readMap(std::string filename) {
         return saveGame;
     }
 
-    std::string debugMessage = "Start reading from file: " + filename + "\n";
-
-    // Read name
+    // 1. Read name
     size_t nameLength;
     inFile.read(reinterpret_cast<char*>(&nameLength), sizeof(nameLength));
     std::string name(nameLength, '\0');
     inFile.read(&name[0], nameLength);
     saveGame.setUserName(name);
-    //debugMessage += "UserName: " + name + "\n";
 
-    // Read point, userHealth, and mapCode
-    int point, userHealth, mapCode;
+    // 2. Read point
+    int point;
     inFile.read(reinterpret_cast<char*>(&point), sizeof(point));
-    inFile.read(reinterpret_cast<char*>(&userHealth), sizeof(userHealth));
-    inFile.read(reinterpret_cast<char*>(&mapCode), sizeof(mapCode));
     saveGame.setPoint(point);
-    saveGame.setUserHealth(userHealth);
-    saveGame.setMapCode(mapCode);
-    //debugMessage += "Point: " + std::to_string(point) + ", UserHealth: " + std::to_string(userHealth) + ", MapCode: " + std::to_string(mapCode) + "\n";
 
-    // Read enemy positions
+    // 3. Read user health
+    int userHealth;
+    inFile.read(reinterpret_cast<char*>(&userHealth), sizeof(userHealth));
+    saveGame.setUserHealth(userHealth);
+
+    // 4. Read map code
+    int mapCode;
+    inFile.read(reinterpret_cast<char*>(&mapCode), sizeof(mapCode));
+    saveGame.setMapCode(mapCode);
+
+    // 5. Read enemy positions
     size_t enemyCount;
     inFile.read(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount));
-    //debugMessage += "Enemy Count: " + std::to_string(enemyCount) + "\n";
-    std::vector<cpoint> enemyPositions;
+    std::vector<cpoint> enemyPositions(enemyCount);
     for (size_t i = 0; i < enemyCount; ++i) {
         int x, y, c;
         inFile.read(reinterpret_cast<char*>(&x), sizeof(x));
         inFile.read(reinterpret_cast<char*>(&y), sizeof(y));
         inFile.read(reinterpret_cast<char*>(&c), sizeof(c));
-        enemyPositions.emplace_back(x, y, c);
-        //debugMessage += "Enemy " + std::to_string(i) + " - Pos: (" + std::to_string(x) + ", " + std::to_string(y) + "), Type: " + std::to_string(c) + "\n";
+        enemyPositions[i] = cpoint(x, y, c);
     }
     saveGame.setEnemyPos(enemyPositions);
 
-    // Read enemy health
+    // 6. Read enemy health
     inFile.read(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount));
-    //debugMessage += "Enemy Health Count: " + std::to_string(enemyCount) + "\n";
-    std::vector<int> enemyHealth;
+    std::vector<int> enemyHealth(enemyCount);
     for (size_t i = 0; i < enemyCount; ++i) {
         int health;
         inFile.read(reinterpret_cast<char*>(&health), sizeof(health));
-        enemyHealth.push_back(health);
-        //debugMessage += "Enemy " + std::to_string(i) + " - Health: " + std::to_string(health) + "\n";
+        enemyHealth[i] = health;
     }
     saveGame.setEnemyHealth(enemyHealth);
 
-    // Read enemy path
+    // 7. Read enemy path
     inFile.read(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount));
-    //debugMessage += "Enemy Path Count: " + std::to_string(enemyCount) + "\n";
-    std::vector<int> enemyPathNumber;
+    std::vector<int> enemyPathNumber(enemyCount);
     for (size_t i = 0; i < enemyCount; ++i) {
         int path;
         inFile.read(reinterpret_cast<char*>(&path), sizeof(path));
-        enemyPathNumber.push_back(path);
-        //debugMessage += "Enemy " + std::to_string(i) + " - Path: " + std::to_string(path) + "\n";
+        enemyPathNumber[i] = path;
     }
     saveGame.setEnemyPathNumber(enemyPathNumber);
 
-    // Read enemy index
+    // 8. Read enemy index
     inFile.read(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount));
-    //debugMessage += "Enemy Index Count: " + std::to_string(enemyCount) + "\n";
-    std::vector<int> enemyIndex;
+    std::vector<int> enemyIndex(enemyCount);
     for (size_t i = 0; i < enemyCount; ++i) {
-        int path;
-        inFile.read(reinterpret_cast<char*>(&path), sizeof(path));
-        enemyIndex.push_back(path);
-        //debugMessage += "Enemy " + std::to_string(i) + " - Index: " + std::to_string(path) + "\n";
+        int index;
+        inFile.read(reinterpret_cast<char*>(&index), sizeof(index));
+        enemyIndex[i] = index;
     }
     saveGame.setEnemyIndex(enemyIndex);
 
-    // Read enemy types
+    // 9. Read enemy types
     inFile.read(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount));
-    //debugMessage += "Enemy Type Count: " + std::to_string(enemyCount) + "\n";
-    std::vector<int> enemyTypes;
+    std::vector<int> enemyTypes(enemyCount);
     for (size_t i = 0; i < enemyCount; ++i) {
         int type;
         inFile.read(reinterpret_cast<char*>(&type), sizeof(type));
-        enemyTypes.push_back(type);
-        //debugMessage += "Enemy " + std::to_string(i) + " - Type: " + std::to_string(type) + "\n";
+        enemyTypes[i] = type;
     }
     saveGame.setEnemyType(enemyTypes);
 
-    // Read tower positions
+    // 10. Read tower positions
     size_t towerCount;
     inFile.read(reinterpret_cast<char*>(&towerCount), sizeof(towerCount));
-    //debugMessage += "Tower Count: " + std::to_string(towerCount) + "\n";
-    std::vector<cpoint> towerPositions;
+    std::vector<cpoint> towerPositions(towerCount);
     for (size_t i = 0; i < towerCount; ++i) {
         int x, y, c;
         inFile.read(reinterpret_cast<char*>(&x), sizeof(x));
         inFile.read(reinterpret_cast<char*>(&y), sizeof(y));
         inFile.read(reinterpret_cast<char*>(&c), sizeof(c));
-        towerPositions.emplace_back(x, y, c);
-        //debugMessage += "Tower " + std::to_string(i) + " - Pos: (" + std::to_string(x) + ", " + std::to_string(y) + "), Type: " + std::to_string(c) + "\n";
+        towerPositions[i] = cpoint(x, y, c);
     }
     saveGame.setTowerPos(towerPositions);
 
-    // Read tower types
+    // 11. Read tower types
     inFile.read(reinterpret_cast<char*>(&towerCount), sizeof(towerCount));
-    //debugMessage += "Tower Type Count: " + std::to_string(towerCount) + "\n";
-    std::vector<int> towerTypes;
+    std::vector<int> towerTypes(towerCount);
     for (size_t i = 0; i < towerCount; ++i) {
         int type;
         inFile.read(reinterpret_cast<char*>(&type), sizeof(type));
-        towerTypes.push_back(type);
-        //debugMessage += "Tower " + std::to_string(i) + " - Type: " + std::to_string(type) + "\n";
+        towerTypes[i] = type;
     }
     saveGame.setTowerType(towerTypes);
 
-    inFile.close();
-    debugMessage += "Finished reading file.\n";
-    debugOutput(debugMessage);
+    // 12. Read number of phases
+    int nOfPhase;
+    inFile.read(reinterpret_cast<char*>(&nOfPhase), sizeof(nOfPhase));
+    saveGame.setNOfPhase(nOfPhase);
 
+    // 13. Read number of enemies in each phase
+    std::vector<int> nOfEnemyEachPhase(nOfPhase);
+    for (int i = 0; i < nOfPhase; ++i) {
+        int enemyCount;
+        inFile.read(reinterpret_cast<char*>(&enemyCount), sizeof(enemyCount));
+        nOfEnemyEachPhase[i] = enemyCount;
+    }
+    saveGame.setNOfEnemyEachPhase(nOfEnemyEachPhase);
+
+    // 14, 15, 16, 17 Read phase details
+    int phase, remainEnemy, nOfEnemy, spawnedEnemy;
+    inFile.read(reinterpret_cast<char*>(&phase), sizeof(phase));
+    inFile.read(reinterpret_cast<char*>(&remainEnemy), sizeof(remainEnemy));
+    inFile.read(reinterpret_cast<char*>(&nOfEnemy), sizeof(nOfEnemy));
+    inFile.read(reinterpret_cast<char*>(&spawnedEnemy), sizeof(spawnedEnemy));
+
+    // Set phase details in SaveGame object
+    saveGame.setPhase(phase);
+    saveGame.setRemainEnemy(remainEnemy);
+    saveGame.setNOfEnemy(nOfEnemy);
+    saveGame.setSpawnedEnemy(spawnedEnemy);
+
+    inFile.close();
     return saveGame;
 }
+
 
 
 void SaveGameSupport::sortByScore() {
