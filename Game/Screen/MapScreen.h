@@ -25,6 +25,7 @@ namespace towerdefense
         WIN = 1,
         LOSE = 2,
         PAUSE = 3,
+        EXIT = 4,
     };
 
     class MapScreen : public Screen {
@@ -40,13 +41,16 @@ namespace towerdefense
 
         bool loadstatus = false;
 
-        // buton play or pause 
-        POINT posbuttonplay = { 580, 570 };
+        
+        std::shared_ptr<Button> _play;
+        std::shared_ptr<Button> _pause;
 
-        std::shared_ptr<Button> _playOrPause;
+
         std::shared_ptr<Button> _hamburger;
+        std::shared_ptr<Button> _ExitHouse;
         std::shared_ptr<Item> _background;
         std::shared_ptr<Item> _instructionboard;
+
         std::shared_ptr<Item> _towerInitPlace;
 
         // yes no board
@@ -59,6 +63,7 @@ namespace towerdefense
        
         // win game 
         std::shared_ptr<Item> _winBoard; 
+
  
 
         // PAUSE BOARD
@@ -66,6 +71,7 @@ namespace towerdefense
 
         //bool IsPlayGame = false;
         bool manageFirstTime = true;
+        bool manageOut = false;
 
         // Pause handling
         bool displayYesNoBoard = false;
@@ -74,6 +80,12 @@ namespace towerdefense
         POINT yesBtnPos = { 525, 350 };
         POINT noBtnPos = { 700, 350 };
         POINT yesnoSize = { 18, 20 };
+
+        // exit handling 
+        POINT exitDirectPos = { 700, 570 };
+
+        // buton play or pause 
+        POINT posbuttonplay = { 580, 570 };
 
         // instruction pos
         POINT instructionPos = { 800, 50 };
@@ -145,7 +157,9 @@ namespace towerdefense
         {
             _towerInitPlace = std::make_shared<Item>(L"Assets/game/BoardSetupTower.png", 1.5f, towerInitPos);
             _hamburger = std::make_shared<Button>(L"Assets/button/aboutBtn.png", L"Assets/button/selectbox.bmp", 2, hamburgerPos);
-            _playOrPause = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, posbuttonplay);
+            
+            _play = std::make_shared<Button>(L"Assets/button/btnPlay.png", L"Assets/button/selectbox.bmp", 2, posbuttonplay);
+            _pause = std::make_shared<Button>(L"Assets/button/btnContinue.png", L"Assets/button/selectbox.bmp", 2, posbuttonplay);
 
             _yesnoBoard = std::make_shared<Item>(L"Assets/game/info/BoardPAUSE.png", 1.2, boardYesNoPos);
             _yesBtn = std::make_shared<Button>(L"Assets/button/AcceptBtn.png", L"Assets/button/selectbox.bmp", 3, yesBtnPos);
@@ -153,6 +167,8 @@ namespace towerdefense
 
             _loseBoard = std::make_shared<Item>(L"Assets/game/info/BoardLose.png", 1.2, boardYesNoPos);
             _winBoard = std::make_shared<Item>(L"Assets/game/info/BoardWin.png", 1.2, boardYesNoPos);
+
+            _ExitHouse = std::make_shared<Button>(L"Assets/button/HomeBtn.png", L"Assets/button/selectbox.bmp", 2, exitDirectPos);
 
             // Gọi hàm riêng (abstract)
             loadSpecificContent(width, height);
@@ -173,7 +189,7 @@ namespace towerdefense
                 if (!isMousePressed) { // Chỉ xử lý 1 lần khi chuột nhấn xuống
                     isMousePressed = true;
                     // Xử lý nút PLAY/PAUSE
-                    if (_playOrPause->isClicked(cursorPos)) {
+                    if (_pause->isClicked(cursorPos)) {
                         if (manageFirstTime) {
                             statePlayingGame = PLAY; // Bắt đầu chơi
                             manageFirstTime = false;
@@ -188,10 +204,16 @@ namespace towerdefense
                         }
                     }
 
+
                     // Xử lý nút HAMBURGER để mở/đóng instruction board
                     if (_hamburger->isClicked(cursorPos)) {
                         bool currentTrigger = _instructionboard->getTriger();
                         _instructionboard->setTriger(!currentTrigger);
+                    }
+
+                    // Xử lý nút EXIT thoát
+                    if (_ExitHouse->isClicked(cursorPos)) {
+                        statePlayingGame = EXIT;
                     }
 
                     // Kiểm tra click vào tháp tại vị trí initPos
@@ -295,6 +317,7 @@ namespace towerdefense
                 if (_yesBtn->isClicked(cursorPos)) {
                     manager.setGameStatus(PLAY);
                     statePlayingGame = PLAY;
+
                     _yesnoBoard->setTriger(false);
                     _noBtn->setTriger(false);
                     _yesBtn->setTriger(false);
@@ -312,12 +335,39 @@ namespace towerdefense
                 }
             }
 
+            if (statePlayingGame == EXIT)
+            {
+                if (_yesBtn->isClicked(cursorPos)) {
+                    manager.setGameStatus(PLAY);
+                    statePlayingGame = PLAY;
+
+                    _yesnoBoard->setTriger(false);
+                    _noBtn->setTriger(false);
+                    _yesBtn->setTriger(false);
+                }
+                if (_noBtn->isClicked(cursorPos)) {
+
+                    // save game
+
+                    int mapCode = getCurrentMap();
+
+                    saveToLoadGame();
+
+                    // trở về home
+                    PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
+                }
+            }
+
             // handle mấy cái riêng
              //OutputDebugStringA("handleSpecificInput 2\n");
         }
         
         void update(float delta)
         {
+            if (statePlayingGame == EXIT) {
+                _yesnoBoard->setTriger(true);
+            }
+
             if (statePlayingGame != PLAY) return;
 
             //----------- WIN GAME -----------
@@ -525,7 +575,27 @@ namespace towerdefense
             renderTowerType3->render(hdc);
             manager.render(hdc);
 
-            _playOrPause->render(hdc);
+            // nếu được nhấn thì đổi trạng thái
+            //if (_playOrPause->getTriger()) {
+            //    // đổi trạng thái 1
+            //    _playOrPause->render(hdc);
+            //}
+            //else {
+            //    // đôi trạng thái 2
+            //    _playOrPause->render(hdc);
+            //}
+
+            if (statePlayingGame == PLAY) {
+                _play->render(hdc);
+            }
+            else if (statePlayingGame == PAUSE) {
+                _pause->render(hdc);
+            }
+            else if (statePlayingGame == EXIT) {
+                _pause->render(hdc);
+            }
+
+            _ExitHouse->render(hdc);
 
             // ---------- BOARD ----------
             if (_yesnoBoard->getTriger()) {
@@ -551,7 +621,7 @@ namespace towerdefense
             if (_towerInitPlace->isHovered(cursurPos)) {
                 return false;
             }
-            if (_playOrPause->isHovered(cursurPos)) {
+            if (_play->isHovered(cursurPos)) {
                 return false;
             }
             if (_hamburger->isHovered(cursurPos)) {

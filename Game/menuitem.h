@@ -18,19 +18,27 @@ public:
 };
 
 class Button : public UIElement {
-private: 
+private:
     HBITMAP hover;
-    HBITMAP clicked = nullptr;  //?
-    bool isClicking;
+    HBITMAP clicked = nullptr;
+    bool isClicking = false;
+    POINT buttonPosHover = {position.x - 12, position.y - 14};
+
 
 public: 
-	Button(POINT pos, HBITMAP hdefault, HBITMAP hover, HBITMAP clicked) : UIElement(pos, hdefault), hover(hover), clicked(clicked) {}
-	Button(POINT pos, HBITMAP hdefault, HBITMAP hover) : UIElement(pos, hdefault), hover(hover) {}
+	Button(POINT pos, HBITMAP hdefault, HBITMAP hover, HBITMAP clicked) : UIElement(pos, hdefault), hover(hover), clicked(clicked) {
+        setCenterHover();
+    }
+	Button(POINT pos, HBITMAP hdefault, HBITMAP hover) : UIElement(pos, hdefault), hover(hover) {
+        setCenterHover();
+    }
     Button(const wchar_t* linkDefault, const wchar_t* linkHover, float scale, int x, int y) : UIElement(linkDefault, scale, x, y) {
         hover = Graphic::LoadBitmapImage(linkHover, scale); 
+        setCenterHover();
     }
     Button(const wchar_t* linkDefault, const wchar_t* linkHover, float scale, POINT pos) : UIElement(linkDefault, scale, pos) {
         hover = Graphic::LoadBitmapImage(linkHover, scale);
+        setCenterHover();
     }
 
 	// --------- click button ------------
@@ -56,24 +64,13 @@ public:
         POINT cursorPos;
         GetCursorPos(&cursorPos);
         ScreenToClient(GetActiveWindow(), &cursorPos);
-        HBITMAP currentImage = image;
 
-        if (isClicking && clicked) {
-            currentImage = clicked;
-        }
 
-        else if (hover && isHovered(cursorPos)) {
-            //currentImage = hover;
-            POINT buttonPosHover = position;
-            buttonPosHover.x -= 12;
-            buttonPosHover.y -= 14;
-
+        if (hover && isHovered(cursorPos)) {
             Graphic::DrawBitmap(hover, buttonPosHover, hdc);
         }
-
-        if (currentImage) {
-            Graphic::DrawBitmap(currentImage, position, hdc);
-        }
+        
+        Graphic::DrawBitmap(image, position, hdc);
     }
 
     void handleClick(POINT mousePos) override {
@@ -82,6 +79,27 @@ public:
     }
 
     void resetClick() { isClicking = false; }
+
+    void setHoverPos(POINT pos) {
+        this->buttonPosHover = pos;
+    }
+
+    void setCenterHover() {
+        // Get the size of the hover bitmap and the image bitmap
+        POINT sizeHover = Graphic::GetBitmapSize(hover);
+        POINT sizeImage = Graphic::GetBitmapSize(image);
+
+        // Calculate the center position for the hover effect
+        POINT pos = position; // Position of the image
+        POINT hoverPos;
+
+        hoverPos.x = pos.x + (sizeImage.x - sizeHover.x) / 2; // Center horizontally
+        hoverPos.y = pos.y + (sizeImage.y - sizeHover.y) / 2; // Center vertically
+
+        // Set the calculated hover position
+        this->buttonPosHover = hoverPos;
+    }
+
 };
 
 class Popup : public UIElement {

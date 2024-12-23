@@ -52,10 +52,10 @@ namespace towerdefense
         std::shared_ptr<Button> _about;
         std::shared_ptr<Popup> popup;
 
-        std::shared_ptr<Option> _map1;
-        std::shared_ptr<Option> _map2;
-        std::shared_ptr<Option> _map3;
-        std::shared_ptr<Option> _map4;
+        std::shared_ptr<Button> _map1;
+        std::shared_ptr<Button> _map2;
+        std::shared_ptr<Button> _map3;
+        std::shared_ptr<Button> _map4;
 
         std::shared_ptr<Button> _login;
         std::shared_ptr<InputElement> _inputName;
