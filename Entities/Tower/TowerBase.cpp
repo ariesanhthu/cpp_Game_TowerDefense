@@ -43,7 +43,7 @@ shared_ptr<BulletBase> TowerBase::getBullet() {
 bool TowerBase::canShoot() {
 	TIME_POINT now = chrono::system_clock::now();
 	if (MILI_SEC(1000 / model->getRate()) < MILI_SEC_CAST(now - lastShoot)) {
-		lastShoot = chrono::system_clock::now();
+		//lastShoot = chrono::system_clock::now();
 		return true;
 	}
 	return false;
@@ -51,20 +51,11 @@ bool TowerBase::canShoot() {
 
 bool TowerBase::canShoot(shared_ptr<EnemyBase> target) {
 	float dis = currentPosition.distance(target->getCurrentPosition());
-
 	int range = model->getRange();
 
-	/*OutputDebugStringA( ( std::to_string(dis) + "disssssssssssssssss\n" +
-						  std::to_string(range) + "\n" ).c_str());*/
-
-
-	//if (target->getHealth() > 0 && dis <= range) {
 	if (target->isOnRoad() && dis <= range) {
-		//OutputDebugStringA("true shoot\n");
 		return true;
 	}
-	//OutputDebugStringA("false shoot\n");
-
 	return false;
 }
 
@@ -76,9 +67,6 @@ bool TowerBase::canShoot(shared_ptr<EnemyBase> target) {
 //}
 
 void TowerBase::shoot(shared_ptr<EnemyBase> target) {
-
-	//OutputDebugStringA("true shoot\n");
-
 	lastShoot = chrono::system_clock::now();
 	bullet.get()->setCurr(this->currentPosition);
 	bullet.get()->setTarget(target);

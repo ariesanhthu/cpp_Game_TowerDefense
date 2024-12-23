@@ -4,7 +4,8 @@ void TowerManager::addTower(TowerModel* model, cpoint pos) {
 
 }
 void TowerManager::addTower(shared_ptr<TowerBase> tower) {
-	towers_.push_back(tower);
+	if (nOfTower --> 0)
+		towers_.push_back(tower);
 }
 void TowerManager::renderTowers(HDC hdc) {
 	for (auto t : towers_) {
@@ -21,18 +22,10 @@ void TowerManager::updateAllTower(std::vector<shared_ptr<EnemyBase>>& enemies_, 
 
 		if (tower->canShoot() && !tower->getBullet()->getVisible()) {
 			for (auto& enemy : enemies_) {
-				
-				/*OutputDebugStringA( 
-					(
-						"pos: " + std::to_string(enemy->getCurrentPosition().getX()) + " " + std::to_string(enemy->getCurrentPosition().getY()) + "\n" +
-						"health: " + std::to_string(enemy->getHealth()) + "\n"
-					).c_str() 
-				);*/
 
 				if (tower->canShoot(enemy)) {
 
 					tower->shoot(enemy);
-					OutputDebugStringA("d\n");
 
 					break;
 				}
@@ -66,4 +59,9 @@ std::vector<std::shared_ptr<BulletBase>> TowerManager::getAllBullet() const {
 		bullets.push_back(bullet);
 	}
 	return bullets;
+}
+
+void TowerManager::setNumberOfTower(int n) {
+	if (n > 0)
+		nOfTower = n;
 }

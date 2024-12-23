@@ -32,6 +32,7 @@ namespace towerdefense
         // --- SETUP ---
         vector<vector<cpoint>> path;
         vector<int> mapSetup;
+        int nOfTower = 5; // defaul number of Tower
         // -------------
 
         GameState statePlayingGame = PAUSE;
@@ -311,7 +312,6 @@ namespace towerdefense
             }
             //----------- PLAY GAME -----------
             else if (manager.getGameStatus() == PLAY) {
-                //OutputDebugStringA("11111111111111111\n");
                 manager.update(delta);
                 statePlayingGame = PLAY;
             }
@@ -348,6 +348,7 @@ namespace towerdefense
             int nofpath = path.size();
 
             manager.enemyManager.setup(mapSetup);
+            manager.towerManager.setNumberOfTower(nOfTower); // default is 5
 
             //setup enemy for each phase
             for (size_t e = 1; e <= 3; e++)
