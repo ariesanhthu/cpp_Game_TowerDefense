@@ -105,11 +105,12 @@ std::vector<shared_ptr<EnemyBase>>& EnemyManager::getEnemy() {
 }
 
 void EnemyManager::setLoadEnemy(std::vector<shared_ptr<EnemyBase>> enemylist) {
-    //for (int i = 0; i < enemies_.size(); i++) {
-    //    enemies_[i]->setCurrentPosition(enemylist[i]->getCurrentPosition());
-    //    enemies_[i]->setHealth(enemylist[i]->getHealth());
-    //    enemies_[i]->setIndex(enemylist[i]->getIndex());
-    //}
+    /*for (int i = 0; i < enemies_.size(); i++) {
+        enemies_[i]->setCurrentPosition(enemylist[i]->getCurrentPosition());
+        enemies_[i]->setHealth(enemylist[i]->getHealth());
+        enemies_[i]->setIndex(enemylist[i]->getIndex());
+    }*/
+
     for (auto i : enemylist) {
         addEnemy(i);
     }

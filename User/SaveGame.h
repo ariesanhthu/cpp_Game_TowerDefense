@@ -101,14 +101,19 @@ public:
 	// manager
 	int getNOfPhase();
 	void setNOfPhase(int vae);
+
 	std::vector<int> getNOfEnemyEachPhase();
 	void setNOfEnemyEachPhase(std::vector<int> value);
+
 	int getPhase();
 	void setPhase(int value);
+
 	int getRemainEnemy();
 	void setRemainEnemy(int value);
+
 	int getNOfEnemy();
 	void setNOfEnemy(int value);
+
 	int getSpawnedEnemy();
 	void setSpawnedEnemy(int value);
 

@@ -276,10 +276,15 @@ namespace towerdefense
                     if(nextMap > 4)
 						nextMap = 0;
 
+                    saveToLoadGame();
+
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, nextMap, 0);
                 }
                 if (_noBtn->isClicked(cursorPos)) {
                     // save game 
+
+                    saveToLoadGame();
+
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                 }
             }
@@ -424,7 +429,15 @@ namespace towerdefense
                 vector<int> towerType = game_saving.getTowerType();
                 int towerCount = towerPos.size();
               
+                // set all manager element 
+                manager.enemyManager.setNOfPhase(nOfPhase);
+                manager.enemyManager.setNOfEnemyEachPhase(nOfEnemyEachPhase);
+                manager.enemyManager.setRemainEnemy(remainEnemy);
+                manager.enemyManager.setNOfEnemy(nOfEnemy);
+                manager.enemyManager.setPhase(phase); 
+                manager.enemyManager.setSpawnedEnemy(spawnedEnemy);
 
+                // update enemy state
                 vector<shared_ptr<EnemyBase>> listEnemy(enemyCount);
                 for (int i = 0; i < enemyCount; i++) {
                     listEnemy[i] = EnemyFactory::createEnemy(enemyType[i], enemyPathNumber[i]);
@@ -434,8 +447,10 @@ namespace towerdefense
                     listEnemy[i]->setIndex(enemyIndex[i]);
                     listEnemy[i]->setHealth(enemyHealth[i]);
                 }
-                //manager.enemyManager.setLoadEnemy(listEnemy, nOfPhase, nOfEnemyEachPhase);
+                manager.enemyManager.setLoadEnemy(listEnemy);
 
+
+                // update tower state
                 for (int i = 0; i < towerCount; i++) {
                     manager.towerManager.addTower(TowerFactory::createTower(towerType[i], towerPos[i]));
                 }
@@ -447,7 +462,47 @@ namespace towerdefense
                     listTower[i]->setCurrentPosition(towerPos[i]);
                 }
                 manager.towerManager.setLoadTower(listTower);
+
+                int point = game_saving.getPoint();
+                int health = game_saving.getUserHealth();
+
+                manager.setPoint(point);
+                manager.enemyManager.setUserHP(health); 
+
+                // Debug output
+                /*std::ostringstream debugMessage;
+                debugMessage << "File reddddddddddddddddđ: " << "filename" << "\n"
+                    << "2. Points: " << point << "\n"
+                    << "3. User Health: " << health << "\n"
+                    << "5. Enemy Count: " << enemyCount << "\n"
+                    << "6. Enemy Health: [ ";
+                for (const auto& health : enemyHealth) debugMessage << health << " ";
+                debugMessage << "]\n"
+                    << "7. Enemy Path: [ ";
+                for (const auto& path : enemyPathNumber) debugMessage << path << " ";
+                debugMessage << "]\n"
+                    << "8. Enemy Index: [ ";
+                for (const auto& index : enemyIndex) debugMessage << index << " ";
+                debugMessage << "]\n"
+                    << "9. Enemy Type: [ ";
+                for (const auto& type : enemyType) debugMessage << type << " ";
+                debugMessage << "]\n"
+                    << "10. Tower Count: " << towerCount << "\n"
+                    << "11. Tower Type: [ ";
+                for (const auto& type : towerType) debugMessage << type << " ";
+                debugMessage << "]\n"
+                    << "12. Number of Phases: " << nOfPhase << "\n"
+                    << "13. Enemies Each Phase: [ ";
+                for (const auto& count : nOfEnemyEachPhase) debugMessage << count << " ";
+                debugMessage << "]\n"
+                    << "14. Current Phase: " << phase << "\n"
+                    << "15. Remaining Enemies: " << remainEnemy << "\n"
+                    << "16. Total Enemies: " << nOfEnemy << "\n"
+                    << "17. Spawned Enemies: " << spawnedEnemy << "\n";
+
+                OutputDebugStringA(debugMessage.str().c_str());*/
             }
+            
         }
         // ------ RENDER -----
         void renderCommonElements(HDC hdc) {

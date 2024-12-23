@@ -245,8 +245,6 @@ void SaveGame::supportWriteFile(std::string filename) {
     nOfEnemy, 
     spawnedEnemy*/
 
-
-
     // Ghi các trường đã có
     size_t nameLength = userName.size();
     outFile.write(reinterpret_cast<char*>(&nameLength), sizeof(nameLength));
@@ -313,6 +311,41 @@ void SaveGame::supportWriteFile(std::string filename) {
     outFile.write(reinterpret_cast<char*>(&remainEnemy), sizeof(remainEnemy));
     outFile.write(reinterpret_cast<char*>(&nOfEnemy), sizeof(nOfEnemy));
     outFile.write(reinterpret_cast<char*>(&spawnedEnemy), sizeof(spawnedEnemy));
+
+    // Debug output
+    std::ostringstream debugMessage;
+    debugMessage << "File written successfully: " << filename << "\n"
+        << "1. Name: " << userName << "\n"
+        << "2. Points: " << point << "\n"
+        << "3. User Health: " << userHealth << "\n"
+        << "4. Map Code: " << mapCode << "\n"
+        << "5. Enemy Count: " << enemyCount << "\n"
+        << "6. Enemy Health: [ ";
+    for (const auto& health : enemyHealth) debugMessage << health << " ";
+    debugMessage << "]\n"
+        << "7. Enemy Path: [ ";
+    for (const auto& path : enemyPathNumber) debugMessage << path << " ";
+    debugMessage << "]\n"
+        << "8. Enemy Index: [ ";
+    for (const auto& index : enemyIndex) debugMessage << index << " ";
+    debugMessage << "]\n"
+        << "9. Enemy Type: [ ";
+    for (const auto& type : enemyType) debugMessage << type << " ";
+    debugMessage << "]\n"
+        << "10. Tower Count: " << towerCount << "\n"
+        << "11. Tower Type: [ ";
+    for (const auto& type : towerType) debugMessage << type << " ";
+    debugMessage << "]\n"
+        << "12. Number of Phases: " << nOfPhase << "\n"
+        << "13. Enemies Each Phase: [ ";
+    for (const auto& count : nOfEnemyEachPhase) debugMessage << count << " ";
+    debugMessage << "]\n"
+        << "14. Current Phase: " << phase << "\n"
+        << "15. Remaining Enemies: " << remainEnemy << "\n"
+        << "16. Total Enemies: " << nOfEnemy << "\n"
+        << "17. Spawned Enemies: " << spawnedEnemy << "\n";
+
+    OutputDebugStringA(debugMessage.str().c_str());
 
     outFile.close();
 }
