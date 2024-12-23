@@ -300,8 +300,8 @@ void SaveGame::supportWriteFile(std::string filename) {
     outFile.write(reinterpret_cast<char*>(&nOfPhase), sizeof(nOfPhase));
 
     // Ghi nOfEnemyEachPhase
-    size_t phaseCount = nOfEnemyEachPhase.size();
-    outFile.write(reinterpret_cast<char*>(&phaseCount), sizeof(phaseCount));
+    /*size_t phaseCount = nOfEnemyEachPhase.size();
+    outFile.write(reinterpret_cast<char*>(&phaseCount), sizeof(phaseCount));*/
     for (auto& count : nOfEnemyEachPhase) {
         outFile.write(reinterpret_cast<char*>(&count), sizeof(count));
     }
@@ -453,11 +453,12 @@ std::vector<SaveGame> SaveGameSupport::readfile() {
         game.setNOfPhase(nOfPhase);
 
         // 13. Read enemies per phase
-        size_t phaseCount;
-        if (!inFile.read(reinterpret_cast<char*>(&phaseCount), sizeof(phaseCount))) break;
+        /*size_t phaseCount;
+        if (!inFile.read(reinterpret_cast<char*>(&phaseCount), sizeof(phaseCount))) break;*/
 
-        std::vector<int> nOfEnemyEachPhase(phaseCount);
-        if (!inFile.read(reinterpret_cast<char*>(nOfEnemyEachPhase.data()), phaseCount * sizeof(int))) break;
+        //std::vector<int> nOfEnemyEachPhase(phaseCount);
+        std::vector<int> nOfEnemyEachPhase(nOfPhase);
+        if (!inFile.read(reinterpret_cast<char*>(nOfEnemyEachPhase.data()), nOfPhase * sizeof(int))) break;
         game.setNOfEnemyEachPhase(nOfEnemyEachPhase);
 
         // 14. Read current phase
