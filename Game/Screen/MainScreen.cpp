@@ -159,7 +159,7 @@ namespace towerdefense
         };
 
 
-        listGame = supSaveGame->readfile();
+        //listGame = supSaveGame->readfile();
         LoadList = supSaveGame->loadFourLastestMapGame();
 
         //OutputDebugStringA((to_string(LoadList.size()) + "load list size\n").c_str());
