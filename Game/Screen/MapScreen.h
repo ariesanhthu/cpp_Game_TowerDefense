@@ -11,6 +11,8 @@
 #include "User/SaveGame.h"
 #include "User/User.h"
 
+#include "User/Leaderboard.h"
+
 using namespace std;
 
 namespace towerdefense
@@ -24,7 +26,7 @@ namespace towerdefense
         PLAY = 0,
         WIN = 1,
         LOSE = 2,
-        PAUSE = 3,
+        PAUSE = 3
     };
 
     class MapScreen : public Screen {
@@ -41,6 +43,7 @@ namespace towerdefense
         bool loadstatus = false;
 
         // buton play or pause 
+
         POINT posbuttonplay = { 580, 570 };
 
         std::shared_ptr<Button> _playOrPause;
@@ -157,6 +160,16 @@ namespace towerdefense
             // Gọi hàm riêng (abstract)
             loadSpecificContent(width, height);
         }
+
+        // ------------------------------------------- LEADER BOARD ----------------------------------------------------
+        void saveToLeaderBoard()
+        {
+            User user("Guess", manager.getPoint());
+            auto& leaderBoard = Leaderboard::getInstance();
+            leaderBoard.addUser(user);
+            leaderBoard.writeFile(user);
+        }
+        // -------------------------------------------------------------------------------------------------------------
         
         void handleInput(HWND hwnd) {
             // Lấy tọa độ con trỏ chuột
@@ -279,12 +292,18 @@ namespace towerdefense
 
                     saveToLoadGame();
 
+                    ///
+                    saveToLeaderBoard();
+
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, nextMap, 0);
                 }
                 if (_noBtn->isClicked(cursorPos)) {
                     // save game 
 
                     saveToLoadGame();
+
+                    ///
+                    saveToLeaderBoard();
 
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
                 }
@@ -306,6 +325,8 @@ namespace towerdefense
                     int mapCode = getCurrentMap();
 
                     saveToLoadGame();
+                    ///
+                    saveToLeaderBoard();
                     
                     // trở về home
                     PostMessageA(hwnd, WM_CUSTOM_LOAD_SCREEN, 0, 0);
@@ -455,13 +476,17 @@ namespace towerdefense
                 for (int i = 0; i < towerCount; i++) {
                     manager.towerManager.addTower(TowerFactory::createTower(towerType[i], towerPos[i]));
                 }
+                
                 vector<shared_ptr<TowerBase>> listTower(towerCount);
+                
                 for (int i = 0; i < towerCount; i++) {
                     listTower[i] = TowerFactory::createTower(towerType[i], towerPos[i]);
                 }
+                
                 for (int i = 0; i < towerCount; i++) {
                     listTower[i]->setCurrentPosition(towerPos[i]);
                 }
+
                 manager.towerManager.setLoadTower(listTower);
 
                 int point = game_saving.getPoint();
@@ -505,6 +530,7 @@ namespace towerdefense
             }
             
         }
+
         // ------ RENDER -----
         void renderCommonElements(HDC hdc) {
 
@@ -528,6 +554,7 @@ namespace towerdefense
             _playOrPause->render(hdc);
 
             // ---------- BOARD ----------
+
             if (_yesnoBoard->getTriger()) {
                 _yesnoBoard->render(hdc);
                 _noBtn->render(hdc);
@@ -546,6 +573,7 @@ namespace towerdefense
                 _yesBtn->render(hdc);
             }
         }
+
         // ------ END RENDER -----
         bool checkValidPos(POINT cursurPos) {
             if (_towerInitPlace->isHovered(cursurPos)) {
