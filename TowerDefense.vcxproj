@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="User\Leaderboard.cpp" />
     <ClCompile Include="Manager\EventManager.cpp" />
     <ClCompile Include="Manager\AudioManager.cpp" />
     <ClCompile Include="Graphics\Animation.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="User\Leaderboard.h" />
     <ClInclude Include="Manager\EventManager.h" />
     <ClInclude Include="Manager\AudioManager.h" />
     <ClInclude Include="Manager\FontManager.h" />

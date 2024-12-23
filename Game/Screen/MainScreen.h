@@ -25,6 +25,8 @@
 
 #include "GameManager.h"
 
+#include "User/Leaderboard.h"
+
 using namespace std;
 
 namespace towerdefense

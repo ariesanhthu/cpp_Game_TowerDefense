@@ -206,7 +206,7 @@ void SaveGame::writefile(int mapCode) {
     filename = "Storage/" + filename;
 
     supportWriteFile(filename);                     // for loadgame
-    supportWriteFile("Storage/AllSaveGame.catfam"); // for leaderboard
+    //supportWriteFile("Storage/AllSaveGame.catfam"); // for leaderboard
 }
 
 void SaveGame::supportWriteFile(std::string filename) {

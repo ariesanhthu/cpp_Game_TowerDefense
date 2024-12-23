@@ -11,6 +11,15 @@ namespace towerdefense
     // Constructor
     MainScreen::MainScreen() {
         loadContent(1280, 720);
+        // -------------------------------------------------
+        // dum 
+   /*     auto& leaderBoard = Leaderboard::getInstance();
+        User user1("guess", 100);
+        User user2("guess2", 10);
+        leaderBoard.addUser(user1);
+        leaderBoard.addUser(user2);*/
+        // -------------------------------------------------
+
 
         // ------------- HOW TO PLAY ---------------------- 
         //_boardHowToPlay = std::make_shared<Item>(L"Assets/game/info/howtoplay.png", 2, boardHowtoPlayPos);
@@ -206,9 +215,11 @@ namespace towerdefense
                     else if (_lead && _lead->isHoverInside(cursorPos)) {
                         menu = 3;
                         popup->setTriger(true);
-                        for (auto i : _FourLeaderBoardItem) {
-                            i->setTriger(true);
-                        }
+
+                        // ----------------------- LEADER BOARD -------------------------------
+                        auto& leaderBoard = Leaderboard::getInstance();
+                        leaderBoard.loadLeaderBoard();
+                        // ----------------------- LEADER BOARD -------------------------------
                     }
                     else if (_sett && _sett->isHoverInside(cursorPos)) {
                         menu = 4;
@@ -270,7 +281,7 @@ namespace towerdefense
         }
         // -------------------------- leaderboard --------------------------
         else if (menu == 3) {
-
+            
         }
         // -------------------------- setting --------------------------
         else if (menu == 4) {
@@ -410,13 +421,15 @@ namespace towerdefense
                         }
                     }
 
-                }
-                else if (menu == 3) {
-                    /*for (auto i : _FourLeaderBoardItem) {
-                        i->render(hdc);
-                    }*/
-                }
-                else if (menu == 4) {
+        }
+        else if (menu == 3) {
+            /*for (auto i : _FourLeaderBoardItem) {
+                i->render(hdc);
+            }*/
+            auto& leaderBoard = Leaderboard::getInstance();
+            leaderBoard.render(hdc);
+        }
+        else if (menu == 4) {
 
                     //_VolumeButton->render(hdc);
                     TitleSetting->render(hdc);
