@@ -165,12 +165,7 @@ namespace towerdefense
 
         //OutputDebugStringA((to_string(LoadList.size()) + "load list size\n").c_str());
 
-        LeaderboardList = supSaveGame->loadFourLastestMapGame();
-
-        //OutputDebugStringA((to_string(LoadList.size()) + "leaderboard size\n").c_str());
-
         _FourContinueItem.resize(LoadList.size());
-        _FourLeaderBoardItem.resize(LeaderboardList.size());
     }
 
     void MainScreen::handleInput(HWND hwnd) {

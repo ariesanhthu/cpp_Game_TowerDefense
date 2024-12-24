@@ -71,7 +71,6 @@ namespace towerdefense
 
         //std::vector<shared_ptr<ContinueElement>> _ListContinueItem;
         std::vector<std::shared_ptr<ContinueElement>> _FourContinueItem;
-        std::vector<std::shared_ptr<ContinueElement>> _FourLeaderBoardItem;
 
         
         std::shared_ptr<SaveGameSupport> supSaveGame;
