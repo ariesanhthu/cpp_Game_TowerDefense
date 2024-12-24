@@ -51,12 +51,14 @@ public:
 
 	//setter
 	void setGameCode(int );
-	void setGameStatus(int );
-	void setPoint(int );
-	//getter
 	int getGameCode();
+	
+	void setGameStatus(int );
 	int getGameStatus();
+
+	//getter
 	int getPoint();
+	void setPoint(int );
 
 	
 };

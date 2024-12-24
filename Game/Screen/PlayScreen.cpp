@@ -27,7 +27,7 @@ namespace towerdefense
             }
         };
 
-        mapSetup = { 3, 5, 4, 1 };
+        mapSetup = { 3, 5, 4, 8 };
 
         loadstatus = _loadstatus;
 

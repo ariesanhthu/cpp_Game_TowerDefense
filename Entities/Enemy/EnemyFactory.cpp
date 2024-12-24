@@ -22,9 +22,9 @@ vector<shared_ptr<EnemyModel>> EnemyFactory::Models;
         tmp =  make_shared<EnemyBase>(resource.getResource("enemy4"), 0.6, Models[0], path);
     }
     else if (type == 5) {
-        tmp = make_shared<EnemyBase>(resource.getResource("enemy5"), 0.6, Models[0], path);
+        tmp = make_shared<EnemyBase>(resource.getResource("enemy5"), 0.8, Models[0], path);
     }
-    else {
+else {
         throw invalid_argument("Unknown enemy type");
     }
 

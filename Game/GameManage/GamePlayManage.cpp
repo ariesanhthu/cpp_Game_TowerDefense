@@ -1,4 +1,4 @@
-#include "GamePlayManage.h"
+﻿#include "GamePlayManage.h"
 
 void GamePlayManage::setupEnemy(vector<vector<cpoint>> path) {
 	//create Models
@@ -35,6 +35,15 @@ void GamePlayManage::update(float delta) {
 			if (e->getHealth() <= 0) {
 				point += 10;
 			}
+			
+		}
+		// ------------ CẬP NHẬT ĐIỂM TRỪ -------------------
+		   // Máu đầy thì không trừ
+		   // --------------------------------------------------
+		int decPoint = enemyManager.getUserHP() % 5;
+		if (decPoint > 0)
+		{
+			point -= ((5 - decPoint) * 10);
 		}
 	}
 }

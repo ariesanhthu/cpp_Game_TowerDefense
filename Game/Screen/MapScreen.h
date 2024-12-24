@@ -32,12 +32,20 @@ namespace towerdefense
 
     class MapScreen : public Screen {
     protected:
+        // FONT
+        HFONT boldFont = FontManager::getInstance().getFont("bold");;
+        // -------------
         // --- SETUP ---
         vector<vector<cpoint>> path;
         vector<int> mapSetup;
         int nOfTower = 5; // defaul number of Tower
         // -------------
-
+        // --- GAME SCORE ----
+        shared_ptr<TextElement> _scoreGame;
+        shared_ptr<Item> _scoreBoard;
+        POINT scorePos = { 900, 25 };
+        POINT scoreBoardPos = { 860, 0 };
+        //--------------------
         GameState statePlayingGame = PAUSE;
         int countHeart = 0;
 
@@ -91,7 +99,7 @@ namespace towerdefense
 
         // instruction pos
         POINT instructionPos = { 800, 50 };
-        POINT hamburgerPos = { 1200, 5 };
+        POINT hamburgerPos = { 1150, 25 };
 
         // position init place of box
         POINT towerInitPos = { 25, 520 };
@@ -180,6 +188,14 @@ namespace towerdefense
             _exitBoard = std::make_shared<Item>(L"Assets/game/info/BoardGotoHome.png", 1.3f , boardYesNoPos);
             _health = std::make_shared<Item>(L"Assets/game/Heart.png", 1.5f, towerInitPos);
 
+            // --------- SCORE ----------------
+            
+            _scoreGame = make_shared<TextElement>(L"0", boldFont, RGB(255, 255, 255), scorePos);
+            _scoreGame->setTriger(true);
+
+            _scoreBoard = std::make_shared<Item>(L"Assets/game/info/boardScore.png", 1.2f, scoreBoardPos);
+            _scoreBoard->setTriger(true);
+            // ---------------------------------
 
             // Gọi hàm riêng (abstract)
             loadSpecificContent(width, height);
@@ -417,8 +433,11 @@ namespace towerdefense
 
 
             if (statePlayingGame != PLAY) return;
-            curHealth = manager.enemyManager.getUserHP();
 
+
+            curHealth = manager.enemyManager.getUserHP();
+      
+            
             //----------- WIN GAME -----------
             if (manager.getGameStatus() == WIN) {
                 statePlayingGame = WIN;
@@ -491,6 +510,9 @@ namespace towerdefense
                     // Đổi style enemy Goblin đi bộ thành Goblin bơi
                     if(e == 1 && getCurrentMap() == 4) 
 					    typeEnemy = 4;
+                    // Đổi enemy 3 -> goblin khi ở map 1
+                    if (e == 3 && getCurrentMap() == 1)
+                        typeEnemy = 5;
 
                     for (int i = 0; i < mapSetup[e]; i++) {                    
                         manager.enemyManager.addEnemy(EnemyFactory::createEnemy(typeEnemy, rand() % nofpath));
@@ -631,7 +653,18 @@ namespace towerdefense
             renderTowerType2->render(hdc);
             pickedTowerType3->render(hdc);
             renderTowerType3->render(hdc);
+
             manager.render(hdc);
+
+            // ---------------------- SCORE GAME -------------------------------------
+            _scoreBoard->render(hdc);
+            string scoreStr = "Score: " + to_string(manager.getPoint());
+            _scoreGame = make_shared<TextElement>(Utils::stringToWstring(scoreStr), boldFont, RGB(255, 255, 255), scorePos);
+
+            _scoreGame->render(hdc);
+
+            // =========================================================================
+
 
             // nếu được nhấn thì đổi trạng thái
             //if (_playOrPause->getTriger()) {
@@ -682,6 +715,7 @@ namespace towerdefense
                 _health->setPosition({ i * 25 + firstHealthPos.x + 35, firstHealthPos.y + 10 });
                 _health->render(hdc);
             }
+
         }
 
         // ------ END RENDER -----

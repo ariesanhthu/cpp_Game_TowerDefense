@@ -124,7 +124,7 @@ void Leaderboard::loadLeaderBoard()
         return;
     }
     sortUserByScore(); // sort
-    int numberUser = min(users.size() - 1, 5);
+    int numberUser = min(users.size() - 1, 4);
     // ---------------------------------------------------------------
 
     for (size_t i = 0; i <= numberUser; ++i)
