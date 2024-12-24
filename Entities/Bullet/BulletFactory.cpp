@@ -31,9 +31,10 @@ shared_ptr<BulletBase> BulletFactory::createBullet(const int& type, shared_ptr<E
 }
 
 void BulletFactory::createModels() {
-    Models.push_back(make_shared<BulletModel>(1, 15));
-    Models.push_back(make_shared<BulletModel>(1, 20));
-    Models.push_back(make_shared<BulletModel>(1, 30));
+    // dame, speed
+    Models.push_back(make_shared<BulletModel>(1, 10));
+    Models.push_back(make_shared<BulletModel>(2, 10));
+    Models.push_back(make_shared<BulletModel>(3, 15));
 }
 void BulletFactory::deleteModels() {
     //for (auto model : Models)

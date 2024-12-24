@@ -21,6 +21,9 @@ vector<shared_ptr<EnemyModel>> EnemyFactory::Models;
     else if (type == 4) {
         tmp =  make_shared<EnemyBase>(resource.getResource("enemy4"), 0.6, Models[0], path);
     }
+    else if (type == 5) {
+        tmp = make_shared<EnemyBase>(resource.getResource("enemy5"), 0.6, Models[0], path);
+    }
     else {
         throw invalid_argument("Unknown enemy type");
     }
@@ -32,9 +35,11 @@ vector<shared_ptr<EnemyModel>> EnemyFactory::Models;
 }
  // TINH CHỈNH THÔNG SỐ SPEED VÀ HP
 void EnemyFactory::createModels(vector<vector<cpoint>> path) {
-    Models.push_back(make_shared<EnemyModel>(2, 5));  // small 
-    Models.push_back(make_shared<EnemyModel>(5, 10)); // big
-    Models.push_back(make_shared<EnemyModel>(4, 30)); // boss
+    Models.push_back(make_shared<EnemyModel>(4, 25));  // small 
+    Models.push_back(make_shared<EnemyModel>(7, 50)); // big
+    Models.push_back(make_shared<EnemyModel>(1, 75)); // boss
+    //Models.push_back(make_shared<EnemyModel>(10, 10)); // random
+    //Models.push_back(make_shared<EnemyModel>(10, 10)); // random
     Models[0]->calculatePath(path);
     Models[1]->calculatePath(path);
     Models[2]->calculatePath(path);
@@ -45,3 +50,4 @@ void EnemyFactory::deleteModels() {
         delete model;*/
     Models.clear();
 }
+

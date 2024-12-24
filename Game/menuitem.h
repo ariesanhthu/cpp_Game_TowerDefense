@@ -22,6 +22,7 @@ private:
     HBITMAP hover;
     HBITMAP clicked = nullptr;
     bool isClicking = false;
+    bool enable = true;
     POINT buttonPosHover = {position.x - 12, position.y - 14};
 
 
@@ -98,6 +99,14 @@ public:
 
         // Set the calculated hover position
         this->buttonPosHover = hoverPos;
+    }
+
+    bool isEnabled() {
+        return enable;
+    }
+
+    void setEnabled(bool t) {
+        enable = t;
     }
 
 };

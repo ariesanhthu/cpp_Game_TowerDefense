@@ -52,7 +52,7 @@ namespace towerdefense
         std::shared_ptr<Button> _sett;
         std::shared_ptr<Button> _exit;
         std::shared_ptr<Button> _about;
-        std::shared_ptr<Popup> popup;
+        std::shared_ptr<Item> popup;
 
         std::shared_ptr<Button> _map1;
         std::shared_ptr<Button> _map2;
@@ -71,7 +71,6 @@ namespace towerdefense
 
         //std::vector<shared_ptr<ContinueElement>> _ListContinueItem;
         std::vector<std::shared_ptr<ContinueElement>> _FourContinueItem;
-        std::vector<std::shared_ptr<ContinueElement>> _FourLeaderBoardItem;
 
         
         std::shared_ptr<SaveGameSupport> supSaveGame;

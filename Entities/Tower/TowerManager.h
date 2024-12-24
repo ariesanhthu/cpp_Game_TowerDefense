@@ -19,6 +19,10 @@ public:
 
     void setLoadTower(std::vector<shared_ptr<TowerBase>>);
 
+
+    void setNOfTower(int x);
+    int getNOfTower();
+
 private:
     std::vector<shared_ptr<TowerBase>> towers_;
     int nOfTower = 5;

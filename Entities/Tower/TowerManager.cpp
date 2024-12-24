@@ -67,3 +67,10 @@ void TowerManager::setLoadTower(std::vector<shared_ptr<TowerBase>> listtower) {
 	}
 }
 
+void TowerManager::setNOfTower(int x) {
+	this->nOfTower = x;
+}
+int TowerManager::getNOfTower() {
+	return nOfTower;
+}
+
