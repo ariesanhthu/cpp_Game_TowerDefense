@@ -6,8 +6,13 @@ MAP 1:
 17 enemies
 
 5 enemy slime
+<<<<<<< HEAD
 4 enemy mush 
 8 enemy zombie
+=======
+4 enemy mushroom 
+1 enemy skeleton
+>>>>>>> limitTower
 
 số tháp tối đa: 5
 ==================================
@@ -20,7 +25,11 @@ MAP 2:
 17 enemies 
 
 7 enemy slime 
+<<<<<<< HEAD
 7 enemy mush 
+=======
+7 enemy mushroom 
+>>>>>>> limitTower
 3 enemy boss
 
 số tháp tối đa: 8

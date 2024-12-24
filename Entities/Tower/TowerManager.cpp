@@ -8,9 +8,27 @@ void TowerManager::addTower(TowerModel* model, cpoint pos) {
 
 }
 void TowerManager::addTower(shared_ptr<TowerBase> tower) {
-	if (nOfTower --> 0)
-		towers_.push_back(tower);
+	//towers_.push_back(tower);
+
+	for (int i = 0; i < MaxOfEachType.size(); i++) {
+		if (tower->getType() == i) {
+			if (NOfEachType[i] < MaxOfEachType[i]) {
+				towers_.push_back(tower);
+				NOfEachType[i]++;
+				break;
+			}
+		}
+	}
+
 }
+void TowerManager::setNOfTowerType(vector<int> _NOfTowerType) {
+	MaxOfEachType = _NOfTowerType;
+	NOfEachType.resize(MaxOfEachType.size());
+	for (auto i : NOfEachType) {
+		i = 0;
+	}
+}
+
 void TowerManager::renderTowers(HDC hdc) {
 	for (auto t : towers_) {
 		t->render(hdc);

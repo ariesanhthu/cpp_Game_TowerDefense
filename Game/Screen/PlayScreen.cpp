@@ -29,9 +29,9 @@ namespace towerdefense
 
         mapSetup = { 3, 5, 4, 8 };
 
-        loadstatus = _loadstatus;
+        towerSetupMaxType = { 3,2,1 };
 
-        //manager.enemyManager.setNOfPhase(3);
+        loadstatus = _loadstatus;
 
         GamePlaySetup();
     }
@@ -72,9 +72,7 @@ namespace towerdefense
         
         mapSetup = { 3, 7, 7, 3 };
 
-        manager.towerManager.setNOfTower(8);
-
-        //manager.enemyManager.setNOfPhase(5);
+        towerSetupMaxType = { 4,3,2 };
                 
         loadstatus = _loadstatus;
 
@@ -119,7 +117,8 @@ namespace towerdefense
         };
         mapSetup = { 3, 7, 3, 3 };
 
-        manager.towerManager.setNOfTower(12);
+        towerSetupMaxType = { 5,4,3 };
+
 
         loadstatus = _loadstatus;
 
@@ -165,7 +164,8 @@ namespace towerdefense
 
         mapSetup = {3, 15, 15, 15};
 
-        manager.towerManager.setNOfTower(20);
+        towerSetupMaxType = { 6,5,4 };
+
 
         loadstatus = _loadstatus;
 
