@@ -5,8 +5,8 @@ MAP 1:
 3 phase
 10 enemies
 
-5 enemy zombie
-4 enemy slime 
+5 enemy slime
+4 enemy mushroom 
 1 enemy skeleton
 
 số tháp tối đa: 5
@@ -19,8 +19,8 @@ MAP 2:
 3 phase 
 17 enemies 
 
-7 enemy zombie 
 7 enemy slime 
+7 enemy mushroom 
 3 enemy boss
 
 số tháp tối đa: 8

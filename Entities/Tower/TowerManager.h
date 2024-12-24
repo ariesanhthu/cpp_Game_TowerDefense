@@ -23,8 +23,14 @@ public:
     void setNOfTower(int x);
     int getNOfTower();
 
+    void setNOfTowerType(vector<int> setType);
+
 private:
     std::vector<shared_ptr<TowerBase>> towers_;
+
+    vector<int> MaxOfEachType = { 3, 2, 1 }; //test
+    vector<int> NOfEachType = { 0, 0, 0 };   // test
+
     int nOfTower = 5;
 };
 
