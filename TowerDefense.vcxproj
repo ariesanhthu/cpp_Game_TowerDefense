@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Manager\ThreadManager.cpp" />
     <ClCompile Include="User\Leaderboard.cpp" />
     <ClCompile Include="Manager\EventManager.cpp" />
     <ClCompile Include="Manager\AudioManager.cpp" />
@@ -195,7 +196,7 @@
     <ClInclude Include="Game\Screen\MainScreen.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Game\menuitem.h" />
-    <ClInclude Include="Game\ThreadManager.h" />
+    <ClInclude Include="Manager\ThreadManager.h" />
     <ClInclude Include="Graphics\Graphic.h" />
     <ClInclude Include="Game\Screen\ScreenManager.h" />
     <ClInclude Include="Game\Screen\Screen.h" />
