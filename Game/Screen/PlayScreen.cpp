@@ -27,10 +27,11 @@ namespace towerdefense
             }
         };
 
-        mapSetup = { 3,5,4,1 };
+        mapSetup = { 3, 5, 4, 1 };
 
         loadstatus = _loadstatus;
 
+        //manager.enemyManager.setNOfPhase(3);
 
         GamePlaySetup();
     }
@@ -68,8 +69,13 @@ namespace towerdefense
             } //, Thêm path vào sau đây
         };
 
-        mapSetup = { 3,5,4,1 };
         
+        mapSetup = { 3, 7, 7, 3 };
+
+        manager.towerManager.setNOfTower(8);
+
+        //manager.enemyManager.setNOfPhase(5);
+                
         loadstatus = _loadstatus;
 
         GamePlaySetup();
@@ -111,7 +117,9 @@ namespace towerdefense
                 { 1200, 450 }
             }
         };
-        mapSetup = { 3,5,4,1 };
+        mapSetup = { 3, 7, 3, 3 };
+
+        manager.towerManager.setNOfTower(12);
 
         loadstatus = _loadstatus;
 
@@ -155,7 +163,9 @@ namespace towerdefense
 	        }
         };
 
-        mapSetup = {3, 10, 10, 10};
+        mapSetup = {3, 15, 15, 15};
+
+        manager.towerManager.setNOfTower(20);
 
         loadstatus = _loadstatus;
 

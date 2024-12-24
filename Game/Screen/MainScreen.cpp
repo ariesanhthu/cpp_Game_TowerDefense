@@ -52,7 +52,7 @@ namespace towerdefense
         _exit = std::make_shared<Button>(L"Assets/button/btnExit.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[4]);
         _about = std::make_shared<Button>(L"Assets/button/aboutBtn.png", L"Assets/button/selectbox.bmp", 2, buttonPositions[5]);
 
-        popup = std::make_shared<Popup>(L"Assets/board/board.bmp", 3, initpoint, endpoint);
+        popup = std::make_shared<Item>(L"Assets/board/board.bmp", 3, endpoint);
 
         _map1 = std::make_shared<Button>(L"Assets/map_resize/map1_scaleDown.bmp", L"Assets/board/border.bmp", 3, optionPositionsEnd[0]);
         _map2 = std::make_shared<Button>(L"Assets/map_resize/map2_scaleDown.bmp", L"Assets/board/border.bmp", 3, optionPositionsEnd[1]);
@@ -237,6 +237,8 @@ namespace towerdefense
                         menu = 101;
                         popup->setTriger(true);
                     }
+
+                    
                 }
             }
         }
@@ -248,8 +250,8 @@ namespace towerdefense
         if (_boardHowToPlay->getTriger() == true) _boardHowToPlay->startAnimation();
         else _boardHowToPlay->setPosition(initpoint);
         // ------------------------------------------------------------------------
-        if (popup->getTriger() == true) popup->startAnimation();
-        else popup->setPosition(initpoint);
+        //if (popup->getTriger() == true) popup->startAnimation();
+        //else popup->setPosition(initpoint);
 
         // ===============================================================================
 
@@ -361,9 +363,9 @@ namespace towerdefense
         }
         // ---------------------------------------------------------
 
-        if (popup && !popup->isFinished()) {
+       /* if (popup && !popup->isFinished()) {
             popup->update(delta);
-        }
+        }*/
     }
 
     void MainScreen::render(HDC hdc) {
@@ -378,7 +380,10 @@ namespace towerdefense
         _exit->render(hdc);
         _about->render(hdc);
         _login->render(hdc);
-        popup->render(hdc);
+        
+        if (popup->getTriger()) {
+            popup->render(hdc);
+        }
 
         // -------------------------------------------------------------
         // ĐỂ TẠM THỜI
@@ -399,12 +404,13 @@ namespace towerdefense
             _switchOffAudio->setTriger(true);
         }
         // -----------------------------------------------------------------
+        
 
         if (menu == 0) {
 
         }
         else {
-            if (popup->isFinished()) {
+            //if (popup->getTriger()) {
                 if (menu == 1) {
                     if (_map1->getTriger()) {
                         _map1->render(hdc);
@@ -421,15 +427,12 @@ namespace towerdefense
                         }
                     }
 
-        }
-        else if (menu == 3) {
-            /*for (auto i : _FourLeaderBoardItem) {
-                i->render(hdc);
-            }*/
-            auto& leaderBoard = Leaderboard::getInstance();
-            leaderBoard.render(hdc);
-        }
-        else if (menu == 4) {
+            }
+            else if (menu == 3) {
+                auto& leaderBoard = Leaderboard::getInstance();
+                leaderBoard.render(hdc);
+            }
+            else if (menu == 4) {
 
                     //_VolumeButton->render(hdc);
                     TitleSetting->render(hdc);
@@ -475,9 +478,9 @@ namespace towerdefense
                     _inputName->render(hdc);
                     _inputPassword->render(hdc);
                 }
-        }
+            }
 
-        }
+        //}
         // HOW TO PLAY
         auto& gameManager = GameManager::getInstance();
         if (!gameManager.isFirstStartGame() || _boardHowToPlay->getTriger())

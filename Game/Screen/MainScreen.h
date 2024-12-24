@@ -52,7 +52,7 @@ namespace towerdefense
         std::shared_ptr<Button> _sett;
         std::shared_ptr<Button> _exit;
         std::shared_ptr<Button> _about;
-        std::shared_ptr<Popup> popup;
+        std::shared_ptr<Item> popup;
 
         std::shared_ptr<Button> _map1;
         std::shared_ptr<Button> _map2;
