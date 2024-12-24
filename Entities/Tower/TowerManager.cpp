@@ -4,28 +4,18 @@ void TowerManager::addTower(TowerModel* model, cpoint pos) {
 
 }
 void TowerManager::addTower(shared_ptr<TowerBase> tower) {
-	
-	string message = "";
+	//towers_.push_back(tower);
 
 	for (int i = 0; i < MaxOfEachType.size(); i++) {
-		message += "type: " + to_string(tower->getType()) + "\n";
 		if (tower->getType() == i) {
-			NOfEachType[i]++;
-		}
-		if (NOfEachType[i] > MaxOfEachType[i]) {
-
-			message += to_string(NOfEachType[i]) + " " + to_string(MaxOfEachType[i]) + "\n";
-
-			return; 
-		}
-		else {
-			message += "3\n";
-
-			towers_.push_back(tower);
+			if (NOfEachType[i] < MaxOfEachType[i]) {
+				towers_.push_back(tower);
+				NOfEachType[i]++;
+				break;
+			}
 		}
 	}
 
-	OutputDebugStringA(message.c_str());
 }
 void TowerManager::setNOfTowerType(vector<int> _NOfTowerType) {
 	MaxOfEachType = _NOfTowerType;

@@ -35,7 +35,8 @@ namespace towerdefense
         // --- SETUP ---
         vector<vector<cpoint>> path;
         vector<int> mapSetup;
-        int nOfTower = 5; // defaul number of Tower
+        vector<int> towerSetupMaxType;
+        //int nOfTower = 5; // defaul number of Tower
         // -------------
 
         GameState statePlayingGame = PAUSE;
@@ -474,6 +475,7 @@ namespace towerdefense
                 );
 
                 manager.setupEnemy(path);
+                manager.towerManager.setNOfTowerType(towerSetupMaxType);
 
                 //----------------
                 int nofpath = path.size();
@@ -508,6 +510,8 @@ namespace towerdefense
 
                 manager.setupEnemy(path);
                 manager.enemyManager.setup(mapSetup);
+                manager.towerManager.setNOfTowerType(towerSetupMaxType);
+
 
                 std::shared_ptr<SaveGameSupport> supsave;
                 SaveGame game_saving = supsave->readMapInfo(getCurrentMap());
