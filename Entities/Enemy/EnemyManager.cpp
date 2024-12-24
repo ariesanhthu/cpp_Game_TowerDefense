@@ -44,7 +44,7 @@ void EnemyManager::updateAllEnemy(float delta) {
     }
 
     // update remain e
-    int gameHP = gameHPDefaul;
+    gameHP = gameHPDefaul;
     for (int i = 0; i < spawnedEnemy; i++) {
         //if (enemies_[i]->getHealth() > 0) {
         if (enemies_[i]->getHealth() > 0) {
@@ -92,11 +92,11 @@ std::vector<shared_ptr<EnemyBase>> EnemyManager::getAllEnemy() const {
 }
 
 int EnemyManager::getUserHP() {
-    return gameHPDefaul;
+    return gameHP;
 }
 
 void EnemyManager::setUserHP(int x) {
-    this->gameHPDefaul = x;
+    this->gameHP = x;
 }
 
 

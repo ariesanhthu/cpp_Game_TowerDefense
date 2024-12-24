@@ -68,11 +68,6 @@ namespace towerdefense
         // win game 
         std::shared_ptr<Item> _winBoard; 
 
-        // health 
-        std::shared_ptr<Item> _health; 
-
- 
-
         // PAUSE BOARD
         //std::shared_ptr<Item> _pauseBoard;
 
@@ -110,6 +105,11 @@ namespace towerdefense
         std::chrono::steady_clock::time_point lastMouseClickTime;
         std::chrono::steady_clock::time_point lastKeyPressTime;
         const int debounceDelayMs = 200; // 200 ms debounce delay
+
+        // health 
+        std::shared_ptr<Item> _health;
+        int curHealth = 5;
+        POINT firstHealthPos = { towerInitPos.x, towerInitPos.y };
 
         GamePlayManage manager;
 
@@ -177,7 +177,9 @@ namespace towerdefense
 
             _ExitHouse = std::make_shared<Button>(L"Assets/button/HomeBtn.png", L"Assets/button/selectbox.bmp", 2, exitDirectPos);
 
-            _exitBoard = std::make_shared<Item>(L"Assets/game/info/BoardWin.png", 1, boardYesNoPos);
+            _exitBoard = std::make_shared<Item>(L"Assets/game/info/BoardGotoHome.png", 1.3f , boardYesNoPos);
+            _health = std::make_shared<Item>(L"Assets/game/Heart.png", 1.5f, towerInitPos);
+
 
             // Gọi hàm riêng (abstract)
             loadSpecificContent(width, height);
@@ -413,7 +415,9 @@ namespace towerdefense
                 _exitBoard->setTriger(true);
             }
 
+
             if (statePlayingGame != PLAY) return;
+            curHealth = manager.enemyManager.getUserHP();
 
             //----------- WIN GAME -----------
             if (manager.getGameStatus() == WIN) {
@@ -639,14 +643,11 @@ namespace towerdefense
             //    _playOrPause->render(hdc);
             //}
 
-            if (statePlayingGame == PLAY) {
+            if (statePlayingGame == PLAY || statePlayingGame == WIN || statePlayingGame == LOSE || statePlayingGame == EXIT) {
+                _pause->render(hdc);
+            }
+            else if (statePlayingGame == PAUSE) {
                 _play->render(hdc);
-            }
-            else if (statePlayingGame == PAUSE || statePlayingGame == WIN || statePlayingGame == LOSE) {
-                _pause->render(hdc);
-            }
-            else if (statePlayingGame == EXIT) {
-                _pause->render(hdc);
             }
 
             _ExitHouse->render(hdc);
@@ -675,6 +676,11 @@ namespace towerdefense
                 _exitBoard->render(hdc);
                 _noBtn->render(hdc);
                 _yesBtn->render(hdc);
+            }
+
+            for (int i = 0; i < curHealth; i++) {
+                _health->setPosition({ i * 25 + firstHealthPos.x + 35, firstHealthPos.y + 10 });
+                _health->render(hdc);
             }
         }
 

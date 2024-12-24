@@ -56,14 +56,14 @@ số tháp tối đa: 20
 
 file BullletFactory
 thông số đạn theo (dame, speed)
-(1, 10)
-(2, 10)
-(3, 15)
+(1, 7)
+(2, 7)
+(3, 10)
 
 file EnemyFactory
 thông số enemy theo (speed, health)
-(4, 5)
-(7, 5)
+(2, 5)
+(3, 5)
 (1, 20)
 
 file bulletFactory

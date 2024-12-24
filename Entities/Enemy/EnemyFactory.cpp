@@ -35,8 +35,8 @@ vector<shared_ptr<EnemyModel>> EnemyFactory::Models;
 }
  // TINH CHỈNH THÔNG SỐ SPEED VÀ HP
 void EnemyFactory::createModels(vector<vector<cpoint>> path) {
-    Models.push_back(make_shared<EnemyModel>(4, 25));  // small 
-    Models.push_back(make_shared<EnemyModel>(7, 50)); // big
+    Models.push_back(make_shared<EnemyModel>(3, 25));  // small 
+    Models.push_back(make_shared<EnemyModel>(4, 50)); // big
     Models.push_back(make_shared<EnemyModel>(1, 75)); // boss
     //Models.push_back(make_shared<EnemyModel>(10, 10)); // random
     //Models.push_back(make_shared<EnemyModel>(10, 10)); // random

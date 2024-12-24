@@ -151,6 +151,9 @@ void EnemyBase::render(HDC hdc) {
 }
 
 void EnemyBase::hit(int n){
+
+	//towerdefence::AudioManager::getInstance().isBackgroundMusicPlaying = false;
+
 	if (health < n) onRoad = false;
 	health -= n;
 }

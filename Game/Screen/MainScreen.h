@@ -153,8 +153,6 @@ namespace towerdefense
         POINT AudioButtonPos = { 0, 0 };*/
 
 		// --------------------------------------------------
-        POINT FirstContinueItem = { 300, 120 };
-
         // Thiết lập 3 vị trí để popup board
         POINT initpoint, endpoint;
 

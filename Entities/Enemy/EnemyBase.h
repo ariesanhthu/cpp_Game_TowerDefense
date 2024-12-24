@@ -7,6 +7,7 @@
 #include "EnemyModel.h"
 #include "Graphic.h"
 #include "UIElement.h"
+#include "Manager/AudioManager.h"
 
 class EnemyBase : public UIElement
 {
