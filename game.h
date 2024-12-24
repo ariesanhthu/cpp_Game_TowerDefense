@@ -16,9 +16,13 @@
 #include "Screen/PlayScreen.h"
 #include "Utils.h"
 
+// ------------------------------
 #include "AudioManager.h"
 #include "FontManager.h"
 
+//#include "ThreadManager.h"
+
+//#include "EventManager.h"
 
 #define WM_CUSTOM_LOAD_SCREEN (WM_USER + 1)
 using namespace std;

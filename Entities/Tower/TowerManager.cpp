@@ -1,4 +1,8 @@
-#include "TowerManager.h"
+﻿#include "TowerManager.h" // Header định nghĩa TowerManager
+//#include "EventManager.h"// Header của EventManager
+//#include "GameEvent.h"    // Header của GameEvent
+#include "AudioManager.h"
+
 
 void TowerManager::addTower(TowerModel* model, cpoint pos) {
 
@@ -41,6 +45,17 @@ void TowerManager::updateAllTower(std::vector<shared_ptr<EnemyBase>>& enemies_, 
 			if (e != NULL) {
 				e->hit(bullet->getDame());
 				bullet->setVisible(false);
+
+				//  =========================== EVENT HIT =======================================
+
+				/*auto& audioManager = towerdefense::AudioManager::getInstance();
+				audioManager.playSoundEffect("explosion");*/
+
+				/*auto& eventManager = towerdefense::EventManager::getInstance();
+				eventManager.triggerEvent(GameEvent::Hit);*/
+				
+
+				//======================================================================================
 			}
 
 			tower->setBullet(bullet);

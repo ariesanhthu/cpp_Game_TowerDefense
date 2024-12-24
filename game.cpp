@@ -4,6 +4,9 @@ namespace towerdefense
 {
 	auto& audioManager = AudioManager::getInstance();
 	auto& fontManager = FontManager::getInstance();
+    //ThreadManager& threadManager = ThreadManager::getInstance();
+
+    //auto& eventManager = EventManager::getInstance();
 
     //==========================================================
     // CALLBACK
@@ -26,8 +29,10 @@ namespace towerdefense
             graphic = new Graphic();
 
             // ----------------- Load audio --------------------
-
 			audioManager.getInstance().playBackgroundMusic();
+            audioManager.setupAudio();
+
+            //eventManager.setupEventListeners();
 
 
             // ----------------- Load font --------------------
@@ -48,6 +53,7 @@ namespace towerdefense
             
 
             Game::getInstance().running = false; // Dừng game
+
             OutputDebugString(L"window close\n");
         } break;
         
@@ -59,6 +65,7 @@ namespace towerdefense
 
             // Dừng game
             Game::getInstance().running = false; 
+
             OutputDebugString(L"window destroy\n");
         } break;
         // ---------------------------------------------------------------------------------------
@@ -178,70 +185,74 @@ namespace towerdefense
             QueryPerformanceFrequency(&cpu_frequency);
             LARGE_INTEGER last_counter;
             QueryPerformanceCounter(&last_counter);
+            //---------------------------------------------------------------------
 
-            while (running) // Vòng lặp game chính
-            {
-                // Tính delta time
-                LARGE_INTEGER current_counter;
-                QueryPerformanceCounter(&current_counter);
-                int64_t counter_elapsed = current_counter.QuadPart - last_counter.QuadPart;
-                float delta = (float)counter_elapsed / (float)cpu_frequency.QuadPart; // Thời gian giữa hai frame
-                last_counter = current_counter;
-
-                auto frameStart = std::chrono::high_resolution_clock::now();
-
-                // Xử lý các sự kiện Windows
-                MSG message;
-                if (PeekMessage(&message, 0, 0, 0, PM_REMOVE))
+                while (running) // Vòng lặp game chính
                 {
-                    if (message.message == WM_QUIT)
-                        running = false;
-                    TranslateMessage(&message);
-                    DispatchMessage(&message); // Gửi thông điệp đến WindowCallback
+                     //Tính delta time
+
+                    LARGE_INTEGER current_counter;
+                    QueryPerformanceCounter(&current_counter);
+                    int64_t counter_elapsed = current_counter.QuadPart - last_counter.QuadPart;
+                    float delta = (float)counter_elapsed / (float)cpu_frequency.QuadPart; // Thời gian giữa hai frame
+                    last_counter = current_counter;
+
+                    auto frameStart = std::chrono::high_resolution_clock::now();
+
+                     //Xử lý các sự kiện Windows
+                    MSG message;
+                    if (PeekMessage(&message, 0, 0, 0, PM_REMOVE))
+                    {
+                        if (message.message == WM_QUIT)
+                            running = false;
+
+                        TranslateMessage(&message);
+                        DispatchMessage(&message); // Gửi thông điệp đến WindowCallback
+                    }
+                    else
+                    {
+                        auto start = std::chrono::high_resolution_clock::now();
+
+                        HDC hdc = GetDC(windowHandle); // Lấy ngữ cảnh thiết bị từ cửa sổ
+                        HDC bufferDC = CreateCompatibleDC(hdc); // Tạo DC tương thích để vẽ vào bộ đệm
+
+                        // Tạo một bitmap để làm bộ đệm
+                        RECT clientRect;
+                        GetClientRect(windowHandle, &clientRect);
+                        int width = clientRect.right - clientRect.left;
+                        int height = clientRect.bottom - clientRect.top;
+
+                        HBITMAP bufferBitmap = CreateCompatibleBitmap(hdc, width, height);
+                        HBITMAP oldBitmap = (HBITMAP)SelectObject(bufferDC, bufferBitmap); // Gắn bitmap vào DC bộ đệm
+
+                        // Xóa bộ đệm trước khi vẽ
+                        HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0)); // Màu nền (đen)
+                        FillRect(bufferDC, &clientRect, brush);
+                        DeleteObject(brush);
+
+                        // Vẽ vào bộ đệm
+                        // inputHadle
+                        // update
+                        // render
+                        //screenManager->handleInput(windowHandle);
+
+                        screenManager->update(delta);  // Cập nhật logic của màn hình
+                        screenManager->render(bufferDC); // Vẽ màn hình vào DC bộ đệm
+                        screenManager->handleInput(windowHandle);
+                         //Copy nội dung từ bộ đệm ra màn hình
+                        BitBlt(hdc, 0, 0, width, height, bufferDC, 0, 0, SRCCOPY);
+
+                        // Giải phóng tài nguyên
+                        SelectObject(bufferDC, oldBitmap);
+                        DeleteObject(bufferBitmap);
+                        DeleteDC(bufferDC);
+                        ReleaseDC(windowHandle, hdc);
+
+                        auto end = std::chrono::high_resolution_clock::now();
+                        std::this_thread::sleep_for(std::chrono::milliseconds(16) - (end - start));
+                    }
                 }
-                else
-                {
-                    auto start = std::chrono::high_resolution_clock::now();
-
-                    HDC hdc = GetDC(windowHandle); // Lấy ngữ cảnh thiết bị từ cửa sổ
-                    HDC bufferDC = CreateCompatibleDC(hdc); // Tạo DC tương thích để vẽ vào bộ đệm
-
-                    // Tạo một bitmap để làm bộ đệm
-                    RECT clientRect;
-                    GetClientRect(windowHandle, &clientRect);
-                    int width = clientRect.right - clientRect.left;
-                    int height = clientRect.bottom - clientRect.top;
-
-                    HBITMAP bufferBitmap = CreateCompatibleBitmap(hdc, width, height);
-                    HBITMAP oldBitmap = (HBITMAP)SelectObject(bufferDC, bufferBitmap); // Gắn bitmap vào DC bộ đệm
-
-                    // Xóa bộ đệm trước khi vẽ
-                    HBRUSH brush = CreateSolidBrush(RGB(0, 0, 0)); // Màu nền (đen)
-                    FillRect(bufferDC, &clientRect, brush);
-                    DeleteObject(brush);
-
-                    // Vẽ vào bộ đệm
-                    // inputHadle
-                    // update
-                    // render
-                    screenManager->handleInput(windowHandle);
-                    screenManager->update(delta);  // Cập nhật logic của màn hình
-                    screenManager->render(bufferDC); // Vẽ màn hình vào DC bộ đệm
-
-                    // Copy nội dung từ bộ đệm ra màn hình
-                    BitBlt(hdc, 0, 0, width, height, bufferDC, 0, 0, SRCCOPY);
-
-                    // Giải phóng tài nguyên
-                    SelectObject(bufferDC, oldBitmap);
-                    DeleteObject(bufferBitmap);
-                    DeleteDC(bufferDC);
-                    ReleaseDC(windowHandle, hdc);
-
-                    auto end = std::chrono::high_resolution_clock::now();
-                    std::this_thread::sleep_for(std::chrono::milliseconds(16) - (end - start));
-                }
-            }
-        }
+        }// if windowHandle
         else
         {
             OutputDebugString(L"Failed to create a window\n");

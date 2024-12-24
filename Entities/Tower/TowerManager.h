@@ -5,7 +5,6 @@
 #include"TowerModel.h"
 #include"TowerBase.h"
 #include"TowerFactory.h"
-
 class TowerManager
 {
 public:

@@ -8,6 +8,7 @@
 
 //#include "EventManager.h"
 
+#include <mutex>
 using namespace std;
 
 namespace towerdefense
@@ -15,17 +16,19 @@ namespace towerdefense
     class AudioManager
     {
     private:
+        std::mutex audioMutex;
         std::map<std::string, std::wstring> soundEffects; // Map lưu trữ đường dẫn của các hiệu ứng âm thanh
         std::wstring backgroundMusic; // Đường dẫn nhạc nền
         float masterVolume; // Âm lượng tổng
         float effectVolume; // Âm lượng hiệu ứng
         float musicVolume; // Âm lượng nhạc nền
-
+        std::thread musicThread;
         AudioManager(); // Constructor riêng tư để đảm bảo Singleton
         ~AudioManager();
 
     public:
-		bool isBackgroundMusicPlaying = true; // Trạng thái phát nhạc nền
+        std::atomic<bool> isBackgroundMusicPlaying{ true };
+		//bool isBackgroundMusicPlaying = true; // Trạng thái phát nhạc nền
         // Singleton instance
         static AudioManager& getInstance();
 
@@ -44,32 +47,10 @@ namespace towerdefense
         void setMusicVolume(float volume); // Cài đặt âm lượng nhạc nền
 
         // Thêm đường dẫn sound
-        void setupAudio()
-        {
-            auto& audio = AudioManager::getInstance();
-
-            // Tải các hiệu ứng âm thanh
-            audio.loadSoundEffect("shoot", L"sounds/shoot.wav");
-            audio.loadSoundEffect("explosion", L"sounds/explosion.wav");
-
-            // Đặt nhạc nền
-            audio.setBackgroundMusic(L"sounds/background.wav");
-        }
+        void setupAudio();
         // ======================================================
-        float getMusicVolume() const { return musicVolume; } // Lấy âm lượng nhạc nền
-
-        void adjustMusicVolume(float delta)
-        {
-            musicVolume += delta;
-            if (musicVolume > 1.0f)
-            {
-                musicVolume = 1.0f; // Giới hạn tối đa
-            }
-            else if (musicVolume < 0.0f)
-            {
-                musicVolume = 0.0f; // Giới hạn tối thiểu
-            }
-        }
+        float getMusicVolume() const;
+        void adjustMusicVolume(float delta);
 		// ======================================================
 
         //void setupAudioListeners();
