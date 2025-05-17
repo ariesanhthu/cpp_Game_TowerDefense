@@ -83,7 +83,7 @@ This method ensures that images are efficiently loaded and managed within the Wi
 * **Team Members**:
 
   * Trần Hải Đức
-  * Bùi Quang Hưng
+  * Bùi Quang Hùng
 
 ## 📄 License
 
