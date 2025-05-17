@@ -1,7 +1,3 @@
-Certainly! Here's an updated `README.md` for your GitHub repository, incorporating details about the use of WinAPI32 for UI image loading, project contributors, and your instructor:
-
----
-
 # Tower Defense Game (C++ OOP Project)
 
 This is a C++ tower defense game developed as a final project for the Object-Oriented Programming (OOP) course at the University of Science, VNU-HCM (HCMUS). The project showcases principles of object-oriented design, including encapsulation, inheritance, and polymorphism, applied in a game development context.
