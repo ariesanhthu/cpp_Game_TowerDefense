@@ -1,44 +1,51 @@
-# Tower Defense Game (C++ OOP Project)
+Tower Defense Game (C++ OOP Project with WinAPI & Design Patterns)
+This is a C++ tower defense game developed as a final project for the Object-Oriented Programming (OOP) course at the University of Science, VNU-HCM (HCMUS). The project demonstrates the use of Object-Oriented Design Principles along with classic design patterns, and utilizes WinAPI32 for UI rendering and image handling.
 
-This is a C++ tower defense game developed as a final project for the Object-Oriented Programming (OOP) course at the University of Science, VNU-HCM (HCMUS). The project showcases principles of object-oriented design, including encapsulation, inheritance, and polymorphism, applied in a game development context.
+🎮 Game Overview
+Players must place towers strategically to stop waves of enemies from reaching their destination along a predefined path. Each tower and enemy type features unique behaviors and attributes, requiring the player to think critically and adapt their strategy.
 
-## 🎮 Game Overview
+🧱 Architecture & Design Patterns
+This project was built following modular architecture and applies common design patterns including:
 
-In this game, players strategically place towers to defend against waves of enemies following a predetermined path. Each tower type has unique attributes, and enemies vary in speed and health. The objective is to prevent enemies from reaching the end of the path by effectively utilizing different tower types and placements.
+Singleton – for central game state management and configuration
 
-## 🧱 Project Structure
+Factory Method – to create different types of towers and enemies
 
-The project is organized into several modules to promote modularity and maintainability:
+Strategy – for defining tower attack behaviors
 
-* **Assets/**: Contains game assets such as images and sounds.
-* **Entities/**: Defines core game entities like towers and enemies.
-* **Game/**: Manages the main game loop and overall game state.
-* **Graphics/**: Handles rendering and graphical user interface components.
-* **Manager/**: Includes classes responsible for managing game resources and events.
-* **Storage/**: Manages data storage, including saving and loading game states.
-* **User/**: Handles user input and interactions.([Wikipedia][1])
+Observer – for UI updates and game state notifications
 
-Key files include:
+MVC Pattern – separating game logic, rendering, and user input
 
-* `TowerDefense.cpp` / `TowerDefense.h`: Main application entry point and core logic.
-* `game.cpp` / `game.h`: Implements the game loop and game state management.
-* `Utils.cpp` / `Utils.h`: Provides utility functions used throughout the project.
+📁 Project Structure
+bash
+Sao chép
+Chỉnh sửa
+cpp_Game_TowerDefense/
+├── Assets/        # Images, sounds
+├── Entities/      # Tower, Enemy base classes & derived types
+├── Game/          # Main game controller and loop
+├── Graphics/      # UI rendering with WinAPI
+├── Manager/       # GameManager, ResourceManager, etc.
+├── Storage/       # Save/load game state
+├── User/          # Input handling, player interaction
+├── TowerDefense.sln
+└── ...
+Key Files
+TowerDefense.cpp / .h – Entry point, application control
 
-## 🛠️ Features
+game.cpp / .h – Main game loop, scene control
 
-* Multiple tower types with distinct behaviors and upgrade paths.
-* Varied enemy types with different attributes.
-* Graphical user interface for interactive gameplay.
-* Sound effects to enhance the gaming experience.
-* Save and load functionality for game states.([Microsoft Learn][2])
+Utils.cpp / .h – Utility functions (math, file I/O, etc.)
 
-## 🖼️ UI and Image Handling
+🖼️ UI and Image Rendering (WinAPI32)
+The graphical user interface (GUI) was implemented using Win32 API, offering direct control over Windows messaging, rendering, and user input.
 
-The game's graphical user interface (GUI) is built using the Win32 API. Images are loaded and displayed using the `LoadImage` function, which allows for the inclusion of bitmaps and other image formats in the application. This approach enables the integration of custom graphics for towers, enemies, and backgrounds, enhancing the visual appeal of the game.
+Images are loaded using LoadImage from the WinAPI, allowing flexible integration of .bmp files into buttons, backgrounds, and character sprites.
 
-For example, to load a bitmap image from a file:
-
-```cpp
+cpp
+Sao chép
+Chỉnh sửa
 HBITMAP hBitmap = (HBITMAP)LoadImage(
     NULL,
     L"assets\\tower.bmp",
@@ -47,48 +54,67 @@ HBITMAP hBitmap = (HBITMAP)LoadImage(
     0,
     LR_LOADFROMFILE
 );
-```
+This method ensures smooth and lightweight image loading in the Windows environment.
 
+🛠️ Game Features
+🏰 Multiple tower types with unique attack strategies
 
+👾 Varied enemy types (flying, fast, tanky)
 
-This method ensures that images are efficiently loaded and managed within the Win32 application framework.
+🎨 Custom WinAPI-rendered UI with image loading
 
-## 🚀 Getting Started
+🔊 Integrated sound effects
 
-### Prerequisites
+💾 Save/load game state functionality
 
-* Microsoft Visual Studio with C++ development tools.
-* Windows operating system.
+🧠 Applied OOP and Design Pattern principles
 
-### Installation
+🚀 Getting Started
+Prerequisites
+Windows OS
 
-1. Clone the repository:
+Microsoft Visual Studio with C++ toolset
 
-   ```bash
-   git clone https://github.com/ariesanhthu/cpp_Game_TowerDefense.git
-   ```
+Basic knowledge of C++ and Windows programming
 
+Setup
+bash
+Sao chép
+Chỉnh sửa
+git clone https://github.com/ariesanhthu/cpp_Game_TowerDefense.git
+cd cpp_Game_TowerDefense
+Open TowerDefense.sln with Visual Studio
 
+Build the solution
 
-2. Open the `TowerDefense.sln` solution file in Visual Studio.
+Run the game from Visual Studio or execute the .exe from the Debug/Release folder
 
-3. Build the solution to compile the project.
+👥 Contributors
+- Instructor: Trương Toàn Thịnh
 
-4. Run the application from Visual Studio or execute the generated `.exe` file.
+- Team Leader: Nguyễn Anh Thư
 
-## 👥 Contributors
+- Members:
 
-* **Instructor**: Trương Toàn Thịnh
-* **Team Leader**: Nguyễn Anh Thư
-* **Team Members**:
+Trần Hải Đức
 
-  * Trần Hải Đức
-  * Bùi Quang Hùng
+Bùi Quang Hùng
 
-## 📄 License
+📄 License
+This project is licensed under the MIT License. See the LICENSE file for more information.
 
-This project is licensed under the MIT License. See the [LICENSE.txt](LICENSE.txt) file for details.
+--
 
----
-[1]: https://en.wikipedia.org/wiki/Direct2D?utm_source=chatgpt.com "Direct2D"
-[2]: https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadimagea?utm_source=chatgpt.com "LoadImageA function (winuser.h) - Win32 apps - Learn Microsoft"
+📚 References
+Microsoft. Your first Windows program. Microsoft Learn. Retrieved November 15, 2024, from https://learn.microsoft.com/vi-vn/windows/win32/learnwin32/your-first-windows-program
+
+Game Programming Patterns. Game Programming Patterns. Retrieved November 15, 2024.
+
+Petzold, C. (2012). Programming Windows (5th ed.). Microsoft Press.
+
+Oualline, S. (2003). Practical C++ Programming. O'Reilly Media.
+
+Blagy, D. (n.d.). dewcin_yt [GitHub repository]. GitHub. Retrieved November 15, 2024, from https://github.com/danielblagy/dewcin_yt
+
+Refactoring Guru. (n.d.). Refactoring and Design Patterns. Retrieved November 15, 2024, from https://refactoring.guru/
+
