@@ -90,8 +90,5 @@ This method ensures that images are efficiently loaded and managed within the Wi
 This project is licensed under the MIT License. See the [LICENSE.txt](LICENSE.txt) file for details.
 
 ---
-
-Feel free to customize this README further by adding specific details about gameplay mechanics, controls, or any other information that would be helpful to users and contributors.
-
 [1]: https://en.wikipedia.org/wiki/Direct2D?utm_source=chatgpt.com "Direct2D"
 [2]: https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadimagea?utm_source=chatgpt.com "LoadImageA function (winuser.h) - Win32 apps - Learn Microsoft"
