@@ -1,4 +1,4 @@
-# 🎯 Tower Defense Game (C++ OOP Project with WinAPI & Design Patterns)
+# 🎯 Tower Defense Game (C++ OOP Project with WinAPI32 & Design Patterns)
 
 This is a C++ tower defense game developed as a final project for the Object-Oriented Programming (OOP) course at the University of Science, VNU-HCM (HCMUS). The project demonstrates the use of **Object-Oriented Design Principles** along with classic **design patterns**, and utilizes **WinAPI32** for UI rendering and image handling.
 
