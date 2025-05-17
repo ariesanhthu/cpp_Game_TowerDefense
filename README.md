@@ -8,6 +8,8 @@ This is a C++ tower defense game developed as a final project for the Object-Ori
 
 Players must place towers strategically to stop waves of enemies from reaching their destination along a predefined path. Each tower and enemy type features unique behaviors and attributes, requiring the player to think critically and adapt their strategy.
 
+![Main screen](https://github.com/ariesanhthu/cpp_Game_TowerDefense/blob/main/Assets/MainScreen.PNG)
+
 ---
 
 ## 🧱 Architecture & Design Patterns
